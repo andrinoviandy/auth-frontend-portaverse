@@ -5,8 +5,7 @@ import ForgotPassword from "./Modules/ForgotPassword/Pages/ForgotPassword";
 import CheckEmail from "./Modules/ForgotPassword/Pages/CheckEmail";
 
 function App() {
-  document.title = "KMS - Knowledge Management System";
-
+  document.title = "KMPlus Colsultant";
   return (
     <BrowserRouter>
       <Routes>

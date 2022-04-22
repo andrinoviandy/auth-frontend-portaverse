@@ -20,7 +20,9 @@ export function sendForgotPassword(
   axios
     .request(option)
     .then(function (res) {
-      cookies.set("forgot.email", email);
+      cookies.set("forgot.email", email, {
+        expires: new Date(new Date().getTime() + 1 * 60 * 60 * 1000),
+      });
       navigate("/check-email");
     })
     .catch(function (error) {

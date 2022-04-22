@@ -38,7 +38,6 @@ export const postLogin = (
               "kms.session.token",
               response.data.data.token,
               {
-                path: "/",
                 expires: new Date(
                   new Date().getTime() + 5 * 24 * 60 * 60 * 1000,
                 ),
