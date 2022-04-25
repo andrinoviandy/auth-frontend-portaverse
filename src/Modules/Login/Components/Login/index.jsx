@@ -1,3 +1,1 @@
-import LoginComp from "./LoginComp";
-
-export default LoginComp;
+export { default } from "./LoginComp";

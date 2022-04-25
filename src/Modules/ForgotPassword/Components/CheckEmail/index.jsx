@@ -1,3 +1,1 @@
-import CheckEmailComp from "./CheckEmail";
-
-export default CheckEmailComp;
+export { default } from "./CheckEmail";

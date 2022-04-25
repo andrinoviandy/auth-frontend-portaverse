@@ -1,3 +1,1 @@
-import ForgotPasswordComp from "./ForgotPasswordComp";
-
-export default ForgotPasswordComp;
+export { default } from "./ForgotPasswordComp";
