@@ -11,6 +11,8 @@ module.exports = {
       secondary1: "#1192E8",
       bg1: "#F2F4F6",
       bg2: "#F2F4F8",
+      bg3: "#F6F6F6",
+      bg4: "#FBFBFB",
       green: "#4BB543",
       grey: "#C1C7CD",
       grey2: "#C4C4C4",

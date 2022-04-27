@@ -41,8 +41,10 @@ function Login() {
   const HandleChange = (set) => (e) => {
     set(e.target.value);
     setTimeout(() => {
-      setError(false);
-    }, 1000);
+      if (error) {
+        setError(false);
+      }
+    }, 5000);
   };
 
   const handleChangeRemember = () => {

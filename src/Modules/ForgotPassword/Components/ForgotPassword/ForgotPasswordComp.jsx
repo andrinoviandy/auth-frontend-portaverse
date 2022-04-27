@@ -72,7 +72,6 @@ function ForgotPasswordComp() {
               <button
                 type="submit"
                 className="font-sans w-full bg-primary1 font-medium hover:bg-primary2 text-white  py-2 px-4 rounded"
-                onClick={handleForgotPassword}
               >
                 Reset password
               </button>

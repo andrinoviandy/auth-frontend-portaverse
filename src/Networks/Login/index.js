@@ -42,7 +42,7 @@ export const postLogin = (
                   new Date().getTime() + 5 * 24 * 60 * 60 * 1000,
                 ),
                 // secure: true,
-                domain: `.${window.location.hostname}`,
+                // domain: `.${window.location.hostname}`,
               },
             );
             setIsLoading(false);
