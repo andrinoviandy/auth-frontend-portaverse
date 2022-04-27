@@ -21,7 +21,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const cookies = new Cookies();
   const rememberEmail = cookies.get("email");
-
+  const token = cookies.get("kms.session.token");
   const forgotPassword = () => {
     Navigate("/forgot-password");
   };
@@ -30,6 +30,9 @@ function Login() {
     setEmail(rememberEmail);
     if (rememberEmail) {
       setIsRemember(true);
+    }
+    if (token) {
+      Navigate("/redirect");
     }
   }, []);
 

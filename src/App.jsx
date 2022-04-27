@@ -17,7 +17,7 @@ import CheckEmail from "./Modules/ForgotPassword/Pages/CheckEmail";
 import Home from "./Modules/Landing/Pages/Home";
 
 const cookies = new UniversalCookies();
-const token = cookies.get("kms.session.token");
+
 function App() {
   document.title = "Smart System - KMPlus Consultant";
   return (
@@ -48,21 +48,23 @@ function App() {
 }
 
 function ProtectedRoute({ children }) {
+  const token = cookies.get("kms.session.token");
   const Navigate = useNavigate();
   useEffect(() => {
     if (!token) {
       return Navigate("/login");
     }
-  }, [token]);
+  }, [token, cookies]);
   return children || <Outlet />;
 }
 function ProtectedLogin({ children }) {
+  const token = cookies.get("kms.session.token");
   const Navigate = useNavigate();
   useEffect(() => {
     if (token) {
       return Navigate("/redirect");
     }
-  }, []);
+  }, [token, cookies]);
   return children || <Outlet />;
 }
 
