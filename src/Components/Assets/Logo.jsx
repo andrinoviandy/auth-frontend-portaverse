@@ -1,6 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 function Logo() {
+  const navigate = useNavigate();
   return (
     <svg
+      onClick={() => navigate("/")}
       className="w-[5rem] h-[5rem]"
       viewBox="0 0 98 50"
       fill="none"

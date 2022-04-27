@@ -47,7 +47,7 @@ export const postLogin = (
             );
             setIsLoading(false);
             setPassword("");
-            Navigate("/");
+            Navigate("/redirect");
             if (isRemember) {
               cookies.set("email", email.toLowerCase(), {
                 path: "/",
