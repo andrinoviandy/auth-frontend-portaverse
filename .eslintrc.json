@@ -9,7 +9,8 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "devDependencies": true
   },
   "plugins": ["react"],
   "rules": {
