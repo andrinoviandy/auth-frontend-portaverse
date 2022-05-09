@@ -58,7 +58,6 @@ function Login() {
     postLogin(
       email,
       password,
-
       isRemember,
       setIsLoading,
       setError,
@@ -75,7 +74,7 @@ function Login() {
 
       <div className="  ">
         <div>
-          <div className="text-center mt-[10rem]">
+          <div className="text-center mt-[8rem]">
             <h2 className="font-semibold text-4xl text-text1">
               Welcome to
             </h2>

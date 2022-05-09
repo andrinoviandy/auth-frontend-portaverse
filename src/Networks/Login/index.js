@@ -42,8 +42,9 @@ export const postLogin = (
                 expires: new Date(
                   new Date().getTime() + 5 * 24 * 60 * 60 * 1000,
                 ),
-                // secure: true,
+                // for deplopment uncomment this line =>
                 // domain: `.${window.location.hostname}`,
+                // secure: true,
               },
             );
             setIsLoading(false);

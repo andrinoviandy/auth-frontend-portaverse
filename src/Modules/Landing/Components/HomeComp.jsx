@@ -16,7 +16,7 @@ function HomeComp() {
       </nav>
       <div className="flex flex-col justify-between h-[94vh]">
         <div>
-          <div className="text-center pt-[12rem]">
+          <div className="text-center pt-[8rem]">
             <h2 className="font-semibold text-4xl text-text1">
               Welcome to
             </h2>
@@ -24,7 +24,7 @@ function HomeComp() {
               SMART SYSTEM
             </h1>
             <div className=" flex-row justify-center m-auto  max-w-[450px] pt-[1.5rem]">
-              <h4 className="font-sans   justify-center text-darkGrey ">
+              <h4 className="font-sans text-lg justify-center text-darkGrey ">
                 Increase productivity through a clear understanding of
                 strategic activities and ease of access to your most
                 crucial knowledge.
