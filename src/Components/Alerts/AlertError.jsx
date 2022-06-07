@@ -1,9 +1,9 @@
+import PropTypes from "prop-types";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
-import QuestionIcon from "../Assets/QuestionIcon";
+import QuestionMark from "../Assets/Icon/QuestionMark";
 
-// eslint-disable-next-line react/prop-types
-function AlertError({ isError, setIsError }) {
+export default function AlertError({ isError, setIsError }) {
   const buttonRef = useRef(null);
   const HandleAlert = () => {
     setIsError(false);
@@ -48,7 +48,7 @@ function AlertError({ isError, setIsError }) {
             <div className="inline-block overflow-hidden text-center align-middle transition-all transform w-[552px] bg-white shadow-md rounded font-sans">
               <div className="grid px-8 pt-8 pb-3 gap-7">
                 <div className="grid gap-8 justify-items-center">
-                  <QuestionIcon />
+                  <QuestionMark />
                   <span className="font-medium text-xl">
                     Something wrong!
                   </span>
@@ -76,4 +76,7 @@ function AlertError({ isError, setIsError }) {
   );
 }
 
-export default AlertError;
+AlertError.propTypes = {
+  isError: PropTypes.bool.isRequired,
+  setIsError: PropTypes.func.isRequired,
+};
