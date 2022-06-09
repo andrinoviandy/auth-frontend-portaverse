@@ -1,71 +1,48 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable func-names */
-/* eslint-disable consistent-return */
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
-import UniversalCookies from "universal-cookie";
-import { useEffect } from "react";
-import AfterLogin from "./Modules/AfterLogin/Pages/AfterLogin";
-import Login from "./Modules/Login/Pages/Login";
-import ForgotPassword from "./Modules/ForgotPassword/Pages/ForgotPassword";
-import CheckEmail from "./Modules/ForgotPassword/Pages/CheckEmail";
-import Home from "./Modules/Landing/Pages/Home";
-
-const cookies = new UniversalCookies();
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainLayout from "./Components/Layout/MainLayout";
+import Login from "./Components/Login";
+import LandingPage from "./Components/LandingPage";
+import ForgotPassword from "./Components/ForgotPassword";
+import CheckEmail from "./Components/CheckEmail/CheckEmail";
+import ChooseProducts from "./Components/ChooseProducts/ChooseProducts";
+import SetNewPassword from "./Components/SetNewPassword";
+import NewPassSuccess from "./Components/NewPassSuccess";
 
 function App() {
   document.title = "Smart System - KMPlus Consultant";
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/login"
-          element={
-            <ProtectedLogin>
-              <Login />
-            </ProtectedLogin>
-          }
-        />
-        <Route
-          path="/redirect"
-          element={
-            <ProtectedRoute>
-              <AfterLogin />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/check-email" element={<CheckEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/" element={<Home />} />
+        {/* Public */}
+        <Route element={<MainLayout />}>
+          <Route path="/check-email" element={<CheckEmail />} />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
+        </Route>
+
+        <Route element={<MainLayout />}>
+          <Route
+            path="/reset-password"
+            element={<SetNewPassword />}
+          />
+          <Route path="/success" element={<NewPassSuccess />} />
+        </Route>
+
+        {/* Private */}
+        {/* <Route element={<PrivateRoute />}> */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/products" element={<ChooseProducts />} />
+        </Route>
+        {/* </Route> */}
+
+        {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
   );
-}
-
-function ProtectedRoute({ children }) {
-  const token = cookies.get("kms.session.token");
-  const Navigate = useNavigate();
-  useEffect(() => {
-    if (!token) {
-      return Navigate("/login");
-    }
-  }, [token, cookies]);
-  return children || <Outlet />;
-}
-function ProtectedLogin({ children }) {
-  const token = cookies.get("kms.session.token");
-  const Navigate = useNavigate();
-  useEffect(() => {
-    if (token) {
-      return Navigate("/redirect");
-    }
-  }, [token, cookies]);
-  return children || <Outlet />;
 }
 
 export default App;

@@ -1,21 +1,24 @@
 {
   "name": "auth-frontend",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "eslint-check": "run eslint ./src",
+    "eslint-fix": "run eslint --fix ./src"
   },
   "dependencies": {
-    "@headlessui/react": "^1.6.1",
-    "axios": "^0.26.1",
+    "@mantine/core": "^4.2.8",
+    "@mantine/hooks": "^4.2.8",
+    "axios": "^0.27.2",
     "firebase": "^9.6.11",
     "jwt-decode": "^3.1.2",
+    "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^6.3.0",
-    "universal-cookie": "^4.0.4"
+    "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
     "@iconify/react": "^3.2.1",

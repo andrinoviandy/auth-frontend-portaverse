@@ -1,0 +1,78 @@
+import { useState } from "react";
+import { TextInput } from "@mantine/core";
+import { Link } from "react-router-dom";
+import KeyIcon from "../Assets/Icon/KeyIcon";
+import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
+import LoadingButton from "../Assets/Icon/LoadingButton";
+
+function ForgotPassword() {
+  const [email, setEmail] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    alert("handleForgotPassword");
+    // sendForgotPassword(email, setIsError, navigate, cookies);
+  };
+
+  return (
+    <div className="grid justify-items-center">
+      <KeyIcon />
+
+      <div className="text-center">
+        <h1 className="font-semibold text-3xl text-text1 my-5">
+          Forgot password?
+        </h1>
+        <p className="font-sans font-medium text-gray">
+          Don’t worry, we will send you an instruction
+        </p>
+      </div>
+
+      <div className="w-[22rem] mt-7">
+        <form onSubmit={handleForgotPassword}>
+          <div className="mb-3">
+            <h4 className="font-medium my-1.5">Email</h4>
+            <TextInput
+              radius="md"
+              placeholder="Enter your email"
+              size="md"
+              name="email"
+              value={email}
+              error={errMsg}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            disabled={isLoading}
+            type="submit"
+            className={`font-sans w-full bg-primary1 font-medium ${
+              !isLoading && "hover:bg-primary2"
+            } text-white py-2 px-4 rounded my-1.5`}
+          >
+            {isLoading ? (
+              <>
+                <LoadingButton />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <span>Reset Password</span>
+            )}
+          </button>
+        </form>
+
+        <Link
+          to="/login"
+          className="font-sans font-medium text-gray hover:text-darkGray hover:bg-bg1 py-1 px-4 flex rounded items-center justify-center"
+        >
+          <RoundKeyboardBackspace />
+          <span>Back to login</span>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default ForgotPassword;
