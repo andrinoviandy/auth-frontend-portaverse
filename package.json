@@ -10,7 +10,6 @@
     "eslint-fix": "run eslint --fix ./src"
   },
   "dependencies": {
-    "@headlessui/react": "^1.6.4",
     "@mantine/core": "^4.2.8",
     "@mantine/hooks": "^4.2.8",
     "axios": "^0.27.2",

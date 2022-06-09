@@ -1,22 +1,30 @@
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Logo from "../Assets/Icon/Logo";
+import Footer from "../Footer";
 
 export default function MainLayout() {
+  const [url, setUrl] = useState("");
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const uri = pathname.split("/")[1];
+    setUrl(uri);
+  });
+
   return (
-    <>
-      <nav className="top-0 bg-white h-14 pt-4 sm:px-10 md:pl-36 md:pr-20 font-semibold text-primary1 text-xl mt-2">
-        <Logo />
-      </nav>
+    <div className="flex flex-col justify-between min-h-screen">
+      <div className="container mx-auto flex flex-col gap-2">
+        <nav className="p-5">
+          <Logo />
+        </nav>
 
-      <main className="flex min-h-screen bg-bg1 scroll-smooth text-text1 overflow-x-hidden">
-        <Outlet />
-      </main>
+        <main className="scroll-smooth px-5">
+          <Outlet />
+        </main>
+      </div>
 
-      <footer>
-        <h5 className=" text-center text-grey pb-[2rem]">
-          Powered by KMPlus Consulting 2022
-        </h5>
-      </footer>
-    </>
+      <Footer url={url} />
+    </div>
   );
 }
