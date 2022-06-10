@@ -77,6 +77,11 @@ textarea:focus {
   outline: none;
 }
 
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 select:focus {
   box-shadow: none !important;
 }
