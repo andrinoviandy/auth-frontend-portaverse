@@ -4,16 +4,29 @@ import { Link } from "react-router-dom";
 import KeyIcon from "../Assets/Icon/KeyIcon";
 import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 import LoadingButton from "../Assets/Icon/LoadingButton";
+import useValidateInput from "../../Utils/Hooks/useValidateInput";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [errMsg, setErrMsg] = useState("");
+  const [validateEmail, setValidateEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleForgotPassword = (e) => {
+  const handleOnChange = (e) => {
+    const { value } = e.target;
+    setEmail(value);
+    setValidateEmail("");
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    alert("handleForgotPassword");
-    // sendForgotPassword(email, setIsError, navigate, cookies);
+
+    const errEmail = useValidateInput("email", email);
+    setValidateEmail(errEmail);
+
+    if (email.length > 1 && !errEmail) {
+      alert("handleForgotPassword");
+      // sendForgotPassword(email, setIsError, navigate, cookies);
+    }
   };
 
   return (
@@ -30,7 +43,7 @@ function ForgotPassword() {
       </div>
 
       <div className="w-[22rem] mt-7">
-        <form onSubmit={handleForgotPassword}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <h4 className="font-medium my-1.5">Email</h4>
             <TextInput
@@ -38,10 +51,10 @@ function ForgotPassword() {
               placeholder="Enter your email"
               size="md"
               name="email"
+              // type="email"
               value={email}
-              error={errMsg}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              error={validateEmail}
+              onChange={handleOnChange}
             />
           </div>
 
