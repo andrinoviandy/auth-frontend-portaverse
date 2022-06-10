@@ -4,6 +4,7 @@ import { TextInput } from "@mantine/core";
 import KeyIcon from "../Assets/Icon/KeyIcon";
 import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 import LoadingButton from "../Assets/Icon/LoadingButton";
+import useValidateInput from "../../Utils/Hooks/useValidateInput";
 
 const form = {
   password: "",
@@ -13,11 +14,44 @@ const form = {
 export default function SetNewPassword() {
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
+  const [validateNewPassword, setValidateNewPassword] = useState("");
+  const [validateConfirmPassword, setValidateConfirmPassword] =
+    useState("");
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setPayload({ ...payload, [name]: value });
+    setValidateNewPassword("");
+    setValidateConfirmPassword("");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("submit");
+
+    const errNewPassword = useValidateInput(
+      "newPassword",
+      payload.password,
+    );
+    setValidateNewPassword(errNewPassword);
+
+    const errConfirmPassword = useValidateInput(
+      "newPassword",
+      payload.confirmPassword,
+    );
+    setValidateConfirmPassword(errConfirmPassword);
+
+    if (
+      !errNewPassword &&
+      payload.password !== payload.confirmPassword
+    ) {
+      setValidateNewPassword("Password does not match");
+      setValidateConfirmPassword("Password does not match");
+      return;
+    }
+
+    if (payload.password.length > 1 && !errNewPassword) {
+      alert("SetNewPassword");
+    }
   };
 
   return (
@@ -42,12 +76,10 @@ export default function SetNewPassword() {
               placeholder="Enter your new password"
               size="md"
               name="password"
+              type="password"
               value={payload.password}
-              error={errMsg}
-              onChange={(e) =>
-                setPayload({ ...payload, password: e.target.value })
-              }
-              required
+              error={validateNewPassword}
+              onChange={handleOnChange}
             />
           </div>
           <div className="mb-3">
@@ -57,15 +89,10 @@ export default function SetNewPassword() {
               placeholder="Confirm password"
               size="md"
               name="confirmPassword"
+              type="password"
               value={payload.confirmPassword}
-              error={errMsg}
-              onChange={(e) =>
-                setPayload({
-                  ...payload,
-                  confirmPassword: e.target.value,
-                })
-              }
-              required
+              error={validateConfirmPassword}
+              onChange={handleOnChange}
             />
           </div>
 

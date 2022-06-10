@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import EyeOffOutline from "../Assets/Icon/EyeOffOutline";
 import EyeOutline from "../Assets/Icon/EyeOutline";
 import LoadingButton from "../Assets/Icon/LoadingButton";
+import useValidateInput from "../../Utils/Hooks/useValidateInput";
 
 const form = {
   email: "",
@@ -14,20 +15,45 @@ const form = {
 function Login() {
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
+  const [validateEmail, setValidateEmail] = useState("");
+  const [validatePassword, setValidatePassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setPayload({ ...payload, [name]: value });
+    setValidateEmail("");
+    setValidatePassword("");
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    alert("handleLogin");
-    // postLogin(
-    //   email,
-    //   password,
-    //   isRemember,
-    //   setIsLoading,
-    //   setError,
-    //   setPassword,
-    //   Navigate,
-    // );
+
+    const errEmail = useValidateInput("email", payload.email);
+    setValidateEmail(errEmail);
+
+    const errPassword = useValidateInput(
+      "password",
+      payload.password,
+    );
+    setValidatePassword(errPassword);
+
+    if (
+      payload.email.length > 1 &&
+      !errEmail &&
+      payload.password.length > 1 &&
+      !errPassword
+    ) {
+      alert("handleLogin");
+      // postLogin(
+      //   email,
+      //   password,
+      //   isRemember,
+      //   setIsLoading,
+      //   setError,
+      //   setPassword,
+      //   Navigate,
+      // );
+    }
   };
 
   return (
@@ -43,7 +69,7 @@ function Login() {
 
       <div className="flex justify-center">
         <div className="w-[22rem] px-8 py-5 border-[1px] border-gray/10 rounded-md shadow-md">
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <h4 className="font-medium my-1.5">Email</h4>
               <TextInput
@@ -51,12 +77,10 @@ function Login() {
                 placeholder="Enter your email"
                 size="md"
                 name="email"
+                // type="email"
                 value={payload.email}
-                error={errMsg}
-                onChange={(e) => {
-                  setPayload({ ...payload, email: e.target.value });
-                }}
-                required
+                error={validateEmail}
+                onChange={handleOnChange}
               />
             </div>
 
@@ -67,14 +91,10 @@ function Login() {
                 placeholder="Password"
                 size="md"
                 name="password"
+                // type="password"
                 value={payload.password}
-                error={errMsg}
-                onChange={(e) => {
-                  setPayload({
-                    ...payload,
-                    password: e.target.value,
-                  });
-                }}
+                error={validatePassword}
+                onChange={handleOnChange}
                 visibilityToggleIcon={memo(({ reveal, size }) =>
                   reveal ? (
                     <EyeOutline size={size} />
@@ -82,7 +102,6 @@ function Login() {
                     <EyeOffOutline size={size} />
                   ),
                 )}
-                required
               />
             </div>
 
