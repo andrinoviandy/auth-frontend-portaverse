@@ -42,11 +42,29 @@ export default function postLogin(
                 expires: new Date(
                   jwtDecode(response.data.data.token).exp * 1000,
                 ),
-                // for deplopment uncomment this line =>
+                // for production uncomment this line =>
                 // domain: `.${window.location.hostname}`,
+                // secure: true,
+
+                // for development uncomment this line =>
+                domain: `localhost.com`,
                 // secure: true,
               },
             );
+
+            cookies.set("fb.session.token", user.accessToken, {
+              path: "/",
+              expires: new Date(
+                jwtDecode(user.accessToken).exp * 1000,
+              ),
+              // for production uncomment this line =>
+              // domain: `.${window.location.hostname}`,
+              // secure: true,
+
+              // for development uncomment this line =>
+              domain: `localhost.com`,
+              // secure: true,
+            });
             setIsLoading(false);
 
             window.location.href = "/products";
