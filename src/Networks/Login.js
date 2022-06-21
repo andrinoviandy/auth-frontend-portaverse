@@ -24,9 +24,11 @@ export default function postLogin(
           .then((response) => {
             cookies.set("user", response.data.data.user_data, {
               path: "/",
-              // todo: add expire time from response.data.data.user_data.expires
+              expires: new Date(
+                response.data.data.user_data.expire_token * 1000,
+              ),
             });
-            // window.location.href = "/products";
+            window.location.href = "/products";
             if (isRemember) {
               cookies.set("email", email.toLowerCase(), {
                 path: "/",
