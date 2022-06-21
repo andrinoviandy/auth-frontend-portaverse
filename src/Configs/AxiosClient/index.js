@@ -29,7 +29,7 @@ axiosSSOClient.interceptors.response.use(
     if (error.response.status === 401) {
       window.location.href = "/login";
     }
-    error.log(
+    console.error(
       "Looks like there was a problem. Status Code: ",
       error.response.status,
     );
