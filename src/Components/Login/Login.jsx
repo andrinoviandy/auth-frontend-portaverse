@@ -13,10 +13,14 @@ const form = {
   isRemember: false,
 };
 
+const onToggleVisibility = memo(({ reveal, size }) =>
+  reveal ? <EyeOutline size={size} /> : <EyeOffOutline size={size} />,
+);
+
 function Login() {
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
-  const [fetchError, setFetchError] = useState(false);
+  const [fetchError, setFetchError] = useState("");
   const [validateEmail, setValidateEmail] = useState("");
   const [validatePassword, setValidatePassword] = useState("");
 
@@ -95,13 +99,7 @@ function Login() {
                 value={payload.password}
                 error={validatePassword}
                 onChange={handleOnChange}
-                visibilityToggleIcon={memo(({ reveal, size }) =>
-                  reveal ? (
-                    <EyeOutline size={size} />
-                  ) : (
-                    <EyeOffOutline size={size} />
-                  ),
-                )}
+                visibilityToggleIcon={onToggleVisibility}
               />
             </div>
 

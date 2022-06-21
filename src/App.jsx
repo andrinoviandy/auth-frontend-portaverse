@@ -14,7 +14,7 @@ import SetNewPassword from "./Components/SetNewPassword";
 function App() {
   document.title = "Smart System - KMPlus Consultant";
   const cookies = new Cookies();
-  const user = cookies.get("kms.session.token");
+  const user = cookies.get("user");
   return (
     <BrowserRouter>
       <Routes>

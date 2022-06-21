@@ -1,6 +1,5 @@
-import axios from "axios";
-import jwtDecode from "jwt-decode";
 import Cookies from "universal-cookie";
+import axiosSSOClient from "../Configs/AxiosClient";
 import { login } from "../Utils/Helpers/FirebaseAuth";
 
 export default function postLogin(
@@ -18,56 +17,16 @@ export default function postLogin(
     .then((userCredential) => {
       const { user } = userCredential;
       if (user.uid) {
-        const option = {
-          method: "POST",
-          url: `${
-            import.meta.env.VITE_API_NEST_URL
-          }/auth/after-login`,
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${user.accessToken}`,
-          },
-          data: {
-            isRemember,
-          },
-        };
-        axios
-          .request(option)
+        const data = { isRemember };
+        axiosSSOClient.defaults.headers.common.Authorization = `Bearer ${user.accessToken}`;
+        axiosSSOClient
+          .post("/auth/after-login", data)
           .then((response) => {
-            cookies.set(
-              "kms.session.token",
-              response.data.data.token,
-              {
-                path: "/",
-                expires: new Date(
-                  jwtDecode(response.data.data.token).exp * 1000,
-                ),
-                // for production uncomment this line =>
-                // domain: `.${window.location.hostname}`,
-                // secure: true,
-
-                // for development uncomment this line =>
-                domain: `localhost.com`,
-                // secure: true,
-              },
-            );
-
-            cookies.set("fb.session.token", user.accessToken, {
+            cookies.set("user", response.data.data.user_data, {
               path: "/",
-              expires: new Date(
-                jwtDecode(user.accessToken).exp * 1000,
-              ),
-              // for production uncomment this line =>
-              // domain: `.${window.location.hostname}`,
-              // secure: true,
-
-              // for development uncomment this line =>
-              domain: `localhost.com`,
-              // secure: true,
+              // todo: add expire time from response.data.data.user_data.expires
             });
-            setIsLoading(false);
-
-            window.location.href = "/products";
+            // window.location.href = "/products";
             if (isRemember) {
               cookies.set("email", email.toLowerCase(), {
                 path: "/",
