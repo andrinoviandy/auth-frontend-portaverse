@@ -1,14 +1,16 @@
 import axios from "axios";
 
-const axiosSSOClient = axios.create({
-  baseURL: "/api",
-});
+const customConfig = {};
+if (import.meta.env.DEV) {
+  customConfig.baseUrl = "/api/kms"; // for development use proxy
+} else {
+  customConfig.baseUrl = import.meta.env.VITE_API_NEST_URL; // for production use direct url
+}
+const axiosSSOClient = axios.create(customConfig);
 
 axiosSSOClient.interceptors.request.use(
   (config) => {
     /* eslint-disable no-param-reassign */
-    config.headers.Accept = "application/json";
-    config.headers["Content-Type"] = "application/json";
     config.withCredentials = true;
     return config;
   },
