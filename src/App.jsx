@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Cookies from "universal-cookie";
 import CheckEmail from "./Components/CheckEmail/CheckEmail";
 import ChooseProducts from "./Components/ChooseProducts/ChooseProducts";
 import Error404 from "./Components/Error/Error404";
@@ -13,8 +12,7 @@ import SetNewPassword from "./Components/SetNewPassword";
 
 function App() {
   document.title = "Smart System - KMPlus Consultant";
-  const cookies = new Cookies();
-  const user = cookies.get("user");
+  const user = localStorage.getItem("user");
   return (
     <BrowserRouter>
       <Routes>

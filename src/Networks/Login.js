@@ -22,12 +22,10 @@ export default function postLogin(
         axiosSSOClient
           .post("/auth/after-login", data)
           .then((response) => {
-            cookies.set("user", response.data.data.user_data, {
-              path: "/",
-              expires: new Date(
-                response.data.data.user_data.expire_token * 1000,
-              ),
-            });
+            localStorage.setItem(
+              "user",
+              JSON.stringify(response.data.data.user_data),
+            );
             window.location.href = "/products";
             if (isRemember) {
               cookies.set("email", email.toLowerCase(), {
