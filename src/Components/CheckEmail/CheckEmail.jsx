@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Cookies from "universal-cookie";
+import { Link, useLocation } from "react-router-dom";
 import EmailIcon from "../Assets/Icon/Email";
 import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 function CheckEmail() {
   const [countResend, setCountResend] = useState(60);
-
-  const cookies = new Cookies();
-  const email = cookies.get("forgot.email");
+  const { state } = useLocation();
+  const { email } = state;
 
   const handleOpenMail = () => {
     // pake salah satu

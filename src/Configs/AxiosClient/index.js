@@ -11,8 +11,6 @@ const axiosSSOClient = axios.create(customConfig);
 axiosSSOClient.interceptors.request.use(
   (config) => {
     /* eslint-disable no-param-reassign */
-    config.headers.Accept = "application/json";
-    config.headers["Content-Type"] = "application/json";
     config.withCredentials = true;
     return config;
   },

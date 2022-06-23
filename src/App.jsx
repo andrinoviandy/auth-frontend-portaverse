@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CheckEmail from "./Components/CheckEmail/CheckEmail";
 import ChooseProducts from "./Components/ChooseProducts/ChooseProducts";
@@ -12,7 +13,12 @@ import SetNewPassword from "./Components/SetNewPassword";
 
 function App() {
   document.title = "Smart System - KMPlus Consultant";
-  const user = localStorage.getItem("user");
+
+  const userCookie = Cookies.get("user");
+  const user = userCookie
+    ? JSON.parse(userCookie.replace(/^j:/, ""))
+    : null;
+
   return (
     <BrowserRouter>
       <Routes>

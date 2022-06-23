@@ -1,4 +1,3 @@
-import Cookies from "universal-cookie";
 import axiosSSOClient from "../Configs/AxiosClient";
 import { login } from "../Utils/Helpers/FirebaseAuth";
 
@@ -9,7 +8,6 @@ export default function postLogin(
   setIsLoading,
   setFetchError,
 ) {
-  const cookies = new Cookies();
   setIsLoading(true);
   setFetchError("");
 
@@ -21,17 +19,8 @@ export default function postLogin(
         axiosSSOClient.defaults.headers.common.Authorization = `Bearer ${user.accessToken}`;
         axiosSSOClient
           .post("/auth/after-login", data)
-          .then((response) => {
-            localStorage.setItem(
-              "user",
-              JSON.stringify(response.data.data.user_data),
-            );
+          .then(() => {
             window.location.href = "/products";
-            if (isRemember) {
-              cookies.set("email", email.toLowerCase(), {
-                path: "/",
-              });
-            }
           })
           .catch((err) => {
             if (err.name === "FirebaseError") {
