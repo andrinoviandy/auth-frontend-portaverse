@@ -1,7 +1,5 @@
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import auth from "../../Dependencies/Firebase";
-
-// TODO
+import auth from "../../Configs/Firebase";
 
 const login = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password);

@@ -1,29 +1,20 @@
-import axios from "axios";
-
-// TODO refactor this
+import axiosSSOClient from "../Configs/AxiosClient";
 
 export default function sendForgotPassword(
   email,
-  setIsError,
+  setIsLoading,
+  setFetchError,
   navigate,
-  cookies,
 ) {
-  const option = {
-    method: "POST",
-    url: `${import.meta.env.VITE_API_NEST_URL}/auth/reset-password`,
-    data: {
-      email,
-    },
-  };
-  axios
-    .request(option)
-    .then(function (res) {
-      cookies.set("forgot.email", email, {
-        expires: new Date(new Date().getTime() + 1 * 60 * 60 * 1000),
-      });
-      navigate("/check-email");
+  setIsLoading(true);
+  const data = { email };
+  axiosSSOClient
+    .post("/auth/reset-password", data)
+    .then(() => {
+      navigate();
     })
-    .catch(function (error) {
-      setIsError(true);
-    });
+    .catch((err) => {
+      setFetchError(err.response.data.message);
+    })
+    .finally(() => setIsLoading(false));
 }

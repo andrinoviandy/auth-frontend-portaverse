@@ -1,15 +1,18 @@
-import { useState } from "react";
 import { TextInput } from "@mantine/core";
-import { Link } from "react-router-dom";
-import KeyIcon from "../Assets/Icon/KeyIcon";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
-import LoadingButton from "../Assets/Icon/LoadingButton";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import sendForgotPassword from "../../Networks/ForgotPassword";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
+import KeyIcon from "../Assets/Icon/KeyIcon";
+import LoadingButton from "../Assets/Icon/LoadingButton";
+import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [validateEmail, setValidateEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState("");
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { value } = e.target;
@@ -24,8 +27,9 @@ function ForgotPassword() {
     setValidateEmail(errEmail);
 
     if (email.length > 1 && !errEmail) {
-      alert("handleForgotPassword");
-      // sendForgotPassword(email, setIsError, navigate, cookies);
+      sendForgotPassword(email, setIsLoading, setFetchError, () => {
+        navigate("/check-email", { state: { email } });
+      });
     }
   };
 
@@ -57,6 +61,8 @@ function ForgotPassword() {
               onChange={handleOnChange}
             />
           </div>
+
+          <p className="text-red-500 text-center">{fetchError}</p>
 
           <button
             disabled={isLoading}

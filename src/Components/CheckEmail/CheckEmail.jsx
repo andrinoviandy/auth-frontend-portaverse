@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
+import { Link, useLocation } from "react-router-dom";
 import EmailIcon from "../Assets/Icon/Email";
+import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 function CheckEmail() {
   const [countResend, setCountResend] = useState(60);
-
-  const email = "johndoe@gmail.com";
+  const { state } = useLocation();
+  const { email } = state;
 
   const handleOpenMail = () => {
     // pake salah satu

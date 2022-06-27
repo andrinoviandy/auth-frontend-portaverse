@@ -1,10 +1,11 @@
-import { TextInput, PasswordInput, Checkbox } from "@mantine/core";
+import { Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
+import postLogin from "../../Networks/Login";
+import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import EyeOffOutline from "../Assets/Icon/EyeOffOutline";
 import EyeOutline from "../Assets/Icon/EyeOutline";
 import LoadingButton from "../Assets/Icon/LoadingButton";
-import useValidateInput from "../../Utils/Hooks/useValidateInput";
 
 const form = {
   email: "",
@@ -12,9 +13,14 @@ const form = {
   isRemember: false,
 };
 
+const onToggleVisibility = memo(({ reveal, size }) =>
+  reveal ? <EyeOutline size={size} /> : <EyeOffOutline size={size} />,
+);
+
 function Login() {
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState("");
   const [validateEmail, setValidateEmail] = useState("");
   const [validatePassword, setValidatePassword] = useState("");
 
@@ -27,6 +33,7 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFetchError("");
 
     const errEmail = useValidateInput("email", payload.email);
     setValidateEmail(errEmail);
@@ -43,16 +50,13 @@ function Login() {
       payload.password.length > 1 &&
       !errPassword
     ) {
-      alert("handleLogin");
-      // postLogin(
-      //   email,
-      //   password,
-      //   isRemember,
-      //   setIsLoading,
-      //   setError,
-      //   setPassword,
-      //   Navigate,
-      // );
+      postLogin(
+        payload.email,
+        payload.password,
+        payload.isRemember,
+        setIsLoading,
+        setFetchError,
+      );
     }
   };
 
@@ -95,15 +99,11 @@ function Login() {
                 value={payload.password}
                 error={validatePassword}
                 onChange={handleOnChange}
-                visibilityToggleIcon={memo(({ reveal, size }) =>
-                  reveal ? (
-                    <EyeOutline size={size} />
-                  ) : (
-                    <EyeOffOutline size={size} />
-                  ),
-                )}
+                visibilityToggleIcon={onToggleVisibility}
               />
             </div>
+
+            <p className="text-red-500 text-center">{fetchError}</p>
 
             <div className="flex items-center justify-between mb-3 mt-6">
               <Checkbox
