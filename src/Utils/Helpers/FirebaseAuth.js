@@ -1,4 +1,8 @@
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  confirmPasswordReset,
+  signInWithEmailAndPassword,
+  signOut
+} from "firebase/auth";
 import auth from "../../Configs/Firebase";
 
 const login = (email, password) => {
@@ -9,4 +13,8 @@ const logout = () => {
   return signOut(auth);
 };
 
-export { login, logout };
+const setNewPassword = (actionCode, newPassword) => {
+  return confirmPasswordReset(auth, actionCode, newPassword);
+};
+
+export { login, logout, setNewPassword };

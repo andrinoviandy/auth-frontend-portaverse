@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
 import { TextInput } from "@mantine/core";
-import KeyIcon from "../Assets/Icon/KeyIcon";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
-import LoadingButton from "../Assets/Icon/LoadingButton";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { setNewPassword } from "../../Utils/Helpers/FirebaseAuth";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
+import KeyIcon from "../Assets/Icon/KeyIcon";
+import LoadingButton from "../Assets/Icon/LoadingButton";
+import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 const form = {
   password: "",
@@ -12,8 +13,14 @@ const form = {
 };
 
 export default function SetNewPassword() {
+  const navigate = useNavigate();
+
+  const params = new URLSearchParams(window.location.search);
+  const actionCode = params.get("oobCode");
+
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState("");
   const [validateNewPassword, setValidateNewPassword] = useState("");
   const [validateConfirmPassword, setValidateConfirmPassword] =
     useState("");
@@ -50,7 +57,15 @@ export default function SetNewPassword() {
     }
 
     if (payload.password.length > 1 && !errNewPassword) {
-      alert("SetNewPassword");
+      setIsLoading(true);
+      setNewPassword(actionCode, payload.password)
+        .then(() => navigate("/success", { replace: true }))
+        .catch(() =>
+          setFetchError(
+            "Invalid action code, please try resetting the password again",
+          ),
+        )
+        .finally(() => setIsLoading(false));
     }
   };
 
@@ -95,6 +110,8 @@ export default function SetNewPassword() {
               onChange={handleOnChange}
             />
           </div>
+
+          <p className="text-red-500 text-center">{fetchError}</p>
 
           <button
             disabled={isLoading}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { resendForgotPassword } from "../../Networks/ForgotPassword";
 import EmailIcon from "../Assets/Icon/Email";
 import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
@@ -14,13 +15,18 @@ function CheckEmail() {
     // window.location = "mailto:{yourmail@domain.com}";
   };
 
+  const handleResend = () => {
+    resendForgotPassword(email);
+    setCountResend(60);
+  };
+
   useEffect(() => {
     if (countResend > 0) {
       setTimeout(() => {
         setCountResend(countResend - 1);
       }, 1000);
     }
-  });
+  }, [countResend]);
 
   return (
     <div className="grid justify-items-center">
@@ -62,6 +68,7 @@ function CheckEmail() {
               <button
                 type="button"
                 className="text-primary1 font-medium hover:underline"
+                onClick={handleResend}
               >
                 Click here
               </button>
