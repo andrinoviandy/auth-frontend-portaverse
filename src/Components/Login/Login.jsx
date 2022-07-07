@@ -13,6 +13,7 @@ const form = {
   isRemember: false,
 };
 
+// eslint-disable-next-line react/prop-types
 const onToggleVisibility = memo(({ reveal, size }) =>
   reveal ? <EyeOutline size={size} /> : <EyeOffOutline size={size} />,
 );
@@ -50,13 +51,7 @@ function Login() {
       payload.password.length > 1 &&
       !errPassword
     ) {
-      postLogin(
-        payload.email,
-        payload.password,
-        payload.isRemember,
-        setIsLoading,
-        setFetchError,
-      );
+      postLogin(payload, setIsLoading, setFetchError);
     }
   };
 
