@@ -1,7 +1,8 @@
 import { TextInput } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
-import { setNewPassword } from "../../Utils/Helpers/FirebaseAuth";
+import { setNewPassword } from "../../Utils/Helpers/firebaseAuth";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import KeyIcon from "../Assets/Icon/KeyIcon";
 import LoadingButton from "../Assets/Icon/LoadingButton";
@@ -17,6 +18,13 @@ export default function SetNewPassword() {
 
   const params = new URLSearchParams(window.location.search);
   const actionCode = params.get("oobCode");
+
+  useEffect(() => {
+    // redirect when not on application flow
+    if (actionCode === null) {
+      navigate("/login", { replace: true });
+    }
+  }, [actionCode]);
 
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +67,12 @@ export default function SetNewPassword() {
     if (payload.password.length > 1 && !errNewPassword) {
       setIsLoading(true);
       setNewPassword(actionCode, payload.password)
-        .then(() => navigate("/success", { replace: true }))
+        .then(() =>
+          navigate("/success", {
+            replace: true,
+            state: { status: "resetPasswordSuccess" },
+          }),
+        )
         .catch(() =>
           setFetchError(
             "Invalid action code, please try resetting the password again",

@@ -1,6 +1,6 @@
 import axiosSSOClient from "../Configs/AxiosClient";
 
-export function sendForgotPassword(
+export default function sendForgotPassword(
   email,
   setIsLoading,
   setFetchError,
@@ -17,9 +17,4 @@ export function sendForgotPassword(
       setFetchError(err.response.data.message);
     })
     .finally(() => setIsLoading(false));
-}
-
-export function resendForgotPassword(email) {
-  const data = { email };
-  axiosSSOClient.post("/auth/reset-password", data);
 }
