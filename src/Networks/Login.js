@@ -1,30 +1,28 @@
 import axiosSSOClient from "../Configs/AxiosClient";
-import { login } from "../Utils/Helpers/FirebaseAuth";
+import { login } from "../Utils/Helpers/firebaseAuth";
 
 export default function postLogin(
-  email,
-  password,
-  isRemember,
+  payload,
   setIsLoading,
   setFetchError,
 ) {
   setIsLoading(true);
   setFetchError("");
 
-  login(email.toLowerCase(), password)
+  login(payload.email.toLowerCase().trim(), payload.password)
     .then((userCredential) => {
       const { user } = userCredential;
       if (user.uid) {
-        const data = { isRemember };
+        const data = { isRemember: payload.isRemember };
         axiosSSOClient.defaults.headers.common.Authorization = `Bearer ${user.accessToken}`;
         axiosSSOClient
           .post("/auth/after-login", data)
           .then(() => {
-            window.location.href = "/products";
+            window.location.replace("/products");
           })
           .catch((err) => {
             if (err.name === "FirebaseError") {
-              setFetchError("Email/Password is incorrect");
+              setFetchError("Email or Password is incorrect");
             } else {
               setFetchError("Something went wrong");
             }
@@ -34,7 +32,7 @@ export default function postLogin(
     })
     .catch((err) => {
       if (err.name === "FirebaseError") {
-        setFetchError("Email/Password is incorrect");
+        setFetchError("Email or Password is incorrect");
       } else {
         setFetchError("Something went wrong");
       }

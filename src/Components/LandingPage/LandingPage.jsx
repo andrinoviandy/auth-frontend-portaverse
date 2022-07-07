@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import userAuthorization from "../../Utils/Helpers/userAuthorization";
 import Products from "../ChooseProducts/Products";
 
 function LandingPage() {
-  const auth = false;
+  const { isAuthorized } = userAuthorization();
   return (
     <div className="text-center">
       <p className="font-semibold text-4xl text-text1">Welcome to</p>
@@ -17,7 +18,7 @@ function LandingPage() {
         </p>
       </div>
 
-      {auth ? (
+      {isAuthorized ? (
         <Products />
       ) : (
         <div className="my-10">

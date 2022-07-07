@@ -1,12 +1,27 @@
-import { Navigate, Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-export default function PrivateRoute({
-  isAllowed,
-  redirectPath = "/login",
-  children,
-}) {
-  if (!isAllowed) {
-    return <Navigate to={redirectPath} replace />;
+export default function PrivateRoute({ isAuthorized, redirect }) {
+  const { pathname } = useLocation();
+  const url = pathname.split("/")[1];
+
+  if (isAuthorized && url === "products") {
+    return <Outlet />;
   }
-  return children || <Outlet />;
+
+  if (!isAuthorized && url === "products") {
+    return <Navigate to={redirect} replace />;
+  }
+
+  return isAuthorized ? (
+    <Navigate to={redirect} replace />
+  ) : (
+    <Outlet />
+  );
 }
+
+PrivateRoute.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  isAuthorized: PropTypes.bool.isRequired,
+  redirect: PropTypes.string.isRequired,
+};

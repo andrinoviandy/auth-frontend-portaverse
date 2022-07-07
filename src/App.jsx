@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CheckEmail from "./Components/CheckEmail/CheckEmail";
 import ChooseProducts from "./Components/ChooseProducts/ChooseProducts";
@@ -10,59 +9,60 @@ import Login from "./Components/Login";
 import NewPassSuccess from "./Components/NewPassSuccess";
 import PrivateRoute from "./Components/Private/PrivateRoute";
 import SetNewPassword from "./Components/SetNewPassword";
+import userAuthorization from "./Utils/Helpers/userAuthorization";
 
 function App() {
   document.title = "Smart System - KMPlus Consultant";
 
-  const userCookie = Cookies.get("user");
-  const user = userCookie
-    ? JSON.parse(userCookie.replace(/^j:/, ""))
-    : null;
+  const { isAuthorized } = userAuthorization();
 
   return (
     <BrowserRouter>
       <Routes>
+        <Route
+          element={
+            <PrivateRoute
+              isAuthorized={isAuthorized}
+              redirect="/login"
+            />
+          }
+        >
+          <Route element={<MainLayout />}>
+            {/* Can only be access when user logged in */}
+            <Route path="/products" element={<ChooseProducts />} />
+          </Route>
+        </Route>
+
+        <Route
+          element={
+            <PrivateRoute
+              isAuthorized={isAuthorized}
+              redirect="/products"
+            />
+          }
+        >
+          <Route element={<MainLayout />}>
+            {/* Can only be access when user not logged in */}
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/forgot-password"
+              element={<ForgotPassword />}
+            />
+
+            {/* Can only be access by the app flow and user not logged in */}
+            <Route path="/check-email" element={<CheckEmail />} />
+            <Route
+              path="/reset-password"
+              element={<SetNewPassword />}
+            />
+            <Route path="/success" element={<NewPassSuccess />} />
+          </Route>
+        </Route>
+
         {/* Public */}
         <Route element={<MainLayout />}>
-          <Route path="/check-email" element={<CheckEmail />} />
-          <Route
-            path="/forgot-password"
-            element={<ForgotPassword />}
-          />
-        </Route>
-
-        <Route element={<MainLayout />}>
-          <Route
-            path="/reset-password"
-            element={<SetNewPassword />}
-          />
-          <Route path="/success" element={<NewPassSuccess />} />
-        </Route>
-
-        {/* Private */}
-        <Route element={<MainLayout />}>
           <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/login"
-            element={
-              <PrivateRoute
-                isAllowed={!user}
-                redirectPath="/products"
-              >
-                <Login />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <PrivateRoute isAllowed={!!user}>
-                <ChooseProducts />
-              </PrivateRoute>
-            }
-          />
         </Route>
-        {/* </Route> */}
 
         <Route path="*" element={<Error404 />} />
       </Routes>

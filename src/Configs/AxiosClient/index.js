@@ -6,6 +6,7 @@ if (import.meta.env.DEV) {
 } else {
   customConfig.baseURL = import.meta.env.VITE_API_NEST_URL; // for production use direct url
 }
+
 const axiosSSOClient = axios.create(customConfig);
 
 axiosSSOClient.interceptors.request.use(
