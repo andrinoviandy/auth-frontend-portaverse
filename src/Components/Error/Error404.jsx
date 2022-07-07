@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 export default function Error404() {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white">
@@ -362,9 +362,8 @@ export default function Error404() {
           </div>
           <button
             type="button"
-            className="font-sans w-full font-medium  py-2 px-4 rounded
-                 btn bg-primary1 text-white"
-            onClick={() => Navigate(-2)}
+            className="font-sans w-full font-medium  py-2 px-4 rounded bg-primary1 text-white mt-10"
+            onClick={() => navigate(-1)}
           >
             Back
           </button>

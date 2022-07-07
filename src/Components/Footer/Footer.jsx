@@ -1,7 +1,10 @@
-import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 import { Wave1, Wave2 } from "../Assets/Icon/Wave";
 
-export default function Footer({ url }) {
+export default function Footer() {
+  const { pathname } = useLocation();
+  const url = pathname.split("/")[1];
+
   if (url === "login") {
     return (
       <footer className="relative flex justify-center">
@@ -32,7 +35,3 @@ export default function Footer({ url }) {
     </footer>
   );
 }
-
-Footer.propTypes = {
-  url: PropTypes.string.isRequired,
-};

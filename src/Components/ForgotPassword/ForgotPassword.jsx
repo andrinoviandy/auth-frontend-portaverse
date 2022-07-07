@@ -12,6 +12,7 @@ function ForgotPassword() {
   const [validateEmail, setValidateEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
+
   const navigate = useNavigate();
 
   const handleOnChange = (e) => {
@@ -42,7 +43,7 @@ function ForgotPassword() {
           Forgot password?
         </h1>
         <p className="font-sans font-medium text-gray">
-          Don’t worry, we will send you an instruction
+          Don&apos;t worry, we will send you an instruction
         </p>
       </div>
 

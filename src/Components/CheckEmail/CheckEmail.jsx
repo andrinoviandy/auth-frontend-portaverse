@@ -1,32 +1,46 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { resendForgotPassword } from "../../Networks/ForgotPassword";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import resendResetPassword from "../../Networks/Resend";
 import EmailIcon from "../Assets/Icon/Email";
+import LoadingButton from "../Assets/Icon/LoadingButton";
 import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
+const countdown = 60; // in seconds
+
 function CheckEmail() {
-  const [countResend, setCountResend] = useState(60);
+  const [timer, setTimer] = useState(countdown);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState("");
+
   const { state } = useLocation();
-  const { email } = state;
 
   const handleOpenMail = () => {
-    // pake salah satu
+    // choose one
     window.open("https://gmail.com", "_blank");
     // window.location = "mailto:{yourmail@domain.com}";
   };
 
   const handleResend = () => {
-    resendForgotPassword(email);
-    setCountResend(60);
+    resendResetPassword(state.email, setIsLoading, setFetchError);
   };
 
   useEffect(() => {
-    if (countResend > 0) {
-      setTimeout(() => {
-        setCountResend(countResend - 1);
-      }, 1000);
+    if (!isLoading) {
+      setTimer(countdown);
     }
-  }, [countResend]);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!timer) return undefined;
+
+    const intervalId = setInterval(() => {
+      setTimer((t) => t - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timer]);
+
+  if (!state) return <Navigate to="/login" replace />;
 
   return (
     <div className="grid justify-items-center">
@@ -39,7 +53,9 @@ function CheckEmail() {
         <p className="font-sans font-medium text-gray">
           We sent a password reset link to
           <br />
-          <p className="text-center text-darkGray">{email}</p>
+          <span className="text-center text-darkGray">
+            {state.email}
+          </span>
         </p>
       </div>
 
@@ -53,11 +69,11 @@ function CheckEmail() {
         </button>
 
         <div className="flex items-center justify-center gap-2 my-3">
-          {countResend > 0 ? (
+          {timer > 0 && fetchError.length === 0 ? (
             <>
               <h5 className="text-gray font-sans">Resend in</h5>
               <span className="text-primary1 font-semibold">
-                {countResend} second
+                {timer} second
               </span>
             </>
           ) : (
@@ -65,13 +81,40 @@ function CheckEmail() {
               <h5 className="text-sm text-gray font-sans">
                 Didn&apos;t receive the email?
               </h5>
-              <button
-                type="button"
-                className="text-primary1 font-medium hover:underline"
-                onClick={handleResend}
-              >
-                Click here
-              </button>
+              {(() => {
+                if (isLoading) {
+                  return (
+                    <span className="ml-2.5">
+                      <LoadingButton className="text-primary1" />
+                    </span>
+                  );
+                }
+
+                if (fetchError.trim().length > 0) {
+                  return (
+                    <span>
+                      {fetchError}
+                      <button
+                        type="button"
+                        onClick={handleResend}
+                        className="text-primary1 font-medium hover:underline"
+                      >
+                        Retry
+                      </button>
+                    </span>
+                  );
+                }
+
+                return (
+                  <button
+                    type="button"
+                    onClick={handleResend}
+                    className="text-primary1 font-medium hover:underline"
+                  >
+                    Click here
+                  </button>
+                );
+              })()}
             </>
           )}
         </div>
