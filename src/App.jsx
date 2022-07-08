@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CheckEmail from "./Components/CheckEmail";
 import ChooseProducts from "./Components/ChooseProducts";
-import Error404 from "./Components/Error/Error404";
+import Error404 from "./Components/Errors/404";
 import ForgotPassword from "./Components/ForgotPassword";
 import LandingPage from "./Components/LandingPage";
-import MainLayout from "./Components/Layout/MainLayout";
+import MainLayout from "./Components/Layouts/MainLayout";
 import Login from "./Components/Login";
 import NewPassSuccess from "./Components/NewPassSuccess";
 import PrivateRoute from "./Components/Private/PrivateRoute";
