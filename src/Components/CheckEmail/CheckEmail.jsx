@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, Navigate } from "react-router-dom";
-import EmailIcon from "../Assets/Icon/Email";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import resendResetPassword from "../../Networks/Resend";
+import EmailIcon from "../Assets/Icon/Email";
 import LoadingButton from "../Assets/Icon/LoadingButton";
+import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 const countdown = 60; // in seconds
 

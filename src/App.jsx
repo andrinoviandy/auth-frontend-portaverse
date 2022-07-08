@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import CheckEmail from "./Components/CheckEmail/CheckEmail";
-import ChooseProducts from "./Components/ChooseProducts/ChooseProducts";
+import CheckEmail from "./Components/CheckEmail";
+import ChooseProducts from "./Components/ChooseProducts";
 import Error404 from "./Components/Error/Error404";
 import ForgotPassword from "./Components/ForgotPassword";
 import LandingPage from "./Components/LandingPage";

@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import Check from "../Assets/Icon/Check";
 
 export default function NewPassSuccess() {
+  const { state } = useLocation();
+
+  if (!state) return <Navigate to="/login" replace />;
+
   return (
     <div className="grid justify-items-center">
       <Check />
