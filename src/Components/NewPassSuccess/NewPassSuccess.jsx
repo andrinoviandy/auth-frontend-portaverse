@@ -1,17 +1,10 @@
-import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import Check from "../Assets/Icon/Check";
 
 export default function NewPassSuccess() {
-  const navigate = useNavigate();
   const { state } = useLocation();
 
-  useEffect(() => {
-    // redirect when not on application flow
-    if (state?.status !== "resetPasswordSuccess") {
-      navigate("/login", { replace: true });
-    }
-  }, [state]);
+  if (!state) return <Navigate to="/login" replace />;
 
   return (
     <div className="grid justify-items-center">

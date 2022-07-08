@@ -1,7 +1,7 @@
 import { TextInput } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { setNewPassword } from "../../Utils/Helpers/firebaseAuth";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import KeyIcon from "../Assets/Icon/KeyIcon";
@@ -18,13 +18,6 @@ export default function SetNewPassword() {
 
   const params = new URLSearchParams(window.location.search);
   const actionCode = params.get("oobCode");
-
-  useEffect(() => {
-    // redirect when not on application flow
-    if (actionCode === null) {
-      navigate("/login", { replace: true });
-    }
-  }, [actionCode]);
 
   const [payload, setPayload] = useState(form);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,6 +74,8 @@ export default function SetNewPassword() {
         .finally(() => setIsLoading(false));
     }
   };
+
+  if (!actionCode) return <Navigate to="/login" replace />;
 
   return (
     <div className="grid justify-items-center">
