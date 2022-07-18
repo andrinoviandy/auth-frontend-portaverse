@@ -10,7 +10,7 @@ export default ({ mode }) => {
       port: 3000,
       proxy: {
         "/api": {
-          target: process.env.VITE_API_NEST_URL,
+          target: process.env.VITE_API_AUTH_SERVICE_URL,
           changeOrigin: true,
           secure: false,
           ws: true,

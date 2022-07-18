@@ -4,7 +4,7 @@ const customConfig = {};
 if (import.meta.env.DEV) {
   customConfig.baseURL = "/api"; // for development use proxy
 } else {
-  customConfig.baseURL = import.meta.env.VITE_API_NEST_URL; // for production use direct url
+  customConfig.baseURL = import.meta.env.VITE_API_AUTH_SERVICE_URL; // for production use direct url
 }
 
 const axiosSSOClient = axios.create(customConfig);

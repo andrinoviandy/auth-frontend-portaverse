@@ -21,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MantineProvider
       theme={{
+        fontFamily: "Inter, Roboto, system-ui",
         colors: {
           primary: MANTINE_PRIMARY_COLOR,
         },

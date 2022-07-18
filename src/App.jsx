@@ -7,7 +7,7 @@ import LandingPage from "./Components/LandingPage";
 import MainLayout from "./Components/Layouts/MainLayout";
 import Login from "./Components/Login";
 import NewPassSuccess from "./Components/NewPassSuccess";
-import PrivateRoute from "./Components/Private/PrivateRoute";
+import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import SetNewPassword from "./Components/SetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route
           element={
-            <PrivateRoute
+            <PrivateRoutes
               isAuthorized={isAuthorized}
               redirect="/login"
             />
@@ -35,7 +35,7 @@ function App() {
 
         <Route
           element={
-            <PrivateRoute
+            <PrivateRoutes
               isAuthorized={isAuthorized}
               redirect="/products"
             />
