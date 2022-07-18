@@ -12,23 +12,23 @@ export default function postLogin(
   login(payload.email.toLowerCase().trim(), payload.password)
     .then((userCredential) => {
       const { user } = userCredential;
-      if (user.uid) {
-        const data = { isRemember: payload.isRemember };
-        axiosSSOClient.defaults.headers.common.Authorization = `Bearer ${user.accessToken}`;
-        axiosSSOClient
-          .post("/auth/after-login", data)
-          .then(() => {
-            window.location.replace("/products");
-          })
-          .catch((err) => {
-            if (err.name === "FirebaseError") {
-              setFetchError("Email or Password is incorrect");
-            } else {
-              setFetchError("Something went wrong");
-            }
-            setIsLoading(false);
-          });
-      }
+      const data = { isRemember: payload.isRemember };
+
+      axiosSSOClient
+        .post("/auth/after-login", data, {
+          headers: { Authorization: `Bearer ${user.accessToken}` },
+        })
+        .then(() => {
+          window.location.replace("/products");
+        })
+        .catch((err) => {
+          if (err.name === "FirebaseError") {
+            setFetchError("Email or Password is incorrect");
+          } else {
+            setFetchError("Something went wrong");
+          }
+          setIsLoading(false);
+        });
     })
     .catch((err) => {
       if (err.name === "FirebaseError") {

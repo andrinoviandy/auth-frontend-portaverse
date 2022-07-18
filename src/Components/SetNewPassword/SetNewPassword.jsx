@@ -1,6 +1,5 @@
 import { TextInput } from "@mantine/core";
 import { useState } from "react";
-
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { setNewPassword } from "../../Utils/Helpers/firebaseAuth";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";

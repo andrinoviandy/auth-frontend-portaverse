@@ -23,11 +23,6 @@ module.exports = {
       teal: colors.teal,
       black: colors.black,
     },
-    extend: {
-      height: {
-        "min-16": "-16rem",
-      },
-    },
     fontFamily: {
       sans: ["Inter", "Roboto", "system-ui"],
       serif: ["IBM Plex Sans", "ui-serif", "Georgia"],
