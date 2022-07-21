@@ -14,7 +14,7 @@ export default function NewPassSuccess() {
         <h1 className="font-semibold text-3xl text-text1 my-5">
           Password reset
         </h1>
-        <p className="font-sans font-medium text-gray">
+        <p className="font-secondary font-medium text-gray">
           Your password has been successfully reset.
           <br />
           Click below to login page
@@ -24,7 +24,7 @@ export default function NewPassSuccess() {
       <div className="w-[22rem] mt-7">
         <Link
           to="/login"
-          className="flex justify-center font-sans bg-primary1 font-medium hover:bg-primary2 text-white py-2 px-4 rounded my-1.5"
+          className="flex justify-center font-secondary bg-primary1 font-medium hover:bg-primary2 text-white py-2 px-4 rounded my-1.5"
         >
           Back to login
         </Link>

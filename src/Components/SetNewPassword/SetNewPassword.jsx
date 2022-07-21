@@ -84,7 +84,7 @@ export default function SetNewPassword() {
         <h1 className="font-semibold text-3xl text-text1 my-5">
           Set new password
         </h1>
-        <p className="font-sans font-medium text-gray">
+        <p className="font-secondary font-medium text-gray">
           Your new password must be different than your previous one.
         </p>
       </div>
@@ -123,7 +123,7 @@ export default function SetNewPassword() {
           <button
             disabled={isLoading}
             type="submit"
-            className={`font-sans w-full bg-primary1 font-medium ${
+            className={`font-secondary w-full bg-primary1 font-medium ${
               !isLoading && "hover:bg-primary2"
             } text-white py-2 px-4 rounded my-1.5`}
           >
@@ -140,7 +140,7 @@ export default function SetNewPassword() {
 
         <Link
           to="/login"
-          className="font-sans font-medium text-gray hover:text-darkGray hover:bg-bg1 py-1 px-4 flex rounded items-center justify-center"
+          className="font-secondary font-medium text-gray hover:text-darkGray hover:bg-bg1 py-1 px-4 flex rounded items-center justify-center"
         >
           <RoundKeyboardBackspace />
           <span>Back to login</span>

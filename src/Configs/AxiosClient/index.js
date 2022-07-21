@@ -2,7 +2,7 @@ import axios from "axios";
 
 const customConfig = {};
 if (import.meta.env.DEV) {
-  customConfig.baseURL = "/api"; // for development use proxy
+  customConfig.baseURL = "/api/sso/v1"; // for development use proxy
 } else {
   customConfig.baseURL = import.meta.env.VITE_API_AUTH_SERVICE_URL; // for production use direct url
 }

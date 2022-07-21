@@ -123,7 +123,7 @@ function Login() {
 
               <Link
                 to="/forgot-password"
-                className="text-primary1 hover:underline font-sans text-[0.775rem]"
+                className="text-primary1 hover:underline font-secondary text-[0.775rem]"
               >
                 Forgot password?
               </Link>
@@ -132,7 +132,7 @@ function Login() {
             <button
               disabled={isLoading}
               type="submit"
-              className={`font-sans w-full bg-primary1 font-medium ${
+              className={`font-secondary w-full bg-primary1 font-medium ${
                 !isLoading && "hover:bg-primary2"
               } text-white py-2 px-4 rounded my-1.5`}
             >
@@ -149,7 +149,7 @@ function Login() {
 
           <button
             type="button"
-            className="font-sans w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
+            className="font-secondary w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
           >
             Enter as guest
           </button>

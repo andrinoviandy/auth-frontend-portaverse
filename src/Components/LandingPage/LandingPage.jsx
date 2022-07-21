@@ -11,7 +11,7 @@ function LandingPage() {
         SMART SYSTEM
       </p>
       <div className="flex-row justify-center m-auto w-[450px] py-[1.5rem]">
-        <p className="font-sans text-lg text-darkGray ">
+        <p className="font-secondary text-lg text-darkGray ">
           Increase productivity through a clear understanding of
           strategic activities and ease of access to your most crucial
           knowledge.
@@ -24,7 +24,7 @@ function LandingPage() {
         <div className="my-10">
           <Link
             to="/login"
-            className="px-36 rounded-md py-2 text-white font-sans bg-primary1 hover:bg-primary2"
+            className="px-36 rounded-md py-2 text-white font-secondary bg-primary1 hover:bg-primary2"
             type="button"
           >
             Logon

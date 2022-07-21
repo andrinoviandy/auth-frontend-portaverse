@@ -9,12 +9,12 @@ export default ({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        "/api": {
+        "/api/sso/v1": {
           target: process.env.VITE_API_AUTH_SERVICE_URL,
           changeOrigin: true,
           secure: false,
           ws: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
+          rewrite: (path) => path.replace(/^\/api\/sso\/v1/, ""),
         },
       },
     },

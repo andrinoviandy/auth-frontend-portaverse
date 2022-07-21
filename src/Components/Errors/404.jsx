@@ -362,7 +362,7 @@ export default function Error404() {
           </div>
           <button
             type="button"
-            className="font-sans w-full font-medium  py-2 px-4 rounded bg-primary1 text-white mt-10"
+            className="font-secondary w-full font-medium  py-2 px-4 rounded bg-primary1 text-white mt-10"
             onClick={() => navigate(-1)}
           >
             Back
