@@ -116,9 +116,9 @@ function Login() {
                     fontSize: "0.775rem",
                     lineHeight: "1rem",
                     paddingLeft: "5px",
-                    fontFamily: "Roboto",
                   },
                 }}
+                classNames={{ label: "secondary" }}
               />
 
               <Link
