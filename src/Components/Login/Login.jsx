@@ -147,12 +147,12 @@ function Login() {
             </button>
           </form>
 
-          <button
+          {/* <button
             type="button"
             className="font-secondary w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
           >
             Enter as guest
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
