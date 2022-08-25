@@ -50,7 +50,7 @@ ENV VITE_KMS_URL=https://kms-dashboard-dev.smartkmsystem.com
 #    VITE_LMS_URL=$VITE_LMS_URL \
 #    VITE_TMS_URL=$VITE_TMS_URL \
 #    yarn build
-# RUN yarn build
+RUN yarn build
 
 FROM nginx:stable-alpine AS server
 COPY ./etc/nginx.conf /etc/nginx/conf.d/default.conf
