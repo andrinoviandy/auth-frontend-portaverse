@@ -12,8 +12,7 @@ export default ({ mode }) => {
         "/api/sso/v1": {
           target: process.env.VITE_API_AUTH_SERVICE_URL,
           changeOrigin: true,
-          secure: false,
-          ws: true,
+          secure: true,
           rewrite: (path) => path.replace(/^\/api\/sso\/v1/, ""),
         },
       },
