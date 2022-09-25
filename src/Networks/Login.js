@@ -19,7 +19,7 @@ export default function postLogin(
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
         .then(() => {
-          window.location.replace("/products");
+          window.location.replace("/");
         })
         .catch((err) => {
           if (err.name === "FirebaseError") {

@@ -35,6 +35,8 @@ ENV VITE_API_KEY=smartkms20221
 ENV VITE_API_AUTH_SERVICE_URL=https://user-auth-service-dev.smartkmsystem.com
 ENV VITE_KMS_URL=https://kms-dev.smartkmsystem.com
 ENV VITE_LMS_URL=https://lms-dev.smartkmsystem.com
+ENV VITE_TMS_URL=https://tms-dev.smartkmsystem.com
+
 
 #RUN VITE_CORPORATE_NAME=$VITE_CORPORATE_NAME \
 #    VITE_FIREBASE_API_KEY=$VITE_FIREBASE_API_KEY \
