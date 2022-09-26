@@ -27,7 +27,7 @@ function LandingPage() {
             className="px-36 rounded-md py-2 text-white font-secondary bg-primary1 hover:bg-primary2"
             type="button"
           >
-            Logon
+            Login
           </Link>
         </div>
       )}
