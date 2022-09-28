@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import PelindoLogo from "../Assets/Pictures/PelindoLogo.webp";
+import PortaverseLogo from "../Assets/Pictures/PortaverseLogo.png";
 import Footer from "../Footer";
 
 export default function MainLayout() {
@@ -8,9 +8,9 @@ export default function MainLayout() {
       <div className="container mx-auto flex flex-col gap-2">
         <nav className="p-5">
           <img
-            src={PelindoLogo}
+            src={PortaverseLogo}
             alt="company_logo"
-            className="h-[40px] p-2"
+            className="h-[100px] p-2"
           />
         </nav>
 
