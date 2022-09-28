@@ -5,10 +5,10 @@ import Products from "../ChooseProducts/Products";
 function LandingPage() {
   const { isAuthorized } = userAuthorization();
   return (
-    <div className="text-center">
+    <div className="text-center mt-16">
       <p className="font-semibold text-4xl text-text1">Welcome to</p>
       <p className="font-semibold text-5xl py-2 text-primary1">
-        SMART SYSTEM
+        portaverse
       </p>
       <div className="flex-row justify-center m-auto w-[450px] py-[1.5rem]">
         <p className="font-secondary text-lg text-darkGray ">

@@ -62,7 +62,7 @@ function Login() {
           Welcome to
         </p>
         <p className="font-semibold text-5xl py-2 text-primary1">
-          SMART SYSTEM
+          portaverse
         </p>
       </div>
 
