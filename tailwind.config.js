@@ -24,7 +24,7 @@ module.exports = {
       black: colors.black,
     },
     fontFamily: {
-      primary: ["IBM Plex Sans", "ui-serif", "Georgia"],
+      primary: ["Inter", "ui-serif", "Georgia"],
       secondary: ["Inter", "Roboto", "system-ui"],
     },
     plugins: [],
