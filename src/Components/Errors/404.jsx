@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import Error404Svg from "../Assets/Icon/404";
-import PelindoLogo from "../Assets/Pictures/PelindoLogo.webp";
+import PortaverseLogo from "../Assets/Pictures/PortaverseLogo.png";
 
 export default function Error404() {
   const navigate = useNavigate();
@@ -10,9 +10,9 @@ export default function Error404() {
     <div className="flex flex-col bg-white py-12 px-20 min-h-screen">
       <Link to="/" className="cursor-pointer">
         <img
-          src={PelindoLogo}
+          src={PortaverseLogo}
           alt="company_logo"
-          className="h-[40px] p-2"
+          className="h-[100px] p-2"
         />
       </Link>
       <div className="flex flex-col gap-8 m-auto w-[] items-center">
