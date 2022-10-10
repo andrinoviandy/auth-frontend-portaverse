@@ -19,7 +19,9 @@ export default function postLogin(
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
         .then(() => {
-          window.location.replace("/");
+          window.location.href = `${
+            import.meta.env.VITE_KMS_URL
+          }/home`;
         })
         .catch((err) => {
           if (err.name === "FirebaseError") {
