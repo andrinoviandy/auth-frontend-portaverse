@@ -62,7 +62,7 @@ function Login() {
           Welcome to
         </p>
         <p className="font-semibold text-5xl py-2 text-primary1">
-          SMART SYSTEM
+          portaverse
         </p>
       </div>
 
@@ -116,9 +116,9 @@ function Login() {
                     fontSize: "0.775rem",
                     lineHeight: "1rem",
                     paddingLeft: "5px",
-                    fontFamily: "Roboto",
                   },
                 }}
+                classNames={{ label: "secondary" }}
               />
 
               <Link
@@ -146,12 +146,13 @@ function Login() {
               )}
             </button>
           </form>
-
           <button
             type="button"
             className="font-secondary w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
           >
-            Enter as guest
+            <a href={`${import.meta.env.VITE_KMS_URL}/home`}>
+              Enter as guest
+            </a>
           </button>
         </div>
       </div>

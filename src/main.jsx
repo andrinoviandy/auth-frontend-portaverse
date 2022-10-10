@@ -5,21 +5,23 @@ import App from "./App";
 import "./index.css";
 
 const MANTINE_PRIMARY_COLOR = [
-  "#f4fbfb",
-  "#ddf2f1",
-  "#c3e8e7",
-  "#a7dddb",
-  "#86d1ce",
-  "#61c2bf",
-  "#33b1ad",
-  "#009994",
-  "#007975",
-  "#004745",
+  "#CBEBFF",
+  "#88D2FF",
+  "#4EBCFF",
+  "#1CA9FF",
+  "#0096F9",
+  "#0080D3",
+  "#016DB2",
+  "#005B96",
+  "#004C7D",
+  "#003F68",
+  "#003456",
 ];
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MantineProvider
+      emotionOptions={{ key: "mantine", prepend: false }}
       theme={{
         fontFamily: "Inter, Roboto, system-ui",
         colors: {
