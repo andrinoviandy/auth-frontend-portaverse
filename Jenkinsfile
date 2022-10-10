@@ -54,7 +54,7 @@ pipeline {
          node ('master') {
            script {
              CURRENT_STAGE=env.STAGE_NAME
-             if (env.BRANCH_NAME == 'testzul'){
+             if (env.BRANCH_NAME == 'develop'){
            withSonarQubeEnv('SonarQube') {
              sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${APPS_NAME} -Dsonar.sources=. -Dsonar.host.url=http://167.99.70.51:9000 -Dsonar.login=admin"
            }
@@ -80,7 +80,6 @@ pipeline {
         }
       }
     }
-
     stage('Push image') {
       steps {
         node ('master') {
