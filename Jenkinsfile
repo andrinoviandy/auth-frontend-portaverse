@@ -59,12 +59,6 @@ pipeline {
              sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${APPS_NAME} -Dsonar.sources=. -Dsonar.host.url=http://167.99.70.51:9000 -Dsonar.login=admin"
            }
          }
-            if (env.BRANCH_NAME == 'master'){
-            CURRENT_STAGE=env.STAGE_NAME  
-           withSonarQubeEnv('SonarQube') {
-             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${APPS_NAME} -Dsonar.sources=. -Dsonar.host.url=http://10.93.11.122:9000 -Dsonar.login=admin"    
-          }
-        }
       }
     }
   }
