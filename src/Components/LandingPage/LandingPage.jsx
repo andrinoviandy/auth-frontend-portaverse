@@ -4,6 +4,11 @@ import Products from "../ChooseProducts/Products";
 
 function LandingPage() {
   const { isAuthorized } = userAuthorization();
+  if (isAuthorized) {
+    window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+    return null;
+  }
+
   return (
     <div className="text-center mt-16">
       <p className="font-semibold text-4xl text-text1">Welcome to</p>
