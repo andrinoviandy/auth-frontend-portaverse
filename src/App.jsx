@@ -12,7 +12,7 @@ import SetNewPassword from "./Components/SetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 
 function App() {
-  document.title = "Smart System - KMPlus Consultant";
+  document.title = "Portaverse - Pelindo";
 
   const { isAuthorized } = userAuthorization();
 
