@@ -26,7 +26,7 @@ pipeline {
           }
           if (env.BRANCH_NAME == 'develop') {
             MANIFEST_VALUE = 'values-stg.yaml'
-            ENV_YAML = 'test-'
+            ENV_YAML = 'stg-'
           }
           // if (env.BRANCH_NAME == 'staging') {
           //   MANIFEST_VALUE = 'values-stg.yaml'
