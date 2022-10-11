@@ -13,11 +13,13 @@ export default function PrivateRoutes({ isAuthorized, redirect }) {
     return <Navigate to={redirect} replace />;
   }
 
-  return isAuthorized ? (
-    <Navigate to={redirect} replace />
-  ) : (
-    <Outlet />
-  );
+  if (isAuthorized) {
+    // <Navigate to={redirect} replace />
+    window.location.href = redirect;
+    return null;
+  }
+
+  return <Outlet />;
 }
 
 PrivateRoutes.propTypes = {

@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CheckEmail from "./Components/CheckEmail";
-import ChooseProducts from "./Components/ChooseProducts";
 import Error404 from "./Components/Errors/404";
 import ForgotPassword from "./Components/ForgotPassword";
 import LandingPage from "./Components/LandingPage";
@@ -29,7 +28,7 @@ function App() {
         >
           <Route element={<MainLayout />}>
             {/* Can only be access when user logged in */}
-            <Route path="/products" element={<ChooseProducts />} />
+            {/* <Route path="/products" element={<ChooseProducts />} /> */}
           </Route>
         </Route>
 
@@ -37,7 +36,8 @@ function App() {
           element={
             <PrivateRoutes
               isAuthorized={isAuthorized}
-              redirect="/products"
+              // redirect="/products"
+              redirect={`${import.meta.env.VITE_KMS_URL}/home`}
             />
           }
         >
