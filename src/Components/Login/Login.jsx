@@ -6,6 +6,7 @@ import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import EyeOffOutline from "../Assets/Icon/EyeOffOutline";
 import EyeOutline from "../Assets/Icon/EyeOutline";
 import LoadingButton from "../Assets/Icon/LoadingButton";
+import PortaverseLogo from "../Assets/Pictures/PortaverseLogo.png";
 
 const form = {
   email: "",
@@ -56,14 +57,19 @@ function Login() {
   };
 
   return (
-    <div className="grid gap-10">
-      <div className="text-center">
-        <p className="font-semibold text-4xl text-text1">
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col items-center text-center">
+        <img
+          src={PortaverseLogo}
+          alt="company_logo"
+          className="h-[100px]"
+        />
+        {/* <p className="font-semibold text-4xl text-text1">
           Welcome to
         </p>
         <p className="font-semibold text-5xl py-2 text-primary1">
           portaverse
-        </p>
+        </p> */}
       </div>
 
       <div className="flex justify-center">
