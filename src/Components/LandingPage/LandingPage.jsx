@@ -11,7 +11,7 @@ function LandingPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center text-center pt-20">
+    <div className="flex flex-col items-center justify-center text-center">
       <img
         src={PortaverseLogo}
         alt="company_logo"
