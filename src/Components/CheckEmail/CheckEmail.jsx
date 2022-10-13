@@ -62,7 +62,10 @@ function CheckEmail() {
       <div className="w-[22rem] mt-7">
         <button
           type="submit"
-          className="font-secondary w-full bg-primary1 font-medium hover:bg-primary2 text-white py-2 px-4 rounded my-1.5"
+          className={
+            "font-secondary w-full bg-primary1 font-medium hover:bg-primary2 text-white py-2 px-4 rounded my-1.5" +
+            " hidden"
+          }
           onClick={handleOpenMail}
         >
           Open email app
