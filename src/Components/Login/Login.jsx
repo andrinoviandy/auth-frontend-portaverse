@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import { Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -72,7 +73,7 @@ function Login() {
         </p> */}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center flex-col items-center">
         <div className="w-[22rem] px-8 py-5 border-[1px] border-gray/10 rounded-md shadow-md">
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -161,6 +162,17 @@ function Login() {
             </a>
           </button>
         </div>
+        <a
+          className="text-darkGray mt-7 flex items-center"
+          href="http://wa.me/+6281911111375"
+        >
+          <Icon
+            icon="bx:support"
+            className="inline mr-2"
+            color="#016db2"
+          />
+          Help Center
+        </a>
       </div>
     </div>
   );
