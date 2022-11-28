@@ -18,7 +18,11 @@ export default function postLogin(
         .post("/auth/after-login", data, {
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
-        .then(() => {
+        .then((res) => {
+          if (res.data.data.user.is_first_time_login) {
+            window.location.href = "/referals";
+            return;
+          }
           window.location.href = `${
             import.meta.env.VITE_KMS_URL
           }/home`;
