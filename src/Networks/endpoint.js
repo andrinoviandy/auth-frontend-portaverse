@@ -4,7 +4,7 @@ export const BASE_PROXY = {
   hq: "/api/hq/v1",
   positions: "/api/positions/v1",
   kmap: "/api/kmap/v1",
-  auth: "/api/auth/v1",
+  auth: "/api/sso/v1",
   gamification: "/api/gamification/v1",
   employees: "/api/employees/v1",
   skills: "/api/skills/v1",
