@@ -1,26 +1,25 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { Icon } from "@iconify/react";
 import {
   Avatar,
+  Button,
   Group,
   Loader,
   Select,
   Text,
-  TextInput,
 } from "@mantine/core";
-import { forwardRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDebouncedValue } from "@mantine/hooks";
-import { Icon } from "@iconify/react";
 import { useForm } from "@mantine/form";
+import { useDebouncedValue } from "@mantine/hooks";
+import { forwardRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
+  AUTH_ENDPOINT,
   BASE_PROXY,
   EMPLOYEES_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
-import KeyIcon from "../Assets/Icon/KeyIcon";
-import LoadingButton from "../Assets/Icon/LoadingButton";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 import removeDuplicateObjects from "../../Utils/Helpers/removeDuplicateObjects";
+import ReferraIllust from "../Assets/Pictures/ReferraIllust.png";
 
 const SelectItem = forwardRef(
   ({ image, label, description, ...others }, ref) => (
@@ -40,12 +39,18 @@ const SelectItem = forwardRef(
 );
 
 function Referal() {
-  const [employeeItems, setEmployeeItems] = useState([]);
+  const refCodesItems = [
+    "BMPPutri",
+    "BMPEko",
+    "BMPVally",
+    "BMPMarchel",
+    "BMPAco",
+    "BMPFaisal",
+    "BMPDale",
+  ];
   const [query, setQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useDebouncedValue(
-    query,
-    500,
-  );
+  const [employeeItems, setEmployeeItems] = useState([]);
+  const [debouncedQuery] = useDebouncedValue(query, 500);
 
   const form = useForm({
     initialValues: {
@@ -54,18 +59,8 @@ function Referal() {
     },
   });
 
-  const handleBlurSelect = () => {
-    setQuery("");
-    // setQueryCoreMember("");
-    setDebouncedQuery("");
-    // setDebouncedQueryCoreMember("");
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   const employeeService = Networks(BASE_PROXY.employees);
+  const authService = Networks(BASE_PROXY.auth);
   const size = 10;
 
   const {
@@ -100,70 +95,77 @@ function Referal() {
     },
   );
 
+  const { mutate, isLoading: isLoadingRefer } = authService.mutation(
+    "post",
+    {
+      onSuccess: () => {
+        window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+      },
+    },
+  );
+
+  const handleSubmit = () => {
+    const reqBody = {
+      referal_code: form.values.referal_code,
+      referal_employee_id: form.values.referal_employee_id,
+    };
+    mutate({ endpoint: AUTH_ENDPOINT.POST.refer, data: reqBody });
+  };
+
   return (
-    <div className="grid justify-items-center">
-      <KeyIcon />
-
-      <div className="text-center">
-        <h1 className="font-semibold text-3xl text-text1 my-5">
-          Referal Code
+    <div className="flex justify-evenly gap-5 items-center">
+      <div className="flex flex-col gap-5">
+        <h1 className="font-semibold text-3xl text-text1">
+          Do you have any referral?
         </h1>
-        <p className="font-secondary font-medium text-gray">
-          u can use your friend referal before open the system
-        </p>
-      </div>
-
-      <div className="w-[22rem] mt-7">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <Select
-              label="Employees"
-              placeholder="Select Employees Referal"
-              classNames={{
-                root: "w-[20vw]",
-              }}
-              rightSection={
-                // isLoadingGetCoreMember ||
-                // isFetchingGetCoreMember
-                isLoadingGetEmployee || isFetchingGetEmployee ? (
-                  <Loader size="xs" />
-                ) : (
-                  <Icon
-                    icon="bx:plus"
-                    width={20}
-                    className="text-darkGrey"
-                  />
-                )
-              }
-              withinPortal
-              itemComponent={SelectItem}
-              data={employeeItems}
-              searchable
-              onSearchChange={(value) => setQuery(value)}
-              required
-              {...form.getInputProps("referal_employee_id")}
-              onBlur={handleBlurSelect}
-            />
-          </div>
-
-          {/* <button
-            disabled={isLoading}
-            type="submit"
-            className={`font-secondary w-full bg-primary1 font-medium ${
-              !isLoading && "hover:bg-primary2"
-            } text-white py-2 px-4 rounded my-1.5`}
-          >
-            {isLoading ? (
-              <>
-                <LoadingButton />
-                <span>Loading...</span>
-              </>
+        <Select
+          label="Name/NIPP"
+          placeholder="Select Employees Referal"
+          rightSection={
+            isLoadingGetEmployee || isFetchingGetEmployee ? (
+              <Loader size="xs" />
             ) : (
-              <span>Reset Password</span>
-            )}
-          </button> */}
-        </form>
+              <Icon icon="akar-icons:chevron-down" width={12} />
+            )
+          }
+          withinPortal
+          itemComponent={SelectItem}
+          data={employeeItems}
+          clearable
+          searchable
+          nothingFound="No employees found"
+          onSearchChange={(value) => setQuery(value)}
+          {...form.getInputProps("referal_employee_id")}
+          disabled={!!form.values.referal_code}
+        />
+
+        <Select
+          label="Referral Code"
+          placeholder="Input referral code"
+          rightSection={<div />}
+          withinPortal
+          data={refCodesItems}
+          clearable
+          searchable
+          nothingFound="No referral code found"
+          {...form.getInputProps("referal_code")}
+          disabled={!!form.values.referal_employee_id}
+        />
+
+        <Button
+          disabled={!form.isDirty()}
+          onClick={handleSubmit}
+          loading={isLoadingRefer}
+        >
+          Submit
+        </Button>
+        <Link to="/login">
+          <p className="text-center text-gray2 font-medium">
+            I don&apos;t have any referral code
+          </p>
+        </Link>
       </div>
+      <img src={ReferraIllust} alt="illust" className="w-[60vw]" />
     </div>
   );
 }

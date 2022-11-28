@@ -33,6 +33,7 @@ ENV VITE_FIREBASE_APP_ID=1:634072245724:web:bc597de032b02082f95b19
 ENV VITE_JWT_KEY=smartkms2022
 ENV VITE_API_KEY=smartkms20221
 ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id
+ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
 ENV VITE_KMS_URL=https://knowledge.portaverse.co.id
 ENV VITE_LMS_URL=https://learning.portaverse.co.id
 ENV VITE_TMS_URL=https://talent.portaverse.co.id

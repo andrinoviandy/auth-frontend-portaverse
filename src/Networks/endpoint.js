@@ -78,6 +78,7 @@ export const NOTIFICATION_ENDPOINT = {
 export const AUTH_ENDPOINT = {
   POST: {
     logout: "/auth/logout",
+    refer: "/auth/referal",
   },
 };
 
