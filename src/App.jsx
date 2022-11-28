@@ -1,12 +1,16 @@
+import { ModalDef } from "@ebay/nice-modal-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CheckEmail from "./Components/CheckEmail";
 import Error404 from "./Components/Errors/404";
+import ErrorHandling from "./Components/Errors/ErrorHandling";
+import SuccessHandling from "./Components/Errors/SuccessHandling";
 import ForgotPassword from "./Components/ForgotPassword";
 import LandingPage from "./Components/LandingPage";
 import MainLayout from "./Components/Layouts/MainLayout";
 import Login from "./Components/Login";
 import NewPassSuccess from "./Components/NewPassSuccess";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
+import Referal from "./Components/Referal/Referal";
 import SetNewPassword from "./Components/SetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 
@@ -17,6 +21,14 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ModalDef
+        id="success-handling-dialog"
+        component={SuccessHandling}
+      />
+      <ModalDef
+        id="error-handling-dialog"
+        component={ErrorHandling}
+      />
       <Routes>
         <Route
           element={
@@ -29,6 +41,7 @@ function App() {
           <Route element={<MainLayout />}>
             {/* Can only be access when user logged in */}
             {/* <Route path="/products" element={<ChooseProducts />} /> */}
+            <Route path="/referals" element={<Referal />} />
           </Route>
         </Route>
 

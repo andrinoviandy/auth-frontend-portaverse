@@ -1,6 +1,9 @@
+import NiceModal from "@ebay/nice-modal-react";
 import { MantineProvider } from "@mantine/core";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import App from "./App";
 import "./index.css";
 
@@ -18,6 +21,14 @@ const MANTINE_PRIMARY_COLOR = [
   "#003456",
 ];
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MantineProvider
@@ -30,7 +41,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         primaryColor: "primary",
       }}
     >
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <NiceModal.Provider>
+          <App />
+        </NiceModal.Provider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </MantineProvider>
   </React.StrictMode>,
 );

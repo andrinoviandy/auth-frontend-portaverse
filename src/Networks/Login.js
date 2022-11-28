@@ -1,4 +1,4 @@
-import axiosSSOClient from "../Configs/AxiosClient";
+import axiosSSOClient from "../Configs/AxiosClient/ssoAxiosClient";
 import { login } from "../Utils/Helpers/firebaseAuth";
 
 export default function postLogin(
