@@ -153,6 +153,8 @@ function Login() {
               )}
             </button>
           </form>
+          {
+            false &&
           <button
             type="button"
             className="font-secondary w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
@@ -161,6 +163,7 @@ function Login() {
               Enter as guest
             </a>
           </button>
+          }
         </div>
         <a
           className="text-darkGray mt-7 flex items-center"
