@@ -1,4 +1,4 @@
-import axiosSSOClient from "../Configs/AxiosClient";
+import axiosSSOClient from "../Configs/AxiosClient/ssoAxiosClient";
 
 export default function Resend(email, setIsLoading, setFetchError) {
   setIsLoading(true);

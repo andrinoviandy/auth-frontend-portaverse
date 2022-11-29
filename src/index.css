@@ -37,7 +37,7 @@ code {
 }
 
 ::selection {
-  background: #009d9a;
+  background: #016db2;
   color: white;
 }
 
@@ -86,11 +86,11 @@ select:focus {
 }
 
 /* select:focus > option:checked {
-  background: #009d9a !important;
+  background: #016db2 !important;
   color: white;
 }
 
 select:focus > option:hover {
-  background: #009d9a !important;
+  background: #016db2 !important;
   color: white;
 } */

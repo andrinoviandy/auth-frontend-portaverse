@@ -1,6 +1,10 @@
-import { MantineProvider } from "@mantine/core";
+import NiceModal from "@ebay/nice-modal-react";
+import { Icon } from "@iconify/react";
+import { createEmotionCache, MantineProvider } from "@mantine/core";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import App from "./App";
 import "./index.css";
 
@@ -18,19 +22,60 @@ const MANTINE_PRIMARY_COLOR = [
   "#003456",
 ];
 
+const myCache = createEmotionCache({ key: "mantine" });
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+const MantineCompDefaultProps = {
+  Select: {
+    rightSection: <Icon icon="akar-icons:chevron-down" width={12} />,
+    styles: { rightSection: { pointerEvents: "none" } },
+  },
+  DatePicker: {
+    rightSection: (
+      <Icon
+        icon="ic:round-date-range"
+        color="#C1C7CD"
+        width={24}
+        className="mr-2"
+      />
+    ),
+  },
+};
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MantineProvider
-      emotionOptions={{ key: "mantine", prepend: false }}
+      emotionCache={myCache}
       theme={{
         fontFamily: "Inter, Roboto, system-ui",
         colors: {
           primary: MANTINE_PRIMARY_COLOR,
         },
         primaryColor: "primary",
+        respectReducedMotion: true,
+        components: {
+          Select: {
+            defaultProps: MantineCompDefaultProps.Select,
+          },
+          DatePicker: {
+            defaultProps: MantineCompDefaultProps.DatePicker,
+          },
+        },
       }}
     >
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <NiceModal.Provider>
+          <App />
+        </NiceModal.Provider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </MantineProvider>
   </React.StrictMode>,
 );

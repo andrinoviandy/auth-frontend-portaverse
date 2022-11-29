@@ -15,6 +15,13 @@ export default ({ mode }) => {
           secure: true,
           rewrite: (path) => path.replace(/^\/api\/sso\/v1/, ""),
         },
+        "/api/employees/v1": {
+          target: process.env.VITE_API_EMPLOYEES_SERVICE_URL,
+          changeOrigin: true,
+          secure: true,
+          rewrite: (path) =>
+            path.replace(/^\/api\/employees\/v1/, ""),
+        },
       },
     },
   });

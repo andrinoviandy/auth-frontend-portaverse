@@ -8,6 +8,9 @@ export default function PrivateRoutes({ isAuthorized, redirect }) {
   if (isAuthorized && url === "products") {
     return <Outlet />;
   }
+  if (isAuthorized && url === "referals") {
+    return <Outlet />;
+  }
 
   if (!isAuthorized && url === "products") {
     return <Navigate to={redirect} replace />;
