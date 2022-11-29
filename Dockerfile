@@ -35,6 +35,7 @@ ENV VITE_API_KEY=smartkms20221
 
 ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.ilcs.co.id
 ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.ilcs.co.id
+ENV VITE_API_SSO_SERVICE_URL=https://user-auth.ilcs.co.id
 ENV VITE_KMS_URL=https://knowledge.ilcs.co.id
 ENV VITE_LMS_URL=https://learning.ilcs.co.id
 ENV VITE_TMS_URL=https://talent.ilcs.co.id
