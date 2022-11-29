@@ -139,6 +139,12 @@ function Referal() {
           disabled={!!form.values.referal_code}
         />
 
+        <div className="flex items-center justify-center">
+          <div className="h-[2px] bg-gray2 w-full" />
+          <p className="text-gray2 text-sm p-1">Or</p>
+          <div className="h-[2px] bg-gray2 w-full" />
+        </div>
+
         <Select
           label="Referral Code"
           placeholder="Input referral code"
