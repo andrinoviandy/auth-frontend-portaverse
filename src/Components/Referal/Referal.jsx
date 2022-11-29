@@ -77,8 +77,8 @@ function Referal() {
               ...prev,
               ...res.employees.map((item) => ({
                 image: item.profile_picture,
-                label: item.name,
-                value: item.social_employee_profile_id,
+                label: `${item.name} ${item.employee_number}`,
+                value: item.id,
                 role: item.position,
               })),
             ],
