@@ -67,13 +67,21 @@ pipeline {
     stage('Build image') {   
       steps {
         node ('master') {    
-          script {       
+          script {
             CURRENT_STAGE=env.STAGE_NAME
-            app = docker.build("${IMAGE_PREFIX}") 
-          }   
+            if (env.BRANCH_NAME == 'master'){
+              app = docker.build("${IMAGE_PREFIX}")
+              //sh "docker build -t ${IMAGE_PREFIX} ."
+            }
+            if (env.BRANCH_NAME == 'develop'){
+            CURRENT_STAGE=env.STAGE_NAME
+             app = 
+             sh "docker build -f Dockerfile.staging . -t ${IMAGE_PREFIX}"
+          }
         }
-      }
+      }  
     }
+  }
     stage('Push image') {
       steps {
         node ('master') {
