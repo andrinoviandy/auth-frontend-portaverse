@@ -33,8 +33,8 @@ ENV VITE_FIREBASE_APP_ID=1:634072245724:web:bc597de032b02082f95b19
 ENV VITE_JWT_KEY=smartkms2022
 ENV VITE_API_KEY=smartkms20221
 
-ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.pelindo.co.id
-ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.pelindo.co.id
+ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee-service-portaverse.pelindo.co.id
+ENV VITE_API_AUTH_SERVICE_URL=https://user-auth-service-portaverse.pelindo.co.id
 ENV VITE_API_SSO_SERVICE_URL=https://portaverse.pelindo.co.id
 ENV VITE_KMS_URL=https://knowledge.pelindo.co.id
 ENV VITE_LMS_URL=https://learning.pelindo.co.id
