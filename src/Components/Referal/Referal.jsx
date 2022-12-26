@@ -95,6 +95,7 @@ function Referal() {
         page: 1,
         size,
         query: debouncedQuery,
+        "without-me": 1,
       },
     },
   );
