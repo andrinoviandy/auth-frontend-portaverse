@@ -28,10 +28,6 @@ pipeline {
             MANIFEST_VALUE = 'values-stg.yaml'
             ENV_YAML = 'stg-'
           }
-          // if (env.BRANCH_NAME == 'staging') {
-          //   MANIFEST_VALUE = 'values-stg.yaml'
-          //   ENV_YAML = 'stg-'
-          // }
         }
       }
     }
