@@ -12,6 +12,7 @@ pipeline {
     environment {
     AWS_ACCOUNT_ID="592716879257"
     AWS_DEFAULT_REGION="ap-southeast-3"
+    DOCKERHUB_REPO="registry.hub.docker.com"
     AWS_REPO_NAME="kmplussmartsystem/auth-frontend"
     REPOSITORY_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_REPO_NAME}"
     }
