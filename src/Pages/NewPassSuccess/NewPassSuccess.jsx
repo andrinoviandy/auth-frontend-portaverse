@@ -1,5 +1,5 @@
 import { Link, Navigate, useLocation } from "react-router-dom";
-import Check from "../Assets/Icon/Check";
+import Check from "../../Components/Assets/Icon/Check";
 
 export default function NewPassSuccess() {
   const { state } = useLocation();

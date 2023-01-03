@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
+import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogo.png";
 import userAuthorization from "../../Utils/Helpers/userAuthorization";
-import PortaverseLogo from "../Assets/Pictures/PortaverseLogo.png";
 import Products from "../ChooseProducts/Products";
 
 function LandingPage() {
