@@ -94,3 +94,65 @@ select:focus > option:hover {
   background: #016db2 !important;
   color: white;
 } */
+
+.scroll-style::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* width of the entire scrollbar */
+}
+
+.scroll-style::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+  background-color: #f2f4f6; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
+
+.scroll-style::-webkit-scrollbar-thumb:hover {
+  background: #d9fbfb;
+}
+
+::-webkit-search-cancel-button {
+  position: relative;
+  right: 10px;
+}
+
+.scroll-style-3::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* width of the entire scrollbar */
+}
+
+.scroll-style-3::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
+
+.scroll-style-3::-webkit-scrollbar-thumb {
+  background-color: #dde1e6; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
+
+.scroll-style-3::-webkit-scrollbar-thumb:hover {
+  background: #c4c7ca;
+}
+
+.scroll-style-4::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* width of the entire scrollbar */
+}
+
+.scroll-style-4::-webkit-scrollbar-track {
+  background: white; /* color of the tracking area */
+  border-radius: 20px;
+}
+
+.scroll-style-4::-webkit-scrollbar-thumb {
+  background-color: #005499; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+}
+
+.scroll-style-4::-webkit-scrollbar-thumb:hover {
+  background: #1064a8;
+}

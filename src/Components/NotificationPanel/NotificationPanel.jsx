@@ -41,23 +41,42 @@ export default function NotificationPanel({
   classNames = { root: "" },
 }) {
   return (
-    <div className={`flex flex-col gap-5 ${classNames.root}`}>
-      <h3 className="font-bold text-primary3">Notifikasi</h3>
-      <Item
-        moduleName="Assessment"
-        message="Hasil Assessment Penilaian Perilaku dengan target evaluasi anda telah selesai, silahkan ulas hasilnya pada halaman berikut!"
-        date={dayjs().toISOString()}
-      />
-      <Item
-        moduleName="KPI"
-        message="Hasil Assessment Penilaian Perilaku dengan target evaluasi anda telah selesai, silahkan ulas hasilnya pada halaman berikut!"
-        date={dayjs().toISOString()}
-      />
-      <Item
-        moduleName="KPI"
-        message="Hasil Assessment Penilaian Perilaku dengan target evaluasi anda telah selesai, silahkan ulas hasilnya pada halaman berikut!"
-        date={dayjs().toISOString()}
-      />
+    <div
+      className={`flex flex-col gap-5 bg-primary3 rounded-md p-4 ${classNames.root}`}
+    >
+      <div className="flex justify-between items-center text-white">
+        <h3 className="font-bold">Pemberitahuan</h3>
+        <div className="flex gap-2">
+          <Button
+            // variant="white"
+            size="sm"
+            leftIcon={<Icon icon="ci:check-all-big" fontSize={24} />}
+            onClick={() => {}}
+            // disabled={disabled}
+            // loading={loading}
+            className="p-0 h-fit bg-primary3"
+          >
+            Mark as read
+          </Button>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 max-h-[300px] pr-3 overflow-y-auto scroll-style-4">
+        <Item
+          moduleName="Assessment"
+          message="Hasil Assessment Penilaian Perilaku dengan target evaluasi anda telah selesai, silahkan ulas hasilnya pada halaman berikut!"
+          date={dayjs().toISOString()}
+        />
+        <Item
+          moduleName="KPI"
+          message="Hasil Assessment Penilaian Perilaku dengan target evaluasi anda telah selesai, silahkan ulas hasilnya pada halaman berikut!"
+          date={dayjs().toISOString()}
+        />
+        <Item
+          moduleName="KPI"
+          message="Hasil Assessment Penilaian Perilaku dengan target evaluasi anda telah selesai, silahkan ulas hasilnya pada halaman berikut!"
+          date={dayjs().toISOString()}
+        />
+      </div>
     </div>
   );
 }
