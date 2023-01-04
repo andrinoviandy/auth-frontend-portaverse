@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Button, Tabs } from "@mantine/core";
+import { Button, Loader, Tabs } from "@mantine/core";
 import { useState } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
@@ -14,15 +14,26 @@ import Image2 from "../../Components/Assets/Pictures/carou2.png";
 import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
 import Navbar from "../../Components/Navbar/Navbar";
 import NotificationPanel from "../../Components/NotificationPanel";
+import {
+  BASE_PROXY,
+  SMARTPLAN_ENDPOINT,
+} from "../../Networks/endpoint";
+import { Networks } from "../../Networks/factory";
 
-function Card({ title, description, icon }) {
+function Card({ title, description, icon, loading }) {
   return (
     <div className="flex flex-col justify-between gap-5 border rounded-md bg-bg3 p-3">
       <div className="flex justify-between items-center gap-2">
         <p className="font-bold text-base">{title}</p>
         <span className="text-primary3">{icon}</span>
       </div>
-      <p className="text-primary3 font-bold text-xl">{description}</p>
+      {loading ? (
+        <Loader size="sm" />
+      ) : (
+        <p className="text-primary3 font-bold text-xl">
+          {description}
+        </p>
+      )}
     </div>
   );
 }
@@ -127,6 +138,14 @@ const Menus = {
 export default function LandingPageAuthorized() {
   const [activeTab, setActiveTab] = useState("KMS");
 
+  const smartplanService = Networks(BASE_PROXY.smartplan);
+  const { data: kpiScore, isLoading: isLoadingKPI } =
+    smartplanService.query(
+      SMARTPLAN_ENDPOINT.GET.kpiScore,
+      ["kpiScore"],
+      { select: (res) => res.score.toFixed(2) },
+    );
+
   return (
     <div className="flex flex-col gap-5 pb-10">
       <Navbar />
@@ -171,7 +190,8 @@ export default function LandingPageAuthorized() {
               <Card
                 title="Skor KPI"
                 icon={<Icon icon="carbon:summary-kpi" />}
-                description="21"
+                description={kpiScore || 0}
+                loading={isLoadingKPI}
               />
               <Card
                 title="Sisa Waktu"

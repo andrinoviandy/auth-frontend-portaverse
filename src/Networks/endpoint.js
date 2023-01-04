@@ -13,6 +13,7 @@ export const BASE_PROXY = {
   badges: "/api/badges/v1",
   forum: "/api/forum/v1",
   notifications: "/api/notifications/v1",
+  smartplan: "/api/smartplan/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -79,6 +80,12 @@ export const AUTH_ENDPOINT = {
   POST: {
     logout: "/auth/logout",
     refer: "/auth/referal",
+  },
+};
+
+export const SMARTPLAN_ENDPOINT = {
+  GET: {
+    kpiScore: "/landing/score",
   },
 };
 

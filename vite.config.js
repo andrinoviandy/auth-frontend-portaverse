@@ -37,6 +37,13 @@ export default ({ mode }) => {
           rewrite: (path) =>
             path.replace(/^\/api\/notifications\/v1/, ""),
         },
+        "/api/smartplan/v1": {
+          target: process.env.VITE_API_SMARTPLAN_SERVICE_URL,
+          changeOrigin: true,
+          secure: true,
+          rewrite: (path) =>
+            path.replace(/^\/api\/smartplan\/v1/, ""),
+        },
       },
     },
   });
