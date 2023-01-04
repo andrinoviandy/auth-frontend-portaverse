@@ -86,6 +86,7 @@ export const AUTH_ENDPOINT = {
 export const SMARTPLAN_ENDPOINT = {
   GET: {
     kpiScore: "/landing/score",
+    remainingTime: "/landing/remaining-time",
   },
 };
 

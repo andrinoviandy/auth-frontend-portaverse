@@ -1,5 +1,9 @@
 import { Icon } from "@iconify/react";
 import { Button, Loader, Tabs } from "@mantine/core";
+import dayjs from "dayjs";
+import "dayjs/locale/id";
+import relativeTime from "dayjs/plugin/relativeTime";
+import updateLocale from "dayjs/plugin/updateLocale";
 import { useState } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import "swiper/css";
@@ -8,7 +12,6 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Employee from "../../Components/Assets/Icon/Employee";
 import KMAP from "../../Components/Assets/Icon/KMAP";
-import KPI from "../../Components/Assets/Icon/KPI";
 import Image1 from "../../Components/Assets/Pictures/carou1.png";
 import Image2 from "../../Components/Assets/Pictures/carou2.png";
 import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
@@ -20,9 +23,12 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 
+dayjs.extend(relativeTime);
+dayjs.extend(updateLocale);
+
 function Card({ title, description, icon, loading }) {
   return (
-    <div className="flex flex-col justify-between gap-5 border rounded-md bg-bg3 p-3">
+    <div className="flex flex-col justify-between gap-5 rounded-md bg-bg4 p-3">
       <div className="flex justify-between items-center gap-2">
         <p className="font-bold text-base">{title}</p>
         <span className="text-primary3">{icon}</span>
@@ -112,11 +118,39 @@ const Menus = {
       ),
     },
   ],
-  LMS: [],
+  LMS: [
+    {
+      label: "My Course",
+      description:
+        "Lihat proses belajar-mu dalam mempelajari sesuatu",
+      route: "/dashboard",
+      icon: (
+        <Icon
+          icon="ph:chalkboard-teacher-fill"
+          color="#016DB2"
+          width={25}
+        />
+      ),
+    },
+    {
+      label: "Home",
+      description: "Temukan berbagai subjek yang kamu minati",
+      route: "/home",
+      icon: <Icon icon="el:home" color="#016DB2" width={25} />,
+    },
+  ],
   TMS: [
     {
+      label: "Talent Dashboard",
+      description:
+        "Lihat statistik kinerja-mu dan temukan pengembangan diri",
+      route: "/dashboard",
+      icon: <Icon icon="bxs:dashboard" color="#016DB2" width={28} />,
+    },
+    {
       label: "Assessment",
-      description: "",
+      description:
+        "Nilai para atasan, rekan kerja, serta bawahan untuk membantu mengembangkan kinerja perusahaan",
       route: "/assessment",
       icon: (
         <Icon
@@ -128,9 +162,22 @@ const Menus = {
     },
     {
       label: "Smart Plan KPI",
-      description: "",
+      description: "Tentukan target KPI divisi dan perusahaan",
       route: "/smart-plan",
-      icon: <KPI />,
+      icon: <p className="font-bold text-primary3">KPI</p>,
+    },
+    {
+      label: "Project Management",
+      description:
+        "Atur task dan pekerjaanmu untuk memenuhi target perusahaan",
+      route: "/project-management",
+      icon: (
+        <Icon
+          icon="material-symbols:view-kanban"
+          color="#016DB2"
+          width={30}
+        />
+      ),
     },
   ],
 };
@@ -144,6 +191,17 @@ export default function LandingPageAuthorized() {
       SMARTPLAN_ENDPOINT.GET.kpiScore,
       ["kpiScore"],
       { select: (res) => res.score.toFixed(2) },
+    );
+  const { data: remainingDay, isLoading: isLoadingTime } =
+    smartplanService.query(
+      SMARTPLAN_ENDPOINT.GET.remainingTime,
+      ["remainingTime"],
+      {
+        select: (res) =>
+          res?.time_end
+            ? dayjs().locale("id").to(res.time_end, true)
+            : "Unknown",
+      },
     );
 
   return (
@@ -174,30 +232,35 @@ export default function LandingPageAuthorized() {
             >
               Ikuti Daily Quiz!
             </Button>
-            <div className="flex gap-3 items-center mt-10">
-              <Card
-                title="Learning Hours"
-                icon={<Icon icon="ic:round-access-time-filled" />}
-                description="120 Hours"
-              />
-              <Card
-                title="Portaverse Points"
-                icon={
-                  <Icon icon="material-symbols:leaderboard-rounded" />
-                }
-                description="80 Points"
-              />
-              <Card
-                title="Skor KPI"
-                icon={<Icon icon="carbon:summary-kpi" />}
-                description={kpiScore || 0}
-                loading={isLoadingKPI}
-              />
-              <Card
-                title="Sisa Waktu"
-                icon={<Icon icon="mdi:timer-sand" />}
-                description="21 Hari"
-              />
+
+            <div className="p-5 rounded-md bg-bg2 mt-[2.5vh]">
+              <h3 className="font-bold mb-3">Statistik</h3>
+              <div className="flex gap-3 items-center">
+                <Card
+                  title="Learning Hours"
+                  icon={<Icon icon="ic:round-access-time-filled" />}
+                  description="120 Hours"
+                />
+                <Card
+                  title="Portaverse Points"
+                  icon={
+                    <Icon icon="material-symbols:leaderboard-rounded" />
+                  }
+                  description="80 Points"
+                />
+                <Card
+                  title="Skor KPI"
+                  icon={<Icon icon="carbon:summary-kpi" />}
+                  description={kpiScore || 0}
+                  loading={isLoadingKPI}
+                />
+                <Card
+                  title="Sisa Waktu"
+                  icon={<Icon icon="mdi:timer-sand" />}
+                  description={remainingDay}
+                  loading={isLoadingTime}
+                />
+              </div>
             </div>
           </div>
           <NotificationPanel classNames={{ root: "w-[45%]" }} />
