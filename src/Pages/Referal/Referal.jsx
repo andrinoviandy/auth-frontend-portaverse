@@ -19,6 +19,7 @@ import {
   EMPLOYEES_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
+import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import removeDuplicateObjects from "../../Utils/Helpers/removeDuplicateObjects";
 
 const SelectItem = forwardRef(
@@ -67,6 +68,11 @@ function Referal() {
   const employeeService = Networks(BASE_PROXY.employees);
   const authService = Networks(BASE_PROXY.auth);
   const size = 10;
+
+  const user = getUserCookie();
+  if (user?.employee?.is_official_account) {
+    window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+  }
 
   const {
     isLoading: isLoadingGetEmployee,

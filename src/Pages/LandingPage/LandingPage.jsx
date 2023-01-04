@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogo.png";
+import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import userAuthorization from "../../Utils/Helpers/userAuthorization";
 import Products from "../ChooseProducts/Products";
 
 function LandingPage() {
   const { isAuthorized } = userAuthorization();
+
+  const user = getUserCookie();
+
+  if (isAuthorized && user?.employee?.is_official_account) {
+    window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+    return null;
+  }
   if (isAuthorized) {
     // window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
     window.location.href = "/landing";
