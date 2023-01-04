@@ -44,16 +44,9 @@ function Navbar() {
 
         <div className="flex justify-center items-center gap-2">
           <div className="flex justify-center items-center gap-3.5">
-            <button
-              type="button"
-              onClick={() => {
-                window.location.href = `${
-                  import.meta.env.VITE_KMS_URL
-                }/messaging`;
-              }}
-            >
+            <a href={`${import.meta.env.VITE_KMS_URL}/messaging`}>
               <Messages />
-            </button>
+            </a>
 
             <HelpCenter />
 
