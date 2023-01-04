@@ -1,5 +1,5 @@
 import { Link, Navigate, useLocation } from "react-router-dom";
-import Check from "../Assets/Icon/Check";
+import Check from "../../Components/Assets/Icon/Check";
 
 export default function NewPassSuccess() {
   const { state } = useLocation();
@@ -24,7 +24,7 @@ export default function NewPassSuccess() {
       <div className="w-[22rem] mt-7">
         <Link
           to="/login"
-          className="flex justify-center font-secondary bg-primary1 font-medium hover:bg-primary2 text-white py-2 px-4 rounded my-1.5"
+          className="flex justify-center font-secondary bg-primary3 font-medium hover:bg-primary4 text-white py-2 px-4 rounded my-1.5"
         >
           Back to login
         </Link>

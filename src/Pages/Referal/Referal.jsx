@@ -11,7 +11,8 @@ import {
 import { useForm } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
 import { forwardRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ReferraIllust from "../../Components/Assets/Pictures/ReferraIllust.png";
 import {
   AUTH_ENDPOINT,
   BASE_PROXY,
@@ -19,7 +20,6 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import removeDuplicateObjects from "../../Utils/Helpers/removeDuplicateObjects";
-import ReferraIllust from "../Assets/Pictures/ReferraIllust.png";
 
 const SelectItem = forwardRef(
   ({ image, label, description, ...others }, ref) => (
@@ -63,6 +63,7 @@ function Referal() {
     },
   });
 
+  const navigate = useNavigate();
   const employeeService = Networks(BASE_PROXY.employees);
   const authService = Networks(BASE_PROXY.auth);
   const size = 10;
@@ -104,7 +105,8 @@ function Referal() {
     "post",
     {
       onSuccess: () => {
-        window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+        // window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+        navigate("/landing");
       },
     },
   );

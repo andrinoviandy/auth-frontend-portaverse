@@ -7,7 +7,7 @@ export default function ChooseProducts() {
         <p className="font-semibold text-4xl text-text1">
           Choose Our
         </p>
-        <p className="font-semibold text-5xl py-2 text-primary1">
+        <p className="font-semibold text-5xl py-2 text-primary3">
           PRODUCTS
         </p>
       </div>

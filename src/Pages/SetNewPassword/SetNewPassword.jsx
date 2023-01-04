@@ -1,11 +1,11 @@
 import { TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import KeyIcon from "../../Components/Assets/Icon/KeyIcon";
+import LoadingButton from "../../Components/Assets/Icon/LoadingButton";
+import RoundKeyboardBackspace from "../../Components/Assets/Icon/RoundKeyboardBackspace";
 import { setNewPassword } from "../../Utils/Helpers/firebaseAuth";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
-import KeyIcon from "../Assets/Icon/KeyIcon";
-import LoadingButton from "../Assets/Icon/LoadingButton";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 const form = {
   password: "",
@@ -123,8 +123,8 @@ export default function SetNewPassword() {
           <button
             disabled={isLoading}
             type="submit"
-            className={`font-secondary w-full bg-primary1 font-medium ${
-              !isLoading && "hover:bg-primary2"
+            className={`font-secondary w-full bg-primary3 font-medium ${
+              !isLoading && "hover:bg-primary4"
             } text-white py-2 px-4 rounded my-1.5`}
           >
             {isLoading ? (

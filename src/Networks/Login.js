@@ -23,9 +23,10 @@ export default function postLogin(
             window.location.href = "/referals";
             return;
           }
-          window.location.href = `${
-            import.meta.env.VITE_KMS_URL
-          }/home`;
+          // window.location.href = `${
+          //   import.meta.env.VITE_KMS_URL
+          // }/home`;
+          window.location.href = "/landing";
         })
         .catch((err) => {
           if (err.name === "FirebaseError") {

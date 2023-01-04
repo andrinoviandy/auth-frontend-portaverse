@@ -22,6 +22,21 @@ export default ({ mode }) => {
           rewrite: (path) =>
             path.replace(/^\/api\/employees\/v1/, ""),
         },
+        "/api/social/v1": {
+          target: process.env.VITE_API_SOCIAL_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/api\/social\/v1/, ""),
+        },
+        "/api/notifications/v1": {
+          target: process.env.VITE_API_NOTIFICATIONS_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+          rewrite: (path) =>
+            path.replace(/^\/api\/notifications\/v1/, ""),
+        },
       },
     },
   });
