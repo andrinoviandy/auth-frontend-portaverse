@@ -123,8 +123,8 @@ export default function SetNewPassword() {
           <button
             disabled={isLoading}
             type="submit"
-            className={`font-secondary w-full bg-primary1 font-medium ${
-              !isLoading && "hover:bg-primary2"
+            className={`font-secondary w-full bg-primary3 font-medium ${
+              !isLoading && "hover:bg-primary4"
             } text-white py-2 px-4 rounded my-1.5`}
           >
             {isLoading ? (

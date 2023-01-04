@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Menu } from "@mantine/core";
 import { Icon } from "@iconify/react";
-import openInNewTab from "../../../Utils/Helpers/openInNewTab";
+import { Menu } from "@mantine/core";
+import React, { useState } from "react";
+import openInNewTab from "../../Utils/Helpers/openInNewTab";
 
 function HelpCenter() {
   const [opened, setOpened] = useState(false);
@@ -68,7 +68,7 @@ function HelpCenter() {
               <div className=" bg-bg2 p-2 rounded">
                 <Icon
                   icon={e.icon}
-                  className="text-primary1"
+                  className="text-primary3"
                   width={32}
                 />
               </div>

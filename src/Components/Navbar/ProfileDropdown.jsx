@@ -1,49 +1,30 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import {
-  setPrivilegesAndRole,
-  setSocialMediaProfile,
-  setZoomSettings,
-} from "../../../Configs/Redux/slice";
-import { postLogout } from "../../../Networks";
-import {
+  AUTH_ENDPOINT,
   BASE_PROXY,
   SOCIAL_ENDPOINT,
-} from "../../../Networks/endpoint";
-import { Networks } from "../../../Networks/factory";
-import getUserCookie from "../../../Utils/Helpers/getUserCookie";
-import showErrorDialog from "../../../Utils/Helpers/showErrorDialog";
-import ArrowDown from "../../Assets/Icon/ArrowDown";
-import Exit from "../../Assets/Icon/Exit";
-import ProfilePicture from "../../ProfilePicture";
+} from "../../Networks/endpoint";
+import { Networks } from "../../Networks/factory";
+import getUserCookie from "../../Utils/Helpers/getUserCookie";
+import ArrowDown from "../Assets/Icon/ArrowDown";
+import Exit from "../Assets/Icon/Exit";
+import ProfilePicture from "../ProfilePicture";
 
 export default function ProfileDropdown() {
   const user = getUserCookie();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const { name } = user.employee;
 
-  const { mutate: logout, isLoading } = postLogout(
-    () => {
-      dispatch(
-        setZoomSettings({
-          isMirrored: false,
-          isMuted: true,
-          isStartedVideo: false,
-          cameraId: "",
-          inputId: "",
-          outputId: "",
-        }),
-      );
-      dispatch(setPrivilegesAndRole({}));
-      dispatch(setSocialMediaProfile({}));
-      window.location.href = `${import.meta.env.VITE_SSO_URL}/login`;
+  const authService = Networks(BASE_PROXY.auth);
+  const { mutate: logout, isLoading } = authService.mutation("post", {
+    onSuccess: () => {
+      navigate("/login");
     },
-    (err) => showErrorDialog(err),
-  );
+  });
 
   const socialService = Networks(BASE_PROXY.social);
   const { isLoading: isLoadingEmployeeProfile, data: profile } =
@@ -68,9 +49,6 @@ export default function ProfileDropdown() {
           total_following: res?.total_following,
           sme: res?.sme,
         }),
-        onSuccess: (res) => {
-          dispatch(setSocialMediaProfile(res));
-        },
       },
     );
 
@@ -102,7 +80,9 @@ export default function ProfileDropdown() {
             {({ active }) => (
               <button
                 type="button"
-                onClick={() => logout()}
+                onClick={() =>
+                  logout({ endpoint: AUTH_ENDPOINT.POST.logout })
+                }
                 className={`
                   ${
                     active

@@ -68,7 +68,7 @@ function Login() {
         {/* <p className="font-semibold text-4xl text-text1">
           Welcome to
         </p>
-        <p className="font-semibold text-5xl py-2 text-primary1">
+        <p className="font-semibold text-5xl py-2 text-primary3">
           portaverse
         </p> */}
       </div>
@@ -130,7 +130,7 @@ function Login() {
 
               <Link
                 to="/forgot-password"
-                className="text-primary1 hover:underline font-secondary text-[0.775rem]"
+                className="text-primary3 hover:underline font-secondary text-[0.775rem]"
               >
                 Forgot password?
               </Link>
@@ -139,8 +139,8 @@ function Login() {
             <button
               disabled={isLoading}
               type="submit"
-              className={`font-secondary w-full bg-primary1 font-medium ${
-                !isLoading && "hover:bg-primary2"
+              className={`font-secondary w-full bg-primary3 font-medium ${
+                !isLoading && "hover:bg-primary4"
               } text-white py-2 px-4 rounded my-1.5`}
             >
               {isLoading ? (
@@ -156,7 +156,7 @@ function Login() {
           {false && (
             <button
               type="button"
-              className="font-secondary w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
+              className="font-secondary w-full font-semibold text-primary3 hover:text-primary4 hover:bg-bg1 py-2 px-4 rounded my-1.5"
             >
               <a href={`${import.meta.env.VITE_KMS_URL}/home`}>
                 Enter as guest

@@ -63,7 +63,7 @@ function CheckEmail() {
         <button
           type="submit"
           className={
-            "font-secondary w-full bg-primary1 font-medium hover:bg-primary2 text-white py-2 px-4 rounded my-1.5" +
+            "font-secondary w-full bg-primary3 font-medium hover:bg-primary4 text-white py-2 px-4 rounded my-1.5" +
             " hidden"
           }
           onClick={handleOpenMail}
@@ -75,7 +75,7 @@ function CheckEmail() {
           {timer > 0 && fetchError.length === 0 ? (
             <>
               <h5 className="text-gray font-secondary">Resend in</h5>
-              <span className="text-primary1 font-semibold">
+              <span className="text-primary3 font-semibold">
                 {timer} second
               </span>
             </>
@@ -88,7 +88,7 @@ function CheckEmail() {
                 if (isLoading) {
                   return (
                     <span className="ml-2.5">
-                      <LoadingButton className="text-primary1" />
+                      <LoadingButton className="text-primary3" />
                     </span>
                   );
                 }
@@ -100,7 +100,7 @@ function CheckEmail() {
                       <button
                         type="button"
                         onClick={handleResend}
-                        className="text-primary1 font-medium hover:underline"
+                        className="text-primary3 font-medium hover:underline"
                       >
                         Retry
                       </button>
@@ -112,7 +112,7 @@ function CheckEmail() {
                   <button
                     type="button"
                     onClick={handleResend}
-                    className="text-primary1 font-medium hover:underline"
+                    className="text-primary3 font-medium hover:underline"
                   >
                     Click here
                   </button>

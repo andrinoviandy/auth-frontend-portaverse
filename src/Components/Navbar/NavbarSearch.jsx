@@ -2,13 +2,8 @@ import { Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  BASE_PROXY,
-  SOCIAL_ENDPOINT,
-} from "../../../Networks/endpoint";
-import { Networks } from "../../../Networks/factory";
-import trimString from "../../../Utils/Helpers/trimString";
-import SMEIcon from "../../Assets/Icon/SME";
+import trimString from "../../Utils/Helpers/trimString";
+import SMEIcon from "../Assets/Icon/SME";
 
 function EmployeeItems({
   value,
@@ -64,36 +59,36 @@ export default function NavbarSearch() {
 
   const [searchValue, onSearchChange] = useState("");
 
-  const socialService = Networks(BASE_PROXY.social);
-  const { data: employees, isLoading } = socialService.query(
-    SOCIAL_ENDPOINT.GET.socialEmployees,
-    ["socialEmployees", 1, searchValue],
-    {
-      onSuccess: (res) => {
-        setSocialEmployeeItems(
-          res.socialEmployees.map((e) => ({
-            ...e,
-            value: e.social_employee_profile_id,
-            label: e.firstName,
-            groupName: e.group_name,
-            positionName: e.position_name,
-            profilePicture: e.profile_picture,
-          })),
-        );
-      },
-    },
-    {
-      params: {
-        page: 1,
-        search: searchValue,
-      },
-    },
-  );
+  // const socialService = Networks(BASE_PROXY.social);
+  // const { data: employees, isLoading } = socialService.query(
+  //   SOCIAL_ENDPOINT.GET.socialEmployees,
+  //   ["socialEmployees", 1, searchValue],
+  //   {
+  //     onSuccess: (res) => {
+  //       setSocialEmployeeItems(
+  //         res.socialEmployees.map((e) => ({
+  //           ...e,
+  //           value: e.social_employee_profile_id,
+  //           label: e.firstName,
+  //           groupName: e.group_name,
+  //           positionName: e.position_name,
+  //           profilePicture: e.profile_picture,
+  //         })),
+  //       );
+  //     },
+  //   },
+  //   {
+  //     params: {
+  //       page: 1,
+  //       search: searchValue,
+  //     },
+  //   },
+  // );
 
-  const handleSubmitSearch = (e) => {
-    e.preventDefault();
-    alert("submit");
-  };
+  // const handleSubmitSearch = (e) => {
+  //   e.preventDefault();
+  //   alert("submit");
+  // };
   return (
     // <Menu opened={opened}>
     //   <Menu.Target>
@@ -125,8 +120,8 @@ export default function NavbarSearch() {
       searchable
       onSearchChange={onSearchChange}
       searchValue={searchValue}
-      nothingFound="No options"
-      data={socialEmployeeItems}
+      // nothingFound="No options"
+      data={[]}
     />
   );
 }

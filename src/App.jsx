@@ -8,6 +8,7 @@ import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import CheckEmail from "./Pages/CheckEmail";
 import ForgotPassword from "./Pages/ForgotPassword";
 import LandingPage from "./Pages/LandingPage";
+import LandingPageAuthorized from "./Pages/LandingPageAuthorized/LandingPageAuthorized";
 import Login from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
 import Referal from "./Pages/Referal/Referal";
@@ -44,13 +45,15 @@ function App() {
             <Route path="/referals" element={<Referal />} />
           </Route>
         </Route>
+        <Route path="/landing" element={<LandingPageAuthorized />} />
 
         <Route
           element={
             <PrivateRoutes
               isAuthorized={isAuthorized}
               // redirect="/products"
-              redirect={`${import.meta.env.VITE_KMS_URL}/home`}
+              // redirect={`${import.meta.env.VITE_KMS_URL}/home`}
+              redirect="/landing"
             />
           }
         >
