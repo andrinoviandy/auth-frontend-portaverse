@@ -17,8 +17,6 @@ export default function ProfileDropdown() {
   const user = getUserCookie();
   const navigate = useNavigate();
 
-  const { name } = user.employee;
-
   const authService = Networks(BASE_PROXY.auth);
   const { mutate: logout, isLoading } = authService.mutation("post", {
     onSuccess: () => {
@@ -30,7 +28,7 @@ export default function ProfileDropdown() {
   const { isLoading: isLoadingEmployeeProfile, data: profile } =
     socialService.query(
       SOCIAL_ENDPOINT.GET.profile(
-        user.employee.social_employee_profile
+        user?.employee.social_employee_profile
           .social_employee_profile_id,
       ),
       ["employeeSocialProfile"],
@@ -61,7 +59,7 @@ export default function ProfileDropdown() {
           alt="profile"
         />
         <h4 className="font-normal hidden md:block max-w-[7rem] truncate">
-          {name}
+          {user?.employee?.name}
         </h4>
         <ArrowDown width={13} />
       </Menu.Button>

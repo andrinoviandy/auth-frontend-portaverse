@@ -126,7 +126,6 @@ const Menus = {
 
 export default function LandingPageAuthorized() {
   const [activeTab, setActiveTab] = useState("KMS");
-  const [activeIndex, setActiveIndex] = useState(1);
 
   return (
     <div className="flex flex-col gap-5 pb-10">
@@ -256,9 +255,6 @@ export default function LandingPageAuthorized() {
             }}
             loop
             pagination={{ clickable: true }}
-            onActiveIndexChange={(swiper) => {
-              setActiveIndex(swiper.activeIndex + 1);
-            }}
             modules={[Pagination, Navigation, Autoplay]}
             className="rounded-md"
           >

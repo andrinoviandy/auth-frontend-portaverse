@@ -45,8 +45,20 @@ function App() {
             <Route path="/referals" element={<Referal />} />
           </Route>
         </Route>
-        <Route path="/landing" element={<LandingPageAuthorized />} />
 
+        <Route
+          element={
+            <PrivateRoutes
+              isAuthorized={!isAuthorized}
+              redirect="/login"
+            />
+          }
+        >
+          <Route
+            path="/landing"
+            element={<LandingPageAuthorized />}
+          />
+        </Route>
         <Route
           element={
             <PrivateRoutes
