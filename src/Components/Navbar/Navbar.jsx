@@ -13,13 +13,13 @@ function Navbar() {
   return (
     <nav className="flex flex-wrap items-center justify-between bg-white h-14 border-gray-200 px-4 py-2.5 drop-shadow-sm sticky top-0 z-20">
       <div className="flex self-center items-center gap-5">
-        <Link to="/home">
-          <img
-            src={PortaLogo}
-            alt="company_logo"
-            className="h-[40px] p-2"
-          />
-        </Link>
+        {/* <Link to="/home"> */}
+        <img
+          src={PortaLogo}
+          alt="company_logo"
+          className="h-[40px] p-2"
+        />
+        {/* </Link> */}
 
         {/* <Menu>
           <Menu.Target>
