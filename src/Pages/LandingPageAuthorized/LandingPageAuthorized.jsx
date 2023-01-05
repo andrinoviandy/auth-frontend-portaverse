@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Button, Loader, Tabs } from "@mantine/core";
+import { Loader, Tabs } from "@mantine/core";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -14,9 +14,8 @@ import Employee from "../../Components/Assets/Icon/Employee";
 import KMAP from "../../Components/Assets/Icon/KMAP";
 import Image1 from "../../Components/Assets/Pictures/carou1.png";
 import Image2 from "../../Components/Assets/Pictures/carou2.png";
-import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
+// import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
 import Navbar from "../../Components/Navbar/Navbar";
-import NotificationPanel from "../../Components/NotificationPanel";
 import {
   BASE_PROXY,
   SMARTPLAN_ENDPOINT,
@@ -166,19 +165,19 @@ const Menus = {
       route: "/smart-plan",
       icon: <p className="font-bold text-primary3">KPI</p>,
     },
-    {
-      label: "Project Management",
-      description:
-        "Atur task dan pekerjaanmu untuk memenuhi target perusahaan",
-      route: "/project-management",
-      icon: (
-        <Icon
-          icon="material-symbols:view-kanban"
-          color="#016DB2"
-          width={30}
-        />
-      ),
-    },
+    // {
+    //   label: "Project Management",
+    //   description:
+    //     "Atur task dan pekerjaanmu untuk memenuhi target perusahaan",
+    //   route: "/project-management",
+    //   icon: (
+    //     <Icon
+    //       icon="material-symbols:view-kanban"
+    //       color="#016DB2"
+    //       width={30}
+    //     />
+    //   ),
+    // },
   ],
 };
 
@@ -217,7 +216,7 @@ export default function LandingPageAuthorized() {
                 <span className="text-primary3">Portaverse</span>
               </p>
             </div>
-            <Button
+            {/* <Button
               variant="outline"
               radius="xl"
               size="lg"
@@ -231,12 +230,12 @@ export default function LandingPageAuthorized() {
               }
             >
               Ikuti Daily Quiz!
-            </Button>
+            </Button> */}
 
             <div className="p-5 rounded-md bg-bg2 mt-[2.5vh]">
               <h3 className="font-bold mb-3">Statistik</h3>
               <div className="flex gap-3 items-center">
-                <Card
+                {/* <Card
                   title="Learning Hours"
                   icon={<Icon icon="ic:round-access-time-filled" />}
                   description="120 Hours"
@@ -247,7 +246,7 @@ export default function LandingPageAuthorized() {
                     <Icon icon="material-symbols:leaderboard-rounded" />
                   }
                   description="80 Points"
-                />
+                /> */}
                 <Card
                   title="Skor KPI"
                   icon={<Icon icon="carbon:summary-kpi" />}
@@ -263,7 +262,7 @@ export default function LandingPageAuthorized() {
               </div>
             </div>
           </div>
-          <NotificationPanel classNames={{ root: "w-[45%]" }} />
+          {/* <NotificationPanel classNames={{ root: "w-[45%]" }} /> */}
         </div>
         <div className="flex justify-between gap-5" />
       </section>
