@@ -16,7 +16,6 @@ import Image1 from "../../Components/Assets/Pictures/carou1.png";
 import Image2 from "../../Components/Assets/Pictures/carou2.png";
 // import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
 import Navbar from "../../Components/Navbar/Navbar";
-import NotificationPanel from "../../Components/NotificationPanel/NotificationPanel";
 import {
   BASE_PROXY,
   SMARTPLAN_ENDPOINT,
@@ -263,7 +262,7 @@ export default function LandingPageAuthorized() {
               </div>
             </div>
           </div>
-          <NotificationPanel classNames={{ root: "w-[45%]" }} />
+          {/* <NotificationPanel classNames={{ root: "w-[45%]" }} /> */}
         </div>
         <div className="flex justify-between gap-5" />
       </section>
