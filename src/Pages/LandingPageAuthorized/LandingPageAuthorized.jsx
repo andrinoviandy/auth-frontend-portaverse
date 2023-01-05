@@ -140,13 +140,13 @@ const Menus = {
     },
   ],
   TMS: [
-    {
-      label: "Talent Dashboard",
-      description:
-        "Lihat statistik kinerja-mu dan temukan pengembangan diri",
-      route: "/dashboard",
-      icon: <Icon icon="bxs:dashboard" color="#016DB2" width={28} />,
-    },
+    // {
+    //   label: "Talent Dashboard",
+    //   description:
+    //     "Lihat statistik kinerja-mu dan temukan pengembangan diri",
+    //   route: "/dashboard",
+    //   icon: <Icon icon="bxs:dashboard" color="#016DB2" width={28} />,
+    // },
     {
       label: "Assessment",
       description:
