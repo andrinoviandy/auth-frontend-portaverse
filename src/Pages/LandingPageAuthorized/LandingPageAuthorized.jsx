@@ -211,11 +211,11 @@ export default function LandingPageAuthorized() {
         <div className="flex justify-between items-start gap-10">
           <div className="flex flex-col gap-5 text-2xl font-bold justify-between">
             <div className="text-3xl">
-              <p>Menghubungkan BUMN 1 Pelabuhan</p>
               <p>
-                Bersama&nbsp;
                 <span className="text-primary3">Portaverse</span>
+                &nbsp;as the universe
               </p>
+              <p>of growth and agility</p>
             </div>
             {/* <Button
               variant="outline"
