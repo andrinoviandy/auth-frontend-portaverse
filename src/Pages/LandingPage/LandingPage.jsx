@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
+import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogo.png";
+import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import userAuthorization from "../../Utils/Helpers/userAuthorization";
-import PortaverseLogo from "../Assets/Pictures/PortaverseLogo.png";
 import Products from "../ChooseProducts/Products";
 
 function LandingPage() {
   const { isAuthorized } = userAuthorization();
-  if (isAuthorized) {
+
+  const user = getUserCookie();
+
+  if (isAuthorized && user?.employee?.is_official_account) {
     window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+    return null;
+  }
+  if (isAuthorized) {
+    // window.location.href = `${import.meta.env.VITE_KMS_URL}/home`;
+    window.location.href = "/landing";
     return null;
   }
 
@@ -18,7 +27,7 @@ function LandingPage() {
         className="h-[100px]"
       />
       {/* <p className="font-semibold text-4xl text-text1">Welcome to</p>
-      <p className="font-semibold text-5xl py-2 text-primary1">
+      <p className="font-semibold text-5xl py-2 text-primary3">
         portaverse
       </p> */}
       <div className="flex-row justify-center m-auto w-[450px] pb-[1.5rem]">
@@ -35,7 +44,7 @@ function LandingPage() {
         <div className="my-10">
           <Link
             to="/login"
-            className="px-36 rounded-md py-2 text-white font-secondary bg-primary1 hover:bg-primary2"
+            className="px-36 rounded-md py-2 text-white font-secondary bg-primary3 hover:bg-primary4"
             type="button"
           >
             Login

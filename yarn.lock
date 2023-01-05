@@ -296,6 +296,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.20.6":
+  version: 7.20.7
+  resolution: "@babel/runtime@npm:7.20.7"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 4629ce5c46f06cca9cfb9b7fc00d48003335a809888e2b91ec2069a2dcfbfef738480cff32ba81e0b7c290f8918e5c22ddcf2b710001464ee84ba62c7e32a3a3
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/template@npm:7.18.6"
@@ -1096,6 +1105,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@headlessui/react@npm:^1.6.4":
+  version: 1.7.7
+  resolution: "@headlessui/react@npm:1.7.7"
+  dependencies:
+    client-only: ^0.0.1
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 049d7ee46056fe96067f7b2f4f962672dfc824e68044ae38561a457278c8e38c0fd17592ab648ba5648e7e82bef9890eddbf329c9a00d11acf85700c7072a0bf
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.9.2":
   version: 0.9.5
   resolution: "@humanwhocodes/config-array@npm:0.9.5"
@@ -1826,6 +1847,7 @@ __metadata:
   dependencies:
     "@ebay/nice-modal-react": ^1.2.8
     "@emotion/react": ^11.10.5
+    "@headlessui/react": ^1.6.4
     "@iconify/react": ^3.2.2
     "@mantine/core": ^5.8.3
     "@mantine/form": ^5.8.3
@@ -1835,6 +1857,7 @@ __metadata:
     "@vitejs/plugin-react": ^1.3.0
     autoprefixer: ^10.4.7
     axios: ^0.27.2
+    dayjs: ^1.11.7
     eslint: ^8.13.0
     eslint-config-airbnb: ^19.0.4
     eslint-config-prettier: ^8.5.0
@@ -1852,8 +1875,10 @@ __metadata:
     react-dom: ^18.0.0
     react-query: ^3.39.2
     react-router-dom: ^6.3.0
+    swiper: ^8.3.2
     tailwindcss: ^3.1.4
     vite: ^2.9.13
+    worker-timers: ^7.0.60
   languageName: unknown
   linkType: soft
 
@@ -2100,6 +2125,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"client-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "client-only@npm:0.0.1"
+  checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
+  languageName: node
+  linkType: hard
+
 "cliui@npm:^7.0.2":
   version: 7.0.4
   resolution: "cliui@npm:7.0.4"
@@ -2280,6 +2312,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.7":
+  version: 1.11.7
+  resolution: "dayjs@npm:1.11.7"
+  checksum: 5003a7c1dd9ed51385beb658231c3548700b82d3548c0cfbe549d85f2d08e90e972510282b7506941452c58d32136d6362f009c77ca55381a09c704e9f177ebb
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
@@ -2404,6 +2443,15 @@ __metadata:
   dependencies:
     esutils: ^2.0.2
   checksum: fd7673ca77fe26cd5cba38d816bc72d641f500f1f9b25b83e8ce28827fe2da7ad583a8da26ab6af85f834138cf8dae9f69b0cd6ab925f52ddab1754db44d99ce
+  languageName: node
+  linkType: hard
+
+"dom7@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "dom7@npm:4.0.4"
+  dependencies:
+    ssr-window: ^4.0.0
+  checksum: b38604f74e915b4d05b6634f9ff239a708c468180f498a28ff67f2a61233697d9bd7192703b788a24541c3591e7f1a6e83a2cbf70bc871a85e033f82e19abc31
   languageName: node
   linkType: hard
 
@@ -3071,6 +3119,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-unique-numbers@npm:^6.0.25":
+  version: 6.0.25
+  resolution: "fast-unique-numbers@npm:6.0.25"
+  dependencies:
+    "@babel/runtime": ^7.20.6
+    tslib: ^2.4.1
+  checksum: 620d8e66ec6c6a070fb8715fa86eb231e1adbcd6f4504141a1230349120e1e72595387206b6c9e1961e6cf59c636955ac11a741bfbc4af757d0f98264b7b92a6
+  languageName: node
+  linkType: hard
+
 "fastq@npm:^1.6.0":
   version: 1.13.0
   resolution: "fastq@npm:1.13.0"
@@ -3231,7 +3289,7 @@ __metadata:
 
 "fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -4896,7 +4954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.10":
+"regenerator-runtime@npm:^0.13.10, regenerator-runtime@npm:^0.13.11":
   version: 0.13.11
   resolution: "regenerator-runtime@npm:0.13.11"
   checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
@@ -4977,7 +5035,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.1.7#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -4990,7 +5048,7 @@ __metadata:
 
 "resolve@patch:resolve@^2.0.0-next.3#~builtin<compat/resolve>":
   version: 2.0.0-next.4
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.4#~builtin<compat/resolve>::version=2.0.0-next.4&hash=07638b"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -5200,6 +5258,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ssr-window@npm:^4.0.0, ssr-window@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "ssr-window@npm:4.0.2"
+  checksum: df182600927f4f3225224cf8c02338ea637c9750519505bbfb9a9236741a2a7ec088386fb948bca7b447b8303d9109e7dc7672e3de041c79ac2a0e03665af7d2
+  languageName: node
+  linkType: hard
+
 "ssri@npm:^9.0.0":
   version: 9.0.1
   resolution: "ssri@npm:9.0.1"
@@ -5331,6 +5396,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"swiper@npm:^8.3.2":
+  version: 8.4.5
+  resolution: "swiper@npm:8.4.5"
+  dependencies:
+    dom7: ^4.0.4
+    ssr-window: ^4.0.2
+  checksum: 7b790b897c4aeb616cae02517a1137dc3f8d552bcc3ecb2942ddf8e4ae75f2efeb28816d3d4e648248c3a24eb3611f2700f555372c15f7163cc2434da3ef8317
+  languageName: node
+  linkType: hard
+
 "tailwindcss@npm:^3.1.4":
   version: 3.1.6
   resolution: "tailwindcss@npm:3.1.6"
@@ -5431,7 +5506,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.4.1":
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
   checksum: 19480d6e0313292bd6505d4efe096a6b31c70e21cf08b5febf4da62e95c265c8f571f7b36fcc3d1a17e068032f59c269fab3459d6cd3ed6949eafecf64315fca
@@ -5681,6 +5756,40 @@ __metadata:
   version: 1.2.3
   resolution: "word-wrap@npm:1.2.3"
   checksum: 30b48f91fcf12106ed3186ae4fa86a6a1842416df425be7b60485de14bec665a54a68e4b5156647dec3a70f25e84d270ca8bc8cd23182ed095f5c7206a938c1f
+  languageName: node
+  linkType: hard
+
+"worker-timers-broker@npm:^6.0.80":
+  version: 6.0.80
+  resolution: "worker-timers-broker@npm:6.0.80"
+  dependencies:
+    "@babel/runtime": ^7.20.6
+    fast-unique-numbers: ^6.0.25
+    tslib: ^2.4.1
+    worker-timers-worker: ^7.0.46
+  checksum: 421c3edbad3cf3d142501ce2d642db6fa3c5dca8204ed6164bb2a35a79618b88fd05b67176788bb0cb2ef72056df32839ad0f7284665b50b12cc021b747704d3
+  languageName: node
+  linkType: hard
+
+"worker-timers-worker@npm:^7.0.46":
+  version: 7.0.46
+  resolution: "worker-timers-worker@npm:7.0.46"
+  dependencies:
+    "@babel/runtime": ^7.20.6
+    tslib: ^2.4.1
+  checksum: 95f47cad09cddc7b0a478ece906477517b39b8dbf1c10e8c4eb06e6d80b0d32274173265521cf87bc1f027bd9821a86f51b3c6416484d3393215c58b505d4bff
+  languageName: node
+  linkType: hard
+
+"worker-timers@npm:^7.0.60":
+  version: 7.0.60
+  resolution: "worker-timers@npm:7.0.60"
+  dependencies:
+    "@babel/runtime": ^7.20.6
+    tslib: ^2.4.1
+    worker-timers-broker: ^6.0.80
+    worker-timers-worker: ^7.0.46
+  checksum: a75f59c8bc26dfaf6060959725c8259bc66c8f7fe5882c183c83544166a05ff84681547f43b5d59ebb4047a39b0c62c2d1a9d992d0fc814b2ffd519e8a69cfeb
   languageName: node
   linkType: hard
 

@@ -2,12 +2,12 @@ import { Icon } from "@iconify/react";
 import { Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
+import EyeOffOutline from "../../Components/Assets/Icon/EyeOffOutline";
+import EyeOutline from "../../Components/Assets/Icon/EyeOutline";
+import LoadingButton from "../../Components/Assets/Icon/LoadingButton";
+import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogo.png";
 import postLogin from "../../Networks/Login";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
-import EyeOffOutline from "../Assets/Icon/EyeOffOutline";
-import EyeOutline from "../Assets/Icon/EyeOutline";
-import LoadingButton from "../Assets/Icon/LoadingButton";
-import PortaverseLogo from "../Assets/Pictures/PortaverseLogo.png";
 
 const form = {
   email: "",
@@ -68,7 +68,7 @@ function Login() {
         {/* <p className="font-semibold text-4xl text-text1">
           Welcome to
         </p>
-        <p className="font-semibold text-5xl py-2 text-primary1">
+        <p className="font-semibold text-5xl py-2 text-primary3">
           portaverse
         </p> */}
       </div>
@@ -130,7 +130,7 @@ function Login() {
 
               <Link
                 to="/forgot-password"
-                className="text-primary1 hover:underline font-secondary text-[0.775rem]"
+                className="text-primary3 hover:underline font-secondary text-[0.775rem]"
               >
                 Forgot password?
               </Link>
@@ -139,8 +139,8 @@ function Login() {
             <button
               disabled={isLoading}
               type="submit"
-              className={`font-secondary w-full bg-primary1 font-medium ${
-                !isLoading && "hover:bg-primary2"
+              className={`font-secondary w-full bg-primary3 font-medium ${
+                !isLoading && "hover:bg-primary4"
               } text-white py-2 px-4 rounded my-1.5`}
             >
               {isLoading ? (
@@ -153,17 +153,16 @@ function Login() {
               )}
             </button>
           </form>
-          {
-            false &&
-          <button
-            type="button"
-            className="font-secondary w-full font-semibold text-primary1 hover:text-primary2 hover:bg-bg1 py-2 px-4 rounded my-1.5"
-          >
-            <a href={`${import.meta.env.VITE_KMS_URL}/home`}>
-              Enter as guest
-            </a>
-          </button>
-          }
+          {false && (
+            <button
+              type="button"
+              className="font-secondary w-full font-semibold text-primary3 hover:text-primary4 hover:bg-bg1 py-2 px-4 rounded my-1.5"
+            >
+              <a href={`${import.meta.env.VITE_KMS_URL}/home`}>
+                Enter as guest
+              </a>
+            </button>
+          )}
         </div>
         <a
           className="text-darkGray mt-7 flex items-center"

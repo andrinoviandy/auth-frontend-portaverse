@@ -1,11 +1,11 @@
 import { TextInput } from "@mantine/core";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import KeyIcon from "../../Components/Assets/Icon/KeyIcon";
+import LoadingButton from "../../Components/Assets/Icon/LoadingButton";
+import RoundKeyboardBackspace from "../../Components/Assets/Icon/RoundKeyboardBackspace";
 import sendForgotPassword from "../../Networks/ForgotPassword";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
-import KeyIcon from "../Assets/Icon/KeyIcon";
-import LoadingButton from "../Assets/Icon/LoadingButton";
-import RoundKeyboardBackspace from "../Assets/Icon/RoundKeyboardBackspace";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -68,8 +68,8 @@ function ForgotPassword() {
           <button
             disabled={isLoading}
             type="submit"
-            className={`font-secondary w-full bg-primary1 font-medium ${
-              !isLoading && "hover:bg-primary2"
+            className={`font-secondary w-full bg-primary3 font-medium ${
+              !isLoading && "hover:bg-primary4"
             } text-white py-2 px-4 rounded my-1.5`}
           >
             {isLoading ? (

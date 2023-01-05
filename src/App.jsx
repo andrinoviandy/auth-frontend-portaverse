@@ -1,17 +1,18 @@
 import { ModalDef } from "@ebay/nice-modal-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import CheckEmail from "./Components/CheckEmail";
 import Error404 from "./Components/Errors/404";
 import ErrorHandling from "./Components/Errors/ErrorHandling";
 import SuccessHandling from "./Components/Errors/SuccessHandling";
-import ForgotPassword from "./Components/ForgotPassword";
-import LandingPage from "./Components/LandingPage";
 import MainLayout from "./Components/Layouts/MainLayout";
-import Login from "./Components/Login";
-import NewPassSuccess from "./Components/NewPassSuccess";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
-import Referal from "./Components/Referal/Referal";
-import SetNewPassword from "./Components/SetNewPassword";
+import CheckEmail from "./Pages/CheckEmail";
+import ForgotPassword from "./Pages/ForgotPassword";
+import LandingPage from "./Pages/LandingPage";
+import LandingPageAuthorized from "./Pages/LandingPageAuthorized/LandingPageAuthorized";
+import Login from "./Pages/Login";
+import NewPassSuccess from "./Pages/NewPassSuccess";
+import Referal from "./Pages/Referal/Referal";
+import SetNewPassword from "./Pages/SetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 
 function App() {
@@ -48,9 +49,23 @@ function App() {
         <Route
           element={
             <PrivateRoutes
+              isAuthorized={!isAuthorized}
+              redirect="/login"
+            />
+          }
+        >
+          <Route
+            path="/landing"
+            element={<LandingPageAuthorized />}
+          />
+        </Route>
+        <Route
+          element={
+            <PrivateRoutes
               isAuthorized={isAuthorized}
               // redirect="/products"
-              redirect={`${import.meta.env.VITE_KMS_URL}/home`}
+              // redirect={`${import.meta.env.VITE_KMS_URL}/home`}
+              redirect="/landing"
             />
           }
         >

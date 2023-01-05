@@ -1,0 +1,65 @@
+import { Link, useNavigate } from "react-router-dom";
+import Bell from "../Assets/Icon/Bell";
+import Messages from "../Assets/Icon/Messages";
+import PortaLogo from "../Assets/Pictures/PortaLogo.png";
+import Notification from "../Notification";
+import HelpCenter from "./HelpCenter";
+import NavbarSearch from "./NavbarSearch";
+import ProfileDropdown from "./ProfileDropdown";
+
+function Navbar() {
+  const navigate = useNavigate();
+
+  return (
+    <nav className="flex flex-wrap items-center justify-between bg-white h-14 border-gray-200 px-4 py-2.5 drop-shadow-sm sticky top-0 z-20">
+      <div className="flex self-center items-center gap-5">
+        <Link to="/home">
+          <img
+            src={PortaLogo}
+            alt="company_logo"
+            className="h-[40px] p-2"
+          />
+        </Link>
+
+        {/* <Menu>
+          <Menu.Target>
+            <div className="flex items-center gap-1 py-1 px-3 rounded-md bg-primary3/10 text-primary3 font-semibold cursor-pointer">
+              <span>KMS</span>
+              <Icon icon="bxs:down-arrow" width={12} />
+            </div>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item>
+              <a href={import.meta.env.VITE_LMS_URL}>LMS</a>
+            </Menu.Item>
+            <Menu.Item>
+              <a href={import.meta.env.VITE_TMS_URL}>TMS</a>
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu> */}
+      </div>
+
+      <div className="flex items-center w-400 gap-6">
+        <NavbarSearch />
+
+        <div className="flex justify-center items-center gap-2">
+          <div className="flex justify-center items-center gap-3.5">
+            <a href={`${import.meta.env.VITE_KMS_URL}/messaging`}>
+              <Messages />
+            </a>
+
+            <HelpCenter />
+
+            <Notification icon={<Bell />} />
+
+            <hr className="border-r h-6 mx-1" />
+          </div>
+
+          <ProfileDropdown />
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+export default Navbar;
