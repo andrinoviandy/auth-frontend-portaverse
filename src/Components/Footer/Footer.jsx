@@ -10,7 +10,7 @@ export default function Footer() {
       <footer className="relative flex justify-center">
         <Wave2 />
         <h5 className="absolute bottom-0 pb-7 text-darkGray">
-          Powered by KMPlus Consulting 2022
+          Powered by KMPlus Consulting 2023
         </h5>
       </footer>
     );
@@ -21,7 +21,7 @@ export default function Footer() {
       <footer className="relative flex justify-center">
         <Wave1 />
         <h5 className="absolute bottom-0 pb-7 text-darkGray">
-          Powered by KMPlus Consulting 2022
+          Powered by KMPlus Consulting 2023
         </h5>
       </footer>
     );
@@ -30,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="flex justify-center">
       <h5 className="pb-7 text-darkGray">
-        Powered by KMPlus Consulting 2022
+        Powered by KMPlus Consulting 2023
       </h5>
     </footer>
   );
