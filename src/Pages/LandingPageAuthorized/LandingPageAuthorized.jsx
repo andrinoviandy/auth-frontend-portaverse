@@ -286,9 +286,9 @@ export default function LandingPageAuthorized() {
               <Tabs.Tab sx={TabStyle} value="KMS">
                 KMS
               </Tabs.Tab>
-              <Tabs.Tab sx={TabStyle} value="LMS">
+              {/* <Tabs.Tab sx={TabStyle} value="LMS">
                 LMS
-              </Tabs.Tab>
+              </Tabs.Tab> */}
               <Tabs.Tab sx={TabStyle} value="TMS">
                 TMS
               </Tabs.Tab>
