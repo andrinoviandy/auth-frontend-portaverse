@@ -10,6 +10,7 @@ import {
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
+import notifUrlLookup from "../../Utils/Helpers/notifUrlLookup";
 import useInfiniteFetchObserver from "../../Utils/Hooks/useInfiniteFetchObserver";
 
 export default function Notification({ icon }) {
@@ -38,23 +39,7 @@ export default function Notification({ icon }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const urlLookup = (type, id, data) => {
-    const lookupObj = {
-      COMMUNITY_ADD_COREMEMBER: `/communities/${id}`,
-      COMMUNITY_AGENDA_ADD_COMITEE: `/communities/${id}/${id}`,
-      COMMUNITY_AGENDA_ADD_NOTETAKER: `/communities/${id}/${id}`,
-      COMMUNITY_AGENDA_ADD_SPEAKER: `/communities/${id}/${id}`,
-      COMMUNITY_REMINDER_AGENDA: `/communities/${id}/${id}`,
-      KMAP_ADD_COLLABORATOR_KMAP: `/kmap`,
-      KMAP_ADD_COLLABORATOR_KMAP_OBJECTIVE: `/kmap`,
-      KMAP_ADD_SME_KMAP: `/kmap`,
-      KMAP_COMMENT_KMAP: `/kmap`,
-      KMAP_COMMENT_KMAP_OBJECTIVE: `/kmap`,
-      REPOSITORY_ADD_COLLABORATOR: `/repository`,
-      SOCIAL_COMMENT_POST: `/home?post=${data}`,
-      SOCIAL_FOLLOW: `/home/detail/${id}`,
-      SOCIAL_LIKE_POST: `/home?post=${data}`,
-      SOCIAL_MENTION: `/home?post=${data}`,
-    };
+    const lookupObj = notifUrlLookup(data, id);
 
     return navigate(lookupObj[type]);
   };
@@ -174,7 +159,7 @@ export default function Notification({ icon }) {
           </p>
           <p className="text-darkGrey text-xs font-normal">
             {dayjs(notification.reminder_at)
-              .format("MMMM D, YYYY ; HH:MM a")
+              .format("MMMM D, YYYY ; HH:mm a")
               .replace(";", "at")}
           </p>
         </div>
