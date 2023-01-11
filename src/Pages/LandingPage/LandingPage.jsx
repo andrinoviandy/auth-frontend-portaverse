@@ -1,6 +1,8 @@
+import { Button } from "@mantine/core";
 import { Link } from "react-router-dom";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogo.png";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
+import openInNewTab from "../../Utils/Helpers/openInNewTab";
 import userAuthorization from "../../Utils/Helpers/userAuthorization";
 import Products from "../ChooseProducts/Products";
 
@@ -31,11 +33,27 @@ function LandingPage() {
         portaverse
       </p> */}
       <div className="flex-row justify-center m-auto w-[450px] pb-[1.5rem]">
-        <p className="font-secondary text-lg text-darkGray ">
-          Increase productivity through a clear understanding of
-          strategic activities and ease of access to your most crucial
-          knowledge.
-        </p>
+        {window.location.href.includes("pelindo.co.id") ? (
+          <p className="font-secondary text-lg text-darkGray ">
+            Increase productivity through a clear understanding of
+            strategic activities and ease of access to your most
+            crucial knowledge.
+          </p>
+        ) : (
+          <>
+            Website ini hanya untuk keperluan testing, silakan
+            kunjungi web ini{" "}
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() =>
+                openInNewTab("https://portaverse.pelindo.co.id/login")
+              }
+            >
+              https://portaverse.pelindo.co.id/login
+            </Button>
+          </>
+        )}
       </div>
 
       {isAuthorized ? (
