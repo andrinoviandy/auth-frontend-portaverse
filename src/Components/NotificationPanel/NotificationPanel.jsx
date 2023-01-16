@@ -60,7 +60,7 @@ export default function NotificationPanel({
     NOTIFICATION_ENDPOINT.GET.unreadCount,
     ["notificationGetUnreadCount"],
     {
-      refetchInterval: 1000 * 10,
+      refetchInterval: 1000 * 60,
     },
   );
 
