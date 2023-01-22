@@ -135,7 +135,7 @@ const Menus = {
     {
       label: "Home",
       description: "Temukan berbagai subjek yang kamu minati",
-      route: "/home",
+      route: "/",
       icon: <Icon icon="el:home" color="#016DB2" width={25} />,
     },
   ],
