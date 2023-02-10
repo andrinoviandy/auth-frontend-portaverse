@@ -135,7 +135,7 @@ const Menus = {
     {
       label: "Home",
       description: "Temukan berbagai subjek yang kamu minati",
-      route: "/home",
+      route: "/",
       icon: <Icon icon="el:home" color="#016DB2" width={25} />,
     },
   ],
@@ -286,9 +286,9 @@ export default function LandingPageAuthorized() {
               <Tabs.Tab sx={TabStyle} value="KMS">
                 KMS
               </Tabs.Tab>
-              {/* <Tabs.Tab sx={TabStyle} value="LMS">
+              <Tabs.Tab sx={TabStyle} value="LMS">
                 LMS
-              </Tabs.Tab> */}
+              </Tabs.Tab>
               <Tabs.Tab sx={TabStyle} value="TMS">
                 TMS
               </Tabs.Tab>
