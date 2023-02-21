@@ -34,7 +34,7 @@ export default function Error404() {
       </div>
       <footer className="text-center">
         <p className="text-darkGrey">
-          Powered by KMPlus Consulting 2022
+          Powered by KMPlus Consulting 2023
         </p>
       </footer>
     </div>
