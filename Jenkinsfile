@@ -84,16 +84,15 @@ pipeline {
           script {
             CURRENT_STAGE=env.STAGE_NAME
             if (env.BRANCH_NAME == 'master'){
-
             docker.withRegistry('https://592716879257.dkr.ecr.ap-southeast-3.amazonaws.com', 'ecr:ap-southeast-3:aws-credentials') {
               app.push("${ENV_YAML}${env.BUILD_NUMBER}")  
             }
           }
             CURRENT_STAGE=env.STAGE_NAME
             if (env.BRANCH_NAME == 'develop'){
-
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
-              app.push("${ENV_YAML}${env.BUILD_NUMBER}")             
+              sh "docker tag ${IMAGE_PREFIX} ${DOCKERHUB_REPO}/${IMAGE_PREFIX}:${ENV_YAML}${env.BUILD_NUMBER}"
+              sh "docker push ${DOCKERHUB_REPO}/${IMAGE_PREFIX}:${ENV_YAML}${env.BUILD_NUMBER}"
           }
         }
       } 
