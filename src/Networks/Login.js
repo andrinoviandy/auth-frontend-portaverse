@@ -19,13 +19,18 @@ export default function postLogin(
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
         .then((res) => {
+          if (res.data.data.user.role_code === "SBCN") {
+            window.location = `${
+              import.meta.env.VITE_LMS_URL
+            }/subcon-management/${
+              res.data.data.user?.subcon?.subcon_id
+            }`;
+            return;
+          }
           if (res.data.data.user.is_first_time_login) {
             window.location.href = "/referals";
             return;
           }
-          // window.location.href = `${
-          //   import.meta.env.VITE_KMS_URL
-          // }/home`;
           window.location.href = "/landing";
         })
         .catch((err) => {
