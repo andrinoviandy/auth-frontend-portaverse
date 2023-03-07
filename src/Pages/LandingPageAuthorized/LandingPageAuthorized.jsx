@@ -23,6 +23,7 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
+import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -185,6 +186,7 @@ const Menus = {
 
 export default function LandingPageAuthorized() {
   checkSubconAccess();
+  checkVendorAccess();
   const [activeTab, setActiveTab] = useState("KMS");
 
   const smartplanService = Networks(BASE_PROXY.smartplan);

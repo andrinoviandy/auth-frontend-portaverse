@@ -27,6 +27,14 @@ export default function postLogin(
             }`;
             return;
           }
+          if (res.data.data.user.role_code === "VNDR") {
+            window.location = `${
+              import.meta.env.VITE_LMS_URL
+            }/vendor-management/${
+              res.data.data.user?.vendor?.vendor_id
+            }`;
+            return;
+          }
           if (res.data.data.user.is_first_time_login) {
             window.location.href = "/referals";
             return;
