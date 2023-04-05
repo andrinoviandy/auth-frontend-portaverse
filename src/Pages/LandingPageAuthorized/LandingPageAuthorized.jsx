@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Loader, Tabs } from "@mantine/core";
+import { Loader, Tabs, clsx } from "@mantine/core";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -15,6 +15,9 @@ import KMAP from "../../Components/Assets/Icon/KMAP";
 import Image1 from "../../Components/Assets/Pictures/carou1.png";
 import Image2 from "../../Components/Assets/Pictures/carou2.png";
 // import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
+import Analytics from "../../Components/Assets/Svg/Analytics.svg";
+import SubconDashboard from "../../Components/Assets/Svg/SubconDashboard.svg";
+import VendorDashboard from "../../Components/Assets/Svg/VendorDashboard.svg";
 import Navbar from "../../Components/Navbar/Navbar";
 import NotificationPanel from "../../Components/NotificationPanel/NotificationPanel";
 import {
@@ -24,6 +27,7 @@ import {
 import { Networks } from "../../Networks/factory";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
 import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
+import getUserCookie from "../../Utils/Helpers/getUserCookie";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -61,133 +65,206 @@ const TabStyle = {
   borderRadius: "0.25rem",
 };
 
-const Menus = {
-  KMS: [
-    {
-      label: "Social Media",
-      description: "Platform bersosialisasi sesama pegawai",
-      route: "/home",
-      icon: <Icon icon="el:home" color="#016DB2" width={25} />,
-    },
-    {
-      label: "KMAP",
-      description: "Capai target perusahaan",
-      route: "/kmap",
-      icon: <KMAP />,
-    },
-    {
-      label: "Community",
-      description:
-        "Kumpulan komunitas untuk menemukan kegiatan dan aktivitas",
-      route: "/communities",
-      icon: (
-        <Icon
-          icon="fluent:people-community-20-filled"
-          color="#016DB2"
-          width={25}
-        />
-      ),
-    },
-    {
-      label: "Employees",
-      description: "Daftar para pegawai Pelindo dalam satu platform",
-      route: "/employees",
-      icon: <Employee />,
-    },
-    {
-      label: "Repository",
-      description: "Kumpulan dokumen yang dibagikan pada portaverse",
-      route: "/repository",
-      icon: (
-        <Icon
-          icon="fluent:document-28-filled"
-          color="#016DB2"
-          width={25}
-        />
-      ),
-    },
-
-    {
-      label: "Ask of Expert",
-      description: "Platform untuk tanya jawab sesama pegawai",
-      route: "/ask-expert",
-      icon: (
-        <Icon
-          icon="simple-icons:askubuntu"
-          color="#016DB2"
-          width={25}
-        />
-      ),
-    },
-  ],
-  LMS: [
-    {
-      label: "My Course",
-      description:
-        "Lihat proses belajar-mu dalam mempelajari sesuatu",
-      route: "/dashboard",
-      icon: (
-        <Icon
-          icon="ph:chalkboard-teacher-fill"
-          color="#016DB2"
-          width={25}
-        />
-      ),
-    },
-    {
-      label: "Home",
-      description: "Temukan berbagai subjek yang kamu minati",
-      route: "/",
-      icon: <Icon icon="el:home" color="#016DB2" width={25} />,
-    },
-  ],
-  TMS: [
-    // {
-    //   label: "Talent Dashboard",
-    //   description:
-    //     "Lihat statistik kinerja-mu dan temukan pengembangan diri",
-    //   route: "/dashboard",
-    //   icon: <Icon icon="bxs:dashboard" color="#016DB2" width={28} />,
-    // },
-    {
-      label: "Assessment",
-      description:
-        "Nilai para atasan, rekan kerja, serta bawahan untuk membantu mengembangkan kinerja perusahaan",
-      route: "/assessment",
-      icon: (
-        <Icon
-          icon="fluent:clipboard-task-20-filled"
-          color="#016DB2"
-          width={30}
-        />
-      ),
-    },
-    {
-      label: "Smart Plan KPI",
-      description: "Tentukan target KPI divisi dan perusahaan",
-      route: "/smart-plan",
-      icon: <p className="font-bold text-primary3">KPI</p>,
-    },
-    // {
-    //   label: "Project Management",
-    //   description:
-    //     "Atur task dan pekerjaanmu untuk memenuhi target perusahaan",
-    //   route: "/project-management",
-    //   icon: (
-    //     <Icon
-    //       icon="material-symbols:view-kanban"
-    //       color="#016DB2"
-    //       width={30}
-    //     />
-    //   ),
-    // },
-  ],
-};
-
 export default function LandingPageAuthorized() {
   checkSubconAccess();
   checkVendorAccess();
   const [activeTab, setActiveTab] = useState("KMS");
+  const user = getUserCookie();
+  const Menus = {
+    KMS: [
+      {
+        label: "Social Media",
+        description: "Platform bersosialisasi sesama pegawai",
+        route: "/home",
+        icon: <Icon icon="el:home" color="#016DB2" width={25} />,
+      },
+      {
+        label: "KMAP",
+        description: "Capai target perusahaan",
+        route: "/kmap",
+        icon: <KMAP />,
+      },
+      {
+        label: "Community",
+        description:
+          "Kumpulan komunitas untuk menemukan kegiatan dan aktivitas",
+        route: "/communities",
+        icon: (
+          <Icon
+            icon="fluent:people-community-20-filled"
+            color="#016DB2"
+            width={25}
+          />
+        ),
+      },
+      {
+        label: "Employees",
+        description:
+          "Daftar para pegawai Pelindo dalam satu platform",
+        route: "/employees",
+        icon: <Employee />,
+      },
+      {
+        label: "Repository",
+        description:
+          "Kumpulan dokumen yang dibagikan pada portaverse",
+        route: "/repository",
+        icon: (
+          <Icon
+            icon="fluent:document-28-filled"
+            color="#016DB2"
+            width={25}
+          />
+        ),
+      },
+
+      {
+        label: "Ask of Expert",
+        description: "Platform untuk tanya jawab sesama pegawai",
+        route: "/ask-expert",
+        icon: (
+          <Icon
+            icon="simple-icons:askubuntu"
+            color="#016DB2"
+            width={25}
+          />
+        ),
+      },
+    ],
+    LMS: [
+      {
+        label: "Home",
+        description: "Temukan berbagai subjek yang kamu minati",
+        route: "/",
+        icon: <Icon icon="el:home" color="#016DB2" width={25} />,
+      },
+      {
+        label: "My Course",
+        description:
+          "Lihat proses belajar-mu dalam mempelajari sesuatu",
+        route: "/dashboard",
+        icon: (
+          <Icon
+            icon="ph:chalkboard-teacher-fill"
+            color="#016DB2"
+            width={25}
+          />
+        ),
+      },
+      {
+        label: "Dashboard Kursus",
+        route: "/course-pool/courses",
+        icon: <Icon icon="clarity:blocks-group-solid" width={25} />,
+        hidden: !["CRPU", "SA", "VNDR"].includes(user?.role_code),
+      },
+      {
+        label: "Manajemen Kompetensi",
+        route: "/competency-management",
+        icon: (
+          <Icon
+            icon="material-symbols:slide-library-rounded"
+            width={25}
+          />
+        ),
+        hidden: !["CRPU", "SA"].includes(user?.role_code),
+      },
+      {
+        label: "Manajemen Sertifikat",
+        route: "/certificate-management",
+        icon: <Icon icon="mingcute:certificate-2-fill" width={25} />,
+        hidden: !["CRPU", "SA"].includes(user?.role_code),
+      },
+      {
+        label: ["SBCN"].includes(user?.role_code)
+          ? "Subcon Dashboard"
+          : "Manajemen Subcon",
+        route: ["SBCN"].includes(user?.role_code)
+          ? `/subcon-management/${user?.subcon?.subcon_id}`
+          : "/subcon-management",
+        icon: (
+          <img
+            src={SubconDashboard}
+            alt="analytics"
+            className="w-[23px] h-[23px]"
+          />
+        ),
+        hidden: !["CRPU", "SA", "SBCN"].includes(user?.role_code),
+      },
+      {
+        label: ["VNDR"].includes(user?.role_code)
+          ? "Vendor Dashboard"
+          : "Manajemen Vendor",
+        route: "/vendor-management",
+        icon: (
+          <img
+            src={VendorDashboard}
+            alt="analytics"
+            className="w-[21px] h-[21px]"
+          />
+        ),
+        hidden: !["CRPU", "SA", "VNDR"].includes(user?.role_code),
+      },
+      {
+        label: "Analytics",
+        route: "/analytics",
+        icon: (
+          <img
+            src={Analytics}
+            alt="analytics"
+            className="w-[23px] h-[23px]"
+          />
+        ),
+        hidden: !["CRPU", "SA"].includes(user?.role_code),
+      },
+      {
+        label: "Manajemen Wallet",
+        route: "/wallet-management",
+        icon: <Icon icon="uil:wallet" width={25} />,
+        hidden: !["CRPU", "SA"].includes(user?.role_code),
+      },
+    ],
+    TMS: [
+      // {
+      //   label: "Talent Dashboard",
+      //   description:
+      //     "Lihat statistik kinerja-mu dan temukan pengembangan diri",
+      //   route: "/dashboard",
+      //   icon: <Icon icon="bxs:dashboard" color="#016DB2" width={28} />,
+      // },
+      {
+        label: "Assessment",
+        description:
+          "Nilai para atasan, rekan kerja, serta bawahan untuk membantu mengembangkan kinerja perusahaan",
+        route: "/assessment",
+        icon: (
+          <Icon
+            icon="fluent:clipboard-task-20-filled"
+            color="#016DB2"
+            width={30}
+          />
+        ),
+      },
+      {
+        label: "Smart Plan KPI",
+        description: "Tentukan target KPI divisi dan perusahaan",
+        route: "/smart-plan",
+        icon: <p className="font-bold text-primary3">KPI</p>,
+      },
+      // {
+      //   label: "Project Management",
+      //   description:
+      //     "Atur task dan pekerjaanmu untuk memenuhi target perusahaan",
+      //   route: "/project-management",
+      //   icon: (
+      //     <Icon
+      //       icon="material-symbols:view-kanban"
+      //       color="#016DB2"
+      //       width={30}
+      //     />
+      //   ),
+      // },
+    ],
+  };
 
   const smartplanService = Networks(BASE_PROXY.smartplan);
   const { data: kpiScore, isLoading: isLoadingKPI } =
@@ -309,9 +386,12 @@ export default function LandingPageAuthorized() {
                   href={`${import.meta.env[`VITE_${activeTab}_URL`]}${
                     menu.route
                   }`}
-                  className="flex flex-col"
+                  className={clsx(
+                    "flex flex-col",
+                    menu?.hidden && "hidden",
+                  )}
                 >
-                  <div className="w-14 h-14 flex items-center justify-center rounded-md bg-bg2 mb-2">
+                  <div className="w-14 h-14 text-primary3 flex items-center justify-center rounded-md bg-bg2 mb-2">
                     {menu.icon}
                   </div>
                   <h3 className="font-bold text-lg">{menu.label}</h3>
