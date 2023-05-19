@@ -178,7 +178,7 @@ export default function Notification({ icon }) {
     >
       <Menu.Target>
         <button type="button" className="relative">
-          {view(unreadNotificationCount)}
+          {view(unreadNotificationCount?.all)}
           {icon}
         </button>
       </Menu.Target>
