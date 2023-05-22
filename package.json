@@ -19,6 +19,7 @@
     "axios": "^0.27.2",
     "dayjs": "^1.11.7",
     "firebase": "^9.8.4",
+    "html-react-parser": "^3.0.16",
     "js-cookie": "^3.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
