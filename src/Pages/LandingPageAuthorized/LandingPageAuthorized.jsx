@@ -18,7 +18,7 @@ import Image2 from "../../Components/Assets/Pictures/carou2.png";
 import Analytics from "../../Components/Assets/Svg/Analytics.svg";
 import SubconDashboard from "../../Components/Assets/Svg/SubconDashboard.svg";
 import VendorDashboard from "../../Components/Assets/Svg/VendorDashboard.svg";
-import Navbar from "../../Components/Navbar/Navbar";
+import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 import NotificationPanel from "../../Components/NotificationPanel/NotificationPanel";
 import {
   BASE_PROXY,
@@ -287,7 +287,7 @@ export default function LandingPageAuthorized() {
 
   return (
     <div className="flex flex-col gap-5 pb-10">
-      <Navbar />
+      <NewNavbar />
       <section className="px-[5vw] mt-10">
         <div className="flex justify-between items-start gap-10">
           <div className="flex flex-col gap-5 text-2xl font-bold justify-between">
