@@ -3,16 +3,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Error404 from "./Components/Errors/404";
 import ErrorHandling from "./Components/Errors/ErrorHandling";
 import SuccessHandling from "./Components/Errors/SuccessHandling";
+import LoginLayout from "./Components/Layouts/LoginLayout";
 import MainLayout from "./Components/Layouts/MainLayout";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
-import CheckEmail from "./Pages/CheckEmail";
-import ForgotPassword from "./Pages/ForgotPassword";
+import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
+import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
 import LandingPage from "./Pages/LandingPage";
 import LandingPageAuthorized from "./Pages/LandingPageAuthorized/LandingPageAuthorized";
-import Login from "./Pages/Login";
+import NewLogin from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
 import Referal from "./Pages/Referal/Referal";
-import SetNewPassword from "./Pages/SetNewPassword";
+import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 
 function App() {
@@ -69,19 +70,19 @@ function App() {
             />
           }
         >
-          <Route element={<MainLayout />}>
+          <Route element={<LoginLayout />}>
             {/* Can only be access when user not logged in */}
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<NewLogin />} />
             <Route
               path="/forgot-password"
-              element={<ForgotPassword />}
+              element={<NewForgotPassword />}
             />
 
             {/* Can only be access by the app flow and user not logged in */}
-            <Route path="/check-email" element={<CheckEmail />} />
+            <Route path="/check-email" element={<NewCheckEmail />} />
             <Route
               path="/reset-password"
-              element={<SetNewPassword />}
+              element={<NewSetNewPassword />}
             />
             <Route path="/success" element={<NewPassSuccess />} />
           </Route>

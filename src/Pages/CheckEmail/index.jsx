@@ -1,1 +1,1 @@
-export { default } from "./CheckEmail";
+export { default } from "./NewCheckEmail";
