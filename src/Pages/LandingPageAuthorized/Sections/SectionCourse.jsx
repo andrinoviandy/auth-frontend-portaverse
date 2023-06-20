@@ -45,7 +45,6 @@ export default function SectionCourse() {
     },
   );
 
-  console.log({ data });
   return (
     <section className="bg-bg2">
       <div className="flex justify-between items-center gap-8 py-10 px-[5rem]">
