@@ -1,5 +1,10 @@
 import { Icon } from "@iconify/react";
-import { Button, PasswordInput, TextInput } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  PasswordInput,
+  TextInput,
+} from "@mantine/core";
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import EyeOffOutline from "../../Components/Assets/Icon/EyeOffOutline";
@@ -81,7 +86,10 @@ export default function NewLogin() {
             size="md"
             name="email"
             // type="email"
-            className="w-full"
+            classNames={{
+              root: "w-full",
+              label: "mb-2",
+            }}
             value={payload.email}
             error={validateEmail}
             onChange={handleOnChange}
@@ -94,6 +102,10 @@ export default function NewLogin() {
               placeholder="Masukan password"
               size="md"
               name="password"
+              classNames={{
+                root: "w-full",
+                label: "mb-2",
+              }}
               // type="password"
               value={payload.password}
               error={validatePassword}
@@ -106,12 +118,33 @@ export default function NewLogin() {
             </p>
           </div>
 
-          <Link
-            to="/forgot-password"
-            className="text-primary3 font-secondary text-base font-semibold"
-          >
-            Forgot password?
-          </Link>
+          <div className="flex justify-between items-center">
+            <Link
+              to="/forgot-password"
+              className="text-primary3 font-secondary text-base font-semibold"
+            >
+              Forgot password?
+            </Link>
+            <Checkbox
+              size="md"
+              label="Remember me"
+              onChange={(e) =>
+                setPayload({
+                  ...payload,
+                  isRemember: e.target.checked,
+                })
+              }
+              checked={payload.isRemember}
+              // styles={{
+              //   label: {
+              //     fontSize: "0.775rem",
+              //     lineHeight: "1rem",
+              //     paddingLeft: "5px",
+              //   },
+              // }}
+              classNames={{ label: "secondary" }}
+            />
+          </div>
 
           <Button loading={isLoading} type="submit">
             Sign In

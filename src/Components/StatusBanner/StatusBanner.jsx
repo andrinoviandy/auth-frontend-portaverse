@@ -14,6 +14,7 @@ export default function StatusBanner({
     error: {
       icon: "mdi:warning-circle",
       style: "bg-danger1 text-danger3",
+      iconColor: color.danger3,
     },
     warning: {
       icon: "mdi:warning-circle",

@@ -1876,6 +1876,7 @@ __metadata:
     react-dom: ^18.0.0
     react-query: ^3.39.2
     react-router-dom: ^6.3.0
+    react-simple-star-rating: ^4.0.5
     swiper: ^8.3.2
     tailwindcss: ^3.1.4
     vite: ^2.9.13
@@ -4981,6 +4982,16 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 7be673f5e72104be01e6ab274516bdb932efd93305243170690f6560e3bd1035dd1df3d3c9ce1e0f452638a2529f43a1e77dcf0934fc8031c4783da657be13ca
+  languageName: node
+  linkType: hard
+
+"react-simple-star-rating@npm:^4.0.5":
+  version: 4.1.1
+  resolution: "react-simple-star-rating@npm:4.1.1"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: e4c2a25f4a526bca5e4385efc9323584206cf3e3643867f4d8d08cc001fd544160c8c6dc8036bcaf03fd36f37a62d7e62014372935d7d22d3c4558d35c31bec3
   languageName: node
   linkType: hard
 

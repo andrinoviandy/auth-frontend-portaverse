@@ -14,6 +14,7 @@ export const BASE_PROXY = {
   forum: "/api/forum/v1",
   notifications: "/api/notifications/v1",
   smartplan: "/api/smartplan/v1",
+  course: "/api/course/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -256,5 +257,16 @@ export const DASHBOARD_ENDPOINT = {
 export const GAMIFICATION_ENDPOINT = {
   GET: {
     leaderboard: "/karma-vw",
+  },
+};
+
+export const COURSE_ENDPOINT = {
+  GET: {
+    myCourseProgress: (employeeId) =>
+      `/course/employee/${employeeId}/progress-course`,
+    historyTransaction: (employeeId) =>
+      `/course/history-transaction/${employeeId}`,
+    totalEmployeeLearningHours: (employeeId) =>
+      `/course/total-learning-hours/${employeeId}`,
   },
 };

@@ -9,7 +9,7 @@ import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
 import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
 import LandingPage from "./Pages/LandingPage";
-import LandingPageAuthorized from "./Pages/LandingPageAuthorized/LandingPageAuthorized";
+import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
 import NewLogin from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
 import Referal from "./Pages/Referal/Referal";
@@ -57,7 +57,7 @@ function App() {
         >
           <Route
             path="/landing"
-            element={<LandingPageAuthorized />}
+            element={<NewLandingPageAuthorized />}
           />
         </Route>
         <Route

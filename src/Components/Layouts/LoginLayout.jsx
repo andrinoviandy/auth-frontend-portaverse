@@ -4,25 +4,31 @@ import { Outlet } from "react-router-dom";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Ornament from "../Assets/Pictures/LoginOrnament.png";
+import BannerKMS from "../Assets/Pictures/banner-kms.png";
+import BannerLMS from "../Assets/Pictures/banner-lms.png";
+import BannerTMS from "../Assets/Pictures/banner-tms.png";
 import "./swiper.css";
 
 export default function LoginLayout() {
   const [activeIndex, setActiveIndex] = useState(0);
   const slideProps = [
     {
-      img: "https://picsum.photos/200/300",
+      img: BannerKMS,
       title: "Knowledge Management System",
-      description: "Lorem ipsum lorem ipsum lorem ipsum",
+      description:
+        "Wadah bersosialisasi dan berkomunikasi sesama pegawai",
     },
     {
-      img: "https://picsum.photos/200/300",
+      img: BannerLMS,
       title: "Learning Management System",
-      description: "Lorem ipsum lorem ipsum lorem ipsum",
+      description:
+        "Media pembelajaran dan pengembangan kompetensi para pegawai",
     },
     {
-      img: "https://picsum.photos/200/300",
+      img: BannerTMS,
       title: "Talent Management System",
-      description: "Lorem ipsum lorem ipsum lorem ipsum",
+      description:
+        "Informasi talenta yang dimiliki masing-masing pegawai",
     },
   ];
 
@@ -42,7 +48,7 @@ export default function LoginLayout() {
         }}
       >
         <div className="relative flex flex-col gap-8 items-center text-center text-white z-[2]">
-          <div className="relative items-center justify-between w-3/4 mt-10">
+          <div className="relative items-center justify-between px-20 pt-20">
             <Swiper
               slidesPerView={1}
               navigation={{
@@ -73,11 +79,11 @@ export default function LoginLayout() {
             >
               {slideProps.map((item, i) => (
                 <SwiperSlide
-                  className="w-full flex justify-center"
+                  className="w-full flex justify-center px-5"
                   key={i}
                 >
                   <img
-                    className="cursor-pointer w-full h-[40vh] rounded-lg object-cover"
+                    className="cursor-pointer w-full h-[50vh] rounded-lg object-contain"
                     src={item.img}
                     alt={`slide-${i}`}
                     loading="lazy"

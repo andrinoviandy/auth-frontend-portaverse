@@ -44,6 +44,12 @@ export default ({ mode }) => {
           rewrite: (path) =>
             path.replace(/^\/api\/smartplan\/v1/, ""),
         },
+        "/api/course/v1": {
+          target: process.env.VITE_API_COURSE_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api\/course\/v1/, ""),
+        },
       },
     },
   });

@@ -57,6 +57,10 @@ export default function NewForgotPassword() {
           placeholder="Masukan email"
           size="md"
           name="email"
+          classNames={{
+            root: "w-full",
+            label: "mb-2",
+          }}
           // type="email"
           value={email}
           error={validateEmail}

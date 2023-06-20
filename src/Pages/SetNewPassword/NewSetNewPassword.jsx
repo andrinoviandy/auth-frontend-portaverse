@@ -100,6 +100,10 @@ export default function NewSetNewPassword() {
           placeholder="Masukan password baru"
           size="md"
           name="password"
+          classNames={{
+            root: "w-full",
+            label: "mb-2",
+          }}
           value={payload.password}
           error={validateNewPassword}
           onChange={handleOnChange}
@@ -113,6 +117,10 @@ export default function NewSetNewPassword() {
             placeholder="Masukan password baru"
             size="md"
             name="confirmPassword"
+            classNames={{
+              root: "w-full",
+              label: "mb-2",
+            }}
             value={payload.confirmPassword}
             error={validateConfirmPassword}
             onChange={handleOnChange}

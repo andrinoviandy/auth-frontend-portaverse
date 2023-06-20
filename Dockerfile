@@ -1,20 +1,5 @@
 FROM node:16.16-alpine AS builder
 
-#ARG VITE_CORPORATE_NAME
-#ARG VITE_FIREBASE_API_KEY
-#ARG VITE_FIREBASE_AUTH_DOMAIN
-#ARG VITE_FIREBASE_DATABASE_URL
-#ARG VITE_FIREBASE_PROJECT_ID
-#ARG VITE_FIREBASE_STORAGE_BUCKET
-#ARG VITE_FIREBASE_MESSAGING_SENDER_ID
-#ARG VITE_FIREBASE_APP_ID
-#ARG VITE_JWT_KEY
-#ARG VITE_API_KEY
-#ARG VITE_API_AUTH_SERVICE_URL
-#ARG VITE_KMS_URL
-#ARG VITE_LMS_URL
-#ARG VITE_TMS_URL
-
 WORKDIR /app
 COPY package.json .
 RUN npm i -g vite
@@ -40,6 +25,7 @@ ENV VITE_API_KEY=smartkms20221
 # ENV VITE_API_NOTIFICATIONS_SERVICE_URL=https://notification-portaverse.pelindo.co.id
 # ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan-service-portaverse.pelindo.co.id
 # ENV VITE_API_SSO_SERVICE_URL=https://user-auth-service-portaverse.pelindo.co.id
+# ENV VITE_API_COURSE_SERVICE_URL=https://course-service-portaverse.pelindo.co.id
 # ENV VITE_KMS_URL=https://knowledge-portaverse.pelindo.co.id
 # ENV VITE_LMS_URL=https://learning-portaverse.pelindo.co.id
 # ENV VITE_TMS_URL=https://talent-portaverse.pelindo.co.id
@@ -50,26 +36,11 @@ ENV VITE_API_SOCIAL_SERVICE_URL=https://social.portaverse.co.id
 ENV VITE_API_SSO_SERVICE_URL=https://user-auth.portaverse.co.id
 ENV VITE_API_NOTIFICATIONS_SERVICE_URL=https://notification.portaverse.co.id
 ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan.portaverse.co.id
+ENV VITE_API_COURSE_SERVICE_URL=https://course.portaverse.co.id
 ENV VITE_KMS_URL=https://knowledge.portaverse.co.id
 ENV VITE_LMS_URL=https://learning.portaverse.co.id
 ENV VITE_TMS_URL=https://talent.portaverse.co.id
 
-
-#RUN VITE_CORPORATE_NAME=$VITE_CORPORATE_NAME \
-#    VITE_FIREBASE_API_KEY=$VITE_FIREBASE_API_KEY \
-#    VITE_FIREBASE_AUTH_DOMAIN=$VITE_FIREBASE_AUTH_DOMAIN \
-#    VITE_FIREBASE_DATABASE_URL=$VITE_FIREBASE_DATABASE_URL \
-#    VITE_FIREBASE_PROJECT_ID=$VITE_FIREBASE_PROJECT_ID \
-#    VITE_FIREBASE_STORAGE_BUCKET=$VITE_FIREBASE_STORAGE_BUCKET \
-#    VITE_FIREBASE_MESSAGING_SENDER_ID=$VITE_FIREBASE_MESSAGING_SENDER_ID \
-#    VITE_FIREBASE_APP_ID=$VITE_FIREBASE_APP_ID \
-#    VITE_JWT_KEY=$VITE_JWT_KEY \
-#    VITE_API_KEY=$VITE_API_KEY \
-#    VITE_API_AUTH_SERVICE_URL=$VITE_API_AUTH_SERVICE_URL \
-#    VITE_KMS_URL=$VITE_KMS_URL \
-#    VITE_LMS_URL=$VITE_LMS_URL \
-#    VITE_TMS_URL=$VITE_TMS_URL \
-#    yarn build
 RUN yarn build
 
 FROM nginx:stable-alpine AS server
