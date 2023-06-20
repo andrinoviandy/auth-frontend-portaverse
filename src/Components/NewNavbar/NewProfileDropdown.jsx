@@ -70,7 +70,7 @@ export default function ProfileDropdown() {
         </div>
 
         <div className="[&>*]:border-t [&>*]:border-grey2 [&>*]:px-5 [&>*]:py-4 [&>*]:w-full">
-          <button
+          {/* <button
             type="button"
             className="hover:bg-bg2"
             onClick={() => {}}
@@ -79,7 +79,7 @@ export default function ProfileDropdown() {
               <Icon icon="mdi:gear" width={20} />
               <p className="font-medium">Pengaturan</p>
             </div>
-          </button>
+          </button> */}
           <button
             type="button"
             className="rounded-b-xl hover:bg-bg2"
