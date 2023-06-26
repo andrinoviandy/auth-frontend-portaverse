@@ -7,7 +7,6 @@ import { Icon } from "@iconify/react";
 import {
   Button,
   Checkbox,
-  ChevronIcon,
   Loader,
   Menu,
   Select,
@@ -17,6 +16,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import parse from "html-react-parser";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
+import { useForm } from "@mantine/form";
 import {
   BASE_PROXY,
   NOTIFICATION_ENDPOINT,
@@ -25,7 +25,7 @@ import { Networks } from "../../Networks/factory";
 import useOnScrollFetch from "../../Utils/Hooks/useOnScrollFetch";
 import ChipCarousel from "../CustomInputs/ChipCarousel";
 import { getClearableProps } from "../CustomInputs/CustomMantine/ClearSearchTextInputMantine";
-import { useForm } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
 
 dayjs.locale("id");
 dayjs.extend(relativeTime);
@@ -106,28 +106,26 @@ function NotificationSection({ origin, tab, unreadCount }) {
   );
 
   useOnScrollFetch(hasNextPage, fetchNextPage, ref);
-
-  const initialState = useMemo(() => {
-    const field = {
+  const form = useForm({
+    initialValues: {
       checkAll: false,
       type: "all",
       status: null,
       checkbox: {},
+    },
+    validate: {},
+  });
+
+  const initialState = useMemo(() => {
+    const field = {
+      ...form.values,
     };
     const validate = {};
     notifications?.items?.forEach((v) => {
-      // field.absent[
-      //   isTrainer
-      //     ? `employee_${v?.trainer_id}`
-      //     : `employee_${v?.employee_id}`
-      // ] = {};
-      // v?.absent?.forEach((q, i) => {
-      //   field.absent[
-      //     isTrainer
-      //       ? `employee_${v?.trainer_id}`
-      //       : `employee_${v?.employee_id}`
-      //   ][`chapter_${i}`] = q;
-      // });
+      if (!field.checkbox?.[`notif_${v.notification_id}`]) {
+        field.checkbox[`notif_${v.notification_id}`] = false;
+        console.log("ngisi");
+      }
     });
 
     return {
@@ -136,13 +134,12 @@ function NotificationSection({ origin, tab, unreadCount }) {
     };
   }, [notifications]);
 
-  const form = useForm({ ...initialState });
-
   useEffect(() => {
     form.setValues(initialState.initialValues);
   }, [initialState]);
 
   console.log(notifications?.items);
+  console.log(form?.values);
 
   const urlLookup = (type, id, data) => {
     const lookupObj = {
@@ -204,11 +201,7 @@ function NotificationSection({ origin, tab, unreadCount }) {
       }/dashboard/${data}`,
     };
     if (lookupObj[type]) {
-      window.open(
-        lookupObj[type],
-        "_blank",
-        "rel=noopener noreferrer",
-      );
+      window.location.href = lookupObj[type];
     }
   };
 
@@ -216,170 +209,182 @@ function NotificationSection({ origin, tab, unreadCount }) {
     const [isHover, setIsHover] = useState(false);
     return (
       <div
-        key={notification?.notification_id}
-        className={`border-b py-2 px-2 ${
-          notification?.viewed ? "" : "bg-[#F2F4F8]"
+        className={`${
+          notification?.is_pinned ? "border-l-4 border-primary3" : ""
         }`}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
       >
-        <div className="flex flex-row items-start w-full gap-4 cursor-pointer">
-          <div className="mt-2">
-            <Checkbox
-              size="sm"
-              onChange={(v) => {
-                form.setFieldValue("checkAll", v);
-              }}
-              value={form.values.checkAll}
-            />
-          </div>
-          <div
-            className={`flex flex-col gap-[2px] w-full `}
-            onClick={() => {
-              if (!notification?.viewed) {
-                put(
-                  {
-                    endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                      notification?.notification_id,
-                    ),
-                  },
-                  {
-                    onSuccess: () => {
-                      queryClient.invalidateQueries([
-                        `notifications${origin}`,
-                      ]);
-                    },
-                  },
-                );
-              }
-              urlLookup(
-                notification?.notification_topic_code,
-                notification?.send_from,
-                notification?.data,
-              );
-            }}
-          >
-            <div className="flex-row flex justify-between items-center w-full">
-              <span className="font-bold text-primary3">Title</span>
-              <div className="flex flex-row gap-1 ">
-                {isHover && !notification?.is_global && (
-                  <>
-                    <button
-                      type="button"
-                      className="p-0 font-normal hover:text-primary3 text-darkGrey"
-                      onClick={() => {
-                        if (!notification?.viewed) {
-                          put(
-                            {
-                              endpoint:
-                                NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                                  notification?.notification_id,
-                                ),
-                            },
-                            {
-                              onSuccess: () => {
-                                queryClient.invalidateQueries([
-                                  `notifications${origin}`,
-                                ]);
-                              },
-                            },
-                          );
-                        }
-                      }}
-                    >
-                      <Icon
-                        icon={
-                          !!notification?.viewed
-                            ? "mdi-light:email-open"
-                            : "mdi-light:email"
-                        }
-                        width={20}
-                      />
-                    </button>
-                    <button
-                      type="button"
-                      className="hover:text-danger3 p-0 font-normal text-darkGrey"
-                      onClick={() => {
-                        if (!notification?.is_global) {
-                          deleteMutate(
-                            {
-                              endpoint:
-                                NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
-                                  notification?.notification_id,
-                                ),
-                            },
-                            {
-                              onSuccess: () => {
-                                queryClient.invalidateQueries([
-                                  `notifications${origin}`,
-                                ]);
-                              },
-                            },
-                          );
-                        }
-                      }}
-                    >
-                      <Icon icon="ph:trash" width={20} />
-                    </button>
-                    <button
-                      type="button"
-                      className="p-0 font-normal hover:text-primary3 text-darkGrey"
-                      onClick={() => {
-                        // if (!notification?.viewed) {
-                        //   put(
-                        //     {
-                        //       endpoint:
-                        //         NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                        //           notification?.notification_id,
-                        //         ),
-                        //     },
-                        //     {
-                        //       onSuccess: () => {
-                        //         queryClient.invalidateQueries([
-                        //           `notifications${origin}`,
-                        //         ]);
-                        //       },
-                        //     },
-                        //   );
-                        // }
-                        console.log("pinned");
-                      }}
-                    >
-                      <Icon
-                        icon={
-                          !!notification?.is_pinned
-                            ? "tabler:pin-filled"
-                            : "tabler:pin"
-                        }
-                        width={20}
-                      />
-                    </button>
-                  </>
-                )}
-                {!notification?.viewed && (
-                  <span className="text-primary3 text-2xl">
-                    &bull;
-                  </span>
-                )}
-              </div>
-            </div>
-            <span
-              className={`text-text1 text-sm w-full ${
-                !isHover ? "line-clamp-2" : ""
-              }`}
-            >
-              {notification?.message && parse(notification?.message)}
-            </span>
-            <div className="flex gap-1 items-center text-darkGrey text-xs">
-              <Icon
-                icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
-                width={12}
+        <div
+          key={notification?.notification_id}
+          className="border-b py-2 px-2"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+        >
+          <div className="flex flex-row items-start w-full gap-4 cursor-pointer">
+            <div className="mt-2">
+              <Checkbox
+                size="sm"
+                onChange={(e) => {
+                  form.setFieldValue(
+                    `checkbox.notif_${notification?.notification_id}`,
+                    e.target.checked,
+                  );
+                }}
+                checked={
+                  form.values.checkbox?.[
+                    `notif_${notification?.notification_id}`
+                  ]
+                }
               />
-              <span>
-                {dayjs(notification?.reminder_at)?.format(
-                  "DD MMMM YYYY, H:mm",
-                )}
+            </div>
+            <div
+              className={`flex flex-col gap-[2px] w-full `}
+              onClick={() => {
+                if (!notification?.viewed) {
+                  put(
+                    {
+                      endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                        notification?.notification_id,
+                      ),
+                    },
+                    {
+                      onSuccess: () => {
+                        queryClient.invalidateQueries([
+                          `notifications${origin}`,
+                        ]);
+                      },
+                    },
+                  );
+                }
+                urlLookup(
+                  notification?.notification_topic_code,
+                  notification?.send_from,
+                  notification?.data,
+                );
+              }}
+            >
+              <div className="flex-row flex justify-between items-center w-full">
+                <span className="font-bold text-primary3">Title</span>
+                <div className="flex flex-row gap-1 ">
+                  {isHover && !notification?.is_global && (
+                    <>
+                      <button
+                        type="button"
+                        className="p-0 font-normal hover:text-primary3 text-darkGrey"
+                        onClick={() => {
+                          if (!notification?.viewed) {
+                            put(
+                              {
+                                endpoint:
+                                  NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                                    notification?.notification_id,
+                                  ),
+                              },
+                              {
+                                onSuccess: () => {
+                                  queryClient.invalidateQueries([
+                                    `notifications${origin}`,
+                                  ]);
+                                },
+                              },
+                            );
+                          }
+                        }}
+                      >
+                        <Icon
+                          icon={
+                            !!notification?.viewed
+                              ? "mdi-light:email-open"
+                              : "mdi-light:email"
+                          }
+                          width={20}
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        className="hover:text-danger3 p-0 font-normal text-darkGrey"
+                        onClick={() => {
+                          if (!notification?.is_global) {
+                            deleteMutate(
+                              {
+                                endpoint:
+                                  NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
+                                    notification?.notification_id,
+                                  ),
+                              },
+                              {
+                                onSuccess: () => {
+                                  queryClient.invalidateQueries([
+                                    `notifications${origin}`,
+                                  ]);
+                                },
+                              },
+                            );
+                          }
+                        }}
+                      >
+                        <Icon icon="ph:trash" width={20} />
+                      </button>
+                      <button
+                        type="button"
+                        className="p-0 font-normal hover:text-primary3 text-darkGrey"
+                        onClick={() => {
+                          // if (!notification?.viewed) {
+                          //   put(
+                          //     {
+                          //       endpoint:
+                          //         NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                          //           notification?.notification_id,
+                          //         ),
+                          //     },
+                          //     {
+                          //       onSuccess: () => {
+                          //         queryClient.invalidateQueries([
+                          //           `notifications${origin}`,
+                          //         ]);
+                          //       },
+                          //     },
+                          //   );
+                          // }
+                          console.log("pinned");
+                        }}
+                      >
+                        <Icon
+                          icon={
+                            !!notification?.is_pinned
+                              ? "tabler:pin-filled"
+                              : "tabler:pin"
+                          }
+                          width={20}
+                        />
+                      </button>
+                    </>
+                  )}
+                  {!notification?.viewed && (
+                    <span className="text-primary3 text-2xl">
+                      &bull;
+                    </span>
+                  )}
+                </div>
+              </div>
+              <span
+                className={`text-text1 text-sm w-full ${
+                  !isHover ? "line-clamp-2" : ""
+                }`}
+              >
+                {notification?.message &&
+                  parse(notification?.message)}
               </span>
+              <div className="flex gap-1 items-center text-darkGrey text-xs">
+                <Icon
+                  icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
+                  width={12}
+                />
+                <span>
+                  {dayjs(notification?.reminder_at)?.format(
+                    "DD MMMM YYYY, H:mm",
+                  )}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -400,7 +405,33 @@ function NotificationSection({ origin, tab, unreadCount }) {
       <div className="flex flex-row justify-between p-2 border-b">
         <div className="flex flex-row items-center  gap-2">
           <div className="mt-2">
-            <Checkbox size="sm" label="Pilih Semua" />
+            <Checkbox
+              size="sm"
+              label="Pilih Semua"
+              onChange={(e) => {
+                form.setFieldValue("checkAll", e.target.checked);
+                const data = {};
+                notifications?.items?.forEach((v) => {
+                  if (
+                    Object.keys(form.values.checkbox)?.filter(
+                      (key) => {
+                        return form.values.checkbox[key] === true;
+                      },
+                    )?.length === notifications?.items?.length
+                  ) {
+                    data[`notif_${v?.notification_id}`] = false;
+                  } else {
+                    data[`notif_${v?.notification_id}`] = true;
+                  }
+                });
+                form.setFieldValue("checkbox", data);
+              }}
+              checked={
+                Object.keys(form.values.checkbox)?.filter((key) => {
+                  return form.values.checkbox[key] === true;
+                })?.length === notifications?.items?.length
+              }
+            />
           </div>
           <Menu shadow="md" width={200}>
             <Menu.Target>
@@ -450,34 +481,20 @@ function NotificationSection({ origin, tab, unreadCount }) {
           <Loader size="sm" className="mx-auto my-3.5" />
         ) : null}
       </div>
-      <div className="py-2 flex flex-row justify-between">
+      <div className="py-2 flex flex-row justify-center">
         <Button
           variant="white"
-          leftIcon={<Icon icon="ic:round-check" fontSize={18} />}
           className="disabled:bg-white"
           onClick={() => {
-            put(
-              {
-                endpoint: NOTIFICATION_ENDPOINT.PUT.allMarkAsRead,
-              },
-              {
-                onSuccess: () => {
-                  queryClient.invalidateQueries([
-                    `notifications${origin}`,
-                    "notificationGetUnreadCount",
-                  ]);
-                },
-              },
-            );
+            window.location.href = `${
+              import.meta.env.VITE_SSO_URL
+            }/notifications`;
           }}
           disabled={!unreadCount?.all}
           type="button"
         >
-          Baca Semua
+          Lihat semua
         </Button>
-        {/* <Button variant="white" className="disabled:bg-white">
-          Lihat Semua
-        </Button> */}
       </div>
     </div>
   );
