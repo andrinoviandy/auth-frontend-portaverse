@@ -1,13 +1,21 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Icon } from "@iconify/react";
-import { Button, Loader } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  ChevronIcon,
+  Loader,
+  Menu,
+  Select,
+} from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import parse from "html-react-parser";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import {
   BASE_PROXY,
@@ -16,9 +24,20 @@ import {
 import { Networks } from "../../Networks/factory";
 import useOnScrollFetch from "../../Utils/Hooks/useOnScrollFetch";
 import ChipCarousel from "../CustomInputs/ChipCarousel";
+import { getClearableProps } from "../CustomInputs/CustomMantine/ClearSearchTextInputMantine";
+import { useForm } from "@mantine/form";
 
 dayjs.locale("id");
 dayjs.extend(relativeTime);
+
+const listStatus = [
+  { label: "Semua", value: "all" },
+  { label: "Telah Dibaca", value: "read" },
+  {
+    label: "Belum Dibaca",
+    value: "not_read",
+  },
+];
 
 function NotificationSection({ origin, tab, unreadCount }) {
   const queryClient = useQueryClient();
@@ -87,6 +106,43 @@ function NotificationSection({ origin, tab, unreadCount }) {
   );
 
   useOnScrollFetch(hasNextPage, fetchNextPage, ref);
+
+  const initialState = useMemo(() => {
+    const field = {
+      checkAll: false,
+      type: "all",
+      status: null,
+      checkbox: {},
+    };
+    const validate = {};
+    notifications?.items?.forEach((v) => {
+      // field.absent[
+      //   isTrainer
+      //     ? `employee_${v?.trainer_id}`
+      //     : `employee_${v?.employee_id}`
+      // ] = {};
+      // v?.absent?.forEach((q, i) => {
+      //   field.absent[
+      //     isTrainer
+      //       ? `employee_${v?.trainer_id}`
+      //       : `employee_${v?.employee_id}`
+      //   ][`chapter_${i}`] = q;
+      // });
+    });
+
+    return {
+      initialValues: field,
+      validate,
+    };
+  }, [notifications]);
+
+  const form = useForm({ ...initialState });
+
+  useEffect(() => {
+    form.setValues(initialState.initialValues);
+  }, [initialState]);
+
+  console.log(notifications?.items);
 
   const urlLookup = (type, id, data) => {
     const lookupObj = {
@@ -167,96 +223,145 @@ function NotificationSection({ origin, tab, unreadCount }) {
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div
-          className="flex flex-row items-center gap-4 cursor-pointer"
-          onClick={() => {
-            if (!notification?.viewed) {
-              put(
-                {
-                  endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                    notification?.notification_id,
-                  ),
-                },
-                {
-                  onSuccess: () => {
-                    queryClient.invalidateQueries([
-                      `notifications${origin}`,
-                    ]);
+        <div className="flex flex-row items-start w-full gap-4 cursor-pointer">
+          <div className="mt-2">
+            <Checkbox
+              size="sm"
+              onChange={(v) => {
+                form.setFieldValue("checkAll", v);
+              }}
+              value={form.values.checkAll}
+            />
+          </div>
+          <div
+            className={`flex flex-col gap-[2px] w-full `}
+            onClick={() => {
+              if (!notification?.viewed) {
+                put(
+                  {
+                    endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                      notification?.notification_id,
+                    ),
                   },
-                },
+                  {
+                    onSuccess: () => {
+                      queryClient.invalidateQueries([
+                        `notifications${origin}`,
+                      ]);
+                    },
+                  },
+                );
+              }
+              urlLookup(
+                notification?.notification_topic_code,
+                notification?.send_from,
+                notification?.data,
               );
-            }
-            urlLookup(
-              notification?.notification_topic_code,
-              notification?.send_from,
-              notification?.data,
-            );
-          }}
-        >
-          <div className={`flex flex-col gap-[3px]  `}>
+            }}
+          >
             <div className="flex-row flex justify-between items-center w-full">
               <span className="font-bold text-primary3">Title</span>
-              {isHover && !notification?.is_global && (
-                <div className="flex flex-row gap-1 ">
-                  <button
-                    type="button"
-                    className="p-0 font-normal hover:text-primary3 text-darkGrey"
-                    onClick={() => {
-                      if (!notification?.viewed) {
-                        put(
-                          {
-                            endpoint:
-                              NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                                notification?.notification_id,
-                              ),
-                          },
-                          {
-                            onSuccess: () => {
-                              queryClient.invalidateQueries([
-                                `notifications${origin}`,
-                              ]);
+              <div className="flex flex-row gap-1 ">
+                {isHover && !notification?.is_global && (
+                  <>
+                    <button
+                      type="button"
+                      className="p-0 font-normal hover:text-primary3 text-darkGrey"
+                      onClick={() => {
+                        if (!notification?.viewed) {
+                          put(
+                            {
+                              endpoint:
+                                NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                                  notification?.notification_id,
+                                ),
                             },
-                          },
-                        );
-                      }
-                    }}
-                  >
-                    <Icon
-                      icon={
-                        !!notification?.viewed
-                          ? "mdi-light:email-open"
-                          : "mdi-light:email"
-                      }
-                      width={20}
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    className="hover:text-danger3 p-0 font-normal text-darkGrey"
-                    onClick={() => {
-                      if (!notification?.is_global) {
-                        deleteMutate(
-                          {
-                            endpoint:
-                              NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
-                                notification?.notification_id,
-                              ),
-                          },
-                          {
-                            onSuccess: () => {
-                              queryClient.invalidateQueries([
-                                `notifications${origin}`,
-                              ]);
+                            {
+                              onSuccess: () => {
+                                queryClient.invalidateQueries([
+                                  `notifications${origin}`,
+                                ]);
+                              },
                             },
-                          },
-                        );
-                      }
-                    }}
-                  >
-                    <Icon icon="ph:trash" width={20} />
-                  </button>
-                </div>
-              )}
+                          );
+                        }
+                      }}
+                    >
+                      <Icon
+                        icon={
+                          !!notification?.viewed
+                            ? "mdi-light:email-open"
+                            : "mdi-light:email"
+                        }
+                        width={20}
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      className="hover:text-danger3 p-0 font-normal text-darkGrey"
+                      onClick={() => {
+                        if (!notification?.is_global) {
+                          deleteMutate(
+                            {
+                              endpoint:
+                                NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
+                                  notification?.notification_id,
+                                ),
+                            },
+                            {
+                              onSuccess: () => {
+                                queryClient.invalidateQueries([
+                                  `notifications${origin}`,
+                                ]);
+                              },
+                            },
+                          );
+                        }
+                      }}
+                    >
+                      <Icon icon="ph:trash" width={20} />
+                    </button>
+                    <button
+                      type="button"
+                      className="p-0 font-normal hover:text-primary3 text-darkGrey"
+                      onClick={() => {
+                        // if (!notification?.viewed) {
+                        //   put(
+                        //     {
+                        //       endpoint:
+                        //         NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                        //           notification?.notification_id,
+                        //         ),
+                        //     },
+                        //     {
+                        //       onSuccess: () => {
+                        //         queryClient.invalidateQueries([
+                        //           `notifications${origin}`,
+                        //         ]);
+                        //       },
+                        //     },
+                        //   );
+                        // }
+                        console.log("pinned");
+                      }}
+                    >
+                      <Icon
+                        icon={
+                          !!notification?.is_pinned
+                            ? "tabler:pin-filled"
+                            : "tabler:pin"
+                        }
+                        width={20}
+                      />
+                    </button>
+                  </>
+                )}
+                {!notification?.viewed && (
+                  <span className="text-primary3 text-2xl">
+                    &bull;
+                  </span>
+                )}
+              </div>
             </div>
             <span
               className={`text-text1 text-sm w-full ${
@@ -291,6 +396,39 @@ function NotificationSection({ origin, tab, unreadCount }) {
             setModule(v);
           }}
         />
+      </div>
+      <div className="flex flex-row justify-between p-2 border-b">
+        <div className="flex flex-row items-center  gap-2">
+          <div className="mt-2">
+            <Checkbox size="sm" label="Pilih Semua" />
+          </div>
+          <Menu shadow="md" width={200}>
+            <Menu.Target>
+              <Icon icon="charm:chevron-down" size="20" />
+            </Menu.Target>
+
+            <Menu.Dropdown>
+              <Menu.Item>Tandai semua dibaca</Menu.Item>
+              <Menu.Item>Tandai semua belum dibaca</Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </div>
+        <div className="w-[9rem]">
+          <Select
+            data={listStatus}
+            size="sm"
+            placeholder="Status Notifikasi"
+            value={form.values.status}
+            onChange={(v) => {
+              form.setFieldValue("status", v);
+            }}
+            {...getClearableProps(
+              form.values.status,
+              () => form.setFieldValue("status", null),
+              "select",
+            )}
+          />
+        </div>
       </div>
       <div
         className="h-[250px] overflow-auto scroll-style-2"
