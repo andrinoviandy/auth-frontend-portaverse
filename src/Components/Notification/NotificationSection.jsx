@@ -15,10 +15,7 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import useOnScrollFetch from "../../Utils/Hooks/useOnScrollFetch";
-import SMEIcon from "../Assets/Icon/SME";
 import ChipCarousel from "../CustomInputs/ChipCarousel";
-import ActionContainer from "../NewNavbar/ActionContainer";
-import ProfilePictureWithBadge from "../ProfilePictureWithBadge/ProfilePictureWithBadge";
 
 dayjs.locale("id");
 dayjs.extend(relativeTime);
@@ -170,87 +167,116 @@ function NotificationSection({ origin, tab, unreadCount }) {
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div className="flex flex-row justify-between items-center ">
-          <div
-            className="flex flex-row items-center gap-4 cursor-pointer"
-            onClick={() => {
-              if (!notification?.viewed) {
-                put(
-                  {
-                    endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                      notification?.notification_id,
-                    ),
+        <div
+          className="flex flex-row items-center gap-4 cursor-pointer"
+          onClick={() => {
+            if (!notification?.viewed) {
+              put(
+                {
+                  endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                    notification?.notification_id,
+                  ),
+                },
+                {
+                  onSuccess: () => {
+                    queryClient.invalidateQueries([
+                      `notifications${origin}`,
+                    ]);
                   },
-                  {
-                    onSuccess: () => {
-                      queryClient.invalidateQueries([
-                        `notifications${origin}`,
-                      ]);
-                    },
-                  },
-                );
-              }
-              urlLookup(
-                notification?.notification_topic_code,
-                notification?.send_from,
-                notification?.data,
+                },
               );
-            }}
-          >
-            <div className="min-w-fit">
-              <ProfilePictureWithBadge
-                img={notification?.avatar}
-                alt="profile"
-                className="w-[38px] h-[38px] rounded-full mx-auto object-cover"
-                badgeIcon={notification?.is_sme && <SMEIcon />}
-              />
+            }
+            urlLookup(
+              notification?.notification_topic_code,
+              notification?.send_from,
+              notification?.data,
+            );
+          }}
+        >
+          <div className={`flex flex-col gap-[3px]  `}>
+            <div className="flex-row flex justify-between items-center w-full">
+              <span className="font-bold text-primary3">Title</span>
+              {isHover && !notification?.is_global && (
+                <div className="flex flex-row gap-1 ">
+                  <button
+                    type="button"
+                    className="p-0 font-normal hover:text-primary3 text-darkGrey"
+                    onClick={() => {
+                      if (!notification?.viewed) {
+                        put(
+                          {
+                            endpoint:
+                              NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                                notification?.notification_id,
+                              ),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries([
+                                `notifications${origin}`,
+                              ]);
+                            },
+                          },
+                        );
+                      }
+                    }}
+                  >
+                    <Icon
+                      icon={
+                        !!notification?.viewed
+                          ? "mdi-light:email-open"
+                          : "mdi-light:email"
+                      }
+                      width={20}
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="hover:text-danger3 p-0 font-normal text-darkGrey"
+                    onClick={() => {
+                      if (!notification?.is_global) {
+                        deleteMutate(
+                          {
+                            endpoint:
+                              NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
+                                notification?.notification_id,
+                              ),
+                          },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries([
+                                `notifications${origin}`,
+                              ]);
+                            },
+                          },
+                        );
+                      }
+                    }}
+                  >
+                    <Icon icon="ph:trash" width={20} />
+                  </button>
+                </div>
+              )}
             </div>
-            <div
-              className={`flex flex-col gap-[3px]  break-normal  `}
+            <span
+              className={`text-text1 text-sm w-full ${
+                !isHover ? "line-clamp-2" : ""
+              }`}
             >
-              <p className="text-text1">
-                {notification?.message &&
-                  parse(notification?.message)}
-              </p>
-              <div className="flex gap-1.5 items-center text-darkGrey">
-                <Icon
-                  icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
-                  width={15}
-                />
-                <span>
-                  {dayjs(notification?.reminder_at)?.fromNow()}
-                </span>
-              </div>
+              {notification?.message && parse(notification?.message)}
+            </span>
+            <div className="flex gap-1 items-center text-darkGrey text-xs">
+              <Icon
+                icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
+                width={12}
+              />
+              <span>
+                {dayjs(notification?.reminder_at)?.format(
+                  "DD MMMM YYYY, H:mm",
+                )}
+              </span>
             </div>
           </div>
-          {isHover && !notification?.is_global && (
-            <button
-              type="button"
-              onClick={() => {
-                if (!notification?.is_global) {
-                  deleteMutate(
-                    {
-                      endpoint:
-                        NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
-                          notification?.notification_id,
-                        ),
-                    },
-                    {
-                      onSuccess: () => {
-                        queryClient.invalidateQueries([
-                          `notifications${origin}`,
-                        ]);
-                      },
-                    },
-                  );
-                }
-              }}
-            >
-              <ActionContainer>
-                <Icon icon="ic:round-delete-outline" width={26} />
-              </ActionContainer>
-            </button>
-          )}
         </div>
       </div>
     );

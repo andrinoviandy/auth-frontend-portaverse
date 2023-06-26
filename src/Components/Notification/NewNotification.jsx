@@ -10,7 +10,7 @@ import NotificationSection from "./NotificationSection";
 
 function NewNotification({ icon }) {
   const [opened, setOpened] = useState(false);
-  const [activeTab, setActiveTab] = useState("lms");
+  const [activeTab, setActiveTab] = useState("all");
 
   const view = (v = 0, isAbsolute = true) => {
     if (v > 99) {
@@ -63,7 +63,7 @@ function NewNotification({ icon }) {
       onChange={setOpened}
       position="bottom-end"
       offset={17.5}
-      width={400}
+      width={500}
       radius="md"
     >
       <Menu.Target>
@@ -73,10 +73,10 @@ function NewNotification({ icon }) {
         </button>
       </Menu.Target>
 
-      <Menu.Dropdown className="min-h-[10rem] max-h-[35rem] overflow-y-scroll scroll-style-2 py-0 my-0">
+      <Menu.Dropdown className=" max-h-[721px] overflow-y-scroll scroll-style-2 py-0 my-0">
         <Menu.Label className="sticky top-0 z-[2] bg-white">
           <div className="flex justify-between items-center h-10">
-            <h2 className=" font-bold text-primary3">Notifikasi</h2>
+            <h2 className=" font-bold text-text1">Notifikasi</h2>
             {/* <div className="flex gap-1">
               <button type="button" className="relative">
                 {view(0)}
@@ -99,33 +99,72 @@ function NewNotification({ icon }) {
         <Tabs
           value={activeTab}
           onTabChange={setActiveTab}
-          classNames={{
-            tabLabel: "text-lg  text-center font-semibold",
-          }}
           sx={() => ({
             "[data-active]": {
               color: "rgb(1, 109, 178) !important",
             },
           })}
+          classNames={{
+            tabLabel: "text-sm  text-center font-semibold",
+          }}
         >
-          <Tabs.List grow>
+          <Tabs.List>
+            <Tabs.Tab value="all">
+              <div
+                className={`flex gap-2 items-center ${
+                  activeTab !== "all"
+                    ? "text-darkGrey"
+                    : "text-primary3"
+                }`}
+              >
+                Pemberitahuan{" "}
+                {view(unreadNotificationCount?.all, false)}
+              </div>
+            </Tabs.Tab>
             <Tabs.Tab value="kms">
-              <div className="flex gap-2 items-center">
+              <div
+                className={`flex gap-2 items-center ${
+                  activeTab !== "kms"
+                    ? "text-darkGrey"
+                    : "text-primary3"
+                }`}
+              >
                 KMS {view(unreadNotificationCount?.kms, false)}
               </div>
             </Tabs.Tab>
 
             <Tabs.Tab value="lms">
-              <div className="flex gap-2 items-center">
+              <div
+                className={`flex gap-2 items-center ${
+                  activeTab !== "lms"
+                    ? "text-darkGrey"
+                    : "text-primary3"
+                }`}
+              >
+                {" "}
                 LMS {view(unreadNotificationCount?.lms, false)}
               </div>
             </Tabs.Tab>
             <Tabs.Tab value="tms">
-              <div className="flex gap-2 items-center">
+              <div
+                className={`flex gap-2 items-center ${
+                  activeTab !== "tms"
+                    ? "text-darkGrey"
+                    : "text-primary3"
+                }`}
+              >
+                {" "}
                 TMS {view(unreadNotificationCount?.tms, false)}
               </div>
             </Tabs.Tab>
           </Tabs.List>
+          <Tabs.Panel value="all">
+            <NotificationSection
+              origin="all"
+              tab={activeTab}
+              unreadCount={unreadNotificationCount}
+            />
+          </Tabs.Panel>
           <Tabs.Panel value="kms">
             <NotificationSection
               origin="kms"
