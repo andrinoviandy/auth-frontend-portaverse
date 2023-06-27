@@ -16,14 +16,14 @@ export default function ChipCarousel({ data, value, onClick }) {
     <div className="flex items-center w-full py-2">
       <button
         type="button"
-        className="static m-0 text-darkGrey mr-5"
+        className="static m-0 text-primary3 mr-5"
         onClick={handleSlideLeft}
       >
         <Icon icon="ooui:previous-ltr" width={24} />
       </button>
       <div
         ref={sliderRef}
-        className="w-[75vw] h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth hide-scrollbar-1 hide-scrollbar-2 flex gap-3"
+        className="w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth hide-scrollbar-1 hide-scrollbar-2 flex gap-3 text-sm"
       >
         {[{ label: "All", value: null }, ...data].map((item) => (
           <button
@@ -42,7 +42,7 @@ export default function ChipCarousel({ data, value, onClick }) {
       </div>
       <button
         type="button"
-        className="static m-0 text-darkGrey ml-5"
+        className="static m-0 text-primary3 ml-5 text-sm"
         onClick={handleSlideRight}
       >
         <Icon icon="ooui:previous-rtl" width={24} />

@@ -1,17 +1,15 @@
-/* eslint-disable react/prop-types */
-import { Button, Menu, Tabs } from "@mantine/core";
 import React, { useState } from "react";
-import { Icon } from "@iconify/react";
+import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 import {
   BASE_PROXY,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
-import ActionContainer from "../NewNavbar/ActionContainer";
-import NotificationSection from "./NotificationSection";
+import { Button, Tabs } from "@mantine/core";
+import { Icon } from "@iconify/react";
+import NotificationSection from "../../Components/Notification/NotificationSection";
 
-function NewNotification({ icon }) {
-  const [opened, setOpened] = useState(false);
+function Notifications() {
   const [activeTab, setActiveTab] = useState("all");
 
   const view = (v = 0, isAbsolute = true) => {
@@ -60,39 +58,24 @@ function NewNotification({ icon }) {
   );
 
   return (
-    <Menu
-      opened={opened}
-      onChange={setOpened}
-      position="bottom-end"
-      offset={17.5}
-      width={500}
-      radius="md"
-    >
-      <Menu.Target>
-        <button type="button" className="relative">
-          {view(unreadNotificationCount?.all)}
-          <ActionContainer isActive={opened}>{icon}</ActionContainer>
-        </button>
-      </Menu.Target>
-
-      <Menu.Dropdown className=" max-h-[721px] overflow-y-scroll scroll-style-2 py-0 my-0">
-        <Menu.Label className="sticky top-0 z-[2] bg-white">
-          <div className="flex justify-between items-center h-10">
-            <h2 className=" font-bold text-text1">Notifikasi</h2>
-            <Button
-              onClick={() => {
-                window.location.href = `${
-                  import.meta.env.VITE_SSO_URL
-                }/notifications/setting`;
-              }}
-              size="xs"
-              variant="outline"
-              leftIcon={<Icon icon="ic:sharp-settings" width={18} />}
-            >
-              Atur Notifikasi
-            </Button>
-          </div>
-        </Menu.Label>
+    <div className="flex flex-col">
+      <NewNavbar />
+      <div className="px-[6rem] py-8">
+        <div className="flex justify-between items-center">
+          <h1 className="font-semibold">Notifikasi</h1>
+          <Button
+            onClick={() => {
+              window.location.href = `${
+                import.meta.env.VITE_SSO_URL
+              }/notifications/setting`;
+            }}
+            size="xs"
+            variant="outline"
+            leftIcon={<Icon icon="ic:sharp-settings" width={18} />}
+          >
+            Atur Notifikasi
+          </Button>
+        </div>{" "}
         <Tabs
           value={activeTab}
           onTabChange={setActiveTab}
@@ -157,6 +140,7 @@ function NewNotification({ icon }) {
           </Tabs.List>
           <Tabs.Panel value="all">
             <NotificationSection
+              isPage
               origin="all"
               tab={activeTab}
               unreadCount={unreadNotificationCount}
@@ -164,6 +148,7 @@ function NewNotification({ icon }) {
           </Tabs.Panel>
           <Tabs.Panel value="kms">
             <NotificationSection
+              isPage
               origin="kms"
               tab={activeTab}
               unreadCount={unreadNotificationCount}
@@ -171,6 +156,7 @@ function NewNotification({ icon }) {
           </Tabs.Panel>
           <Tabs.Panel value="lms">
             <NotificationSection
+              isPage
               origin="lms"
               tab={activeTab}
               unreadCount={unreadNotificationCount}
@@ -179,14 +165,15 @@ function NewNotification({ icon }) {
           <Tabs.Panel value="tms">
             <NotificationSection
               origin="tms"
+              isPage
               tab={activeTab}
               unreadCount={unreadNotificationCount}
             />
           </Tabs.Panel>
         </Tabs>
-      </Menu.Dropdown>
-    </Menu>
+      </div>
+    </div>
   );
 }
 
-export default NewNotification;
+export default Notifications;

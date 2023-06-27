@@ -70,10 +70,16 @@ export const NOTIFICATION_ENDPOINT = {
   GET: {
     notifications: "/notification",
     unreadCount: "/notification/other/unread",
+    notificationModules: "/notification/other/modules",
   },
   PUT: {
     markAsRead: (notificationId) =>
       `/notification/${notificationId}/read-mark`,
+    allMarkAsRead: "/notification/other/all-read-mark",
+  },
+  DELETE: {
+    deleteNotification: (notificationId) =>
+      `/notification/${notificationId}`,
   },
 };
 
