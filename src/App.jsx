@@ -15,6 +15,7 @@ import NewPassSuccess from "./Pages/NewPassSuccess";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
+import Notifications from "./Pages/Notifications/Notifications";
 
 function App() {
   document.title = "Portaverse - Pelindo";
@@ -59,6 +60,7 @@ function App() {
             path="/landing"
             element={<NewLandingPageAuthorized />}
           />
+          <Route path="/notifications" element={<Notifications />} />
         </Route>
         <Route
           element={
