@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/prop-types */
@@ -35,7 +36,7 @@ const listStatus = [
   { label: "Telah Dibaca", value: "read" },
   {
     label: "Belum Dibaca",
-    value: "not_read",
+    value: "unread",
   },
 ];
 
@@ -45,6 +46,15 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
   const ref = useRef();
 
   const notificationService = Networks(BASE_PROXY.notifications);
+
+  const form = useForm({
+    initialValues: {
+      checkAll: false,
+      status: null,
+      checkbox: {},
+    },
+    validate: {},
+  });
 
   const { data: dataModules } = notificationService.query(
     NOTIFICATION_ENDPOINT.GET.notificationModules,
@@ -72,7 +82,7 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
     fetchNextPage,
   } = notificationService.infiniteQuery(
     NOTIFICATION_ENDPOINT.GET.notifications,
-    [`notifications${origin}`, module],
+    [`notifications${origin}`, module, origin, form.values.status],
     {
       getNextPageParam: (lastPage, allPages) => {
         const maxPages = lastPage.totalPage;
@@ -92,9 +102,15 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
     {
       params: {
         page: 1,
-        size: isPage ? 9999999 : 10,
-        origin,
+        size: 10,
+        origin: origin !== "all" ? origin : null,
         module,
+        read:
+          form.values.status === "read"
+            ? 1
+            : form.values.status === "unread"
+            ? 0
+            : null,
       },
     },
   );
@@ -106,15 +122,6 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
   );
 
   useOnScrollFetch(hasNextPage, fetchNextPage, ref);
-  const form = useForm({
-    initialValues: {
-      checkAll: false,
-      type: "all",
-      status: null,
-      checkbox: {},
-    },
-    validate: {},
-  });
 
   const initialState = useMemo(() => {
     const field = {
@@ -229,17 +236,17 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
     return (
       <div
         className={`${
-          notification?.is_pinned ? "border-l-4 border-primary3 " : ""
-        } border-b`}
+          notification?.is_pinned ? "border-l-2 border-primary3 " : ""
+        } `}
       >
-        <div
-          key={notification?.notification_id}
-          className={` py-2 px-2  ${isDetailed ? "bg-bg2" : ""}`}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
-        >
-          <div className="flex flex-row items-start w-full gap-4 cursor-pointer">
-            <div className="">
+        <div className="border-b">
+          <div
+            key={notification?.notification_id}
+            className={` py-2 px-2  ${isDetailed ? "bg-bg2" : ""}`}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
+            <div className="flex flex-row items-start w-full gap-4 cursor-pointer">
               <Checkbox
                 size="xs"
                 onChange={(e) => {
@@ -254,29 +261,93 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
                   ]
                 }
               />
-            </div>
-            <div className={`flex flex-col gap-[2px] w-full `}>
-              <div className="flex-row flex justify-between items-center w-full">
-                <span
-                  className="font-bold text-primary3"
-                  onClick={() => handleClickNotif(notification)}
-                >
-                  {notification?.title}
-                </span>
-                <div className="flex flex-row gap-1 ">
-                  {isHover && !notification?.is_global && (
-                    <>
-                      <button
-                        type="button"
-                        className="p-0 font-normal hover:text-primary3 text-darkGrey"
-                        onClick={() => {
-                          if (!notification?.viewed) {
+              <div className={`flex flex-col gap-[2px] w-full `}>
+                <div className="flex-row flex justify-between items-center w-full">
+                  <span
+                    className="font-bold text-primary3"
+                    onClick={() => handleClickNotif(notification)}
+                  >
+                    {notification?.title}
+                  </span>
+                  <div className="flex flex-row gap-1 ">
+                    {isHover && !notification?.is_global && (
+                      <>
+                        <button
+                          type="button"
+                          className="p-0 font-normal hover:text-primary3 text-darkGrey"
+                          onClick={() => {
+                            if (!notification?.viewed) {
+                              put(
+                                {
+                                  endpoint:
+                                    NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                                      notification?.notification_id,
+                                    ),
+                                },
+                                {
+                                  onSuccess: () => {
+                                    queryClient.invalidateQueries([
+                                      `notifications${origin}`,
+                                    ]);
+                                  },
+                                },
+                              );
+                            }
+                          }}
+                        >
+                          <Icon
+                            icon={
+                              !!notification?.viewed
+                                ? "mdi-light:email-open"
+                                : "mdi-light:email"
+                            }
+                            width={20}
+                          />
+                        </button>
+                        <button
+                          type="button"
+                          className="hover:text-danger3 p-0 font-normal text-darkGrey"
+                          onClick={() => {
+                            if (!notification?.is_global) {
+                              deleteMutate(
+                                {
+                                  endpoint:
+                                    NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
+                                      notification?.notification_id,
+                                    ),
+                                },
+                                {
+                                  onSuccess: () => {
+                                    queryClient.invalidateQueries([
+                                      `notifications${origin}`,
+                                    ]);
+                                  },
+                                },
+                              );
+                            }
+                          }}
+                        >
+                          <Icon icon="ph:trash" width={20} />
+                        </button>
+                        <button
+                          type="button"
+                          className={`p-0 font-normal hover:text-primary3  ${
+                            !!notification?.is_pinned
+                              ? "text-primary3"
+                              : "text-darkGrey"
+                          }`}
+                          onClick={() => {
                             put(
                               {
                                 endpoint:
-                                  NOTIFICATION_ENDPOINT.PUT.markAsRead(
+                                  NOTIFICATION_ENDPOINT.PUT.pinnedNotif(
                                     notification?.notification_id,
                                   ),
+                                data: {
+                                  pinned: notification?.is_pinned
+                                    ? 0
+                                    : 1,
+                                },
                               },
                               {
                                 onSuccess: () => {
@@ -286,125 +357,64 @@ function NotificationSection({ origin, tab, unreadCount, isPage }) {
                                 },
                               },
                             );
-                          }
-                        }}
-                      >
-                        <Icon
-                          icon={
-                            !!notification?.viewed
-                              ? "mdi-light:email-open"
-                              : "mdi-light:email"
-                          }
-                          width={20}
-                        />
-                      </button>
-                      <button
-                        type="button"
-                        className="hover:text-danger3 p-0 font-normal text-darkGrey"
-                        onClick={() => {
-                          if (!notification?.is_global) {
-                            deleteMutate(
-                              {
-                                endpoint:
-                                  NOTIFICATION_ENDPOINT.DELETE.deleteNotification(
-                                    notification?.notification_id,
-                                  ),
-                              },
-                              {
-                                onSuccess: () => {
-                                  queryClient.invalidateQueries([
-                                    `notifications${origin}`,
-                                  ]);
-                                },
-                              },
-                            );
-                          }
-                        }}
-                      >
-                        <Icon icon="ph:trash" width={20} />
-                      </button>
-                      <button
-                        type="button"
-                        className={`p-0 font-normal hover:text-primary3  ${
-                          !!notification?.is_pinned
-                            ? "text-primary3"
-                            : "text-darkGrey"
-                        }`}
-                        onClick={() => {
-                          // if (!notification?.viewed) {
-                          //   put(
-                          //     {
-                          //       endpoint:
-                          //         NOTIFICATION_ENDPOINT.PUT.markAsRead(
-                          //           notification?.notification_id,
-                          //         ),
-                          //     },
-                          //     {
-                          //       onSuccess: () => {
-                          //         queryClient.invalidateQueries([
-                          //           `notifications${origin}`,
-                          //         ]);
-                          //       },
-                          //     },
-                          //   );
-                          // }
-                          console.log("pinned");
-                        }}
-                      >
-                        <Icon
-                          icon={
-                            !!notification?.is_pinned
-                              ? "tabler:pin-filled"
-                              : "tabler:pin"
-                          }
-                          width={20}
-                        />
-                      </button>
-                    </>
-                  )}
-                  {true && (
-                    <button
-                      type="button"
-                      className="p-0 font-normal hover:text-primary3  text-darkGrey"
-                      onClick={() => {
-                        setIsDetailed((prev) => !prev);
-                      }}
-                    >
-                      <Icon icon="charm:chevron-down" size="20" />
-                    </button>
-                  )}
-                  {!notification?.viewed && (
-                    <span className="text-primary3 text-2xl">
-                      &bull;
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div onClick={() => handleClickNotif(notification)}>
-                <span
-                  className={`text-text1 text-sm w-full ${
-                    !isHover ? "line-clamp-2" : ""
-                  }`}
-                >
-                  {notification?.message &&
-                    parse(notification?.message)}
-                </span>
-                <div className="flex gap-1 items-center text-darkGrey text-xs">
-                  <Icon
-                    icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
-                    width={12}
-                  />
-                  <span className="pt-1">
-                    {dayjs(notification?.reminder_at)?.format(
-                      "DD MMMM YYYY, H:mm",
+                            console.log("pinned");
+                          }}
+                        >
+                          <Icon
+                            icon={
+                              !!notification?.is_pinned
+                                ? "tabler:pin-filled"
+                                : "tabler:pin"
+                            }
+                            width={20}
+                          />
+                        </button>
+                      </>
                     )}
+                    {notification?.is_has_detail && (
+                      <button
+                        type="button"
+                        className="p-0 font-normal hover:text-primary3  text-darkGrey"
+                        onClick={() => {
+                          setIsDetailed((prev) => !prev);
+                        }}
+                      >
+                        <Icon icon="charm:chevron-down" size="20" />
+                      </button>
+                    )}
+                    {!notification?.viewed && (
+                      <span className="text-primary3 text-2xl">
+                        &bull;
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div onClick={() => handleClickNotif(notification)}>
+                  <span
+                    className={`text-text1 text-sm w-full ${
+                      !isHover ? "line-clamp-2" : ""
+                    }`}
+                  >
+                    {notification?.message &&
+                      parse(notification?.message)}
                   </span>
-                </div>{" "}
+                  <div className="flex gap-1 items-center text-darkGrey text-xs">
+                    <Icon
+                      icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
+                      width={12}
+                    />
+                    <span className="pt-1">
+                      {dayjs(notification?.reminder_at)?.format(
+                        "DD MMMM YYYY, H:mm",
+                      )}
+                    </span>
+                  </div>{" "}
+                </div>
               </div>
             </div>
           </div>
+          {isDetailed && <DetailNotification />}
         </div>
-        {isDetailed && <DetailNotification />}
       </div>
     );
   }

@@ -76,6 +76,8 @@ export const NOTIFICATION_ENDPOINT = {
     markAsRead: (notificationId) =>
       `/notification/${notificationId}/read-mark`,
     allMarkAsRead: "/notification/other/all-read-mark",
+    pinnedNotif: (notificationId) =>
+      `/notification/${notificationId}/pin`,
   },
   DELETE: {
     deleteNotification: (notificationId) =>
