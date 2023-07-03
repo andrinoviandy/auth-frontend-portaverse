@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import { Button, Tabs } from "@mantine/core";
+import { Icon } from "@iconify/react";
 import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 import {
   BASE_PROXY,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
-import { Button, Tabs } from "@mantine/core";
-import { Icon } from "@iconify/react";
 import NotificationSection from "../../Components/Notification/NotificationSection";
 
 function Notifications() {
