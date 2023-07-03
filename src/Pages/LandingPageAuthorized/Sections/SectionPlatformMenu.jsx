@@ -245,6 +245,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        hidden: true, // TODO: change this to false when menu is integrated
       },
       {
         label: "Smart Plan KPI",
@@ -283,6 +284,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        hidden: !["SA"].includes(user?.role_code),
       },
       {
         label: "Development Plan",
@@ -296,6 +298,7 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
+        hidden: !["SA"].includes(user?.role_code),
       },
       {
         label: "Manajemen Role",
@@ -323,6 +326,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        hidden: !["SA"].includes(user?.role_code),
       },
       {
         label: "Promotion & Rotation",
@@ -336,6 +340,7 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
+        hidden: !["SA"].includes(user?.role_code),
       },
       {
         label: "Performance Report",
@@ -349,6 +354,7 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
+        hidden: !["SA"].includes(user?.role_code),
       },
     ],
   };
