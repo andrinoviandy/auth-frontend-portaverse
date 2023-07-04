@@ -21,6 +21,7 @@ import { useQueryClient } from "react-query";
 import { useForm } from "@mantine/form";
 import {
   BASE_PROXY,
+  COURSE_ENDPOINT,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
@@ -270,6 +271,10 @@ function NotificationSection({ origin, tab, isPage }) {
   function MenuItem({ notification }) {
     const [isHover, setIsHover] = useState(false);
     const [isDetailed, setIsDetailed] = useState(false);
+    const [isAction, setIsAction] = useState(
+      notification?.is_have_action,
+    );
+
     return (
       <div
         className={`${
@@ -299,9 +304,11 @@ function NotificationSection({ origin, tab, isPage }) {
                 }
               />
               <div className={`flex flex-col gap-[2px] w-full `}>
-                <div className="flex-row flex justify-between items-center w-full">
+                <div className="flex-row flex justify-between items-start w-full">
                   <span
-                    className="font-bold text-primary3"
+                    className={`font-bold text-primary3 ${
+                      !isHover ? "line-clamp-1" : ""
+                    }`}
                     onClick={() => handleClickNotif(notification)}
                   >
                     {notification?.title}
@@ -407,8 +414,7 @@ function NotificationSection({ origin, tab, isPage }) {
                         </button>
                       </>
                     )}
-                    {notification?.is_has_detail ||
-                    notification?.is_has_action ? (
+                    {notification?.is_have_detail ? (
                       <button
                         type="button"
                         className="p-0 font-normal hover:text-primary3  text-darkGrey"
@@ -452,9 +458,16 @@ function NotificationSection({ origin, tab, isPage }) {
           </div>
           {isDetailed && (
             <DetailNotification
-              isAction={notification?.is_has_action}
+              isDetailed={isDetailed}
               notification={notification}
               setIsDetailed={setIsDetailed}
+            />
+          )}
+          {isAction && (
+            <DetailNotification
+              isAction
+              notification={notification}
+              setIsAction={setIsAction}
             />
           )}
         </div>
@@ -472,72 +485,76 @@ function NotificationSection({ origin, tab, isPage }) {
           }}
         />
       </div>
-      {notifications?.items?.length > 0 && (
-        <div className="flex flex-row justify-between p-2 border-b">
-          <div className="flex flex-row items-center  gap-2">
-            <div className="mt-2">
-              <Checkbox
-                classNames={{ label: "text-xs" }}
-                size="xs"
-                label="Pilih Semua"
-                onChange={(e) => {
-                  form.setFieldValue("checkAll", e.target.checked);
-                  const data = {};
-                  notifications?.items?.forEach((v) => {
-                    if (
-                      Object.keys(form.values.checkbox)?.filter(
-                        (key) => {
-                          return form.values.checkbox[key] === true;
-                        },
-                      )?.length === notifications?.items?.length
-                    ) {
-                      data[`notif_${v?.notification_id}`] = false;
-                    } else {
-                      data[`notif_${v?.notification_id}`] = true;
-                    }
-                  });
-                  form.setFieldValue("checkbox", data);
-                }}
-                checked={
-                  Object.keys(form.values.checkbox)?.filter((key) => {
-                    return form.values.checkbox[key] === true;
-                  })?.length === notifications?.items?.length
-                }
-              />
-            </div>
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <Icon icon="charm:chevron-down" size="20" />
-              </Menu.Target>
+      <div className="flex flex-row justify-between p-2 border-b">
+        <div className="flex flex-row items-center  gap-2">
+          {notifications?.items?.length > 0 && (
+            <>
+              <div className="mt-2">
+                <Checkbox
+                  classNames={{ label: "text-xs" }}
+                  size="xs"
+                  label="Pilih Semua"
+                  onChange={(e) => {
+                    form.setFieldValue("checkAll", e.target.checked);
+                    const data = {};
+                    notifications?.items?.forEach((v) => {
+                      if (
+                        Object.keys(form.values.checkbox)?.filter(
+                          (key) => {
+                            return form.values.checkbox[key] === true;
+                          },
+                        )?.length === notifications?.items?.length
+                      ) {
+                        data[`notif_${v?.notification_id}`] = false;
+                      } else {
+                        data[`notif_${v?.notification_id}`] = true;
+                      }
+                    });
+                    form.setFieldValue("checkbox", data);
+                  }}
+                  checked={
+                    Object.keys(form.values.checkbox)?.filter(
+                      (key) => {
+                        return form.values.checkbox[key] === true;
+                      },
+                    )?.length === notifications?.items?.length
+                  }
+                />
+              </div>
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <Icon icon="charm:chevron-down" size="20" />
+                </Menu.Target>
 
-              <Menu.Dropdown>
-                <Menu.Item onClick={() => handleChangeRead(1)}>
-                  Tandai semua dibaca
-                </Menu.Item>
-                <Menu.Item onClick={() => handleChangeRead(0)}>
-                  Tandai semua belum dibaca
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </div>
-          <div className="w-[9rem]">
-            <Select
-              data={listStatus}
-              size="xs"
-              placeholder="Status Notifikasi"
-              value={form.values.status}
-              onChange={(v) => {
-                form.setFieldValue("status", v);
-              }}
-              {...getClearableProps(
-                form.values.status,
-                () => form.setFieldValue("status", null),
-                "select",
-              )}
-            />
-          </div>
+                <Menu.Dropdown>
+                  <Menu.Item onClick={() => handleChangeRead(1)}>
+                    Tandai semua dibaca
+                  </Menu.Item>
+                  <Menu.Item onClick={() => handleChangeRead(0)}>
+                    Tandai semua belum dibaca
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>{" "}
+            </>
+          )}
         </div>
-      )}
+        <div className="w-[9rem]">
+          <Select
+            data={listStatus}
+            size="xs"
+            placeholder="Status Notifikasi"
+            value={form.values.status}
+            onChange={(v) => {
+              form.setFieldValue("status", v);
+            }}
+            {...getClearableProps(
+              form.values.status,
+              () => form.setFieldValue("status", null),
+              "select",
+            )}
+          />
+        </div>
+      </div>
       <div
         className={` overflow-auto scroll-style-2 ${
           isPage ? "h-full" : "h-[250px]"
@@ -583,10 +600,18 @@ function NotificationSection({ origin, tab, isPage }) {
 function DetailNotification({
   notification,
   isAction,
-  setIsDetailed,
+  setIsAction,
+  isDetailed,
 }) {
-  const data = [{}, {}, {}];
-  const isLoading = false;
+  const courseService = Networks(BASE_PROXY.course);
+
+  const { data, isLoading } = courseService.query(
+    COURSE_ENDPOINT.GET.getBastLog(notification?.data),
+    ["getHistoryBast"],
+    { enabled: !isAction && isDetailed },
+    {},
+  );
+
   return (
     <div className="px-[2.5rem] py-[1rem]">
       {isAction ? (
@@ -595,7 +620,7 @@ function DetailNotification({
             variant="outline"
             color="red"
             size="xs"
-            onClick={() => setIsDetailed(false)}
+            onClick={() => setIsAction(false)}
           >
             Tolak
           </Button>
