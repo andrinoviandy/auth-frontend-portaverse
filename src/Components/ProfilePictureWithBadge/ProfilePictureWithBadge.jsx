@@ -8,6 +8,7 @@ export default function ProfilePictureWithBadge({
   name,
   style,
   badgeIcon,
+  noImgVariant = "default",
 }) {
   if (!img) {
     return (
@@ -18,8 +19,9 @@ export default function ProfilePictureWithBadge({
           img={img}
           style={style}
           name={name}
+          noImgVariant={noImgVariant}
         />
-        <div className="absolute top-4 right-0">{badgeIcon}</div>
+        <div className="absolute bottom-0 right-0">{badgeIcon}</div>
       </div>
     );
   }
@@ -33,7 +35,7 @@ export default function ProfilePictureWithBadge({
         style={style}
         name={name}
       />
-      <div className="absolute top-4 right-0">{badgeIcon}</div>
+      <div className="absolute bottom-0 right-0">{badgeIcon}</div>
     </div>
   );
 }
@@ -45,6 +47,7 @@ ProfilePictureWithBadge.propTypes = {
   img: PropTypes.string,
   name: PropTypes.string,
   badgeIcon: PropTypes.element.isRequired,
+  noImgVariant: PropTypes.string,
 };
 
 ProfilePictureWithBadge.defaultProps = {
@@ -53,4 +56,5 @@ ProfilePictureWithBadge.defaultProps = {
   style: {},
   img: "",
   name: "",
+  noImgVariant: "default",
 };

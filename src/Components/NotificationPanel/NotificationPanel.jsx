@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react";
 import { Button, Loader } from "@mantine/core";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { useQueryClient } from "react-query";
 import {
   BASE_PROXY,
@@ -148,7 +147,6 @@ export default function NotificationPanel({
 
           return notifications.pages.map((v, i) =>
             v.notifications.map((notification, j) => {
-              console.log(notification);
               if (
                 notifications.pages.length === i + 1 &&
                 v.notifications.length === j + 1

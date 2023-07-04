@@ -1,1 +1,1 @@
-export { default } from "./LandingPageAuthorized";
+export { default } from "./NewLandingPageAuthorized";
