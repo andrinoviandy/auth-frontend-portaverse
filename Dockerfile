@@ -19,29 +19,29 @@ ENV VITE_JWT_KEY=smartkms2022
 ENV VITE_API_KEY=smartkms20221
 
 # !IMPORTANT : temporary only, uncomment if merge to master
-# ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee-service-portaverse.pelindo.co.id
-# ENV VITE_API_AUTH_SERVICE_URL=https://user-auth-service-portaverse.pelindo.co.id
-# ENV VITE_API_SOCIAL_SERVICE_URL=https://social-portaverse.pelindo.co.id
-# ENV VITE_API_NOTIFICATIONS_SERVICE_URL=https://notification-portaverse.pelindo.co.id
-# ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan-service-portaverse.pelindo.co.id
-# ENV VITE_API_SSO_SERVICE_URL=https://user-auth-service-portaverse.pelindo.co.id
-# ENV VITE_API_COURSE_SERVICE_URL=https://course-service-portaverse.pelindo.co.id
-# ENV VITE_KMS_URL=https://knowledge-portaverse.pelindo.co.id
-# ENV VITE_LMS_URL=https://learning-portaverse.pelindo.co.id
-# ENV VITE_TMS_URL=https://talent-portaverse.pelindo.co.id
-# ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature-service-portaverse.pelindo.co.id
+ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee-service-portaverse.pelindo.co.id
+ENV VITE_API_AUTH_SERVICE_URL=https://user-auth-service-portaverse.pelindo.co.id
+ENV VITE_API_SOCIAL_SERVICE_URL=https://social-portaverse.pelindo.co.id
+ENV VITE_API_NOTIFICATIONS_SERVICE_URL=https://notification-portaverse.pelindo.co.id
+ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan-service-portaverse.pelindo.co.id
+ENV VITE_API_SSO_SERVICE_URL=https://user-auth-service-portaverse.pelindo.co.id
+ENV VITE_API_COURSE_SERVICE_URL=https://course-service-portaverse.pelindo.co.id
+ENV VITE_KMS_URL=https://knowledge-portaverse.pelindo.co.id
+ENV VITE_LMS_URL=https://learning-portaverse.pelindo.co.id
+ENV VITE_TMS_URL=https://talent-portaverse.pelindo.co.id
+ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature-service-portaverse.pelindo.co.id
 
-ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
-ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id
-ENV VITE_API_SOCIAL_SERVICE_URL=https://social.portaverse.co.id
-ENV VITE_API_SSO_SERVICE_URL=https://user-auth.portaverse.co.id
-ENV VITE_API_NOTIFICATIONS_SERVICE_URL=https://notification.portaverse.co.id
-ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan.portaverse.co.id
-ENV VITE_API_COURSE_SERVICE_URL=https://course.portaverse.co.id
-ENV VITE_KMS_URL=https://knowledge.portaverse.co.id
-ENV VITE_LMS_URL=https://learning.portaverse.co.id
-ENV VITE_TMS_URL=https://talent.portaverse.co.id
-ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature.portaverse.co.id
+# ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
+# ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id
+# ENV VITE_API_SOCIAL_SERVICE_URL=https://social.portaverse.co.id
+# ENV VITE_API_SSO_SERVICE_URL=https://user-auth.portaverse.co.id
+# ENV VITE_API_NOTIFICATIONS_SERVICE_URL=https://notification.portaverse.co.id
+# ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan.portaverse.co.id
+# ENV VITE_API_COURSE_SERVICE_URL=https://course.portaverse.co.id
+# ENV VITE_KMS_URL=https://knowledge.portaverse.co.id
+# ENV VITE_LMS_URL=https://learning.portaverse.co.id
+# ENV VITE_TMS_URL=https://talent.portaverse.co.id
+# ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature.portaverse.co.id
 
 RUN yarn build
 
