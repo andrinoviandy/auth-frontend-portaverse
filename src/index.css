@@ -174,3 +174,10 @@ select:focus > option:hover {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}

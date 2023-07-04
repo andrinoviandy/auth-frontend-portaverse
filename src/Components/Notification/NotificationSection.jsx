@@ -272,8 +272,9 @@ function NotificationSection({ origin, tab, isPage }) {
     const [isHover, setIsHover] = useState(false);
     const [isDetailed, setIsDetailed] = useState(false);
     const [isAction, setIsAction] = useState(
-      notification?.is_has_action,
+      notification?.is_have_action,
     );
+
     return (
       <div
         className={`${
@@ -303,9 +304,11 @@ function NotificationSection({ origin, tab, isPage }) {
                 }
               />
               <div className={`flex flex-col gap-[2px] w-full `}>
-                <div className="flex-row flex justify-between items-center w-full">
+                <div className="flex-row flex justify-between items-start w-full">
                   <span
-                    className="font-bold text-primary3"
+                    className={`font-bold text-primary3 ${
+                      !isHover ? "line-clamp-1" : ""
+                    }`}
                     onClick={() => handleClickNotif(notification)}
                   >
                     {notification?.title}
@@ -411,8 +414,7 @@ function NotificationSection({ origin, tab, isPage }) {
                         </button>
                       </>
                     )}
-                    {notification?.is_has_detail ||
-                    notification?.is_has_action ? (
+                    {notification?.is_have_detail ? (
                       <button
                         type="button"
                         className="p-0 font-normal hover:text-primary3  text-darkGrey"
