@@ -109,6 +109,7 @@ function StatCard({ label, value, tooltip, loading }) {
           label={tooltip}
           variant="info-filled"
           color={color.grey2}
+          labelColor="black"
         />
       </div>
       {loading ? (
