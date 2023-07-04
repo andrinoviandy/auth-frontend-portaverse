@@ -21,6 +21,7 @@ import { useQueryClient } from "react-query";
 import { useForm } from "@mantine/form";
 import {
   BASE_PROXY,
+  COURSE_ENDPOINT,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
@@ -270,6 +271,9 @@ function NotificationSection({ origin, tab, isPage }) {
   function MenuItem({ notification }) {
     const [isHover, setIsHover] = useState(false);
     const [isDetailed, setIsDetailed] = useState(false);
+    const [isAction, setIsAction] = useState(
+      notification?.is_has_action,
+    );
     return (
       <div
         className={`${
@@ -452,9 +456,16 @@ function NotificationSection({ origin, tab, isPage }) {
           </div>
           {isDetailed && (
             <DetailNotification
-              isAction={notification?.is_has_action}
+              isDetailed={isDetailed}
               notification={notification}
               setIsDetailed={setIsDetailed}
+            />
+          )}
+          {isAction && (
+            <DetailNotification
+              isAction
+              notification={notification}
+              setIsAction={setIsAction}
             />
           )}
         </div>
@@ -583,10 +594,18 @@ function NotificationSection({ origin, tab, isPage }) {
 function DetailNotification({
   notification,
   isAction,
-  setIsDetailed,
+  setIsAction,
+  isDetailed,
 }) {
-  const data = [{}, {}, {}];
-  const isLoading = false;
+  const courseService = Networks(BASE_PROXY.course);
+
+  const { data, isLoading } = courseService.query(
+    COURSE_ENDPOINT.GET.getBastLog(notification?.data),
+    ["getHistoryBast"],
+    { enabled: !isAction && isDetailed },
+    {},
+  );
+
   return (
     <div className="px-[2.5rem] py-[1rem]">
       {isAction ? (
@@ -595,7 +614,7 @@ function DetailNotification({
             variant="outline"
             color="red"
             size="xs"
-            onClick={() => setIsDetailed(false)}
+            onClick={() => setIsAction(false)}
           >
             Tolak
           </Button>

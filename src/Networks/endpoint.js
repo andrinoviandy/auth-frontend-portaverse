@@ -277,5 +277,6 @@ export const COURSE_ENDPOINT = {
       `/course/history-transaction/${employeeId}`,
     totalEmployeeLearningHours: (employeeId) =>
       `/course/total-learning-hours/${employeeId}`,
+    getBastLog: (bastId) => `/course/vendor/bast/${bastId}/log`,
   },
 };
