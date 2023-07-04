@@ -15,6 +15,7 @@ export const BASE_PROXY = {
   notifications: "/api/notifications/v1",
   smartplan: "/api/smartplan/v1",
   course: "/api/course/v1",
+  signature: "/api/signature/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -277,5 +278,11 @@ export const COURSE_ENDPOINT = {
       `/course/history-transaction/${employeeId}`,
     totalEmployeeLearningHours: (employeeId) =>
       `/course/total-learning-hours/${employeeId}`,
+  },
+};
+
+export const SIGNATURE_ENDPOINT = {
+  GET: {
+    checkSMSAuthorization: "/authorization/check",
   },
 };

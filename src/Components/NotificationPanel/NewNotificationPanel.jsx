@@ -135,7 +135,7 @@ export default function NewNotificationPanel({
             className="flex items-center gap-2 text-lg text-primary3 font-semibold"
           >
             <Icon icon="ci:check-all-big" fontSize={24} />
-            Mark as read
+            Tandai Sudah Dibaca
           </button>
         </div>
       </div>
@@ -183,12 +183,12 @@ export default function NewNotificationPanel({
           <Loader size="sm" className="mx-auto my-3.5" />
         ) : null}
       </div>
-      <a
+      {/* <a
         href="/landing"
         className="text-primary3 hover:text-primary4 hover:underline font-semibold mb-5 mx-auto"
       >
         Lihat Semua Pemberitahuan
-      </a>
+      </a> */}
     </div>
   );
 }

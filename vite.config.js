@@ -50,6 +50,13 @@ export default ({ mode }) => {
           secure: false,
           rewrite: (path) => path.replace(/^\/api\/course\/v1/, ""),
         },
+        "/api/signature/v1": {
+          target: process.env.VITE_API_SIGNATURE_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) =>
+            path.replace(/^\/api\/signature\/v1/, ""),
+        },
       },
     },
   });

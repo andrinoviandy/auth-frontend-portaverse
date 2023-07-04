@@ -18,7 +18,7 @@ export default function SectionHero() {
   } = user.employee;
 
   return (
-    <section className="mt-10">
+    <section className="relative mt-10 pb-10">
       <div className="grid grid-cols-2 gap-8 py-10 px-[5rem]">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
@@ -63,7 +63,7 @@ export default function SectionHero() {
           <NewNotificationPanel />
         </div>
       </div>
-      <img src={Wave} alt="wave" />
+      <img src={Wave} alt="wave" className="absolute -bottom-1" />
     </section>
   );
 }

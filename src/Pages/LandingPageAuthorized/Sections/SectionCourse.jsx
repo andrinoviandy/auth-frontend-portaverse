@@ -41,6 +41,7 @@ export default function SectionCourse() {
       params: {
         size: 2,
         type: "ongoing",
+        percentage: "most",
       },
     },
   );

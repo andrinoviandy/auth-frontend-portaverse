@@ -29,6 +29,7 @@ ENV VITE_API_KEY=smartkms20221
 # ENV VITE_KMS_URL=https://knowledge-portaverse.pelindo.co.id
 # ENV VITE_LMS_URL=https://learning-portaverse.pelindo.co.id
 # ENV VITE_TMS_URL=https://talent-portaverse.pelindo.co.id
+# ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature-service-portaverse.pelindo.co.id
 
 ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
 ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id
@@ -40,6 +41,7 @@ ENV VITE_API_COURSE_SERVICE_URL=https://course.portaverse.co.id
 ENV VITE_KMS_URL=https://knowledge.portaverse.co.id
 ENV VITE_LMS_URL=https://learning.portaverse.co.id
 ENV VITE_TMS_URL=https://talent.portaverse.co.id
+ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature.portaverse.co.id
 
 RUN yarn build
 

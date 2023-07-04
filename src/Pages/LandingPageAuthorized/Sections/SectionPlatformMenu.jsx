@@ -10,18 +10,24 @@ import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
 import PerformanceReport from "../../../Components/Assets/Svg/performance-report.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
+import SignatureManagement from "../../../Components/Assets/Svg/signature-management.svg";
+import {
+  BASE_PROXY,
+  SIGNATURE_ENDPOINT,
+} from "../../../Networks/endpoint";
+import { Networks } from "../../../Networks/factory";
 import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
   const [activeTab, setActiveTab] = useState("KMS");
-  const Menus = {
+  const [menus, setMenus] = useState({
     KMS: [
       {
         label: "Home",
         description:
-          "Capai target dan goals perusahaan dengan knowledge map",
+          "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
         route: "/home",
         icon: (
           <Icon
@@ -33,7 +39,8 @@ export default function SectionPlatformMenu() {
       },
       {
         label: "KMAP",
-        description: "Capai target perusahaan",
+        description:
+          "Peta pengetahuan dan aktivitas perusahaan yang diselaraskan dengan tujuan perusahaan",
         route: "/kmap",
         icon: (
           <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
@@ -41,8 +48,7 @@ export default function SectionPlatformMenu() {
       },
       {
         label: "Employees",
-        description:
-          "Daftar para pegawai Pelindo dalam satu platform",
+        description: "Daftar semua pegawai Pelindo dalam satu modul",
         route: "/employees",
         icon: (
           <Icon
@@ -55,7 +61,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Communities of Practice",
         description:
-          "Kumpulan komunitas untuk menemukan berbagai kegiatan dan aktivitas",
+          "Komunitas yang menjadi wadah knowledge sharing untuk topik-topik strategis",
         route: "/communities",
         icon: (
           <Icon
@@ -68,7 +74,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Communities of Interest",
         description:
-          "Kumpulan komunitas untuk menemukan berbagai kegiatan dan aktivitas",
+          "Komunitas-komunitas bagi para pegawai yang memiliki minat yang sama",
         route: "/communities?is-coi=1",
         icon: (
           <Icon
@@ -81,7 +87,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Repository",
         description:
-          "Kumpulan dokumen yang dibagikan pada portaverse",
+          "Wadah yang menampung dan mengelola semua dokumen yang berada di Portaverse",
         route: "/repository",
         icon: (
           <img src={Repository} alt="repo" className="w-[26px]" />
@@ -89,14 +95,15 @@ export default function SectionPlatformMenu() {
       },
       {
         label: "Ask of Expert",
-        description: "Platform untuk tanya jawab sesama pegawai",
+        description:
+          "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
         route: "/ask-expert",
         icon: <img src={AoE} alt="repo" className="w-[40px]" />,
       },
       {
         label: "Headquarter",
         description:
-          "Lihat statistik kinerja dan pengembangan dalam perusahan",
+          "Modul untuk mengelola dan mengatur semua modul KMS secara terpusat",
         route: "/hq/user-mngmt",
         icon: (
           <Icon icon="ri:hq-line" color={color.primary3} width={40} />
@@ -106,7 +113,8 @@ export default function SectionPlatformMenu() {
     LMS: [
       {
         label: "Home & Explore",
-        description: "Temukan berbagai subjek yang kamu minati",
+        description:
+          "Modul utama untuk melihat semua kursus, peringkat Learning Hours, dan lainnya",
         route: "/",
         icon: (
           <Icon
@@ -119,7 +127,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Dashboard",
         description:
-          "Profil pembelajaran untuk mendukung kinerja pegawai",
+          "Modul untuk mengelola semua informasi penting terkait akun Anda dalam LMS",
         route: "/dashboard",
         icon: (
           <Icon
@@ -132,7 +140,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Dashboard Kursus",
         description:
-          "Kumpulan semua kursus yang telah dipublikasi di Portaverse",
+          "Modul terpusat untuk mengelola semua aktivitas kursus-kursus Anda",
         route: "/course-pool/courses",
         icon: (
           <Icon
@@ -146,7 +154,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Manajemen Kompetensi",
         description:
-          "Kumpulan kompetensi yang telah diklasifikasikan di Portaverse",
+          "Modul terpusat untuk mengelola semua kompetensi-kompetensi dalam Portaverse",
         route: "/competency-management",
         icon: (
           <Icon
@@ -160,7 +168,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Manajemen Sertifikat",
         description:
-          "Kumpulan setifikast yang telah dibuat dan diklasifikasikan di Portaverse",
+          "Modul terpusat untuk mengelola dan membuat sertifikat dalam Portaverse",
         route: "/certificate-management",
         icon: (
           <Icon
@@ -176,7 +184,7 @@ export default function SectionPlatformMenu() {
           ? "Subcon Dashboard"
           : "Manajemen Subcon",
         description:
-          "Kumpulan subcon-subcon yang tergabung di Portaverse",
+          "Modul terpusat untuk mengelola semua subcon-Subcon di bawah naungan Anda",
         route: ["SBCN"].includes(user?.role_code)
           ? `/subcon-management/${user?.subcon?.subcon_id}`
           : "/subcon-management",
@@ -194,7 +202,7 @@ export default function SectionPlatformMenu() {
           ? "Vendor Dashboard"
           : "Manajemen Vendor",
         description:
-          "Kumpulan vendor-vendor yang tergabung di Portaverse",
+          "Modul terpusat untuk mengelola semua vendor yang beraktivitas di dalam Vendor",
         route: "/vendor-management",
         icon: (
           <img
@@ -221,7 +229,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Manajemen Wallet",
         description:
-          "Kumpulan semua wallet dan pengaturan isi wallet",
+          "Modul terpusat untuk mengelola individual wallet, group wallet, dan corporate wallet dalam Portaverse",
         route: "/wallet-management",
         icon: (
           <Icon
@@ -232,6 +240,20 @@ export default function SectionPlatformMenu() {
         ),
         hidden: !["CRPU", "SA"].includes(user?.role_code),
       },
+      // {
+      //   label: "Manajemen Tanda Tangan",
+      //   description:
+      //     "Modul terpusat untuk mengelola dan membuat tanda tangan elektronik",
+      //   route: "/signature-management",
+      //   icon: (
+      //     <img
+      //       src={SignatureManagement}
+      //       alt="signature-mngmt"
+      //       className="w-[40px]"
+      //     />
+      //   ),
+      //   hidden: false,
+      // },
     ],
     TMS: [
       {
@@ -357,7 +379,55 @@ export default function SectionPlatformMenu() {
         hidden: !["SA"].includes(user?.role_code),
       },
     ],
-  };
+  });
+
+  const signatureService = Networks(BASE_PROXY.signature);
+  const { data: _ } = signatureService.query(
+    SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
+    [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
+    {
+      onError: () => {},
+      onSuccess: (res) => {
+        const hasAccepted = !!res?.pass;
+        if (hasAccepted) {
+          setMenus((prev) => {
+            if (
+              prev.LMS.filter((e) =>
+                e?.route?.includes("signature-management"),
+              ).length
+            ) {
+              return { ...prev };
+            }
+            const newMenus = {
+              ...prev,
+              LMS: [
+                ...prev.LMS.filter(
+                  (e) => !e?.route?.includes("signature-management"),
+                ),
+                {
+                  label: "Manajemen Tanda Tangan",
+                  description:
+                    "Modul terpusat untuk mengelola dan membuat tanda tangan elektronik",
+                  route: "/signature-management",
+                  icon: (
+                    <img
+                      src={SignatureManagement}
+                      alt="signature-mngmt"
+                      className="w-[40px]"
+                    />
+                  ),
+                  hidden: false,
+                  state: { fromDashboard: true },
+                },
+              ],
+            };
+            return newMenus;
+          });
+        }
+      },
+    },
+  );
+
   return (
     <section className="flex flex-col gap-10 py-16 px-[5rem]">
       <Tabs
@@ -388,10 +458,10 @@ export default function SectionPlatformMenu() {
         </Tabs.List>
       </Tabs>
       <div className="grid grid-cols-3 gap-8">
-        {!Menus[activeTab].length ? (
+        {!menus[activeTab].length ? (
           <p className="text-darkGrey">No menu available yet</p>
         ) : (
-          Menus[activeTab].map((menu) => (
+          menus[activeTab].map((menu) => (
             <MenuCard
               label={menu?.label}
               description={menu?.description}

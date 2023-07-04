@@ -21,8 +21,9 @@ export default function SectionStatistic() {
     smartplanService.query(
       SMARTPLAN_ENDPOINT.GET.kpiScore,
       ["kpiScore"],
-      { select: (res) => res.score.toFixed(2) },
+      { select: (res) => (res?.score || 0).toFixed(2) },
     );
+
   const { data: remainingDay, isLoading: isLoadingTime } =
     smartplanService.query(
       SMARTPLAN_ENDPOINT.GET.remainingTime,
@@ -47,16 +48,15 @@ export default function SectionStatistic() {
   );
 
   return (
-    <section className="bg-bg2">
+    <section className="bg-primary3 text-white">
       <div className="flex flex-col gap-8 py-10 px-[5rem]">
         <div className="flex flex-col gap-2">
-          <h2 className="font-bold text-3xl">Statistik</h2>
-          <p className="text-darkGrey text-lg">
-            Menampilkan data statistik yang komprehensif tentang
-            pegawai.
+          <h2 className="font-bold text-3xl">Statistik Penting</h2>
+          <p className="text-lg">
+            Lihat dan pelajari data-data statistik terpenting Anda
           </p>
         </div>
-        <div className="grid grid-cols-5 justify-center items-start gap-4">
+        <div className="grid grid-cols-5 justify-center items-start gap-4 text-text1">
           <StatCard
             label="Skor KPI"
             value={kpiScore || "-"}

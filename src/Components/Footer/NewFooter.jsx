@@ -41,28 +41,28 @@ export default function NewFooter() {
         <div className="flex flex-col gap-3">
           <h6 className="font-bold text-base">Social Media</h6>
           <ul className="flex flex-col gap-3 text-darkGrey">
-            <SocmedItem
-              href="https://www.linkedin.com/company/pelindospmt/"
+            {/* <SocmedItem
+              href="https://www.linkedin.com/company/pelindospmt"
               icon="mdi:linkedin"
               text="LinkedIn"
-            />
+            /> */}
             <SocmedItem
-              href="https://www.linkedin.com/company/pelindospmt/"
+              href="https://www.instagram.com/pelindo"
               icon="ant-design:instagram-filled"
               text="Instagram"
             />
             <SocmedItem
-              href="https://www.linkedin.com/company/pelindospmt/"
+              href="https://www.youtube.com/@IndonesiaPortCorp"
               icon="ri:youtube-fill"
               text="Youtube"
             />
             <SocmedItem
-              href="https://www.linkedin.com/company/pelindospmt/"
+              href="https://twitter.com/indonesiaport"
               icon="mdi:twitter"
               text="Twitter"
             />
             <SocmedItem
-              href="https://www.linkedin.com/company/pelindospmt/"
+              href="https://www.facebook.com/Indonesiaport"
               icon="ic:baseline-facebook"
               text="Facebook"
             />
