@@ -483,72 +483,76 @@ function NotificationSection({ origin, tab, isPage }) {
           }}
         />
       </div>
-      {notifications?.items?.length > 0 && (
-        <div className="flex flex-row justify-between p-2 border-b">
-          <div className="flex flex-row items-center  gap-2">
-            <div className="mt-2">
-              <Checkbox
-                classNames={{ label: "text-xs" }}
-                size="xs"
-                label="Pilih Semua"
-                onChange={(e) => {
-                  form.setFieldValue("checkAll", e.target.checked);
-                  const data = {};
-                  notifications?.items?.forEach((v) => {
-                    if (
-                      Object.keys(form.values.checkbox)?.filter(
-                        (key) => {
-                          return form.values.checkbox[key] === true;
-                        },
-                      )?.length === notifications?.items?.length
-                    ) {
-                      data[`notif_${v?.notification_id}`] = false;
-                    } else {
-                      data[`notif_${v?.notification_id}`] = true;
-                    }
-                  });
-                  form.setFieldValue("checkbox", data);
-                }}
-                checked={
-                  Object.keys(form.values.checkbox)?.filter((key) => {
-                    return form.values.checkbox[key] === true;
-                  })?.length === notifications?.items?.length
-                }
-              />
-            </div>
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <Icon icon="charm:chevron-down" size="20" />
-              </Menu.Target>
+      <div className="flex flex-row justify-between p-2 border-b">
+        <div className="flex flex-row items-center  gap-2">
+          {notifications?.items?.length > 0 && (
+            <>
+              <div className="mt-2">
+                <Checkbox
+                  classNames={{ label: "text-xs" }}
+                  size="xs"
+                  label="Pilih Semua"
+                  onChange={(e) => {
+                    form.setFieldValue("checkAll", e.target.checked);
+                    const data = {};
+                    notifications?.items?.forEach((v) => {
+                      if (
+                        Object.keys(form.values.checkbox)?.filter(
+                          (key) => {
+                            return form.values.checkbox[key] === true;
+                          },
+                        )?.length === notifications?.items?.length
+                      ) {
+                        data[`notif_${v?.notification_id}`] = false;
+                      } else {
+                        data[`notif_${v?.notification_id}`] = true;
+                      }
+                    });
+                    form.setFieldValue("checkbox", data);
+                  }}
+                  checked={
+                    Object.keys(form.values.checkbox)?.filter(
+                      (key) => {
+                        return form.values.checkbox[key] === true;
+                      },
+                    )?.length === notifications?.items?.length
+                  }
+                />
+              </div>
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <Icon icon="charm:chevron-down" size="20" />
+                </Menu.Target>
 
-              <Menu.Dropdown>
-                <Menu.Item onClick={() => handleChangeRead(1)}>
-                  Tandai semua dibaca
-                </Menu.Item>
-                <Menu.Item onClick={() => handleChangeRead(0)}>
-                  Tandai semua belum dibaca
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </div>
-          <div className="w-[9rem]">
-            <Select
-              data={listStatus}
-              size="xs"
-              placeholder="Status Notifikasi"
-              value={form.values.status}
-              onChange={(v) => {
-                form.setFieldValue("status", v);
-              }}
-              {...getClearableProps(
-                form.values.status,
-                () => form.setFieldValue("status", null),
-                "select",
-              )}
-            />
-          </div>
+                <Menu.Dropdown>
+                  <Menu.Item onClick={() => handleChangeRead(1)}>
+                    Tandai semua dibaca
+                  </Menu.Item>
+                  <Menu.Item onClick={() => handleChangeRead(0)}>
+                    Tandai semua belum dibaca
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>{" "}
+            </>
+          )}
         </div>
-      )}
+        <div className="w-[9rem]">
+          <Select
+            data={listStatus}
+            size="xs"
+            placeholder="Status Notifikasi"
+            value={form.values.status}
+            onChange={(v) => {
+              form.setFieldValue("status", v);
+            }}
+            {...getClearableProps(
+              form.values.status,
+              () => form.setFieldValue("status", null),
+              "select",
+            )}
+          />
+        </div>
+      </div>
       <div
         className={` overflow-auto scroll-style-2 ${
           isPage ? "h-full" : "h-[250px]"
