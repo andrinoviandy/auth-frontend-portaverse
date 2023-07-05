@@ -268,6 +268,26 @@ function NotificationSection({ origin, tab, isPage }) {
     );
   };
 
+  const handleClickActionState = (notification, isAccept) => {
+    put(
+      {
+        endpoint: NOTIFICATION_ENDPOINT.PUT.aceptableActionNotif(
+          notification?.notification_id,
+        ),
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([`notifications${origin}`]);
+          if (isAccept) {
+            window.location.href = `${
+              import.meta.env.VITE_LMS_URL
+            }/explore/${notification?.data}/checkout`;
+          }
+        },
+      },
+    );
+  };
+
   function MenuItem({ notification }) {
     const [isHover, setIsHover] = useState(false);
     const [isDetailed, setIsDetailed] = useState(false);
@@ -468,6 +488,7 @@ function NotificationSection({ origin, tab, isPage }) {
               isAction
               notification={notification}
               setIsAction={setIsAction}
+              handleClickActionState={handleClickActionState}
             />
           )}
         </div>
@@ -602,6 +623,7 @@ function DetailNotification({
   isAction,
   setIsAction,
   isDetailed,
+  handleClickActionState,
 }) {
   const courseService = Networks(BASE_PROXY.course);
 
@@ -620,16 +642,16 @@ function DetailNotification({
             variant="outline"
             color="red"
             size="xs"
-            onClick={() => setIsAction(false)}
+            onClick={() =>
+              handleClickActionState(notification, false)
+            }
           >
             Tolak
           </Button>
           <Button
             size="xs"
             onClick={() => {
-              window.location.href = `${
-                import.meta.env.VITE_LMS_URL
-              }/explore/${notification?.data}/checkout`;
+              handleClickActionState(notification, true);
             }}
           >
             Terima
