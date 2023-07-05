@@ -80,6 +80,8 @@ export const NOTIFICATION_ENDPOINT = {
     pinnedNotif: (notificationId) =>
       `/notification/${notificationId}/pin`,
     putReads: "/notification/other/reads",
+    aceptableActionNotif: (notificationId) =>
+      `/notification/${notificationId}/acceptance-status`,
   },
   DELETE: {
     deleteNotification: (notificationId) =>
