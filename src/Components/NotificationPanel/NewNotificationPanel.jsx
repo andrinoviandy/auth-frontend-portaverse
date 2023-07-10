@@ -9,8 +9,8 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import { color } from "../../Utils/Constants";
-import useInfiniteFetchObserver from "../../Utils/Hooks/useInfiniteFetchObserver";
 import KPI from "../Assets/Icon/KPI";
+import NoItems from "../Errors/NoItems";
 
 const MODULE_ICONS = {
   Assessment: (
@@ -26,19 +26,16 @@ const MODULE_ICONS = {
   ),
 };
 
-function Item({ moduleName, message, date, lastElement, viewed }) {
+function Item({ moduleName, message, date, viewed }) {
   return (
-    <div
-      className="flex gap-4 items-start bg-bg4 rounded-md py-3 px-5"
-      ref={lastElement}
-    >
+    <div className="flex gap-4 items-start bg-bg4 rounded-md py-3 px-5">
       <div className="shrink-0">{MODULE_ICONS[moduleName]}</div>
 
       <div className="flex flex-col gap-1 grow-0">
         <p className="font-bold">{moduleName}</p>
         <p className="text-sm">{message}</p>
         <p className="text-sm text-darkGrey">
-          {dayjs(date).format("MMMM D, YYYY at hh:mm A")}
+          {dayjs(date).format("MMMM D, YYYY hh:mm A")}
         </p>
       </div>
     </div>
@@ -59,36 +56,20 @@ export default function NewNotificationPanel({
     },
   );
 
-  const {
-    data: notifications,
-    status,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-  } = notificationService.infiniteQuery(
-    NOTIFICATION_ENDPOINT.GET.notifications,
-    ["notifications"],
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const maxPages = lastPage.totalPage;
-        const nextPage = allPages.length + 1;
-        return nextPage <= maxPages ? nextPage : undefined;
+  const { data: notifications, isLoading } =
+    notificationService.query(
+      NOTIFICATION_ENDPOINT.GET.notifications,
+      ["notifications"],
+      {
+        select: (res) => res?.notifications,
       },
-    },
-    {
-      params: {
-        page: 1,
-        size: 5,
-        origin: "TMS",
+      {
+        params: {
+          page: 1,
+          size: 3,
+        },
       },
-    },
-  );
-
-  const lastElement = useInfiniteFetchObserver(
-    status,
-    hasNextPage,
-    () => {},
-  );
+    );
 
   const { isLoading: isLoadingMarkAsRead, mutate: markAsRead } =
     notificationService.mutation("put", {
@@ -99,17 +80,15 @@ export default function NewNotificationPanel({
     });
 
   const markAsReadHandler = () => {
-    const notificationPromises = notifications.pages.map((n) =>
-      n.notifications
-        .filter((e) => !e.viewed)
-        .map((e) => {
-          return markAsRead({
-            endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
-              e.notification_id,
-            ),
-          });
-        }),
-    );
+    const notificationPromises = notifications
+      .filter((e) => !e.viewed)
+      .map((e) => {
+        return markAsRead({
+          endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
+            e.notification_id,
+          ),
+        });
+      });
 
     Promise.all(notificationPromises);
   };
@@ -142,46 +121,38 @@ export default function NewNotificationPanel({
 
       <div className="flex flex-col gap-2 max-h-[590px] px-5 overflow-y-auto scroll-style-4">
         {(() => {
-          if (status === "loading")
+          if (isLoading)
             return <Loader size="sm" className="mx-auto my-3.5" />;
 
-          if (!notifications) return null;
-
-          return notifications.pages.map((v, i) =>
-            v.notifications.map((notification, j) => {
-              if (
-                notifications.pages.length === i + 1 &&
-                v.notifications.length === j + 1
-              )
+          if (!isLoading && !!notifications?.length)
+            return notifications?.map((item, i) => {
+              if (notifications.length === i + 1)
                 return (
                   <Item
-                    moduleName={notification.module}
-                    message={`${notification.send_from_name || ""} ${
-                      notification.template
-                    }`}
-                    date={dayjs(
-                      notification.reminder_at,
-                    ).toISOString()}
-                    lastElement={lastElement}
-                    viewed={notification.viewed}
+                    moduleName={item.module}
+                    message={item?.message}
+                    date={dayjs(item.reminder_at).toISOString()}
+                    viewed={item.viewed}
                   />
                 );
 
               return (
                 <Item
-                  moduleName={notification.module}
-                  message={`${notification.send_from_name} ${notification.template}`}
-                  date={dayjs(notification.reminder_at).toISOString()}
-                  viewed={notification.viewed}
+                  moduleName={item.module}
+                  message={item?.message}
+                  date={dayjs(item.reminder_at).toISOString()}
+                  viewed={item.viewed}
                 />
               );
-            }),
+            });
+
+          return (
+            <NoItems
+              label="Anda belum memiliki pemberitahuan"
+              classNames={{ wrapper: "scale-[0.85]" }}
+            />
           );
         })()}
-
-        {status !== "loading" && isFetchingNextPage ? (
-          <Loader size="sm" className="mx-auto my-3.5" />
-        ) : null}
       </div>
       {/* <a
         href="/landing"
