@@ -62,7 +62,7 @@ function Notifications() {
       <NewNavbar />
       <div className="px-[6rem] py-8">
         <div className="flex justify-between items-center">
-          <h1 className="font-semibold">Notifikasi</h1>
+          <h1 className="font-semibold pb-4">Notifikasi</h1>
           <Button
             onClick={() => {
               window.location.href = `${

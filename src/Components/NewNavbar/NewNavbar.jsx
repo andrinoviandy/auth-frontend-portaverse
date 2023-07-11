@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Icon } from "@iconify/react";
 import { forwardRef } from "react";
 import portaverse from "../Assets/Pictures/portaverse_logo_transparent.png";
@@ -10,7 +12,14 @@ import NewProfileDropdown from "./NewProfileDropdown";
 const NewNavbar = forwardRef((props, ref) => {
   return (
     <nav className="flex items-center justify-between bg-white h-14 border-gray-200 pl-4 pr-5 drop-shadow-sm sticky top-0 z-50">
-      <div className="border-r py-2.5 pr-3">
+      <div
+        className="py-2.5 pr-3 cursor-pointer"
+        onClick={() => {
+          window.location.href = `${
+            import.meta.env.VITE_SSO_URL
+          }/landing`;
+        }}
+      >
         <img
           src={portaverse}
           alt="logo"
