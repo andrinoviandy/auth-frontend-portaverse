@@ -41,6 +41,7 @@ const listStatus = [
     value: "unread",
   },
 ];
+const upperCaseModule = ["Bast", "Kmap", "Kpi"];
 
 function NotificationSection({ origin, tab, isPage }) {
   const queryClient = useQueryClient();
@@ -65,7 +66,9 @@ function NotificationSection({ origin, tab, isPage }) {
       select: (response) =>
         response?.modules?.map((item) => ({
           value: item,
-          label: item,
+          label: upperCaseModule.includes(item)
+            ? item.toUpperCase()
+            : item,
         })),
       enabled: origin === tab,
     },
@@ -326,14 +329,14 @@ function NotificationSection({ origin, tab, isPage }) {
               <div className={`flex flex-col gap-[2px] w-full `}>
                 <div className="flex-row flex justify-between items-start w-full">
                   <span
-                    className={`font-bold text-primary3 ${
-                      !isHover ? "line-clamp-1" : ""
-                    }`}
+                    className={`font-bold text-sm text-primary3  ${
+                      !isPage ? "line-clamp-1" : ""
+                    } `}
                     onClick={() => handleClickNotif(notification)}
                   >
                     {notification?.title}
                   </span>
-                  <div className="flex flex-row gap-1 ">
+                  <div className="flex flex-row gap-1 items-center">
                     {isHover && !notification?.is_global && (
                       <>
                         <button
@@ -442,30 +445,39 @@ function NotificationSection({ origin, tab, isPage }) {
                           setIsDetailed((prev) => !prev);
                         }}
                       >
-                        <Icon icon="charm:chevron-down" size="20" />
+                        <Icon
+                          icon={
+                            isDetailed
+                              ? "charm:chevron-up"
+                              : "charm:chevron-down"
+                          }
+                          size="20"
+                        />
                       </button>
                     ) : null}
-                    {!notification?.viewed && (
+                    {!notification?.viewed ? (
                       <span className="text-primary3 text-2xl">
                         &bull;
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 </div>
                 <div onClick={() => handleClickNotif(notification)}>
                   <span
                     className={`text-text1 text-sm w-full ${
-                      !isHover ? "line-clamp-2" : ""
-                    }`}
+                      !isPage ? "line-clamp-1" : ""
+                    } `}
                   >
                     {notification?.message &&
                       parse(notification?.message)}
                   </span>
                   <div className="flex gap-1 items-center text-darkGrey text-xs">
-                    <Icon
-                      icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
-                      width={12}
-                    />
+                    <div className="mt-1">
+                      <Icon
+                        icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
+                        width={12}
+                      />
+                    </div>
                     <span className="pt-1">
                       {dayjs(notification?.reminder_at)?.format(
                         "DD MMMM YYYY, H:mm",
@@ -543,7 +555,7 @@ function NotificationSection({ origin, tab, isPage }) {
                 />
               </div>
               <Menu shadow="md" width={200}>
-                <Menu.Target>
+                <Menu.Target className="mt-1">
                   <Icon icon="charm:chevron-down" size="20" />
                 </Menu.Target>
 
@@ -664,70 +676,82 @@ function DetailNotification({
               <Loader />
             </div>
           ) : (
-            <div className="flex flex-col gap-1">
-              <span className="text-primary3 font-semibold text-sm">
-                Cost Center IT
-              </span>
-              {data?.map((v, i) => (
-                <div
-                  key={v?.log_id}
-                  className="flex gap-4 items-start justify-start"
-                >
-                  <div className="p-0 ">
-                    <input
-                      type="radio"
-                      className="border-2 accent-primary3"
-                      checked={i === 0}
-                      disabled={i !== 0}
-                    />
-                  </div>{" "}
-                  <div className="flex flex-col">
-                    <p
-                      className={`text-sm ${
-                        i !== 0 ? "text-darkGrey" : ""
-                      }`}
+            <>
+              {data?.length ? (
+                <div className="flex flex-col gap-1">
+                  <span className="text-primary3 font-semibold text-sm">
+                    Cost Center {data?.[0]?.cost_center_name}
+                  </span>
+                  {data?.map((v, i) => (
+                    <div
+                      key={v?.log_id}
+                      className="flex gap-4 items-start justify-start"
                     >
-                      {v?.action} oleh{" "}
-                      <strong
-                        className={i === 0 ? "text-primary3" : ""}
-                      >
-                        {v?.user}{" "}
-                      </strong>
-                      sebagai{" "}
-                      <strong
-                        className={i === 0 ? "text-primary3" : ""}
-                      >
-                        {v?.as}
-                      </strong>{" "}
-                      pada{" "}
-                      <strong
-                        className={i === 0 ? "text-primary3" : ""}
-                      >
-                        {dayjs(v?.on)
-                          .format(`DD - YYYY HH.mm`)
-                          ?.replace(
-                            "-",
-                            LIST_OF_MONTH_INDONESIA[
-                              +dayjs(data?.start_date).format("M") - 1
-                            ],
-                          )}
-                      </strong>
-                    </p>
-                    <div className="flex gap-1 items-center text-darkGrey text-xs">
-                      <Icon
-                        icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
-                        width={12}
-                      />
-                      <span className="pt-1">
-                        {dayjs(data?.reminder_at)?.format(
-                          "DD MMMM YYYY, H:mm",
-                        )}
-                      </span>
-                    </div>{" "}
-                  </div>
+                      <div className="p-0 ">
+                        <input
+                          type="radio"
+                          className="border-2 accent-primary3"
+                          checked={i === 0}
+                          disabled={i !== 0}
+                        />
+                      </div>{" "}
+                      <div className="flex flex-col">
+                        <p
+                          className={`text-sm ${
+                            i !== 0 ? "text-darkGrey" : ""
+                          }`}
+                        >
+                          {v?.action} oleh{" "}
+                          <strong
+                            className={i === 0 ? "text-primary3" : ""}
+                          >
+                            {v?.user}{" "}
+                          </strong>
+                          sebagai{" "}
+                          <strong
+                            className={i === 0 ? "text-primary3" : ""}
+                          >
+                            {v?.as}
+                          </strong>{" "}
+                          pada{" "}
+                          <strong
+                            className={i === 0 ? "text-primary3" : ""}
+                          >
+                            {dayjs(v?.on)
+                              .format(`DD - YYYY HH.mm`)
+                              ?.replace(
+                                "-",
+                                LIST_OF_MONTH_INDONESIA[
+                                  +dayjs(data?.start_date).format(
+                                    "M",
+                                  ) - 1
+                                ],
+                              )}
+                          </strong>
+                        </p>
+                        <div className="flex gap-1 items-center text-darkGrey text-xs">
+                          <div className="mt-1">
+                            <Icon
+                              icon="streamline:interface-time-clock-circle-clock-loading-measure-time-circle"
+                              width={12}
+                            />
+                          </div>
+                          <span className="pt-1">
+                            {dayjs(data?.reminder_at)?.format(
+                              "DD MMMM YYYY, H:mm",
+                            )}
+                          </span>
+                        </div>{" "}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              ) : (
+                <i className="text-sm text-center">
+                  Tidak ada history BAST
+                </i>
+              )}
+            </>
           )}
         </>
       )}
