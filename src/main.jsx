@@ -5,8 +5,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import {
+  persistedStore,
+  store,
+  unpersistedStore,
+} from "./Configs/Redux/store";
+import { unpersistedStoreContext } from "./Contexts/ReduxContext";
+
 import App from "./App";
 import "./index.css";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 const MANTINE_PRIMARY_COLOR = [
   "#CBEBFF",
@@ -51,31 +60,40 @@ const MantineCompDefaultProps = {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <MantineProvider
-      emotionCache={myCache}
-      theme={{
-        fontFamily: "Inter, Roboto, system-ui",
-        colors: {
-          primary: MANTINE_PRIMARY_COLOR,
-        },
-        primaryColor: "primary",
-        respectReducedMotion: true,
-        components: {
-          Select: {
-            defaultProps: MantineCompDefaultProps.Select,
-          },
-          DatePicker: {
-            defaultProps: MantineCompDefaultProps.DatePicker,
-          },
-        },
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
-        <NiceModal.Provider>
-          <App />
-        </NiceModal.Provider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </MantineProvider>
+    <Provider store={store}>
+      <Provider
+        store={unpersistedStore}
+        context={unpersistedStoreContext}
+      >
+        <PersistGate loading={null} persistor={persistedStore}>
+          <MantineProvider
+            emotionCache={myCache}
+            theme={{
+              fontFamily: "Inter, Roboto, system-ui",
+              colors: {
+                primary: MANTINE_PRIMARY_COLOR,
+              },
+              primaryColor: "primary",
+              respectReducedMotion: true,
+              components: {
+                Select: {
+                  defaultProps: MantineCompDefaultProps.Select,
+                },
+                DatePicker: {
+                  defaultProps: MantineCompDefaultProps.DatePicker,
+                },
+              },
+            }}
+          >
+            <QueryClientProvider client={queryClient}>
+              <NiceModal.Provider>
+                <App />
+              </NiceModal.Provider>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </MantineProvider>
+        </PersistGate>
+      </Provider>
+    </Provider>
   </React.StrictMode>,
 );

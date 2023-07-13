@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { Button, Tabs } from "@mantine/core";
 import { Icon } from "@iconify/react";
+import { useSelector } from "react-redux";
 import NewNavbar from "../../Components/NewNavbar/NewNavbar";
-import {
-  BASE_PROXY,
-  NOTIFICATION_ENDPOINT,
-} from "../../Networks/endpoint";
-import { Networks } from "../../Networks/factory";
+
 import NotificationSection from "../../Components/Notification/NotificationSection";
 
 function Notifications() {
   const [activeTab, setActiveTab] = useState("all");
+  const unread = useSelector((st) => st.unreadNotifications);
 
   const view = (v = 0, isAbsolute = true) => {
     if (v > 99) {
@@ -47,15 +45,6 @@ function Notifications() {
       </div>
     );
   };
-  const notificationService = Networks(BASE_PROXY.notifications);
-
-  const { data: unreadNotificationCount } = notificationService.query(
-    NOTIFICATION_ENDPOINT.GET.unreadCount,
-    ["notificationGetUnreadCount"],
-    {
-      refetchInterval: 1000 * 30,
-    },
-  );
 
   return (
     <div className="flex flex-col">
@@ -97,8 +86,7 @@ function Notifications() {
                     : "text-primary3"
                 }`}
               >
-                Pemberitahuan{" "}
-                {view(unreadNotificationCount?.all, false)}
+                Pemberitahuan {view(unread?.all, false)}
               </div>
             </Tabs.Tab>
             <Tabs.Tab value="kms">
@@ -109,7 +97,7 @@ function Notifications() {
                     : "text-primary3"
                 }`}
               >
-                KMS {view(unreadNotificationCount?.kms, false)}
+                KMS {view(unread?.kms, false)}
               </div>
             </Tabs.Tab>
 
@@ -122,7 +110,7 @@ function Notifications() {
                 }`}
               >
                 {" "}
-                LMS {view(unreadNotificationCount?.lms, false)}
+                LMS {view(unread?.lms, false)}
               </div>
             </Tabs.Tab>
             <Tabs.Tab value="tms">
@@ -134,7 +122,7 @@ function Notifications() {
                 }`}
               >
                 {" "}
-                TMS {view(unreadNotificationCount?.tms, false)}
+                TMS {view(unread?.tms, false)}
               </div>
             </Tabs.Tab>
           </Tabs.List>
@@ -143,7 +131,7 @@ function Notifications() {
               isPage
               origin="all"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
           <Tabs.Panel value="kms">
@@ -151,7 +139,7 @@ function Notifications() {
               isPage
               origin="kms"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
           <Tabs.Panel value="lms">
@@ -159,7 +147,7 @@ function Notifications() {
               isPage
               origin="lms"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
           <Tabs.Panel value="tms">
@@ -167,7 +155,7 @@ function Notifications() {
               origin="tms"
               isPage
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
         </Tabs>
