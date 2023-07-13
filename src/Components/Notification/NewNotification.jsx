@@ -1,18 +1,66 @@
 /* eslint-disable react/prop-types */
 import { Button, Menu, Tabs } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BASE_PROXY,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
-import ActionContainer from "../NewNavbar/ActionContainer";
 import NotificationSection from "./NotificationSection";
+import { setUnreadNotification } from "../../Configs/Redux/slice";
+import useSocket from "../../Utils/Hooks/useSocket";
+import ActionContainer from "../NewNavbar/ActionContainer";
 
 function NewNotification({ icon }) {
+  const unread = useSelector((st) => st.unreadNotifications);
+
   const [opened, setOpened] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
+  const dispatch = useDispatch();
+
+  const { data, isConnected, initiate, register } = useSocket(
+    import.meta.env.VITE_API_NOTIFICATIONS_SERVICE_URL,
+    "/channels",
+  );
+
+  useEffect(() => {
+    initiate();
+  }, []);
+
+  useEffect(() => {
+    if (isConnected) {
+      register("message");
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    if (data?.message?.origin === "KMS") {
+      dispatch(
+        setUnreadNotification({
+          lms: unread.kms + 1,
+          all: unread.all + 1,
+        }),
+      );
+    }
+    if (data?.message?.origin === "LMS") {
+      dispatch(
+        setUnreadNotification({
+          kms: unread.lms + 1,
+          all: unread.all + 1,
+        }),
+      );
+    }
+    if (data?.message?.origin === "TMS") {
+      dispatch(
+        setUnreadNotification({
+          tms: unread.tms + 1,
+          all: unread.all + 1,
+        }),
+      );
+    }
+  }, [data]);
 
   const view = (v = 0, isAbsolute = true) => {
     if (v > 99) {
@@ -49,13 +97,23 @@ function NewNotification({ icon }) {
       </div>
     );
   };
+
   const notificationService = Networks(BASE_PROXY.notifications);
 
-  const { data: unreadNotificationCount } = notificationService.query(
+  const { _ } = notificationService.query(
     NOTIFICATION_ENDPOINT.GET.unreadCount,
     ["notificationGetUnreadCount"],
     {
-      refetchInterval: 1000 * 30,
+      onSuccess: (v) => {
+        dispatch(
+          setUnreadNotification({
+            kms: v?.kms || 0,
+            tms: v?.tms || 0,
+            lms: v?.lms || 0,
+            all: v?.all || 0,
+          }),
+        );
+      },
     },
   );
 
@@ -70,7 +128,7 @@ function NewNotification({ icon }) {
     >
       <Menu.Target>
         <button type="button" className="relative">
-          {view(unreadNotificationCount?.all)}
+          {view(unread?.all)}
           <ActionContainer isActive={opened}>{icon}</ActionContainer>
         </button>
       </Menu.Target>
@@ -102,7 +160,7 @@ function NewNotification({ icon }) {
             },
           })}
           classNames={{
-            tabLabel: "text-sm  text-center font-semibold",
+            tabLabel: "text-sm  text-center font-semibold ",
           }}
         >
           <Tabs.List>
@@ -111,11 +169,10 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "all"
                     ? "text-darkGrey"
-                    : "text-primary3"
+                    : "text-[#016DB2]"
                 }`}
               >
-                Pemberitahuan{" "}
-                {view(unreadNotificationCount?.all, false)}
+                Pemberitahuan {view(unread?.all, false)}
               </div>
             </Tabs.Tab>
             <Tabs.Tab value="kms">
@@ -123,10 +180,10 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "kms"
                     ? "text-darkGrey"
-                    : "text-primary3"
+                    : "text-[#016DB2]"
                 }`}
               >
-                KMS {view(unreadNotificationCount?.kms, false)}
+                KMS {view(unread?.kms, false)}
               </div>
             </Tabs.Tab>
 
@@ -135,11 +192,11 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "lms"
                     ? "text-darkGrey"
-                    : "text-primary3"
+                    : "text-[#016DB2]"
                 }`}
               >
                 {" "}
-                LMS {view(unreadNotificationCount?.lms, false)}
+                LMS {view(unread?.lms, false)}
               </div>
             </Tabs.Tab>
             <Tabs.Tab value="tms">
@@ -147,11 +204,11 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "tms"
                     ? "text-darkGrey"
-                    : "text-primary3"
+                    : "text-[#016DB2]"
                 }`}
               >
                 {" "}
-                TMS {view(unreadNotificationCount?.tms, false)}
+                TMS {view(unread?.tms, false)}
               </div>
             </Tabs.Tab>
           </Tabs.List>
@@ -159,28 +216,28 @@ function NewNotification({ icon }) {
             <NotificationSection
               origin="all"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
           <Tabs.Panel value="kms">
             <NotificationSection
               origin="kms"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
           <Tabs.Panel value="lms">
             <NotificationSection
               origin="lms"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
           <Tabs.Panel value="tms">
             <NotificationSection
               origin="tms"
               tab={activeTab}
-              unreadCount={unreadNotificationCount}
+              unreadCount={unread}
             />
           </Tabs.Panel>
         </Tabs>
