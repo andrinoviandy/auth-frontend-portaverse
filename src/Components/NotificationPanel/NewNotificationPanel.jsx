@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Loader, clsx } from "@mantine/core";
 import dayjs from "dayjs";
+import parse from "html-react-parser";
 import PropTypes from "prop-types";
 import { useQueryClient } from "react-query";
 import {
@@ -33,7 +34,7 @@ function Item({ moduleName, message, date, viewed }) {
 
       <div className="flex flex-col gap-1 grow-0">
         <p className="font-bold">{moduleName}</p>
-        <p className="text-sm">{message}</p>
+        <p className="text-sm">{parse(message)}</p>
         <p className="text-sm text-darkGrey">
           {dayjs(date).format("MMMM D, YYYY hh:mm A")}
         </p>
