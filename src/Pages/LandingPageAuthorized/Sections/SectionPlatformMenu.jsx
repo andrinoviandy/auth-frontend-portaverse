@@ -18,6 +18,7 @@ import {
 import { Networks } from "../../../Networks/factory";
 import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import hasRole from "../../../Utils/Helpers/hasRole";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
@@ -149,7 +150,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["CRPU", "SA", "VNDR"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
         label: "Manajemen Kompetensi",
@@ -163,7 +164,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       {
         label: "Manajemen Sertifikat",
@@ -177,15 +178,15 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       {
-        label: ["SBCN"].includes(user?.role_code)
+        label: hasRole(["SBCN"])
           ? "Subcon Dashboard"
           : "Manajemen Subcon",
         description:
           "Modul terpusat untuk mengelola semua subcon-Subcon di bawah naungan Anda",
-        route: ["SBCN"].includes(user?.role_code)
+        route: hasRole(["SBCN"])
           ? `/subcon-management/${user?.subcon?.subcon_id}`
           : "/subcon-management",
         icon: (
@@ -195,10 +196,10 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        hidden: !["CRPU", "SA", "SBCN"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA", "SBCN"]),
       },
       {
-        label: ["VNDR"].includes(user?.role_code)
+        label: hasRole(["VNDR"])
           ? "Vendor Dashboard"
           : "Manajemen Vendor",
         description:
@@ -211,7 +212,7 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        hidden: !["CRPU", "SA", "VNDR"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
         label: "Analytics",
@@ -224,7 +225,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       {
         label: "Manajemen Wallet",
@@ -238,7 +239,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       // {
       //   label: "Manajemen Tanda Tangan",
@@ -306,7 +307,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["SA"].includes(user?.role_code),
+        hidden: !hasRole(["SA"]),
       },
       {
         label: "Development Plan",
@@ -320,7 +321,7 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        hidden: !["SA"].includes(user?.role_code),
+        hidden: !hasRole(["SA"]),
       },
       {
         label: "Manajemen Role",
@@ -334,7 +335,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["SA"].includes(user?.role_code),
+        hidden: !hasRole(["SA"]),
       },
       {
         label: "Headquarter",
@@ -348,7 +349,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !["SA"].includes(user?.role_code),
+        hidden: !hasRole(["SA"]),
       },
       {
         label: "Promotion & Rotation",
@@ -362,7 +363,7 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
-        hidden: !["SA"].includes(user?.role_code),
+        hidden: !hasRole(["SA"]),
       },
       {
         label: "Performance Report",
@@ -376,7 +377,7 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
-        hidden: !["SA"].includes(user?.role_code),
+        hidden: !hasRole(["SA"]),
       },
     ],
   });

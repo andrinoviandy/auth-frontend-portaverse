@@ -19,7 +19,7 @@ export default function postLogin(
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
         .then((res) => {
-          if (res.data.data.user.role_code === "SBCN") {
+          if (res.data.data.user.role_code.includes("SBCN")) {
             window.location = `${
               import.meta.env.VITE_LMS_URL
             }/subcon-management/${
@@ -27,7 +27,7 @@ export default function postLogin(
             }`;
             return;
           }
-          if (res.data.data.user.role_code === "VNDR") {
+          if (res.data.data.user.role_code.includes("VNDR")) {
             window.location = `${
               import.meta.env.VITE_LMS_URL
             }/vendor-management/${
