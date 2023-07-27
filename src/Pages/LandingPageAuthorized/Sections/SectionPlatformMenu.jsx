@@ -37,6 +37,7 @@ export default function SectionPlatformMenu() {
             width={35}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "KMAP",
@@ -46,6 +47,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Employees",
@@ -58,6 +60,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Communities of Practice",
@@ -71,6 +74,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Communities of Interest",
@@ -84,6 +88,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Repository",
@@ -93,6 +98,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <img src={Repository} alt="repo" className="w-[26px]" />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Ask of Expert",
@@ -100,6 +106,7 @@ export default function SectionPlatformMenu() {
           "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
         route: "/ask-expert",
         icon: <img src={AoE} alt="repo" className="w-[40px]" />,
+        shown: hasRole(["USER"]),
       },
       {
         label: "Headquarter",
@@ -109,6 +116,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <Icon icon="ri:hq-line" color={color.primary3} width={40} />
         ),
+        shown: hasRole(["USER"]),
       },
     ],
     LMS: [
@@ -124,6 +132,7 @@ export default function SectionPlatformMenu() {
             width={35}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Dashboard",
@@ -137,6 +146,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Dashboard Kursus",
@@ -150,7 +160,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["CRPU", "SA", "VNDR"]),
+        shown: hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
         label: "Manajemen Kompetensi",
@@ -164,7 +174,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["CRPU", "SA"]),
+        shown: hasRole(["CRPU", "SA"]),
       },
       {
         label: "Manajemen Sertifikat",
@@ -178,7 +188,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["CRPU", "SA"]),
+        shown: hasRole(["CRPU", "SA"]),
       },
       {
         label: hasRole(["SBCN"])
@@ -196,7 +206,7 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        hidden: !hasRole(["CRPU", "SA", "SBCN"]),
+        shown: hasRole(["CRPU", "SA", "SBCN"]),
       },
       {
         label: hasRole(["VNDR"])
@@ -212,7 +222,7 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        hidden: !hasRole(["CRPU", "SA", "VNDR"]),
+        shown: hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
         label: "Analytics",
@@ -225,7 +235,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["CRPU", "SA"]),
+        shown: hasRole(["CRPU", "SA"]),
       },
       {
         label: "Manajemen Wallet",
@@ -239,7 +249,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["CRPU", "SA"]),
+        shown: hasRole(["CRPU", "SA"]),
       },
       // {
       //   label: "Manajemen Tanda Tangan",
@@ -268,7 +278,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: true, // TODO: change this to false when menu is integrated
+        shown: false,
       },
       {
         label: "Smart Plan KPI",
@@ -281,6 +291,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Personal Assessment",
@@ -294,6 +305,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
+        shown: hasRole(["USER"]),
       },
       {
         label: "Manajemen Organisasi",
@@ -307,7 +319,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["SA"]),
+        shown: hasRole(["SA"]),
       },
       {
         label: "Development Plan",
@@ -321,7 +333,7 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        hidden: !hasRole(["SA"]),
+        shown: hasRole(["SA"]),
       },
       {
         label: "Manajemen Role",
@@ -335,7 +347,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["SA"]),
+        shown: hasRole(["SA"]),
       },
       {
         label: "Headquarter",
@@ -349,7 +361,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hidden: !hasRole(["SA"]),
+        shown: hasRole(["SA"]),
       },
       {
         label: "Promotion & Rotation",
@@ -363,7 +375,7 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
-        hidden: !hasRole(["SA"]),
+        shown: hasRole(["SA"]),
       },
       {
         label: "Performance Report",
@@ -377,7 +389,7 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
-        hidden: !hasRole(["SA"]),
+        shown: hasRole(["SA"]),
       },
     ],
   });
@@ -417,7 +429,7 @@ export default function SectionPlatformMenu() {
                       className="w-[40px]"
                     />
                   ),
-                  hidden: false,
+                  shown: true,
                   state: { fromDashboard: true },
                 },
               ],
@@ -470,7 +482,7 @@ export default function SectionPlatformMenu() {
                 menu.route
               }`}
               icon={menu?.icon}
-              hidden={menu?.hidden}
+              hidden={!menu?.shown}
             />
           ))
         )}
