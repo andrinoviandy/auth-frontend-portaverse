@@ -35,10 +35,10 @@ export default function postLogin(
             }`;
             return;
           }
-          if (res.data.data.user.is_first_time_login) {
-            window.location.href = "/referals";
-            return;
-          }
+          // if (res.data.data.user.is_first_time_login) {
+          //   window.location.href = "/referals";
+          //   return;
+          // }
           window.location.href = "/landing";
         })
         .catch((err) => {
