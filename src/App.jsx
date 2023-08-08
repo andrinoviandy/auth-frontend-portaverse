@@ -5,6 +5,7 @@ import ErrorHandling from "./Components/Errors/ErrorHandling";
 import SuccessHandling from "./Components/Errors/SuccessHandling";
 import LoginLayout from "./Components/Layouts/LoginLayout";
 import MainLayout from "./Components/Layouts/MainLayout";
+import MobileBanner from "./Components/Misc/MobileBanner";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
 import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
@@ -12,6 +13,7 @@ import LandingPage from "./Pages/LandingPage";
 import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
 import NewLogin from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
+import Notifications from "./Pages/Notifications/Notifications";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
@@ -23,6 +25,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <MobileBanner />
       <ModalDef
         id="success-handling-dialog"
         component={SuccessHandling}
