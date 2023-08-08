@@ -16,7 +16,7 @@ export default function MobileBanner() {
   })();
 
   useEffect(() => {
-    document.getElementById("nav-button")?.click();
+    window.location.href = appStoreUrl;
   }, []);
 
   if (open && isMobile) {
