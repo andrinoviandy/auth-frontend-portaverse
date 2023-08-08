@@ -7,6 +7,7 @@ import ErrorHandling from "./Components/Errors/ErrorHandling";
 import SuccessHandling from "./Components/Errors/SuccessHandling";
 import LoginLayout from "./Components/Layouts/LoginLayout";
 import MainLayout from "./Components/Layouts/MainLayout";
+import MobileBanner from "./Components/Misc/MobileBanner";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
 import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <MobileBanner />
       <ModalDef
         id="success-handling-dialog"
         component={SuccessHandling}
