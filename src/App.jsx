@@ -1,4 +1,6 @@
 import { ModalDef } from "@ebay/nice-modal-react";
+import { useEffect } from "react";
+import { isMobile } from "react-device-detect";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Error404 from "./Components/Errors/404";
 import ErrorHandling from "./Components/Errors/ErrorHandling";
@@ -12,15 +14,20 @@ import LandingPage from "./Pages/LandingPage";
 import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
 import NewLogin from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
+import Notifications from "./Pages/Notifications/Notifications";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
-import Notifications from "./Pages/Notifications/Notifications";
 
 function App() {
   document.title = "Portaverse - Pelindo";
 
   const { isAuthorized } = userAuthorization();
+  useEffect(() => {
+    if (isMobile) {
+      window.location.href = "portaverse://home";
+    }
+  }, []);
 
   return (
     <BrowserRouter>
