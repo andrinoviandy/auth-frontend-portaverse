@@ -1,6 +1,4 @@
 import { ModalDef } from "@ebay/nice-modal-react";
-import { useEffect } from "react";
-import { isMobile } from "react-device-detect";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Error404 from "./Components/Errors/404";
 import ErrorHandling from "./Components/Errors/ErrorHandling";
@@ -24,11 +22,6 @@ function App() {
   document.title = "Portaverse - Pelindo";
 
   const { isAuthorized } = userAuthorization();
-  useEffect(() => {
-    if (isMobile) {
-      window.location.href = "portaverse://home";
-    }
-  }, []);
 
   return (
     <BrowserRouter>

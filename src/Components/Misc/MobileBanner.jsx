@@ -16,7 +16,9 @@ export default function MobileBanner() {
   })();
 
   useEffect(() => {
-    window.location.href = appStoreUrl;
+    if (isMobile) {
+      window.location.href = appStoreUrl;
+    }
   }, []);
 
   if (open && isMobile) {
