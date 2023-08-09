@@ -13,7 +13,6 @@ import LandingPage from "./Pages/LandingPage";
 import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
 import NewLogin from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
-import Notifications from "./Pages/Notifications/Notifications";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
