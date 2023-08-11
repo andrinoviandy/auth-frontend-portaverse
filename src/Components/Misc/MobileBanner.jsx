@@ -15,9 +15,16 @@ export default function MobileBanner() {
     return "";
   })();
 
+  const openApp = () => {
+    window.location.replace("portaverse://home");
+    setTimeout(() => {
+      window.location.replace(appStoreUrl);
+    }, 700);
+  };
+
   useEffect(() => {
     if (isMobile) {
-      window.location.href = appStoreUrl;
+      openApp();
     }
   }, []);
 
@@ -45,9 +52,10 @@ export default function MobileBanner() {
             Mari menggunakan aplikasi Portaverse!
           </p>
         </div>
-        <a id="nav-button" href={appStoreUrl} className="z-[2]">
-          <Button>Buka App</Button>
-        </a>
+
+        <Button onClick={openApp} className="z-[2]">
+          Buka App
+        </Button>
       </div>
     );
   }
