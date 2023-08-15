@@ -21,9 +21,12 @@ export default function NewFooter() {
                 PT. Pelabuhan Indonesia (Pelindo)
               </h6>
               <p className="text-darkGrey">
-                PT Pelabuhan Indonesia adalah sebuah badan usaha milik
-                negara Indonesia yang bergerak di bidang logistik,
-                terutama pengelolaan dan pengembangan pelabuhan
+                PT Pelabuhan Indonesia I (Persero), PT Pelabuhan
+                Indonesia II (Persero), PT Pelabuhan Indonesia III
+                (Persero), dan PT Pelabuhan Indonesia IV (Persero)
+                adalah perusahaan BUMN Non-Listed yang sahamnya 100%
+                dimiliki oleh Kementerian BUMN selaku Pemegang Saham
+                mewakili Negara Republik Indonesia.
               </p>
             </div>
 
