@@ -4,11 +4,12 @@ import Wave from "../../../Components/Assets/Svg/wave-half.svg";
 import NewNotificationPanel from "../../../Components/NotificationPanel/NewNotificationPanel";
 import ProfilePictureWithBadge from "../../../Components/ProfilePictureWithBadge/ProfilePictureWithBadge";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import hasRole from "../../../Utils/Helpers/hasRole";
 import uppercaseFirstLetterEveryWord from "../../../Utils/Helpers/uppercaseFirstLetterEveryWord";
 
 export default function SectionHero() {
   const user = getUserCookie();
-  const { role_code: role, email } = user;
+  const { email } = user;
   const {
     name,
     profile_picture: avatar,
@@ -48,7 +49,7 @@ export default function SectionHero() {
               img={avatar}
               alt="avatar"
               className="w-32 h-32 rounded-full border shrink-0"
-              badgeIcon={["SME"].includes(role) ? <SMEIcon /> : null}
+              badgeIcon={hasRole(["SME"]) ? <SMEIcon /> : null}
             />
             <div className="flex flex-col gap-1 text-lg">
               <p className="font-semibold">{name}</p>
