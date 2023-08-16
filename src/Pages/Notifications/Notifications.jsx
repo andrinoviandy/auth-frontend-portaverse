@@ -1,66 +1,14 @@
-/* eslint-disable react/prop-types */
-import { Button, Menu, Tabs } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Button, Tabs } from "@mantine/core";
 import { Icon } from "@iconify/react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  BASE_PROXY,
-  NOTIFICATION_ENDPOINT,
-} from "../../Networks/endpoint";
-import { Networks } from "../../Networks/factory";
-import NotificationSection from "./NotificationSection";
-import { setUnreadNotification } from "../../Configs/Redux/slice";
-import useSocket from "../../Utils/Hooks/useSocket";
-import ActionContainer from "../NewNavbar/ActionContainer";
+import { useSelector } from "react-redux";
+import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 
-function NewNotification({ icon }) {
-  const unread = useSelector((st) => st.unreadNotifications);
+import NotificationSection from "../../Components/Notification/NotificationSection";
 
-  const [opened, setOpened] = useState(false);
+function Notifications() {
   const [activeTab, setActiveTab] = useState("all");
-  const dispatch = useDispatch();
-
-  const { data, isConnected, initiate, register } = useSocket(
-    import.meta.env.VITE_API_NOTIFICATIONS_SERVICE_URL,
-    "/channels",
-  );
-
-  useEffect(() => {
-    initiate();
-  }, []);
-
-  useEffect(() => {
-    if (isConnected) {
-      register("message");
-    }
-  }, [isConnected]);
-
-  useEffect(() => {
-    if (data?.message?.origin === "KMS") {
-      dispatch(
-        setUnreadNotification({
-          lms: unread.kms + 1,
-          all: unread.all + 1,
-        }),
-      );
-    }
-    if (data?.message?.origin === "LMS") {
-      dispatch(
-        setUnreadNotification({
-          kms: unread.lms + 1,
-          all: unread.all + 1,
-        }),
-      );
-    }
-    if (data?.message?.origin === "TMS") {
-      dispatch(
-        setUnreadNotification({
-          tms: unread.tms + 1,
-          all: unread.all + 1,
-        }),
-      );
-    }
-  }, [data]);
+  const unread = useSelector((st) => st.unreadNotifications);
 
   const view = (v = 0, isAbsolute = true) => {
     if (v > 99) {
@@ -98,59 +46,25 @@ function NewNotification({ icon }) {
     );
   };
 
-  const notificationService = Networks(BASE_PROXY.notifications);
-
-  const { _ } = notificationService.query(
-    NOTIFICATION_ENDPOINT.GET.unreadCount,
-    ["notificationGetUnreadCount"],
-    {
-      onSuccess: (v) => {
-        dispatch(
-          setUnreadNotification({
-            kms: v?.kms || 0,
-            tms: v?.tms || 0,
-            lms: v?.lms || 0,
-            all: v?.all || 0,
-          }),
-        );
-      },
-    },
-  );
-
   return (
-    <Menu
-      opened={opened}
-      onChange={setOpened}
-      position="bottom-end"
-      offset={17.5}
-      width={500}
-      radius="md"
-    >
-      <Menu.Target>
-        <button type="button" className="relative">
-          {view(unread?.all)}
-          <ActionContainer isActive={opened}>{icon}</ActionContainer>
-        </button>
-      </Menu.Target>
-
-      <Menu.Dropdown className=" max-h-[721px] overflow-y-scroll scroll-style-2 py-0 my-0">
-        <Menu.Label className="sticky top-0 z-[2] bg-white">
-          <div className="flex justify-between items-center h-10">
-            <h2 className=" font-bold text-text1">Notifikasi</h2>
-            <Button
-              onClick={() => {
-                window.location.href = `${
-                  import.meta.env.VITE_SSO_URL
-                }/notifications/setting`;
-              }}
-              size="xs"
-              variant="outline"
-              leftIcon={<Icon icon="ic:sharp-settings" width={18} />}
-            >
-              Atur Notifikasi
-            </Button>
-          </div>
-        </Menu.Label>
+    <div className="flex flex-col">
+      <NewNavbar />
+      <div className="px-[6rem] py-8">
+        <div className="flex justify-between items-center">
+          <h1 className="font-semibold pb-4">Notifikasi</h1>
+          <Button
+            onClick={() => {
+              window.location.href = `${
+                import.meta.env.VITE_SSO_URL
+              }/notifications/setting`;
+            }}
+            size="xs"
+            variant="outline"
+            leftIcon={<Icon icon="ic:sharp-settings" width={18} />}
+          >
+            Atur Notifikasi
+          </Button>
+        </div>{" "}
         <Tabs
           value={activeTab}
           onTabChange={setActiveTab}
@@ -160,7 +74,7 @@ function NewNotification({ icon }) {
             },
           })}
           classNames={{
-            tabLabel: "text-sm  text-center font-semibold ",
+            tabLabel: "text-sm  text-center font-semibold",
           }}
         >
           <Tabs.List>
@@ -169,7 +83,7 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "all"
                     ? "text-darkGrey"
-                    : "text-[#016DB2]"
+                    : "text-primary3"
                 }`}
               >
                 Pemberitahuan {view(unread?.all, false)}
@@ -180,7 +94,7 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "kms"
                     ? "text-darkGrey"
-                    : "text-[#016DB2]"
+                    : "text-primary3"
                 }`}
               >
                 KMS {view(unread?.kms, false)}
@@ -192,7 +106,7 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "lms"
                     ? "text-darkGrey"
-                    : "text-[#016DB2]"
+                    : "text-primary3"
                 }`}
               >
                 {" "}
@@ -204,7 +118,7 @@ function NewNotification({ icon }) {
                 className={`flex gap-2 items-center ${
                   activeTab !== "tms"
                     ? "text-darkGrey"
-                    : "text-[#016DB2]"
+                    : "text-primary3"
                 }`}
               >
                 {" "}
@@ -214,6 +128,7 @@ function NewNotification({ icon }) {
           </Tabs.List>
           <Tabs.Panel value="all">
             <NotificationSection
+              isPage
               origin="all"
               tab={activeTab}
               unreadCount={unread}
@@ -221,6 +136,7 @@ function NewNotification({ icon }) {
           </Tabs.Panel>
           <Tabs.Panel value="kms">
             <NotificationSection
+              isPage
               origin="kms"
               tab={activeTab}
               unreadCount={unread}
@@ -228,6 +144,7 @@ function NewNotification({ icon }) {
           </Tabs.Panel>
           <Tabs.Panel value="lms">
             <NotificationSection
+              isPage
               origin="lms"
               tab={activeTab}
               unreadCount={unread}
@@ -236,14 +153,15 @@ function NewNotification({ icon }) {
           <Tabs.Panel value="tms">
             <NotificationSection
               origin="tms"
+              isPage
               tab={activeTab}
               unreadCount={unread}
             />
           </Tabs.Panel>
         </Tabs>
-      </Menu.Dropdown>
-    </Menu>
+      </div>
+    </div>
   );
 }
 
-export default NewNotification;
+export default Notifications;

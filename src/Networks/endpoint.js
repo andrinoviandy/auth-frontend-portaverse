@@ -71,10 +71,21 @@ export const NOTIFICATION_ENDPOINT = {
   GET: {
     notifications: "/notification",
     unreadCount: "/notification/other/unread",
+    notificationModules: "/notification/other/modules",
   },
   PUT: {
     markAsRead: (notificationId) =>
       `/notification/${notificationId}/read-mark`,
+    allMarkAsRead: "/notification/other/all-read-mark",
+    pinnedNotif: (notificationId) =>
+      `/notification/${notificationId}/pin`,
+    putReads: "/notification/other/reads",
+    aceptableActionNotif: (notificationId) =>
+      `/notification/${notificationId}/acceptance-status`,
+  },
+  DELETE: {
+    deleteNotification: (notificationId) =>
+      `/notification/${notificationId}`,
   },
 };
 
@@ -269,6 +280,7 @@ export const COURSE_ENDPOINT = {
       `/course/history-transaction/${employeeId}`,
     totalEmployeeLearningHours: (employeeId) =>
       `/course/total-learning-hours/${employeeId}`,
+    getBastLog: (bastId) => `/course/vendor/bast/${bastId}/log`,
   },
 };
 

@@ -28,6 +28,7 @@ import { Networks } from "../../Networks/factory";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
 import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
+import hasRole from "../../Utils/Helpers/hasRole";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -155,7 +156,7 @@ export default function LandingPageAuthorized() {
         label: "Dashboard Kursus",
         route: "/course-pool/courses",
         icon: <Icon icon="clarity:blocks-group-solid" width={25} />,
-        hidden: !["CRPU", "SA", "VNDR"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
         label: "Manajemen Kompetensi",
@@ -166,19 +167,19 @@ export default function LandingPageAuthorized() {
             width={25}
           />
         ),
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       {
         label: "Manajemen Sertifikat",
         route: "/certificate-management",
         icon: <Icon icon="mingcute:certificate-2-fill" width={25} />,
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       {
-        label: ["SBCN"].includes(user?.role_code)
+        label: hasRole(["SBCN"])
           ? "Subcon Dashboard"
           : "Manajemen Subcon",
-        route: ["SBCN"].includes(user?.role_code)
+        route: hasRole(["SBCN"])
           ? `/subcon-management/${user?.subcon?.subcon_id}`
           : "/subcon-management",
         icon: (
@@ -188,10 +189,10 @@ export default function LandingPageAuthorized() {
             className="w-[23px] h-[23px]"
           />
         ),
-        hidden: !["CRPU", "SA", "SBCN"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA", "SBCN"]),
       },
       {
-        label: ["VNDR"].includes(user?.role_code)
+        label: hasRole(["VNDR"])
           ? "Vendor Dashboard"
           : "Manajemen Vendor",
         route: "/vendor-management",
@@ -202,7 +203,7 @@ export default function LandingPageAuthorized() {
             className="w-[21px] h-[21px]"
           />
         ),
-        hidden: !["CRPU", "SA", "VNDR"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
         label: "Analytics",
@@ -214,13 +215,13 @@ export default function LandingPageAuthorized() {
             className="w-[23px] h-[23px]"
           />
         ),
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
       {
         label: "Manajemen Wallet",
         route: "/wallet-management",
         icon: <Icon icon="uil:wallet" width={25} />,
-        hidden: !["CRPU", "SA"].includes(user?.role_code),
+        hidden: !hasRole(["CRPU", "SA"]),
       },
     ],
     TMS: [
