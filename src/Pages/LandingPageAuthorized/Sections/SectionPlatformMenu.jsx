@@ -37,7 +37,7 @@ export default function SectionPlatformMenu() {
             width={35}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "KMAP",
@@ -47,7 +47,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Employees",
@@ -60,7 +60,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Communities of Practice",
@@ -74,7 +74,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Communities of Interest",
@@ -88,7 +88,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Repository",
@@ -98,7 +98,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <img src={Repository} alt="repo" className="w-[26px]" />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Ask of Expert",
@@ -106,7 +106,7 @@ export default function SectionPlatformMenu() {
           "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
         route: "/ask-expert",
         icon: <img src={AoE} alt="repo" className="w-[40px]" />,
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Headquarter",
@@ -116,7 +116,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <Icon icon="ri:hq-line" color={color.primary3} width={40} />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
     ],
     LMS: [
@@ -132,7 +132,7 @@ export default function SectionPlatformMenu() {
             width={35}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Dashboard",
@@ -146,7 +146,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Dashboard Kursus",
@@ -291,7 +291,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Personal Assessment",
@@ -305,7 +305,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["USER"]),
+        shown: true,
       },
       {
         label: "Manajemen Organisasi",
