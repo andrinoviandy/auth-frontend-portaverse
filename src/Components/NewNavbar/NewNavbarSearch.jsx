@@ -9,8 +9,18 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import { COURSE_TYPES, color } from "../../Utils/Constants";
+import trimString from "../../Utils/Helpers/trimString";
 import SMEIcon from "../Assets/Icon/SME";
 import ProfilePictureWithBadge from "../ProfilePictureWithBadge/ProfilePictureWithBadge";
+
+const mapTrainer = {
+  External: {
+    label: "Eksternal",
+  },
+  Internal: {
+    label: "Internal",
+  },
+};
 
 function CourseTypeItem({ courseName, courseType }) {
   return (
@@ -53,7 +63,59 @@ function DocumentTypeItem({ filename, filetype = "pdf" }) {
   );
 }
 
-function EmployeeTypeItem({ avatar, isSme = false, employeeName }) {
+function EmployeeTypeItem({
+  avatar,
+  withAvatar = false,
+  isSme = false,
+  employeeName,
+  employeeNumber,
+  positionName,
+}) {
+  return (
+    <div className="flex items-center max-w-full gap-2">
+      <div className="block">
+        {withAvatar ? (
+          <ProfilePictureWithBadge
+            className="object-cover w-6 h-6 border rounded-full"
+            img={avatar}
+            noImgVariant="light"
+            badgeIcon={
+              isSme ? (
+                <div className="absolute -right-1 -bottom-2">
+                  <SMEIcon size={12} />
+                </div>
+              ) : null
+            }
+            name={employeeName}
+          />
+        ) : (
+          <Icon
+            width={24}
+            height={24}
+            color={color.primary3}
+            icon="bx:user-circle"
+          />
+        )}
+      </div>
+      <div className="w-full text-sm font-medium text-coffee">
+        {employeeName}
+        <span className="w-full font-normal truncate text-darkGrey">
+          {employeeNumber && <> &bull; {employeeNumber}</>}
+          {positionName && (
+            <> &bull; {trimString(positionName, 30)}</>
+          )}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function TrainerTypeItem({
+  avatar,
+  isSme = false,
+  trainerName,
+  trainerType,
+}) {
   return (
     <div className="flex items-center gap-2">
       <div className="block">
@@ -68,11 +130,36 @@ function EmployeeTypeItem({ avatar, isSme = false, employeeName }) {
               </div>
             ) : null
           }
-          name={employeeName}
+          name={trainerName}
         />
       </div>
       <div className="text-sm font-medium text-coffee">
-        {employeeName}
+        {trainerName}
+        <span className="font-normal text-darkGrey">
+          {" "}
+          - {trainerType}
+        </span>
+      </div>
+    </div>
+  );
+}
+function PostTypeItem({ postContent = "", postType = "Post" }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="block">
+        <Icon
+          width={16}
+          height={16}
+          color={color.primary3}
+          icon="bi:file-post"
+        />
+      </div>
+      <div className="text-sm font-medium text-coffee">
+        {trimString(postContent, 50)}
+        <span className="font-normal text-darkGrey">
+          {" "}
+          - {postType}
+        </span>
       </div>
     </div>
   );
@@ -96,6 +183,8 @@ const mapGroup = {
         avatar={data.avatar}
         isSme={data.isSme}
         employeeName={data.employeeName}
+        employeeNumber={data.employeeNumber}
+        positionName={data.positionName}
       />
     ),
     href: (data) =>
@@ -104,14 +193,15 @@ const mapGroup = {
   trainer: {
     group: "Trainer",
     render: (data) => (
-      <EmployeeTypeItem
+      <TrainerTypeItem
         avatar={data.avatar}
         isSme={data.isSme}
-        employeeName={data.trainerName}
+        trainerName={data.trainerName}
+        trainerType={data.trainerType}
       />
     ),
     // TODO: Integrate href for trainer to pool of trainer detail page (not developed yet)
-    href: (data) => `${data.id}`,
+    href: () => "",
   },
   course: {
     group: "Kursus",
@@ -123,6 +213,32 @@ const mapGroup = {
     ),
     href: (data) =>
       `${import.meta.env.VITE_LMS_URL}/explore/${data.id}`,
+  },
+  socmed: {
+    group: "Social Media Profile",
+    render: (data) => (
+      <EmployeeTypeItem
+        avatar={data.avatar}
+        isSme={data.isSme}
+        employeeName={data.employeeName}
+        withAvatar
+        employeeNumber={data.employeeNumber}
+        positionName={data.positionName}
+      />
+    ),
+    href: (data) =>
+      `${import.meta.env.VITE_KMS_URL}/home/detail/${data.id}`,
+  },
+  post: {
+    group: "Post",
+    render: (data) => (
+      <PostTypeItem
+        postContent={data.postContent}
+        postType={data.postType}
+      />
+    ),
+    href: (data) =>
+      `${import.meta.env.VITE_KMS_URL}/home?post=${data.id}`,
   },
 };
 
@@ -170,18 +286,40 @@ export default function NavbarSearch() {
               avatar: e?.describe?.avatar,
               isSme: e?.describe?.is_sme,
               employeeName: e.display,
+              positionName: e?.describe?.position,
+              employeeNumber: e?.describe?.nipp,
             };
           } else if (e.type === "trainer") {
             data = {
               avatar: e?.describe?.avatar,
               isSme: e?.describe?.is_sme,
               trainerName: e.display,
+              trainerType:
+                mapTrainer?.[e?.describe?.type_trainer]?.label,
             };
           } else if (e.type === "document") {
             data = {
               filetype: e?.describe?.type_file,
               filename: e.display,
               fileUrl: e?.describe?.link_file,
+            };
+          } else if (e.type === "socmed") {
+            data = {
+              avatar: e?.describe?.social_media_avatar,
+              isSme: e?.describe?.is_sme,
+              employeeName: e?.display,
+              employeeNumber: e?.describe?.nipp,
+            };
+          } else if (e.type === "post") {
+            const { display } = e || {};
+            const div = document.createElement("div");
+            div.innerHTML = display;
+            const parsedDisplay =
+              div.textContent || div.innerText || "";
+
+            data = {
+              postContent: parsedDisplay,
+              postType: e?.describe?.category_post,
             };
           }
           return {
