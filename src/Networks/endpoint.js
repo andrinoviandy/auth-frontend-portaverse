@@ -16,6 +16,7 @@ export const BASE_PROXY = {
   smartplan: "/api/smartplan/v1",
   course: "/api/course/v1",
   signature: "/api/signature/v1",
+  searchEngine: "/api/search-engine/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -287,5 +288,11 @@ export const COURSE_ENDPOINT = {
 export const SIGNATURE_ENDPOINT = {
   GET: {
     checkSMSAuthorization: "/authorization/check",
+  },
+};
+
+export const SEARCH_ENGINE_ENDPOINT = {
+  GET: {
+    spotlight: "/spotlight",
   },
 };
