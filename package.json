@@ -33,7 +33,8 @@
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.1",
     "swiper": "^8.3.2",
-    "worker-timers": "^7.0.60"
+    "worker-timers": "^7.0.60",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@iconify/react": "^3.2.2",

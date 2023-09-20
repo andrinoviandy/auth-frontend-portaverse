@@ -378,5 +378,57 @@ export const MANTINE_PAGINATION_STYLES = {
 export const MANTINE_INPUT_STYLES = {
   primary: {
     classNames: { label: "text-primary3 mb-1" },
+    styles: {
+      input: {
+        fontSize: "0.875rem",
+      },
+      label: {
+        fontSize: "0.875rem",
+      },
+      error: {
+        fontSize: "0.875rem",
+      },
+    },
+  },
+};
+
+export const MANTINE_SWITCH_STYLES = {
+  primary: {
+    styles: {
+      label: {
+        fontSize: "0.875rem",
+      },
+    },
+  },
+};
+
+export const MANTINE_SELECT_STYLES = {
+  primary: {
+    classNames: { label: "text-primary3 mb-1" },
+    styles: {
+      item: {
+        fontSize: "0.875rem",
+      },
+    },
+  },
+};
+
+export const MANTINE_BUTTON_STYLES = {
+  sizeStyles: {
+    xs: {
+      fontSize: "0.75 !important",
+    },
+    sm: {
+      fontSize: "0.875rem !important",
+    },
+    md: {
+      fontSize: "1rem !important",
+    },
+    lg: {
+      fontSize: "1rem !important",
+    },
+    xl: {
+      fontSize: "1rem !important",
+    },
   },
 };
