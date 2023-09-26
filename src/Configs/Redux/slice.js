@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 
 // TODO Reset Redux on Logout
 /* eslint-disable no-param-reassign */
@@ -11,6 +12,10 @@ export const slice = createSlice({
       lms: 0,
       tms: 0,
     },
+
+    // start daily quiz
+    quizStatus: {},
+    // end daily quiz
   },
 
   reducers: {
@@ -23,9 +28,25 @@ export const slice = createSlice({
         tms: tms || tms === 0 ? tms : state.unreadNotifications.tms,
       };
     },
+
+    // start daily quiz
+    setDailyQuizStatus: (state, action) => {
+      const { date, isCompleted, employeeNumber } = action.payload;
+      const temp = {};
+      temp[
+        `${employeeNumber}_${dayjs(new Date(date)).format(
+          "DD-MM-YYYY",
+        )}`
+      ] = {
+        isCompleted,
+      };
+      state.quizStatus = temp;
+    },
+    // end daily quiz
   },
 });
 
-export const { setUnreadNotification } = slice.actions;
+export const { setUnreadNotification, setDailyQuizStatus } =
+  slice.actions;
 
 export default slice.reducer;
