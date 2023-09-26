@@ -6,8 +6,12 @@ import SuccessHandling from "./Components/Errors/SuccessHandling";
 import LoginLayout from "./Components/Layouts/LoginLayout";
 import MainLayout from "./Components/Layouts/MainLayout";
 import MobileBanner from "./Components/Misc/MobileBanner";
+import Confirmations from "./Components/Modals/Confirmations";
+import MODAL_IDS from "./Components/Modals/modalIds";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
+import ModalEndUserDailyQuiz from "./Pages/DailyQuiz/Components/ModalEndUserDailyQuiz";
+import DailyQuizRoute from "./Pages/DailyQuiz/Route";
 import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
 import LandingPage from "./Pages/LandingPage";
 import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
@@ -27,12 +31,20 @@ function App() {
     <BrowserRouter>
       <MobileBanner />
       <ModalDef
+        id={MODAL_IDS.GENERAL.CONFIRMATION}
+        component={Confirmations}
+      />
+      <ModalDef
         id="success-handling-dialog"
         component={SuccessHandling}
       />
       <ModalDef
         id="error-handling-dialog"
         component={ErrorHandling}
+      />
+      <ModalDef
+        id={MODAL_IDS.DAILY_QUIZ.END_USER_DO_QUIZ}
+        component={ModalEndUserDailyQuiz}
       />
       <Routes>
         <Route
@@ -43,10 +55,12 @@ function App() {
             />
           }
         >
-          <Route element={<MainLayout />}>
-            {/* Can only be access when user logged in */}
-            {/* <Route path="/products" element={<ChooseProducts />} /> */}
-            <Route path="/referals" element={<Referal />} />
+          <Route element={<DailyQuizRoute />}>
+            <Route element={<MainLayout />}>
+              {/* Can only be access when user logged in */}
+              {/* <Route path="/products" element={<ChooseProducts />} /> */}
+              <Route path="/referals" element={<Referal />} />
+            </Route>
           </Route>
         </Route>
 
@@ -58,12 +72,18 @@ function App() {
             />
           }
         >
-          <Route
-            path="/landing"
-            element={<NewLandingPageAuthorized />}
-          />
-          <Route path="/notifications" element={<Notifications />} />
+          <Route element={<DailyQuizRoute />}>
+            <Route
+              path="/landing"
+              element={<NewLandingPageAuthorized />}
+            />
+            <Route
+              path="/notifications"
+              element={<Notifications />}
+            />
+          </Route>
         </Route>
+
         <Route
           element={
             <PrivateRoutes
