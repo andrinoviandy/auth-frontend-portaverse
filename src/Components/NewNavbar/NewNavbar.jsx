@@ -12,22 +12,14 @@ import NewProfileDropdown from "./NewProfileDropdown";
 const NewNavbar = forwardRef((props, ref) => {
   return (
     <nav className="flex items-center justify-between bg-white h-14 border-gray-200 pl-4 pr-5 drop-shadow-sm sticky top-0 z-50">
-      <div
-        className="py-2.5 pr-3 cursor-pointer"
-        onClick={() => {
-          window.location.href = `${
-            import.meta.env.VITE_SSO_URL
-          }/landing`;
-        }}
-      >
+      <a href="/landing" className="py-2.5 pr-3 cursor-pointer">
         <img
           src={portaverse}
           alt="logo"
           className="w-[2.2rem]"
           loading="lazy"
         />
-      </div>
-
+      </a>
       <div className="flex items-center justify-between w-full py-2.5 ml-5">
         <NewNavbarSearch />
 
