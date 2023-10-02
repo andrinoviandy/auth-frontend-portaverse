@@ -116,7 +116,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <Icon icon="ri:hq-line" color={color.primary3} width={40} />
         ),
-        shown: true,
+        shown: hasRole(["SA"]),
       },
     ],
     LMS: [
@@ -160,7 +160,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "SA", "VNDR"]),
+        shown: hasRole(["CRPU"]),
       },
       {
         label: "Manajemen Kompetensi",
