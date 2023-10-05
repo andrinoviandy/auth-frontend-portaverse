@@ -616,9 +616,7 @@ function NotificationSection({ origin, tab, isPage }) {
             variant="white"
             className="disabled:bg-white"
             onClick={() => {
-              window.location.href = `${
-                import.meta.env.VITE_SSO_URL
-              }/notifications`;
+              window.location.href = `/notifications`;
             }}
             type="button"
           >
