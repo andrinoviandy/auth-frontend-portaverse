@@ -17,6 +17,7 @@ export const BASE_PROXY = {
   course: "/api/course/v1",
   signature: "/api/signature/v1",
   searchEngine: "/api/search-engine/v1",
+  dailyQuiz: "/api/daily-quiz/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -294,5 +295,15 @@ export const SIGNATURE_ENDPOINT = {
 export const SEARCH_ENGINE_ENDPOINT = {
   GET: {
     spotlight: "/spotlight",
+  },
+};
+
+export const DAILY_QUIZ_ENDPOINT = {
+  GET: {
+    getAllCollection: "/collection",
+    dailyQuizData: "/daily-quiz",
+  },
+  POST: {
+    actionQuiz: `/daily-quiz`,
   },
 };
