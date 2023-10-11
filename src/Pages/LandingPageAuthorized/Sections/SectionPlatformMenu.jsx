@@ -251,20 +251,44 @@ export default function SectionPlatformMenu() {
         ),
         shown: hasRole(["CRPU", "SA"]),
       },
+      {
+        label: "Manajemen Kuis Harian",
+        description:
+          "Modul berisi pengelolaan kuis harian yang ada di Portaverse",
+        route: "/quiz-management",
+        icon: (
+          <Icon
+            icon="material-symbols:quiz-outline"
+            color={color.primary3}
+            width={40}
+          />
+        ),
+        shown: hasRole(["CRPU", "SA"]),
+      },
       // {
-      //   label: "Manajemen Tanda Tangan",
+      //   label: "Trainer Pool",
       //   description:
-      //     "Modul terpusat untuk mengelola dan membuat tanda tangan elektronik",
-      //   route: "/signature-management",
+      //     "Modul berisi trainer internal maupun eksternal yang tergabung pada aplikasi Portaverse",
+      //   route: "/trainer-management",
       //   icon: (
-      //     <img
-      //       src={SignatureManagement}
-      //       alt="signature-mngmt"
-      //       className="w-[40px]"
-      //     />
+      //     <Icon icon="mdi:teach" color={color.primary3} width={40} />
       //   ),
-      //   hidden: false,
+      //   shown: hasRole(["CRPU", "SA", "VNDR"]),
       // },
+      {
+        label: "Manajemen Download",
+        description:
+          "Modul untuk mengunduh dan mendapatkan data-data dalam format Excel dari beberapa aktivitas di Portaverse",
+        route: "/download-manager",
+        icon: (
+          <Icon
+            icon="mdi-light:view-module"
+            color={color.primary3}
+            width={40}
+          />
+        ),
+        shown: hasRole(["CRPU", "VNDR"]),
+      },
     ],
     TMS: [
       {
