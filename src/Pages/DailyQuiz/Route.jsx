@@ -20,7 +20,10 @@ export default function SyncRoute() {
   const dailyQuizStatus = useSelector((st) => st.quizStatus);
   const quizService = Networks(BASE_PROXY.dailyQuiz);
   const user = getUserCookie();
-  const employeeNumber = user.employee.employee_number;
+  const employeeNumber = user?.employee?.employee_number;
+
+  // subcon and vendor not allowed to access daily quiz
+  const isSubconOrVendor = hasRole(["SBCN", "VNDR"]);
 
   // hasDoneTodayQuiz = undefined means there is no quiz today
   const hasDoneTodayQuiz = useMemo(() => {
@@ -43,7 +46,7 @@ export default function SyncRoute() {
     DAILY_QUIZ_ENDPOINT.GET.dailyQuizData,
     [DAILY_QUIZ_ENDPOINT.GET.dailyQuizData],
     {
-      enabled: !hasDoneTodayQuiz,
+      enabled: !hasDoneTodayQuiz && !isSubconOrVendor,
       onSuccess: (res) => {
         dispatch(
           setDailyQuizStatus({
@@ -60,9 +63,6 @@ export default function SyncRoute() {
   );
 
   useEffect(() => {
-    // subcon and vendor not allowed to access daily quiz
-    const isSubconOrVendor = hasRole(["SBCN", "VNDR"]);
-
     // chech if there is no quiz today
     if (typeof hasDoneTodayQuiz !== "boolean") {
       closeNiceModal(MODAL_IDS.DAILY_QUIZ.END_USER_DO_QUIZ);
