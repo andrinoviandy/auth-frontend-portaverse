@@ -31,6 +31,7 @@ ENV VITE_LMS_URL=https://learning-portaverse.pelindo.co.id
 ENV VITE_TMS_URL=https://talent-portaverse.pelindo.co.id
 ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature-service-portaverse.pelindo.co.id
 ENV VITE_API_SEARCH_ENGINE_SERVICE_URL=https://engine-service-portaverse.pelindo.co.id
+ENV VITE_API_DAILY_QUIZ_SERVICE_URL=https://daily-quiz-portaverse.pelindo.co.id
 
 # ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
 # ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id

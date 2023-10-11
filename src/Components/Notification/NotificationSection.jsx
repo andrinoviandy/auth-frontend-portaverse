@@ -590,7 +590,7 @@ function NotificationSection({ origin, tab, isPage }) {
       </div>
       <div
         className={` overflow-auto scroll-style-2 ${
-          isPage ? "h-full" : "h-[250px]"
+          isPage ? "h-[60vh]" : "h-[250px]"
         }`}
         ref={ref}
       >
@@ -616,9 +616,7 @@ function NotificationSection({ origin, tab, isPage }) {
             variant="white"
             className="disabled:bg-white"
             onClick={() => {
-              window.location.href = `${
-                import.meta.env.VITE_SSO_URL
-              }/notifications`;
+              window.location.href = `/notifications`;
             }}
             type="button"
           >
