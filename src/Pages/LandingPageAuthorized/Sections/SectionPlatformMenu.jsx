@@ -265,16 +265,16 @@ export default function SectionPlatformMenu() {
         ),
         shown: hasRole(["CRPU", "SA"]),
       },
-      // {
-      //   label: "Trainer Pool",
-      //   description:
-      //     "Modul berisi trainer internal maupun eksternal yang tergabung pada aplikasi Portaverse",
-      //   route: "/trainer-management",
-      //   icon: (
-      //     <Icon icon="mdi:teach" color={color.primary3} width={40} />
-      //   ),
-      //   shown: hasRole(["CRPU", "SA", "VNDR"]),
-      // },
+      {
+        label: "Trainer Pool",
+        description:
+          "Modul berisi trainer internal maupun eksternal yang tergabung pada aplikasi Portaverse",
+        route: "/trainer-management",
+        icon: (
+          <Icon icon="mdi:teach" color={color.primary3} width={40} />
+        ),
+        shown: hasRole(["CRPU", "SA", "VNDR"]),
+      },
       {
         label: "Manajemen Download",
         description:
