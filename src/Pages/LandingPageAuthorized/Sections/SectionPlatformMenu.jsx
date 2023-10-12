@@ -273,7 +273,8 @@ export default function SectionPlatformMenu() {
         icon: (
           <Icon icon="mdi:teach" color={color.primary3} width={40} />
         ),
-        shown: hasRole(["CRPU", "SA", "VNDR"]),
+        // shown: hasRole(["CRPU", "SA", "VNDR"]),
+        shown: hasRole(["SA"]), // TEMP, uncomment line above later
       },
       {
         label: "Manajemen Download",
