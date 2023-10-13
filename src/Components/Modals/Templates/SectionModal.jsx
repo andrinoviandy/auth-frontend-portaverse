@@ -18,6 +18,7 @@ export default function SectionModalTemplate({
     modal: "",
     body: "",
   },
+  isNotOverflow = false,
 }) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -46,7 +47,8 @@ export default function SectionModalTemplate({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel
-                className={`w-[${width}] transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all ${classNames.modal}`}
+                style={{ width }}
+                className={`transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all ${classNames.modal}`}
               >
                 <div className="flex items-center justify-between p-5 border-b">
                   <Dialog.Title
@@ -69,7 +71,12 @@ export default function SectionModalTemplate({
                   )}
                 </div>
                 <div
-                  className={`max-h-[${height}] overflow-y-auto scroll-smooth ${classNames.body}`}
+                  style={{ maxHeight: height }}
+                  className={`${
+                    !isNotOverflow
+                      ? " overflow-y-auto scroll-smooth"
+                      : ""
+                  } ${classNames.body}`}
                 >
                   {children}
                 </div>
