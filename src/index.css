@@ -119,6 +119,22 @@ select:focus > option:hover {
   right: 10px;
 }
 
+.scroll-style-2::-webkit-scrollbar {
+  width: 6px; /* width of the entire scrollbar */
+}
+
+.scroll-style-2::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+}
+
+.scroll-style-2::-webkit-scrollbar-thumb {
+  background-color: #016db2; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
 .scroll-style-3::-webkit-scrollbar {
   width: 8px;
   height: 8px; /* width of the entire scrollbar */

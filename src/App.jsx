@@ -7,10 +7,10 @@ import LoginLayout from "./Components/Layouts/LoginLayout";
 import MainLayout from "./Components/Layouts/MainLayout";
 import MobileBanner from "./Components/Misc/MobileBanner";
 import Confirmations from "./Components/Modals/Confirmations";
+import ModalPortal from "./Components/Modals/ModalPortal";
 import MODAL_IDS from "./Components/Modals/modalIds";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
-import ModalEndUserDailyQuiz from "./Pages/DailyQuiz/Components/ModalEndUserDailyQuiz";
 import DailyQuizRoute from "./Pages/DailyQuiz/Route";
 import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
 import LandingPage from "./Pages/LandingPage";
@@ -42,10 +42,8 @@ function App() {
         id="error-handling-dialog"
         component={ErrorHandling}
       />
-      <ModalDef
-        id={MODAL_IDS.DAILY_QUIZ.END_USER_DO_QUIZ}
-        component={ModalEndUserDailyQuiz}
-      />
+      <ModalPortal />
+
       <Routes>
         <Route
           element={

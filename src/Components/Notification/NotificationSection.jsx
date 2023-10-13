@@ -5,6 +5,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import NiceModal from "@ebay/nice-modal-react";
 import { Icon } from "@iconify/react";
 import {
   Button,
@@ -13,22 +14,23 @@ import {
   Menu,
   Select,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import parse from "html-react-parser";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
-import { useForm } from "@mantine/form";
 import {
   BASE_PROXY,
   COURSE_ENDPOINT,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
+import { LIST_OF_MONTH_INDONESIA } from "../../Utils/Constants";
 import useOnScrollFetch from "../../Utils/Hooks/useOnScrollFetch";
 import ChipCarousel from "../CustomInputs/ChipCarousel";
 import { getClearableProps } from "../CustomInputs/CustomMantine/ClearSearchTextInputMantine";
-import { LIST_OF_MONTH_INDONESIA } from "../../Utils/Constants";
+import MODAL_IDS from "../Modals/modalIds";
 
 dayjs.locale("id");
 dayjs.extend(relativeTime);
@@ -151,65 +153,115 @@ function NotificationSection({ origin, tab, isPage }) {
 
   const urlLookup = (type, id, data) => {
     const lookupObj = {
-      COMMUNITY_ADD_COREMEMBER: `${
-        import.meta.env.VITE_KMS_URL
-      }/communities/${id}`,
-      COMMUNITY_AGENDA_ADD_COMITEE: `${
-        import.meta.env.VITE_KMS_URL
-      }/communities/${id}/${data || id}`,
-      COMMUNITY_AGENDA_ADD_NOTETAKER: `${
-        import.meta.env.VITE_KMS_URL
-      }/communities/${id}/${data || id}`,
-      COMMUNITY_AGENDA_ADD_SPEAKER: `${
-        import.meta.env.VITE_KMS_URL
-      }/communities/${id}/${data || id}`,
-      COMMUNITY_REMINDER_AGENDA: `${
-        import.meta.env.VITE_KMS_URL
-      }/communities/${id}/${data || id}`,
-      KMAP_ADD_COLLABORATOR_KMAP: `${
-        import.meta.env.VITE_KMS_URL
-      }/kmap`,
-      KMAP_ADD_COLLABORATOR_KMAP_OBJECTIVE: `${
-        import.meta.env.VITE_KMS_URL
-      }/kmap`,
-      KMAP_ADD_SME_KMAP: `${import.meta.env.VITE_KMS_URL}/kmap`,
-      KMAP_COMMENT_KMAP: `${import.meta.env.VITE_KMS_URL}/kmap`,
-      KMAP_COMMENT_KMAP_OBJECTIVE: `${
-        import.meta.env.VITE_KMS_URL
-      }/kmap`,
-      REPOSITORY_ADD_COLLABORATOR: `${
-        import.meta.env.VITE_KMS_URL
-      }/repository`,
-      SOCIAL_COMMENT_POST: `${
-        import.meta.env.VITE_KMS_URL
-      }/home?post=${data}`,
-      SOCIAL_FOLLOW: `${
-        import.meta.env.VITE_KMS_URL
-      }/home/detail/${id}`,
-      SOCIAL_LIKE_POST: `${
-        import.meta.env.VITE_KMS_URL
-      }/home?post=${data}`,
-      SOCIAL_MENTION: `${
-        import.meta.env.VITE_KMS_URL
-      }/home?post=${data}`,
-      SIGNATURE_MANAGEMENT_INVITE: `${
-        import.meta.env.VITE_LMS_URL
-      }/signature-management`,
-      SIGNATURE_MANAGEMENT_EDIT: `${
-        import.meta.env.VITE_LMS_URL
-      }/signature-management`,
-      SIGNATURE_MANAGEMENT_REINVITE: `${
-        import.meta.env.VITE_LMS_URL
-      }/signature-management`,
-      COURSE_PUBLISH_COURSE: `${
-        import.meta.env.VITE_LMS_URL
-      }/course-pool/course/${data}/standard-information`,
-      COURSE_BUY_COURSE: `${
-        import.meta.env.VITE_LMS_URL
-      }/dashboard/${data}`,
+      COMMUNITY_ADD_COREMEMBER: {
+        payload: `${import.meta.env.VITE_KMS_URL}/communities/${id}`,
+        action: "redirect",
+      },
+      COMMUNITY_AGENDA_ADD_COMITEE: {
+        payload: `${import.meta.env.VITE_KMS_URL}/communities/${id}/${
+          data || id
+        }`,
+        action: "redirect",
+      },
+      COMMUNITY_AGENDA_ADD_NOTETAKER: {
+        payload: `${import.meta.env.VITE_KMS_URL}/communities/${id}/${
+          data || id
+        }`,
+        action: "redirect",
+      },
+      COMMUNITY_AGENDA_ADD_SPEAKER: {
+        payload: `${import.meta.env.VITE_KMS_URL}/communities/${id}/${
+          data || id
+        }`,
+        action: "redirect",
+      },
+      COMMUNITY_REMINDER_AGENDA: {
+        payload: `${import.meta.env.VITE_KMS_URL}/communities/${id}/${
+          data || id
+        }`,
+        action: "redirect",
+      },
+      KMAP_ADD_COLLABORATOR_KMAP: {
+        payload: `${import.meta.env.VITE_KMS_URL}/kmap`,
+        action: "redirect",
+      },
+      KMAP_ADD_COLLABORATOR_KMAP_OBJECTIVE: {
+        payload: `${import.meta.env.VITE_KMS_URL}/kmap`,
+        action: "redirect",
+      },
+      KMAP_ADD_SME_KMAP: {
+        payload: `${import.meta.env.VITE_KMS_URL}/kmap`,
+        action: "redirect",
+      },
+      KMAP_COMMENT_KMAP: {
+        payload: `${import.meta.env.VITE_KMS_URL}/kmap`,
+        action: "redirect",
+      },
+      KMAP_COMMENT_KMAP_OBJECTIVE: {
+        payload: `${import.meta.env.VITE_KMS_URL}/kmap`,
+        action: "redirect",
+      },
+      REPOSITORY_ADD_COLLABORATOR: {
+        payload: `${import.meta.env.VITE_KMS_URL}/repository`,
+        action: "redirect",
+      },
+      SOCIAL_COMMENT_POST: {
+        payload: `${import.meta.env.VITE_KMS_URL}/home?post=${data}`,
+        action: "redirect",
+      },
+      SOCIAL_FOLLOW: {
+        payload: `${import.meta.env.VITE_KMS_URL}/home/detail/${id}`,
+        action: "redirect",
+      },
+      SOCIAL_LIKE_POST: {
+        payload: `${import.meta.env.VITE_KMS_URL}/home?post=${data}`,
+        action: "redirect",
+      },
+      SOCIAL_MENTION: {
+        payload: `${import.meta.env.VITE_KMS_URL}/home?post=${data}`,
+        action: "redirect",
+      },
+      SIGNATURE_MANAGEMENT_INVITE: {
+        payload: `${
+          import.meta.env.VITE_LMS_URL
+        }/signature-management`,
+        action: "redirect",
+      },
+      SIGNATURE_MANAGEMENT_EDIT: {
+        payload: `${
+          import.meta.env.VITE_LMS_URL
+        }/signature-management`,
+        action: "redirect",
+      },
+      SIGNATURE_MANAGEMENT_REINVITE: {
+        payload: `${
+          import.meta.env.VITE_LMS_URL
+        }/signature-management`,
+        action: "redirect",
+      },
+      COURSE_PUBLISH_COURSE: {
+        payload: `${
+          import.meta.env.VITE_LMS_URL
+        }/course-pool/course/${data}/standard-information`,
+        action: "redirect",
+      },
+      COURSE_BUY_COURSE: {
+        payload: `${import.meta.env.VITE_LMS_URL}/dashboard/${data}`,
+        action: "redirect",
+      },
+      COURSE_CLAIM_REJECTED: {
+        payload: data,
+        action: "open-modal",
+        modalId: MODAL_IDS.LMS.DASHBOARD.DECLINE_EXT_COURSE_CLAIM,
+        modalProps: { note: data },
+      },
     };
-    if (lookupObj[type]) {
-      window.location.href = lookupObj[type];
+    const { payload, action, modalId, modalProps } = lookupObj[type];
+    if (action === "redirect") {
+      window.location.href = payload;
+    }
+    if (action === "open-modal") {
+      NiceModal.show(modalId, modalProps);
     }
   };
 
