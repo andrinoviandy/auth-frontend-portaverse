@@ -114,7 +114,7 @@ export default function NewNotificationPanel({
   return (
     <div
       className={clsx(
-        "flex flex-col gap-5 rounded-md border",
+        "flex flex-col rounded-md border",
         classNames.root,
       )}
     >
@@ -137,10 +137,9 @@ export default function NewNotificationPanel({
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 max-h-[590px] px-5 overflow-y-auto scroll-style-4">
+      <div className="flex flex-col gap-2 max-h-[590px] p-5 overflow-y-auto scroll-style-4">
         {(() => {
-          if (isLoading)
-            return <Loader size="sm" className="mx-auto my-3.5" />;
+          if (isLoading) return <Loader className="mx-auto" />;
 
           if (!isLoading && !!notifications?.length)
             return notifications?.map((item) => (
