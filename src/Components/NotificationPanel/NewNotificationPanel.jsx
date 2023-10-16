@@ -10,6 +10,7 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import { color } from "../../Utils/Constants";
+import notifURLLookup from "../../Utils/Helpers/notifURLLookup";
 import KPI from "../Assets/Icon/KPI";
 import NoItems from "../Errors/NoItems";
 
@@ -27,9 +28,13 @@ const MODULE_ICONS = {
   ),
 };
 
-function Item({ moduleName, message, date, viewed }) {
+function Item({ moduleName, message, date, viewed, onClick }) {
   return (
-    <div className="flex gap-4 items-start bg-bg4 rounded-md py-3 px-5">
+    <button
+      type="button"
+      className="flex gap-4 items-start text-start bg-bg4 rounded-md py-3 px-5"
+      onClick={onClick}
+    >
       <div className="shrink-0">{MODULE_ICONS[moduleName]}</div>
 
       <div className="flex flex-col gap-1 grow-0">
@@ -39,7 +44,7 @@ function Item({ moduleName, message, date, viewed }) {
           {dayjs(date).format("MMMM D, YYYY hh:mm A")}
         </p>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -49,18 +54,10 @@ export default function NewNotificationPanel({
   const queryClient = useQueryClient();
   const notificationService = Networks(BASE_PROXY.notifications);
 
-  const { data: unreadNotificationCount } = notificationService.query(
-    NOTIFICATION_ENDPOINT.GET.unreadCount,
-    ["notificationGetUnreadCount"],
-    {
-      refetchInterval: 1000 * 60,
-    },
-  );
-
   const { data: notifications, isLoading } =
     notificationService.query(
       NOTIFICATION_ENDPOINT.GET.notifications,
-      ["notifications"],
+      ["notifications-hero-section"],
       {
         select: (res) => res?.notifications,
       },
@@ -72,19 +69,39 @@ export default function NewNotificationPanel({
       },
     );
 
-  const { isLoading: isLoadingMarkAsRead, mutate: markAsRead } =
-    notificationService.mutation("put", {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["notificationGetUnreadCount"]);
-        queryClient.invalidateQueries(["notifications"]);
-      },
-    });
+  const { mutate: put } = notificationService.mutation("put", {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["notifications-hero-section"]);
+    },
+  });
+
+  const handleClickNotif = (notification) => {
+    if (!notification?.viewed) {
+      put(
+        {
+          endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
+            notification?.notification_id,
+          ),
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries([`notifications${origin}`]);
+          },
+        },
+      );
+    }
+    notifURLLookup(
+      notification?.notification_topic_code,
+      notification?.send_from,
+      notification?.data,
+    );
+  };
 
   const markAsReadHandler = () => {
     const notificationPromises = notifications
       .filter((e) => !e.viewed)
       .map((e) => {
-        return markAsRead({
+        return put({
           endpoint: NOTIFICATION_ENDPOINT.PUT.markAsRead(
             e.notification_id,
           ),
@@ -126,26 +143,15 @@ export default function NewNotificationPanel({
             return <Loader size="sm" className="mx-auto my-3.5" />;
 
           if (!isLoading && !!notifications?.length)
-            return notifications?.map((item, i) => {
-              if (notifications.length === i + 1)
-                return (
-                  <Item
-                    moduleName={item.module}
-                    message={item?.message}
-                    date={dayjs(item.reminder_at).toISOString()}
-                    viewed={item.viewed}
-                  />
-                );
-
-              return (
-                <Item
-                  moduleName={item.module}
-                  message={item?.message}
-                  date={dayjs(item.reminder_at).toISOString()}
-                  viewed={item.viewed}
-                />
-              );
-            });
+            return notifications?.map((item) => (
+              <Item
+                moduleName={item.module}
+                message={item?.message}
+                date={dayjs(item.reminder_at).toISOString()}
+                viewed={item?.viewed}
+                onClick={() => handleClickNotif(item)}
+              />
+            ));
 
           return (
             <NoItems
