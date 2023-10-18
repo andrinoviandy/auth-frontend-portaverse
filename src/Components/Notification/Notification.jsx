@@ -4,13 +4,12 @@ import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 import {
   BASE_PROXY,
   NOTIFICATION_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
-import notifUrlLookup from "../../Utils/Helpers/notifUrlLookup";
+import notifURLLookup from "../../Utils/Helpers/notifURLLookup";
 import useInfiniteFetchObserver from "../../Utils/Hooks/useInfiniteFetchObserver";
 
 export default function Notification({ icon }) {
@@ -37,12 +36,6 @@ export default function Notification({ icon }) {
   };
 
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const urlLookup = (type, id, data) => {
-    const lookupObj = notifUrlLookup(data, id);
-
-    return navigate(lookupObj[type]);
-  };
 
   const notificationService = Networks(BASE_PROXY.notifications);
 
@@ -122,9 +115,9 @@ export default function Notification({ icon }) {
               ),
             });
           }
-          urlLookup(
-            notification.notification_topic_code,
-            notification.send_from,
+          notifURLLookup(
+            notification?.notification_topic_code,
+            notification?.send_from,
             notification?.data,
           );
         }}
