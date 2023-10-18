@@ -118,11 +118,15 @@ const notifURLLookup = (type, id, data) => {
     //   action: "redirect",
     // },
     COURSE_REQUEST_CANCELLED: {
-      payload: `${import.meta.env.VITE_LMS_URL}/explore/request#mine`,
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/explore/request#_mine`,
       action: "redirect",
     },
     COURSE_REQUEST_COURSE_ACCEPT_BY_VENDOR: {
-      payload: `${import.meta.env.VITE_LMS_URL}/explore/request#mine`,
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/explore/request#_mine`,
       action: "redirect",
     },
     COURSE_REMINDER: {
@@ -134,7 +138,9 @@ const notifURLLookup = (type, id, data) => {
       action: "redirect",
     },
     COURSE_REQUEST_PROCESSED: {
-      payload: `${import.meta.env.VITE_LMS_URL}/explore/request#mine`,
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/explore/request#_mine`,
       action: "redirect",
     },
     KMAP_ADD_COLLABORATOR_KMAP: {
