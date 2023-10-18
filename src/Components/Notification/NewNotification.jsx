@@ -137,7 +137,7 @@ function NewNotification({ icon }) {
         <Menu.Label className="sticky top-0 z-[2] bg-white">
           <div className="flex justify-between items-center h-10">
             <h2 className=" font-bold text-text1">Notifikasi</h2>
-            <Button
+            {/* <Button
               onClick={() => {
                 window.location.href = `${
                   import.meta.env.VITE_SSO_URL
@@ -148,7 +148,7 @@ function NewNotification({ icon }) {
               leftIcon={<Icon icon="ic:sharp-settings" width={18} />}
             >
               Atur Notifikasi
-            </Button>
+            </Button> */}
           </div>
         </Menu.Label>
         <Tabs
