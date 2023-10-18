@@ -1,6 +1,5 @@
+import { Tabs } from "@mantine/core";
 import React, { useState } from "react";
-import { Button, Tabs } from "@mantine/core";
-import { Icon } from "@iconify/react";
 import { useSelector } from "react-redux";
 import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 
@@ -52,7 +51,7 @@ function Notifications() {
       <div className="px-[6rem] py-8">
         <div className="flex justify-between items-center">
           <h1 className="font-semibold pb-4">Notifikasi</h1>
-          <Button
+          {/* <Button
             onClick={() => {
               window.location.href = `${
                 import.meta.env.VITE_SSO_URL
@@ -63,7 +62,7 @@ function Notifications() {
             leftIcon={<Icon icon="ic:sharp-settings" width={18} />}
           >
             Atur Notifikasi
-          </Button>
+          </Button> */}
         </div>{" "}
         <Tabs
           value={activeTab}
