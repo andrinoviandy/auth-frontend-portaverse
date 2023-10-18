@@ -1,7 +1,11 @@
 import NiceModal from "@ebay/nice-modal-react";
 import MODAL_IDS from "../../Components/Modals/modalIds";
+import getUserCookie from "./getUserCookie";
 
 const notifURLLookup = (type, id, data) => {
+  const user = getUserCookie();
+  const vendorId = user?.vendor?.vendor_id;
+
   const lookupObj = {
     COMMUNITY_ADD_COREMEMBER: {
       payload: `${import.meta.env.VITE_KMS_URL}/communities/${id}`,
@@ -46,6 +50,92 @@ const notifURLLookup = (type, id, data) => {
       action: "open-modal",
       modalId: MODAL_IDS.LMS.DASHBOARD.DECLINE_EXT_COURSE_CLAIM,
       modalProps: { note: data },
+    },
+    COURSE_CLAIM_SUCCEED: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/dashboard#subinfo_claim-lh`,
+      action: "redirect",
+    },
+    COURSE_COURSE_NEED_APPROVAL: {
+      payload: `${import.meta.env.VITE_LMS_URL}/course-pool/request`,
+      action: "redirect",
+    },
+    COURSE_CANCEL_NOT_ENOUGH_PARTICIPANT: {
+      payload: `${import.meta.env.VITE_LMS_URL}/dashboard/group`,
+      action: "redirect",
+    },
+    COURSE_COURSE_NEED_APPROVAL_VENDOR_REVISION: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}#course-procurement`,
+      action: "redirect",
+    },
+    COURSE_ENROLLMENT_APPROVED_BY_SUPERIOR: {
+      payload: `${import.meta.env.VITE_LMS_URL}/dashboard/group`,
+      action: "redirect",
+    },
+    COURSE_ENROLLMENT_APPROVED_BY_WALLET_ADMIN: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/dashboard/group#approvals_approval-wallet`,
+      action: "redirect",
+    },
+    COURSE_ENROLLMENT_REJECTED_BY_SUPERIOR: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/dashboard/group#approvals`,
+      action: "redirect",
+    },
+    COURSE_ENROLLMENT_REJECTED_BY_WALLET_ADMIN: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/dashboard/group#approvals_approval-wallet`,
+      action: "redirect",
+    },
+    COURSE_ENROLLMENT_REQUEST_TO_SUPERIOR: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/dashboard/group#approvals`,
+      action: "redirect",
+    },
+    COURSE_ENROLLMENT_REQUEST_TO_WALLET_ADMIN: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/dashboard/group#approvals_approval-wallet`,
+      action: "redirect",
+    },
+    COURSE_INVITATION: {
+      payload: `${import.meta.env.VITE_LMS_URL}/explore/request`,
+      action: "redirect",
+    },
+    COURSE_PUBLICATION_TARGETED: {
+      payload: `${import.meta.env.VITE_LMS_URL}/explore/${data}`,
+      action: "redirect",
+    },
+    // COURSE_PUBLICATION_TARGETED_TO_RANK_ID: {
+    //   payload: `${import.meta.env.VITE_LMS_URL}/???`,
+    //   action: "redirect",
+    // },
+    COURSE_REQUEST_CANCELLED: {
+      payload: `${import.meta.env.VITE_LMS_URL}/explore/request#mine`,
+      action: "redirect",
+    },
+    COURSE_REQUEST_COURSE_ACCEPT_BY_VENDOR: {
+      payload: `${import.meta.env.VITE_LMS_URL}/explore/request#mine`,
+      action: "redirect",
+    },
+    COURSE_REMINDER: {
+      payload: `${import.meta.env.VITE_LMS_URL}/dashboard/${data}`,
+      action: "redirect",
+    },
+    COURSE_REQUEST_PUBLISHED: {
+      payload: `${import.meta.env.VITE_LMS_URL}explore/${data}`,
+      action: "redirect",
+    },
+    COURSE_REQUEST_PROCESSED: {
+      payload: `${import.meta.env.VITE_LMS_URL}/explore/request#mine`,
+      action: "redirect",
     },
     KMAP_ADD_COLLABORATOR_KMAP: {
       payload: `${import.meta.env.VITE_KMS_URL}/kmap`,
