@@ -161,6 +161,9 @@ function NotificationSection({ origin, tab, isPage }) {
         {
           onSuccess: () => {
             queryClient.invalidateQueries([`notifications${origin}`]);
+            queryClient.invalidateQueries([
+              "notificationGetUnreadCount",
+            ]);
           },
         },
       );
@@ -203,6 +206,9 @@ function NotificationSection({ origin, tab, isPage }) {
           form.setFieldValue("checkbox", {});
           form.setFieldValue("checkAll", false);
           queryClient.invalidateQueries([`notifications${origin}`]);
+          queryClient.invalidateQueries([
+            "notificationGetUnreadCount",
+          ]);
         },
       },
     );
@@ -292,6 +298,9 @@ function NotificationSection({ origin, tab, isPage }) {
                                   onSuccess: () => {
                                     queryClient.invalidateQueries([
                                       `notifications${origin}`,
+                                    ]);
+                                    queryClient.invalidateQueries([
+                                      "notificationGetUnreadCount",
                                     ]);
                                   },
                                 },
