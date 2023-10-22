@@ -47,10 +47,10 @@ function LandingPage() {
               variant="outline"
               type="button"
               onClick={() =>
-                openInNewTab("https://portaverse.pelindo.co.id/login")
+                openInNewTab("https://staging-sso.portaverse.co.id/login")
               }
             >
-              https://portaverse.pelindo.co.id/login
+              https://staging-sso.portaverse.co.id/login
             </Button>
           </>
         )}
