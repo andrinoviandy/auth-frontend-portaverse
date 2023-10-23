@@ -5,8 +5,13 @@ import {
   PasswordInput,
   TextInput,
 } from "@mantine/core";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  LoadCanvasTemplate,
+  loadCaptchaEnginge,
+  validateCaptcha,
+} from "react-simple-captcha";
 import EyeOffOutline from "../../Components/Assets/Icon/EyeOffOutline";
 import EyeOutline from "../../Components/Assets/Icon/EyeOutline";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.png";
@@ -24,42 +29,73 @@ export const onToggleVisibility = memo(({ reveal, size }) =>
   reveal ? <EyeOutline size={size} /> : <EyeOffOutline size={size} />,
 );
 
+const MAX_REATTEMPT = 3;
+
 export default function NewLogin() {
   const [payload, setPayload] = useState(form);
+  const [captcha, setCaptcha] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
-  const [validateEmail, setValidateEmail] = useState("");
-  const [validatePassword, setValidatePassword] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorCaptcha, setErrorCaptcha] = useState("");
+  const [wrongCredsAttempt, setWrongCredsAttempt] = useState(0);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setPayload({ ...payload, [name]: value });
-    setValidateEmail("");
-    setValidatePassword("");
+    setErrorEmail("");
+    setErrorPassword("");
+  };
+
+  const handleFetchError = (error) => {
+    if (error === "Email or Password is incorrect") {
+      setWrongCredsAttempt((prev) => prev + 1);
+    }
+    setFetchError(error);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFetchError("");
 
+    let errCaptcha = "";
+    if (wrongCredsAttempt > MAX_REATTEMPT) {
+      errCaptcha = !validateCaptcha(captcha)
+        ? "Captcha salah, silahkan coba kembali"
+        : "";
+      setErrorCaptcha(errCaptcha);
+    }
+
     const errEmail = useValidateInput("email", payload.email);
-    setValidateEmail(errEmail);
+    setErrorEmail(errEmail);
 
     const errPassword = useValidateInput(
       "password",
       payload.password,
     );
-    setValidatePassword(errPassword);
+    setErrorPassword(errPassword);
 
-    if (
+    const validEmailPassword =
       payload.email.length > 1 &&
       !errEmail &&
       payload.password.length > 1 &&
-      !errPassword
+      !errPassword;
+
+    if (
+      wrongCredsAttempt > MAX_REATTEMPT
+        ? validEmailPassword && !errCaptcha
+        : validEmailPassword
     ) {
-      postLogin(payload, setIsLoading, setFetchError);
+      postLogin(payload, setIsLoading, handleFetchError);
     }
   };
+
+  useEffect(() => {
+    if (wrongCredsAttempt > MAX_REATTEMPT) {
+      loadCaptchaEnginge(6);
+    }
+  }, [wrongCredsAttempt]);
 
   return (
     <div className="flex flex-col gap-16 w-full">
@@ -91,7 +127,7 @@ export default function NewLogin() {
               label: "mb-2",
             }}
             value={payload.email}
-            error={validateEmail}
+            error={errorEmail}
             onChange={handleOnChange}
           />
 
@@ -108,7 +144,7 @@ export default function NewLogin() {
               }}
               // type="password"
               value={payload.password}
-              error={validatePassword}
+              error={errorPassword}
               onChange={handleOnChange}
               visibilityToggleIcon={onToggleVisibility}
             />
@@ -117,6 +153,18 @@ export default function NewLogin() {
               {fetchError}
             </p>
           </div>
+
+          {wrongCredsAttempt > MAX_REATTEMPT && (
+            <>
+              <LoadCanvasTemplate />
+              <TextInput
+                placeholder="Tulis text di atas"
+                value={captcha}
+                onChange={(e) => setCaptcha(e.target.value)}
+                error={errorCaptcha}
+              />
+            </>
+          )}
 
           <div className="flex justify-between items-center">
             <Link
@@ -135,13 +183,6 @@ export default function NewLogin() {
                 })
               }
               checked={payload.isRemember}
-              // styles={{
-              //   label: {
-              //     fontSize: "0.775rem",
-              //     lineHeight: "1rem",
-              //     paddingLeft: "5px",
-              //   },
-              // }}
               classNames={{ label: "secondary" }}
             />
           </div>
