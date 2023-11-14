@@ -240,6 +240,17 @@ const mapGroup = {
     href: (data) =>
       `${import.meta.env.VITE_KMS_URL}/home?post=${data.id}`,
   },
+  survey: {
+    group: "Survey",
+    render: (data) => (
+      <PostTypeItem
+        postContent={data.postContent}
+        postType={data.postType}
+      />
+    ),
+    href: (data) =>
+      `${import.meta.env.VITE_KMS_URL}/home?post=${data.id}`,
+  },
 };
 
 function SelectItem({ data = {} }) {
@@ -311,6 +322,17 @@ export default function NavbarSearch() {
               employeeNumber: e?.describe?.nipp,
             };
           } else if (e.type === "post") {
+            const { display } = e || {};
+            const div = document.createElement("div");
+            div.innerHTML = display;
+            const parsedDisplay =
+              div.textContent || div.innerText || "";
+
+            data = {
+              postContent: parsedDisplay,
+              postType: e?.describe?.category_post,
+            };
+          } else if (e.type === "survey") {
             const { display } = e || {};
             const div = document.createElement("div");
             div.innerHTML = display;
