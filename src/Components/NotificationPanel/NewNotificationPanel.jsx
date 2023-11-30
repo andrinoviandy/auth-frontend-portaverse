@@ -85,16 +85,25 @@ export default function NewNotificationPanel({
         },
         {
           onSuccess: () => {
+            notifURLLookup(
+              notification?.notification_topic_code,
+              notification?.send_from,
+              notification?.data,
+            );
             queryClient.invalidateQueries([`notifications${origin}`]);
+            queryClient.invalidateQueries([
+              "notificationGetUnreadCount",
+            ]);
           },
         },
       );
+    } else {
+      notifURLLookup(
+        notification?.notification_topic_code,
+        notification?.send_from,
+        notification?.data,
+      );
     }
-    notifURLLookup(
-      notification?.notification_topic_code,
-      notification?.send_from,
-      notification?.data,
-    );
   };
 
   const markAsReadHandler = () => {

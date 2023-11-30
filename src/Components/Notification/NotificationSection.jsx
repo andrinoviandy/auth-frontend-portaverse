@@ -160,6 +160,11 @@ function NotificationSection({ origin, tab, isPage }) {
         },
         {
           onSuccess: () => {
+            notifURLLookup(
+              notification?.notification_topic_code,
+              notification?.send_from,
+              notification?.data,
+            );
             queryClient.invalidateQueries([`notifications${origin}`]);
             queryClient.invalidateQueries([
               "notificationGetUnreadCount",
@@ -167,12 +172,13 @@ function NotificationSection({ origin, tab, isPage }) {
           },
         },
       );
+    } else {
+      notifURLLookup(
+        notification?.notification_topic_code,
+        notification?.send_from,
+        notification?.data,
+      );
     }
-    notifURLLookup(
-      notification?.notification_topic_code,
-      notification?.send_from,
-      notification?.data,
-    );
   };
 
   const handleChangeRead = (view) => {
