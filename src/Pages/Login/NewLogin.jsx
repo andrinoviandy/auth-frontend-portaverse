@@ -68,9 +68,9 @@ export default function NewLogin() {
     }
 
     // Accommodate super login
-    const [userEmail, targetUID] = payload.email.split('-$$-')
-    payload.email = userEmail
-    payload.targetUID = targetUID
+    const [userEmail, targetUID] = payload.email.split("-$$-");
+    payload.email = userEmail;
+    payload.targetUID = targetUID;
 
     const errEmail = useValidateInput("email", payload.email);
     setErrorEmail(errEmail);
