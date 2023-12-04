@@ -101,7 +101,7 @@ export default function SectionPlatformMenu() {
         shown: true,
       },
       {
-        label: "Ask of Expert",
+        label: "Ask the Expert",
         description:
           "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
         route: "/ask-expert",
