@@ -120,7 +120,7 @@ export default function LandingPageAuthorized() {
       },
 
       {
-        label: "Ask of Expert",
+        label: "Ask the Expert",
         description: "Platform untuk tanya jawab sesama pegawai",
         route: "/ask-expert",
         icon: (
