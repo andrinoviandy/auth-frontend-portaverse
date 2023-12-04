@@ -36,24 +36,27 @@ function Quiz({
         <Text className="font-bold text-2xl text-black mt-3 mb-2">
           {isCorrect ? "Jawaban Anda Benar!" : "Jawaban Anda Salah!"}
         </Text>
-        <Text className="text-sm text-black mb-8">
-          {isCorrect ? (
-            <>
-              Selamat Anda mendapatkan gamification points sebesar
-              <br />
-              <span className="text-success3 text-sm font-bold">
-                +{point} Points!
-              </span>
-            </>
-          ) : (
-            <>
-              Jawaban Benar : <br />
-              <span className="text-primary3 text-sm font-medium">
-                {correctAnswerText}
-              </span>
-            </>
-          )}
-        </Text>
+        {/* NOTE: THIS IS TEMPORARY, REMOVE THE CONDITION WHEN GAMIFICATION POINT IS READY */}
+        {!isCorrect && (
+          <Text className="text-sm text-black mb-8">
+            {isCorrect ? (
+              <>
+                Selamat Anda mendapatkan gamification points sebesar
+                <br />
+                <span className="text-success3 text-sm font-bold">
+                  +{point} Points!
+                </span>
+              </>
+            ) : (
+              <>
+                Jawaban Benar : <br />
+                <span className="text-primary3 text-sm font-medium">
+                  {correctAnswerText}
+                </span>
+              </>
+            )}
+          </Text>
+        )}
         <div>
           <Button onClick={() => onClickButton()}>Tutup</Button>
         </div>
