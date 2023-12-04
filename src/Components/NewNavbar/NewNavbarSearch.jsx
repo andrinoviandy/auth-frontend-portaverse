@@ -347,7 +347,7 @@ export default function NavbarSearch() {
           return {
             ...e,
             value: e.id,
-            label: e.display,
+            label: `${e.display} ${e?.describe?.nipp} ${e?.describe?.position}`,
             group: mapGroup?.[e.type]?.group,
             data: {
               ...data,
