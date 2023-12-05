@@ -197,9 +197,10 @@ const ModalEndUserDailyQuiz = NiceModal.create(() => {
             <Text className="mt-2 text-sm text-coffee">
               Topik hari ini: {quizData?.topic}
             </Text>
-            <Text className="mt-2 text-sm font-semibold text-success3">
+            {/* HIDDEN TEMPORARILY */}
+            {/* <Text className="mt-2 text-sm font-semibold text-success3">
               Hadiah: {quizData?.point}XP
-            </Text>
+            </Text> */}
             <div>
               <Button
                 className="mt-6"
