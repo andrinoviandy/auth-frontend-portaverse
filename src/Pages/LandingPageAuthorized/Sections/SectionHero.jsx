@@ -52,13 +52,17 @@ export default function SectionHero() {
               badgeIcon={hasRole(["SME"]) ? <SMEIcon /> : null}
             />
             <div className="flex flex-col gap-1 text-lg">
-              <p className="font-semibold">{name}</p>
+              <p className="font-semibold">
+                {uppercaseFirstLetterEveryWord(name)}
+              </p>
               <p className="font-semibold text-primary3">
                 {employeNumber}
               </p>
               <p className="font-semibold">{position || "-"}</p>
               <p className="font-semibold">{group?.name}</p>
-              <p className="font-medium text-darkGrey">{email}</p>
+              <p className="font-medium text-darkGrey">
+                {email?.toLowerCase()}
+              </p>
             </div>
           </div>
           <NewNotificationPanel />
