@@ -164,6 +164,7 @@ function NotificationSection({ origin, tab, isPage }) {
               notification?.notification_topic_code,
               notification?.send_from,
               notification?.data,
+              notification,
             );
             queryClient.invalidateQueries([`notifications${origin}`]);
             queryClient.invalidateQueries([
@@ -177,6 +178,7 @@ function NotificationSection({ origin, tab, isPage }) {
         notification?.notification_topic_code,
         notification?.send_from,
         notification?.data,
+        notification,
       );
     }
   };

@@ -1,8 +1,9 @@
+/* eslint-disable camelcase */
 import NiceModal from "@ebay/nice-modal-react";
 import MODAL_IDS from "../../Components/Modals/modalIds";
 import getUserCookie from "./getUserCookie";
 
-const notifURLLookup = (type, id, data) => {
+const notifURLLookup = (type, id, data, { bast_course_id }) => {
   const user = getUserCookie();
   const vendorId = user?.vendor?.vendor_id;
 
@@ -193,6 +194,72 @@ const notifURLLookup = (type, id, data) => {
     },
     SOCIAL_MENTION: {
       payload: `${import.meta.env.VITE_KMS_URL}/home?post=${data}`,
+      action: "redirect",
+    },
+    SOCIAL_MENTION_POST: {
+      payload: `${import.meta.env.VITE_KMS_URL}/home?post=${data}`,
+      action: "redirect",
+    },
+    SOCIAL_MENTION_COMMENT: {
+      payload: `${import.meta.env.VITE_KMS_URL}/home?post=${
+        data?.post_id
+      }&comment=${data?.comment_id}`,
+      action: "redirect",
+    },
+
+    // BAST NOTIFICATIONS
+    "BAST_CREATE_NEED_INSPECTOR_1.1": {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    "BAST_HAS_ACCEPTED_INSPECTOR_1.x_NEED_ADD_DOCS_CREATOR": {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    "BAST_HAS_ACCEPTED_INSPECTOR_1.x_NEED_INSPECTOR_1.x": {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    "BAST_HAS_ACCEPTED_INSPECTOR_2.x_NEED_INSPECTOR_2.x": {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    BAST_HAS_REJECTED_NEED_REVISION: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    "BAST_HAS_SIGNED_APPROVAL_1_NEED_INSPECTOR_2.1": {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    BAST_NEED_SIGNED_APPROVAL_1: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    BAST_NEED_SIGNED_APPROVAL_2: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    BAST_ACCEPTANCE_DONE: {
+      payload: `${
+        import.meta.env.VITE_LMS_URL
+      }/vendor-management/${vendorId}/bast/${bast_course_id}`,
       action: "redirect",
     },
   };
