@@ -1,6 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
 export default function uppercaseFirstLetterEveryWord(myString = "") {
-  const toLower = myString?.toLowerCase();
+  const toLower = myString?.toLowerCase()?.trim();
   const words = toLower?.split(" ");
 
   return words
