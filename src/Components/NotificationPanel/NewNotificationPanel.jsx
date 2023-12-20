@@ -89,6 +89,7 @@ export default function NewNotificationPanel({
               notification?.notification_topic_code,
               notification?.send_from,
               notification?.data,
+              notification,
             );
             queryClient.invalidateQueries([`notifications${origin}`]);
             queryClient.invalidateQueries([
@@ -102,6 +103,7 @@ export default function NewNotificationPanel({
         notification?.notification_topic_code,
         notification?.send_from,
         notification?.data,
+        notification,
       );
     }
   };
