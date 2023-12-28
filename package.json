@@ -7,7 +7,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "eslint-check": "run eslint ./src",
-    "eslint-fix": "run eslint --fix ./src"
+    "eslint-fix": "run eslint --fix ./src",
+    "prepare": "npx husky install",
+    "lint": "npx eslint",
+    "lint:fix": "npx eslint --fix",
+    "prettier:format": "prettier --write"
   },
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.8",
@@ -38,6 +42,8 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@iconify/react": "^3.2.2",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -51,6 +57,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "lint-staged": "^15.2.0",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "tailwindcss": "^3.1.4",
