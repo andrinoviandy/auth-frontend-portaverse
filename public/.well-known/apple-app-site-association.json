@@ -1,0 +1,10 @@
+{
+    "applinks": {
+      "details": [
+        {
+          "appIDs": ["H836XMA5HQ.id.ilcs.portaverse"],
+          "components": ["*"]
+        }
+      ]
+    }
+}
