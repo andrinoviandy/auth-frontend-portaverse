@@ -1,0 +1,11 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.kmplusapp",
+        "sha256_cert_fingerprints":
+          ["8F:2B:24:44:41:7D:3E:39:35:DE:8D:06:BE:87:69:13:C6:66:72:81:74:8B:B5:D0:DD:BC:F5:0C:2E:4E:C9:13"]
+      }
+    }
+]
