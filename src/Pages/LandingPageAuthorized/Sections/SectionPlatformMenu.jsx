@@ -26,7 +26,7 @@ export default function SectionPlatformMenu() {
   const [menus, setMenus] = useState({
     KMS: [
       {
-        label: "Home",
+        label: "Social Media",
         description:
           "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
         route: "/home",
@@ -40,7 +40,7 @@ export default function SectionPlatformMenu() {
         shown: true,
       },
       {
-        label: "KMAP",
+        label: "Knowledge Map",
         description:
           "Peta pengetahuan dan aktivitas perusahaan yang diselaraskan dengan tujuan perusahaan",
         route: "/kmap",
@@ -50,7 +50,7 @@ export default function SectionPlatformMenu() {
         shown: true,
       },
       {
-        label: "Employees",
+        label: "Master Pegawai",
         description: "Daftar semua pegawai Pelindo dalam satu modul",
         route: "/employees",
         icon: (
@@ -108,20 +108,20 @@ export default function SectionPlatformMenu() {
         icon: <img src={AoE} alt="repo" className="w-[40px]" />,
         shown: true,
       },
-      {
-        label: "Headquarter",
-        description:
-          "Modul untuk mengelola dan mengatur semua modul KMS secara terpusat",
-        route: "/hq/user-mngmt",
-        icon: (
-          <Icon icon="ri:hq-line" color={color.primary3} width={40} />
-        ),
-        shown: hasRole(["SA"]),
-      },
+      // {
+      //   label: "Headquarter",
+      //   description:
+      //     "Modul untuk mengelola dan mengatur semua modul KMS secara terpusat",
+      //   route: "/hq/user-mngmt",
+      //   icon: (
+      //     <Icon icon="ri:hq-line" color={color.primary3} width={40} />
+      //   ),
+      //   shown: hasRole(["SA"]),
+      // },
     ],
     LMS: [
       {
-        label: "Home & Explore",
+        label: "Learning Explore",
         description:
           "Modul utama untuk melihat semua kursus, peringkat Learning Hours, dan lainnya",
         route: "/",
@@ -135,7 +135,7 @@ export default function SectionPlatformMenu() {
         shown: true,
       },
       {
-        label: "Dashboard",
+        label: "Dashboard Learning",
         description:
           "Modul untuk mengelola semua informasi penting terkait akun Anda dalam LMS",
         route: "/dashboard",
@@ -149,7 +149,7 @@ export default function SectionPlatformMenu() {
         shown: true,
       },
       {
-        label: "Dashboard Kursus",
+        label: "Dashboard Corpu",
         description:
           "Modul terpusat untuk mengelola semua aktivitas kursus-kursus Anda",
         route: "/course-pool/courses",
@@ -225,7 +225,7 @@ export default function SectionPlatformMenu() {
         shown: hasRole(["CRPU", "SA", "VNDR"]),
       },
       {
-        label: "Analytics",
+        label: "Learning Analytics",
         description: "Analisis kursus-kursus yang ada di Portaverse",
         route: "/analytics",
         icon: (
@@ -266,7 +266,7 @@ export default function SectionPlatformMenu() {
         shown: hasRole(["CRPU", "SA"]),
       },
       {
-        label: "Trainer Pool",
+        label: "Manajemen Trainer",
         description:
           "Modul berisi trainer internal maupun eksternal yang tergabung pada aplikasi Portaverse",
         route: "/trainer-management",

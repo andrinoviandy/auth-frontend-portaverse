@@ -18,7 +18,7 @@ export default function NewFooter() {
           <div className="flex gap-20 items-start mb-[5rem]">
             <div className="flex flex-col gap-3 w-[50%]">
               <h6 className="font-bold text-base">
-                PT. Pelabuhan Indonesia (Pelindo)
+                PT Pelabuhan Indonesia (Pelindo)
               </h6>
               <p className="text-darkGrey">
                 PT Pelabuhan Indonesia I (Persero), PT Pelabuhan
