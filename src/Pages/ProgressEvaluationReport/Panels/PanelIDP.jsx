@@ -10,7 +10,7 @@ import {
 import { Networks } from "../../../Networks/factory";
 import { MANTINE_PAGINATION_STYLES } from "../../../Utils/Constants";
 
-function PanelIDP({ activeTab, employeeNumber }) {
+function PanelIDP({ activeTab, employeeNumber, year }) {
   const [page, setPage] = useState(1);
 
   const dpService = Networks(BASE_PROXY.developmentPlan);

@@ -1,8 +1,6 @@
 import { Button, RingProgress, Text, clsx } from "@mantine/core";
-import * as localeId from "apexcharts/dist/locales/id.json";
 import dayjs from "dayjs";
 import { useState } from "react";
-import ReactApexChart from "react-apexcharts";
 import PerformanceSheetIllust from "../../../Components/Assets/Pictures/PerformanceSheets.png";
 import TextNumberCard from "../../../Components/Cards/TextNumberCard";
 import TableTemplate from "../../../Components/Table/TableTemplates";
@@ -15,18 +13,20 @@ const timelineType = {
   job_sharing: { label: "Job Sharing", color: "#F5BB5C" },
 };
 
-export default function PanelPerformance({ activeTab }) {
-  const [step, setStep] = useState(1); // 1, 2, 3
+export default function PanelPerformance({ activeTab, year }) {
+  const [step, setStep] = useState(1); // 1, 2, 3c
+  const lastYear = new Date().getFullYear() - 1;
 
   const dataFinalEvaluation = [
     {
-      aspect: "Penilaian Kinerja Berbasis KPI",
+      aspect: "Penilaian Kinerja Individu Berbasis KPI",
       weight: 80,
       score: 67.2,
       work_score: 53.76,
     },
     {
-      aspect: "Penilaian Kinerja Berbasis Penilaian Perilaku",
+      aspect:
+        "Penilaian Kinerja Individu Berbasis Penilaian Perilaku",
       weight: 20,
       score: 76,
       work_score: 15.2,
@@ -35,22 +35,25 @@ export default function PanelPerformance({ activeTab }) {
 
   const dataWeighted = [
     {
-      kpi_type: "Awal",
-      kpi_name: "KPI 01",
+      kpi_type: "Aktif",
+      position_name: "Position 01",
+      superior_name: "Haryo Dwiriandri",
       score: 72,
       formula: "3/12",
       weighted_score: 18,
     },
     {
-      kpi_type: "Awal",
-      kpi_name: "KPI 01",
+      kpi_type: "Historis",
+      position_name: "Position 02",
+      superior_name: "Alfredo Teja",
       score: 84,
       formula: "(3/12) + (1/12)*(6/12)",
       weighted_score: 42,
     },
     {
       kpi_type: "Job Sharing",
-      kpi_name: "KPI 0",
+      position_name: "Position 03",
+      superior_name: "John Thor",
       score: 96,
       formula: "(1/12) * (6/12)",
       weighted_score: 24,
@@ -59,7 +62,8 @@ export default function PanelPerformance({ activeTab }) {
 
   const dataFinalScore = [
     {
-      kpi_name: "Sakit bukan karena kecelakaan kerja dan dirawat",
+      position_name:
+        "Sakit bukan karena kecelakaan kerja dan dirawat",
       description:
         "Nilai kinerja = 80% dari nilai kinerja individu berbasis KPI periode berjalan",
     },
@@ -109,7 +113,7 @@ export default function PanelPerformance({ activeTab }) {
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <div className="grid grid-cols-2 gap-5 w-full">
             <TextNumberCard
-              title="NILAI AKHIR KINERJA AKHIR PEKERJA"
+              title={`NILAI AKHIR KINERJA INDIVIDU ${lastYear}`}
               value={score}
             />
             <TextNumberCard
@@ -127,7 +131,7 @@ export default function PanelPerformance({ activeTab }) {
                 <th>Aspek Penilaian</th>
                 <th>Bobot</th>
                 <th>Skor</th>
-                <th>Nilai Kerja</th>
+                <th>Nilai Terbobot</th>
               </tr>
             }
             tRows={dataFinalEvaluation?.map((item) => (
@@ -141,7 +145,8 @@ export default function PanelPerformance({ activeTab }) {
           />
         </section>
 
-        <section className="flex flex-col gap-5 p-5 rounded-md border">
+        {/* TODO: Uncomment when BE is ready */}
+        {/* <section className="flex flex-col gap-5 p-5 rounded-md border">
           <h3 className="font-bold text-base">
             GRAFIS TIMELINE PENILAIAN KINERJA
           </h3>
@@ -240,7 +245,7 @@ export default function PanelPerformance({ activeTab }) {
               type="rangeBar"
             />
           </div>
-        </section>
+        </section> */}
 
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <TextNumberCard
@@ -253,25 +258,53 @@ export default function PanelPerformance({ activeTab }) {
             tHeads={
               <tr>
                 <th>Jenis KPI</th>
-                <th>Nama KPI</th>
+                <th>Nama Posisi</th>
                 <th>Skor</th>
                 <th>Detail Perhitungan</th>
                 <th>Skor Tertimbang</th>
               </tr>
             }
-            tRows={dataWeighted?.map((item) => (
-              <tr key={item?.kpi_type}>
-                <td>{item?.kpi_type}</td>
-                <td>{item?.kpi_name}</td>
-                <td>{item?.score}</td>
-                <td>{item?.formula}</td>
-                <td>{item?.weighted_score}</td>
-              </tr>
-            ))}
+            tRows={
+              <>
+                {dataWeighted?.map((item) => (
+                  <tr key={item?.kpi_type}>
+                    <td>{item?.kpi_type}</td>
+                    <td>
+                      <div>
+                        <p className="font-medium">
+                          {item?.superior_name}
+                        </p>
+                        <p className="text-sm text-darkGrey">
+                          Posisi: {item?.position_name}
+                        </p>
+                      </div>
+                    </td>
+                    <td>{item?.score}</td>
+                    <td>{item?.formula}</td>
+                    <td>{item?.weighted_score}</td>
+                  </tr>
+                ))}
+                <tr className="bg-bg3 font-semibold">
+                  <td />
+                  <td />
+                  <td />
+                  <td>Total Akumulasi Nilai</td>
+                  <td>
+                    {dataWeighted?.reduce(
+                      (acc, curr) =>
+                        (acc?.weighted_score || 0) +
+                        (curr?.weighted_score || 0),
+                      0,
+                    )}
+                  </td>
+                </tr>
+              </>
+            }
           />
         </section>
 
-        <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
+        {/* TODO: Uncomment when BE is ready */}
+        {/* <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <TextNumberCard
             title="NILAI AKHIR SKOR"
             value={67.2}
@@ -292,8 +325,8 @@ export default function PanelPerformance({ activeTab }) {
               </tr>
             }
             tRows={dataFinalScore?.map((item) => (
-              <tr key={item?.kpi_name}>
-                <td className="text-center">{item?.kpi_name}</td>
+              <tr key={item?.position_name}>
+                <td className="text-center">{item?.position_name}</td>
                 <td className="text-center">{item?.description}</td>
               </tr>
             ))}
@@ -301,7 +334,7 @@ export default function PanelPerformance({ activeTab }) {
               thead: "[&>tr>th]:text-center",
             }}
           />
-        </section>
+        </section> */}
       </div>
     );
   }

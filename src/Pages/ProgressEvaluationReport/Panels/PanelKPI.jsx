@@ -1,18 +1,17 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { Loader, Tabs } from "@mantine/core";
 import { useState } from "react";
-import TextNumberCard from "../../../Components/Cards/TextNumberCard";
+import Badge from "../../../Components/Badge";
 import MODAL_IDS from "../../../Components/Modals/modalIds";
+import Profile from "../../../Components/Profile/Profile";
 import ScrollableTableTemplate from "../../../Components/Table/ScrollableTableTemplate";
 import {
   BASE_PROXY,
   SMARTPLAN_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
-import { MANTINE_TAB_STYLES } from "../../../Utils/Constants";
 
-export default function PanelKPI({ activeTab }) {
-  const period = "XX"; // TODO: Should be dynamic from backend
+export default function PanelKPI({ activeTab, year }) {
+  const period = "IV";
   const [type, setType] = useState("job_sharing");
 
   const smartplanService = Networks(BASE_PROXY.smartplan);
@@ -28,9 +27,9 @@ export default function PanelKPI({ activeTab }) {
     },
   );
 
-  if (isLoading) {
-    return <Loader className="my-16 mx-auto" />;
-  }
+  // if (isLoading) {
+  //   return <Loader className="my-16 mx-auto" />;
+  // }
 
   return (
     <div className="flex flex-col rounded-md border">
@@ -42,7 +41,7 @@ export default function PanelKPI({ activeTab }) {
       </h2>
 
       <div className="flex flex-col gap-5 p-5">
-        <Tabs
+        {/* <Tabs
           value={type}
           onTabChange={setType}
           variant="pills"
@@ -73,7 +72,20 @@ export default function PanelKPI({ activeTab }) {
             title="TOTAL KINERJA"
             value={data?.[type]?.total_kinerja || 0}
           />
+        </div> */}
+
+        <div className="flex gap-3 items-center font-semibold">
+          <p className="text-lg">Atasan Langsung</p>
+          <Badge value="Job Sharing" />
         </div>
+
+        <Profile
+          alt="avatar"
+          name={data?.[type]?.employee_atasan?.name}
+          img={null} // TODO: Integrate this
+          subName={null} // TODO: Integrate this
+          classNames={{ root: "border w-fit p-3 rounded-md" }}
+        />
 
         <ScrollableTableTemplate
           width="fit"
@@ -119,40 +131,65 @@ export default function PanelKPI({ activeTab }) {
               </tr>
             </>
           }
-          tRows={data?.[type]?.kpis?.map((item, i) => (
-            <tr key={item?.kpi_id}>
-              <td className="bg-white w-[20px] sticky left-0 font-semibold text-primary3">
-                {i + 1}
-              </td>
-              <td className="bg-white w-[300px] sticky left-[calc(20px+1.55rem)]">
-                {item?.nama_kpi || "-"}
-              </td>
-              <td>{item?.satuan || "-"}</td>
-              <td>{item?.polaritas || "-"}</td>
-              <td>
-                <button
-                  type="button"
-                  className="text-primary3 font-bold w-fit text-start"
-                  onClick={() =>
-                    NiceModal.show(
-                      MODAL_IDS.TMS.SMARTPLAN.KPI_FORMULA,
-                      {
-                        value: item?.formula || "",
-                      },
-                    )
-                  }
-                >
-                  Lihat Detail
-                </button>
-              </td>
-              <td>{item?.periode_monitoring || "-"}</td>
-              <td>{item?.target_tw || "-"}</td>
-              <td>{item?.bobot || "-"}</td>
-              <td>{item?.target || "-"}</td>
-              <td>{item?.realisasi || "-"}</td>
-              <td>{item?.skor || "-"}</td>
-            </tr>
-          ))}
+          tRows={
+            <>
+              {data?.[type]?.kpis?.map((item, i) => (
+                <tr key={item?.kpi_id}>
+                  <td className="bg-white w-[20px] sticky left-0 font-semibold text-primary3">
+                    {i + 1}
+                  </td>
+                  <td className="bg-white w-[300px] sticky left-[calc(20px+1.55rem)]">
+                    {item?.nama_kpi || "-"}
+                  </td>
+                  <td>{item?.satuan || "-"}</td>
+                  <td>{item?.polaritas || "-"}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="text-primary3 font-bold w-fit text-start"
+                      onClick={() =>
+                        NiceModal.show(
+                          MODAL_IDS.TMS.SMARTPLAN.KPI_FORMULA,
+                          {
+                            value: item?.formula || "",
+                          },
+                        )
+                      }
+                    >
+                      Lihat Detail
+                    </button>
+                  </td>
+                  <td>{item?.periode_monitoring || "-"}</td>
+                  <td>{item?.target_tw || "-"}</td>
+                  <td>{item?.bobot || "-"}</td>
+                  <td>{item?.target || "-"}</td>
+                  <td>{item?.realisasi || "-"}</td>
+                  <td>{item?.skor || "-"}</td>
+                </tr>
+              ))}
+              {!!data?.[type]?.kpis?.length && (
+                <tr className="bg-bg3 font-semibold">
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                  <td>Total Kinerja</td>
+                  <td>
+                    {data?.[type]?.kpis?.reduce(
+                      (acc, curr) =>
+                        (acc?.skor || 0) + (curr?.skor || 0),
+                      0,
+                    )}
+                  </td>
+                </tr>
+              )}
+            </>
+          }
         />
       </div>
     </div>

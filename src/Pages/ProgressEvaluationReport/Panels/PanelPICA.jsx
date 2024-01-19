@@ -21,7 +21,11 @@ import toMapIdAsKey from "../../../Utils/Helpers/toMapIdAsKey";
 import totalKPIScore from "../../../Utils/Helpers/totalKPIScore";
 import uppercaseFirstLetterEveryWord from "../../../Utils/Helpers/uppercaseFirstLetterEveryWord";
 
-export default function PanelPICA({ activeTab, employeeNumber }) {
+export default function PanelPICA({
+  activeTab,
+  employeeNumber,
+  year,
+}) {
   const [data, setData] = useState({
     feedback: "",
     picas: [],
@@ -42,7 +46,9 @@ export default function PanelPICA({ activeTab, employeeNumber }) {
     smartplan.query(
       SMARTPLAN_ENDPOINT.GET.kpi,
       ["kpi", pageScoreCard],
-      {},
+      {
+        enabled: activeTab === "pica",
+      },
       {
         params: {
           page: pageScoreCard,
@@ -56,6 +62,7 @@ export default function PanelPICA({ activeTab, employeeNumber }) {
     SMARTPLAN_ENDPOINT.GET.kpi,
     ["kpiInput"],
     {
+      enabled: activeTab === "pica",
       onSuccess: (res) =>
         setKpiItems(
           res.kpis.map((kpi) => ({
@@ -79,6 +86,7 @@ export default function PanelPICA({ activeTab, employeeNumber }) {
     SMARTPLAN_ENDPOINT.GET.pica,
     ["pica"],
     {
+      enabled: activeTab === "pica",
       onSuccess: (res) => {
         setData((prev) => ({
           ...prev,
@@ -112,6 +120,7 @@ export default function PanelPICA({ activeTab, employeeNumber }) {
     SMARTPLAN_ENDPOINT.GET.qualFeedback,
     ["qualFeedback"],
     {
+      enabled: activeTab === "pica",
       onSuccess: (res) => {
         setData((prev) => ({
           ...prev,

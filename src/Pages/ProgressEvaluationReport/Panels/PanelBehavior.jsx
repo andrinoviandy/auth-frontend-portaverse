@@ -8,14 +8,21 @@ import {
 import { Networks } from "../../../Networks/factory";
 import toFixedTrim from "../../../Utils/Helpers/toFixedTrim";
 
-export default function PanelBehavior({ activeTab, employeeNumber }) {
+export default function PanelBehavior({
+  activeTab,
+  employeeNumber,
+  year,
+}) {
   const assessmentService = Networks(BASE_PROXY.assessment);
   const { data, isLoading } = assessmentService.query(
     ASSESSMENT_ENDPOINT.GET.empAssessmentBehavioural(employeeNumber),
 
-    ["eval-behavioral", employeeNumber],
+    ["eval-behavioral", employeeNumber, year],
     {
       enabled: activeTab === "behavior",
+    },
+    {
+      params: { year },
     },
   );
 
@@ -32,11 +39,11 @@ export default function PanelBehavior({ activeTab, employeeNumber }) {
       <div className="flex flex-col gap-5 p-5">
         <div className="grid grid-cols-2 gap-5 w-full">
           <TextNumberCard
-            title="RATA-RATA NILAI KINERJA INDIVIDU BERBASIS PERILAKU"
+            title="SKOR KINERJA INDIVIDU BERBASIS PERILAKU"
             value={`${toFixedTrim(data?.raw_final_score || 0, 2)}`}
           />
           <TextNumberCard
-            title="RATA-RATA NILAI SATUAN"
+            title="SKOR KINERJA INDIVIDU BERBASIS PERILAKU (SKALA LIKERT)"
             value={`${toFixedTrim(data?.final_score || 0, 2)}/${
               data?.adaptif?.rate_range_end || 6
             }`}
