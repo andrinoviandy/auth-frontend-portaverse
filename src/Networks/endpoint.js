@@ -109,6 +109,7 @@ export const SMARTPLAN_ENDPOINT = {
     pica: "/pica",
     kpi: "/kpi/list",
     qualFeedback: "/pica/qual-idp",
+    getFinalScore: "/kpi/final-score",
   },
 };
 
