@@ -5,7 +5,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     colors: {
+      orangePrimary: "#CB6F1E",
       yellow: colors.yellow,
+      transparent: colors.transparent,
       primary1: "#C9F3FB",
       primary2: "#93E2F7",
       primary3: "#016DB2",
@@ -49,10 +51,15 @@ module.exports = {
       baseGradient: "#6CC7FE",
       topGradient: "#111111",
       iconGradient: "#FEFEFE",
+      info1: "#F0F3FF",
+      info2: "#B1C5F6",
+      info3: "#3267E3",
+      info4: "#193AA3",
     },
     fontFamily: {
       primary: ["Inter", "ui-serif", "Georgia"],
       secondary: ["Inter", "Roboto", "system-ui"],
+      tertiary: ["IBM Plex Sans", "Roboto", "system-ui"],
     },
     plugins: [],
   },

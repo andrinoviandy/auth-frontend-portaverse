@@ -135,12 +135,12 @@ export default function NewNotificationPanel({
         message="Mohon Maaf dikarenakan adanya gangguan pengisian KPI. Mohon tunggu beberapa saat."
       /> */}
       <div className="flex justify-between items-center border-b px-5 py-5">
-        <h3 className="font-bold">Pemberitahuan</h3>
+        <h3 className="font-bold text-base">Pemberitahuan</h3>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={markAsReadHandler}
-            className="flex items-center gap-2 text-lg text-primary3 font-semibold"
+            className="flex items-center gap-2 text-primary3 font-semibold"
           >
             <Icon icon="ci:check-all-big" fontSize={24} />
             Tandai Sudah Dibaca

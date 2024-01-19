@@ -32,6 +32,8 @@ ENV VITE_TMS_URL=https://talent-portaverse.pelindo.co.id
 ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature-service-portaverse.pelindo.co.id
 ENV VITE_API_SEARCH_ENGINE_SERVICE_URL=https://engine-service-portaverse.pelindo.co.id
 ENV VITE_API_DAILY_QUIZ_SERVICE_URL=https://daily-quiz-portaverse.pelindo.co.id
+ENV VITE_API_ASSESSMENT_SERVICE_URL=https://assessment-service-portaverse.pelindo.co.id 
+ENV VITE_API_DEVELOPMENT_PLAN_SERVICE_URL=https://developmentplan-service-portaverse.pelindo.co.id
 
 # ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
 # ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id
