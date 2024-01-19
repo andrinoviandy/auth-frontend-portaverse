@@ -1,7 +1,13 @@
 import { Icon } from "@iconify/react";
 import { Popover } from "@mantine/core";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AUTH_ENDPOINT, BASE_PROXY } from "../../Networks/endpoint";
+import { setSocialMediaProfile } from "../../Configs/Redux/slice";
+import {
+  AUTH_ENDPOINT,
+  BASE_PROXY,
+  SOCIAL_ENDPOINT,
+} from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import Exit from "../Assets/Icon/Exit";
@@ -9,6 +15,7 @@ import ProfilePicture from "../ProfilePicture";
 
 export default function ProfileDropdown() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = getUserCookie();
   const {
     name,
@@ -25,6 +32,32 @@ export default function ProfileDropdown() {
     },
   });
 
+  const socialService = Networks(BASE_PROXY.social);
+  const { data } = socialService.query(
+    SOCIAL_ENDPOINT.GET.profile(
+      user.employee.social_employee_profile
+        .social_employee_profile_id,
+    ),
+    ["employeeSocialProfile"],
+    {
+      select: (res) => ({
+        name: `${[
+          res?.firstName,
+          res?.additional_name || "",
+          res?.lastName || "",
+        ].join(" ")}`,
+        backgroundImage: res?.background_img,
+        profilePicture: res?.profile_picture,
+        group: res?.group?.name,
+        position: res?.position?.name,
+        total_followers: res?.total_followers,
+        total_following: res?.total_following,
+        sme: res?.sme,
+      }),
+      onSuccess: (res) => dispatch(setSocialMediaProfile(res)),
+    },
+  );
+
   return (
     <Popover
       position="bottom-end"
@@ -36,7 +69,7 @@ export default function ProfileDropdown() {
         <button type="button">
           <ProfilePicture
             name={name}
-            img={img}
+            img={data?.profilePicture || img}
             className="w-7 h-7 rounded-full object-cover"
             alt="profile"
           />
@@ -52,7 +85,7 @@ export default function ProfileDropdown() {
         <div className="flex gap-3 p-4">
           <ProfilePicture
             name={name}
-            img={img}
+            img={data?.profilePicture || img}
             className="w-10 h-10 rounded-full object-cover"
             alt="profile"
           />
