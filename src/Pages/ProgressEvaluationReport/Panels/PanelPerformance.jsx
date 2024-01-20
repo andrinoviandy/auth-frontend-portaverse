@@ -6,6 +6,13 @@ import TextNumberCard from "../../../Components/Cards/TextNumberCard";
 import TableTemplate from "../../../Components/Table/TableTemplates";
 import finalScoreCategorize from "../../../Utils/Helpers/finalScoreCategorize";
 import "./PanelPerformance.css";
+import {
+  BASE_PROXY,
+  SMARTPLAN_ENDPOINT,
+} from "../../../Networks/endpoint";
+import { Networks } from "../../../Networks/factory";
+import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import decimalToFraction from "../../../Utils/Helpers/decimalToFraction";
 
 const timelineType = {
   initial: { label: "Awal", color: "#A56EFF" },
@@ -17,47 +24,190 @@ export default function PanelPerformance({ activeTab, year }) {
   const [step, setStep] = useState(1); // 1, 2, 3c
   const lastYear = new Date().getFullYear() - 1;
 
+  const kpiService = Networks(BASE_PROXY.smartplan);
+
+  const user = getUserCookie();
+
+  const params = {
+    employee_number: user.employee.employee_number,
+    year: lastYear,
+    periode: "TW4",
+    with_assessment_score: 1,
+  };
+  const { data: dataScore, isLoading: isLoadingScore } =
+    kpiService.query(
+      SMARTPLAN_ENDPOINT.GET.getFinalScore,
+      [SMARTPLAN_ENDPOINT.GET.getFinalScore, params],
+      {
+        enabled: !(
+          !params?.employee_number ||
+          !params?.year ||
+          !params?.periode
+        ),
+      },
+      {
+        params,
+      },
+    );
+
+  console.log({
+    dataScore,
+  });
+
+  const kpiWeight = 80;
+  const assessmentWeight = 20;
+
   const dataFinalEvaluation = [
     {
       aspect: "Penilaian Kinerja Individu Berbasis KPI",
-      weight: 80,
-      score: 67.2,
-      work_score: 53.76,
+      weight: kpiWeight,
+      score: dataScore?.score?.toFixed(2),
+      work_score: (
+        ((dataScore?.score || 0) * kpiWeight) /
+        100
+      ).toFixed(2),
     },
     {
       aspect:
         "Penilaian Kinerja Individu Berbasis Penilaian Perilaku",
-      weight: 20,
-      score: 76,
-      work_score: 15.2,
+      weight: assessmentWeight,
+      score: dataScore?.assessment_score?.skor_konversi || 0,
+      work_score: (
+        ((dataScore?.assessment_score?.skor_konversi || 0) *
+          assessmentWeight) /
+        100
+      ).toFixed(2),
     },
   ];
+
+  const floorByThree = (value) => Math.floor((value * 10) / 3);
+
+  // Formula
+  // X = Posisi Definitif = Y * weigth + Z * weight
+  // Y = Posisi Aktif Definitif
+  // Z = Posisi Inactive Definitif
+  // A = Posisi Job Sharing
+  // score = {X + (X * [{3 - SUM[A::jumlah_bulan]} / 3] + SUM[A::{a ->  a.score * [a.jumlah_bulan/3]}]) / (1 + A.count)} + [isPlusTen ? 10 : 0]
+
+  // misal
+  // X = X // posisi definitif Y + Z
+  // Y = Y // posisi definitif aktif
+  // Z = Z // posisi definitif inactive
+  // SUM[A::jumlah_bulan] = C
+  // SUM[A::{a ->  a.score * [a.jumlah_bulan/3]}] = V
+  // A.count = B
+  // [isPlusTen ? 10 : 0] = N
+  // [{3 - C} / 3] = M
+  // (1 + A.count) = K
+  // score = {(X + (X * M + V )) / K} + N
+
+  const Y =
+    (dataScore?.perscore?.active || 0) *
+    (dataScore?.formula?.active || 0);
+  const Z =
+    (dataScore?.perscore?.inactive || 0) *
+    (dataScore?.formula?.inactive || 0);
+  const X = Y + Z;
+  const C = dataScore?.job_sharing_scores
+    ?.map((e) => e.total_months)
+    ?.reduce((partialSum, a) => partialSum + a, 0); // SUM[A::jumlah_bulan]
+  const M = (3 - C) / 3;
+  const V = dataScore?.job_sharing_scores
+    ?.map((e) => (e.total_score * e.total_months) / 3)
+    ?.reduce((partialSum, a) => partialSum + a, 0); // SUM[A::{a ->  a.score * [a.jumlah_bulan/3]}]
+  const K = 1 + (dataScore?.job_sharing_scores?.length || 0);
+  const N = dataScore?.is_plus_ten ? 10 : 0;
+
+  const S = (X + (X * M + V)) / K + N;
+
+  const activeScore = dataScore?.perscore?.active
+    ? parseFloat(dataScore.perscore.active)
+    : 0;
+  const inactiveScore = dataScore?.perscore?.inactive
+    ? parseFloat(dataScore.perscore.inactive)
+    : 0;
+
+  const allScoreWithoutWeight =
+    activeScore +
+    inactiveScore +
+    (dataScore?.job_sharing_scores
+      ?.map((e) => parseFloat(e.total_score))
+      ?.reduce((partialSum, a) => partialSum + a, 0) || 0);
+
+  const calculationWithJobSharing = `Nilai Kinerja Dengan Job Sharing:
+  ${dataScore?.is_plus_ten && "("}[Nilai Kinerja
+  Posisi Definitif${" "}
+  ${
+    !!dataScore?.job_sharing_scores?.length &&
+    dataScore.job_sharing_scores.map(
+      (e, i) =>
+        `+ (Nilai Kinerja Posisi Definitif * ${
+          3 - e.total_months
+        }/3 + Nilai Kinerja Posisi Job Sharing 0${i + 1} * ${
+          e.total_months
+        }/3)`,
+    )
+  }
+  ] /${" "}
+  ${(dataScore?.job_sharing_scores?.length || 0) + 1}
+  ${dataScore?.is_plus_ten && ") + 10"}`;
+
+  const formulaCalculateWithJs = (score) =>
+    `Bobot: ${score?.toFixed(2)} / ${allScoreWithoutWeight?.toFixed(
+      2,
+    )} = ${(score / allScoreWithoutWeight).toFixed(
+      2,
+    )} <br/> (Bobot: ${(score / allScoreWithoutWeight).toFixed(
+      2,
+    )}) * (${calculationWithJobSharing}) = ${(
+      (score / allScoreWithoutWeight) *
+      (dataScore?.score || 0)
+    ).toFixed(2)}`;
 
   const dataWeighted = [
     {
       kpi_type: "Aktif",
-      position_name: "Position 01",
+      position_name: dataScore?.position?.active,
       superior_name: "Haryo Dwiriandri",
-      score: 72,
-      formula: "3/12",
-      weighted_score: 18,
+      score: dataScore?.perscore?.active
+        ? parseFloat(dataScore.perscore.active).toFixed(2)
+        : 0,
+      formula: !dataScore?.job_sharing_scores?.length
+        ? `${floorByThree(dataScore?.display_formula?.active || 0)}/3`
+        : formulaCalculateWithJs(activeScore),
+      weighted_score: (
+        (activeScore / allScoreWithoutWeight) *
+        (dataScore?.score || 0)
+      ).toFixed(2),
     },
     {
       kpi_type: "Historis",
-      position_name: "Position 02",
+      position_name: dataScore?.position?.inactive,
       superior_name: "Alfredo Teja",
-      score: 84,
-      formula: "(3/12) + (1/12)*(6/12)",
-      weighted_score: 42,
+      score: dataScore?.perscore?.inactive
+        ? parseFloat(dataScore.perscore.inactive).toFixed(2)
+        : 0,
+      formula: !dataScore?.job_sharing_scores?.length
+        ? `${floorByThree(
+            dataScore?.display_formula?.inactive || 0,
+          )}/3`
+        : formulaCalculateWithJs(inactiveScore),
+      weighted_score: (
+        (inactiveScore / allScoreWithoutWeight) *
+        (dataScore?.score || 0)
+      ).toFixed(2),
     },
-    {
+    ...(dataScore?.job_sharing_scores?.map((e) => ({
       kpi_type: "Job Sharing",
-      position_name: "Position 03",
-      superior_name: "John Thor",
-      score: 96,
-      formula: "(1/12) * (6/12)",
-      weighted_score: 24,
-    },
+      position_name: e.position,
+      superior_name: e.superior_name,
+      score: e.total_score,
+      formula: formulaCalculateWithJs(e.total_score),
+      weighted_score: (
+        (e.total_score / allScoreWithoutWeight) *
+        (dataScore?.score || 0)
+      ).toFixed(2),
+    })) || []),
   ];
 
   const dataFinalScore = [
@@ -97,7 +247,15 @@ export default function PanelPerformance({ activeTab, year }) {
     },
   ];
 
-  const score = 90;
+  const score = (
+    ((dataScore?.score ? parseFloat(dataScore?.score) : 0) *
+      kpiWeight +
+      (dataScore?.assessment_score?.skor_konversi
+        ? parseFloat(dataScore?.assessment_score?.skor_konversi)
+        : 0) *
+        assessmentWeight) /
+    100
+  ).toFixed(2);
   const finalScoreProp = (() => {
     const temp = finalScoreCategorize(score);
     return {
@@ -250,7 +408,7 @@ export default function PanelPerformance({ activeTab, year }) {
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <TextNumberCard
             title="NILAI AKHIR SKOR TERTIMBANG KPI"
-            value={84}
+            value={dataScore?.score?.toFixed(2)}
             classNames={{ root: "w-full" }}
           />
           <TableTemplate
@@ -280,7 +438,13 @@ export default function PanelPerformance({ activeTab, year }) {
                       </div>
                     </td>
                     <td>{item?.score}</td>
-                    <td>{item?.formula}</td>
+                    <td>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: item?.formula,
+                        }}
+                      />
+                    </td>
                     <td>{item?.weighted_score}</td>
                   </tr>
                 ))}
@@ -289,14 +453,7 @@ export default function PanelPerformance({ activeTab, year }) {
                   <td />
                   <td />
                   <td>Total Akumulasi Nilai</td>
-                  <td>
-                    {dataWeighted?.reduce(
-                      (acc, curr) =>
-                        (acc?.weighted_score || 0) +
-                        (curr?.weighted_score || 0),
-                      0,
-                    )}
-                  </td>
+                  <td>{dataScore?.score?.toFixed(2)}</td>
                 </tr>
               </>
             }
@@ -381,23 +538,39 @@ export default function PanelPerformance({ activeTab, year }) {
                   align="center"
                   className="text-5xl font-tertiary rotate-180"
                 >
-                  94
+                  {score}
                 </Text>
               }
               sections={[
-                { value: 79.06, color: "#EAB308" }, // KPI Based
-                { value: 15.2, color: "#4BB543" }, // Behavior Based
+                { value: dataScore?.score, color: "#EAB308" }, // KPI Based
+                {
+                  value:
+                    ((dataScore?.assessment_score?.skor_konversi ||
+                      0) *
+                      assessmentWeight) /
+                    100,
+                  color: "#4BB543",
+                }, // Behavior Based
               ]}
             />
             <div className="flex flex-col gap-3 bg-white rounded-lg p-3">
               <div className="flex gap-2 items-center font-semibold">
                 <div className="h-[20px] w-[20px] rounded-md bg-green" />
-                <p className="text-green">15.20</p>
+                <p className="text-green">
+                  {(
+                    ((dataScore?.assessment_score?.skor_konversi ||
+                      0) *
+                      assessmentWeight) /
+                    100
+                  ).toFixed(2)}
+                </p>
                 <p>Behavior - Based</p>
               </div>
               <div className="flex gap-2 items-center font-semibold">
                 <div className="h-[20px] w-[20px] rounded-md bg-yellow-500" />
-                <p className="text-yellow-500">79.06</p>
+                <p className="text-yellow-500">
+                  {dataScore?.score?.toFixed(2)}
+                </p>
                 <p>KPI - Based</p>
               </div>
             </div>
@@ -421,7 +594,7 @@ export default function PanelPerformance({ activeTab, year }) {
         Apakah anda ingin melihat hasil evaluasi tahunan?
       </h2>
       <img src={PerformanceSheetIllust} alt="illust" />
-      <Button onClick={() => setStep(2)}>
+      <Button onClick={() => setStep(2)} loading={isLoadingScore}>
         Klik Untuk Melihat Nilai
       </Button>
     </div>
