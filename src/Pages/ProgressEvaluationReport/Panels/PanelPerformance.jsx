@@ -30,8 +30,9 @@ export default function PanelPerformance({ activeTab, year }) {
 
   const params = {
     employee_number: user.employee.employee_number,
-    year: 2023, // Todo: find a way to get the latest monitoring year
+    year: lastYear,
     periode: "TW4",
+    with_assessment_score: 1,
   };
   const { data: dataScore, isLoading: isLoadingScore } =
     kpiService.query(
@@ -53,14 +54,8 @@ export default function PanelPerformance({ activeTab, year }) {
     dataScore,
   });
 
-  const positionActiveScoreFraction = dataScore?.formula?.active
-    ? decimalToFraction(parseFloat(dataScore?.formula?.active))
-    : "";
-  const positionInactiveScoreFraction = dataScore?.formula?.inactive
-    ? decimalToFraction(parseFloat(dataScore?.formula?.inactive))
-    : "";
-
   const kpiWeight = 80;
+  const assessmentWeight = 20;
 
   const dataFinalEvaluation = [
     {
@@ -75,9 +70,13 @@ export default function PanelPerformance({ activeTab, year }) {
     {
       aspect:
         "Penilaian Kinerja Individu Berbasis Penilaian Perilaku",
-      weight: 20,
-      score: 76,
-      work_score: 15.2,
+      weight: assessmentWeight,
+      score: dataScore?.assessment_score?.skor_konversi || 0,
+      work_score: (
+        ((dataScore?.assessment_score?.skor_konversi || 0) *
+          assessmentWeight) /
+        100
+      ).toFixed(2),
     },
   ];
 
@@ -200,8 +199,8 @@ export default function PanelPerformance({ activeTab, year }) {
     },
     ...(dataScore?.job_sharing_scores?.map((e) => ({
       kpi_type: "Job Sharing",
-      position_name: "Position 03",
-      superior_name: "John Thor",
+      position_name: e.position,
+      superior_name: e.superior_name,
       score: e.total_score,
       formula: formulaCalculateWithJs(e.total_score),
       weighted_score: (
@@ -248,7 +247,15 @@ export default function PanelPerformance({ activeTab, year }) {
     },
   ];
 
-  const score = 90;
+  const score = (
+    ((dataScore?.score ? parseFloat(dataScore?.score) : 0) *
+      kpiWeight +
+      (dataScore?.assessment_score?.skor_konversi
+        ? parseFloat(dataScore?.assessment_score?.skor_konversi)
+        : 0) *
+        assessmentWeight) /
+    100
+  ).toFixed(2);
   const finalScoreProp = (() => {
     const temp = finalScoreCategorize(score);
     return {
@@ -531,23 +538,39 @@ export default function PanelPerformance({ activeTab, year }) {
                   align="center"
                   className="text-5xl font-tertiary rotate-180"
                 >
-                  94
+                  {score}
                 </Text>
               }
               sections={[
-                { value: 79.06, color: "#EAB308" }, // KPI Based
-                { value: 15.2, color: "#4BB543" }, // Behavior Based
+                { value: dataScore?.score, color: "#EAB308" }, // KPI Based
+                {
+                  value:
+                    ((dataScore?.assessment_score?.skor_konversi ||
+                      0) *
+                      assessmentWeight) /
+                    100,
+                  color: "#4BB543",
+                }, // Behavior Based
               ]}
             />
             <div className="flex flex-col gap-3 bg-white rounded-lg p-3">
               <div className="flex gap-2 items-center font-semibold">
                 <div className="h-[20px] w-[20px] rounded-md bg-green" />
-                <p className="text-green">15.20</p>
+                <p className="text-green">
+                  {(
+                    ((dataScore?.assessment_score?.skor_konversi ||
+                      0) *
+                      assessmentWeight) /
+                    100
+                  ).toFixed(2)}
+                </p>
                 <p>Behavior - Based</p>
               </div>
               <div className="flex gap-2 items-center font-semibold">
                 <div className="h-[20px] w-[20px] rounded-md bg-yellow-500" />
-                <p className="text-yellow-500">79.06</p>
+                <p className="text-yellow-500">
+                  {dataScore?.score?.toFixed(2)}
+                </p>
                 <p>KPI - Based</p>
               </div>
             </div>
@@ -571,7 +594,7 @@ export default function PanelPerformance({ activeTab, year }) {
         Apakah anda ingin melihat hasil evaluasi tahunan?
       </h2>
       <img src={PerformanceSheetIllust} alt="illust" />
-      <Button onClick={() => setStep(2)}>
+      <Button onClick={() => setStep(2)} loading={isLoadingScore}>
         Klik Untuk Melihat Nilai
       </Button>
     </div>
