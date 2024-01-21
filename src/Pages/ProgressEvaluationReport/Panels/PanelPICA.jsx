@@ -26,6 +26,8 @@ export default function PanelPICA({
   employeeNumber,
   year,
 }) {
+  const periodCode = "TW4";
+
   const [data, setData] = useState({
     feedback: "",
     picas: [],
@@ -54,6 +56,8 @@ export default function PanelPICA({
           page: pageScoreCard,
           size: 10,
           "employee-number": employeeNumber,
+          year,
+          "period-code": periodCode,
         },
       },
     );
@@ -78,6 +82,8 @@ export default function PanelPICA({
         size: 100,
         "employee-number": employeeNumber,
         "exclude-achieved-kpi": 1,
+        year,
+        "period-code": periodCode,
       },
     },
   );
@@ -112,6 +118,7 @@ export default function PanelPICA({
         page: 1,
         size: 9999,
         "employee-number": employeeNumber,
+        year,
       },
     },
   );
@@ -133,6 +140,8 @@ export default function PanelPICA({
         page: pageScoreCard,
         size: 10,
         "employee-number": employeeNumber,
+        year,
+        "period-code": periodCode,
       },
     },
   );
