@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
 import { Tooltip } from "@mantine/core";
+import PropTypes from "prop-types";
+import React from "react";
 
 export default function TooltipIcon({
   label,
@@ -28,7 +28,12 @@ export default function TooltipIcon({
       color={labelColor}
       position={position}
     >
-      <Icon icon={icon[variant]} color={color} width={iconSize} />
+      <Icon
+        icon={icon[variant]}
+        color={color}
+        width={iconSize}
+        className="shrink-0"
+      />
     </Tooltip>
   );
 }

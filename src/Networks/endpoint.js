@@ -5,6 +5,7 @@ export const BASE_PROXY = {
   positions: "/api/positions/v1",
   kmap: "/api/kmap/v1",
   auth: "/api/sso/v1",
+  assessment: "/api/assessment/v1",
   gamification: "/api/gamification/v1",
   employees: "/api/employees/v1",
   skills: "/api/skills/v1",
@@ -18,6 +19,7 @@ export const BASE_PROXY = {
   signature: "/api/signature/v1",
   searchEngine: "/api/search-engine/v1",
   dailyQuiz: "/api/daily-quiz/v1",
+  developmentPlan: "/api/development-plan/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -102,6 +104,12 @@ export const SMARTPLAN_ENDPOINT = {
   GET: {
     kpiScore: "/landing/score",
     remainingTime: "/landing/remaining-time",
+    landingBanner: "/landing-banner",
+    yearlyEvalKPI: "/yearly-evaluation/kpi",
+    pica: "/pica",
+    kpi: "/kpi/list",
+    qualFeedback: "/pica/qual-idp",
+    getFinalScore: "/kpi/final-score",
   },
 };
 
@@ -305,5 +313,18 @@ export const DAILY_QUIZ_ENDPOINT = {
   },
   POST: {
     actionQuiz: `/daily-quiz`,
+  },
+};
+
+export const ASSESSMENT_ENDPOINT = {
+  GET: {
+    empAssessmentBehavioural: (employeeId) =>
+      `/hq/assessments/behavioral/${employeeId}`,
+  },
+};
+
+export const DEVELOPMENT_PLAN_ENDPOINT = {
+  GET: {
+    idp: "/tms/idp",
   },
 };
