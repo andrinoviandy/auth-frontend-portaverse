@@ -16,7 +16,6 @@ export default function PanelBehavior({
   const assessmentService = Networks(BASE_PROXY.assessment);
   const { data, isLoading } = assessmentService.query(
     ASSESSMENT_ENDPOINT.GET.empAssessmentBehavioural(employeeNumber),
-
     ["eval-behavioral", employeeNumber, year],
     {
       enabled: activeTab === "behavior",
@@ -40,7 +39,10 @@ export default function PanelBehavior({
         <div className="grid grid-cols-2 gap-5 w-full">
           <TextNumberCard
             title="SKOR KINERJA INDIVIDU BERBASIS PERILAKU"
-            value={`${toFixedTrim(data?.raw_final_score || 0, 2)}`}
+            value={`${toFixedTrim(
+              data?.formulated_final_score || 0,
+              2,
+            )}`}
           />
           <TextNumberCard
             title="SKOR KINERJA INDIVIDU BERBASIS PERILAKU (SKALA LIKERT)"
@@ -52,34 +54,37 @@ export default function PanelBehavior({
         <div className="grid grid-cols-3 gap-5">
           <CoreValueCard
             type="Amanah"
-            score={`${toFixedTrim(data?.amanah?.raw_score || 0, 2)}`}
+            score={`${toFixedTrim(data?.amanah?.avg_amanah || 0, 2)}`}
           />
           <CoreValueCard
             type="Kolaboratif"
             score={`${toFixedTrim(
-              data?.kolaboratif?.raw_score || 0,
+              data?.kolaboratif?.avg_kolaboratif || 0,
               2,
             )}`}
           />
           <CoreValueCard
             type="Harmonis"
             score={`${toFixedTrim(
-              data?.harmonis?.raw_score || 0,
+              data?.harmonis?.avg_harmonis || 0,
               2,
             )}`}
           />
           <CoreValueCard
             type="Loyal"
-            score={`${toFixedTrim(data?.loyal?.raw_score || 0, 2)}`}
+            score={`${toFixedTrim(data?.loyal?.avg_loyal || 0, 2)}`}
           />
           <CoreValueCard
             type="Adaptif"
-            score={`${toFixedTrim(data?.adaptif?.raw_score || 0, 2)}`}
+            score={`${toFixedTrim(
+              data?.adaptif?.avg_adaptif || 0,
+              2,
+            )}`}
           />
           <CoreValueCard
             type="Kompeten"
             score={`${toFixedTrim(
-              data?.kompeten?.raw_score || 0,
+              data?.kompeten?.avg_kompeten || 0,
               2,
             )}`}
           />
