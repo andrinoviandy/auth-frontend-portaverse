@@ -168,7 +168,7 @@ export default function PanelPerformance({ activeTab, year }) {
     {
       kpi_type: "Aktif",
       position_name: dataScore?.position?.active,
-      superior_name: "Haryo Dwiriandri",
+      superior_name: dataScore?.superior_name?.active,
       score: dataScore?.perscore?.active
         ? parseFloat(dataScore.perscore.active).toFixed(2)
         : 0,
@@ -183,7 +183,7 @@ export default function PanelPerformance({ activeTab, year }) {
     {
       kpi_type: "Historis",
       position_name: dataScore?.position?.inactive,
-      superior_name: "Alfredo Teja",
+      superior_name: dataScore?.superior_name?.inactive,
       score: dataScore?.perscore?.inactive
         ? parseFloat(dataScore.perscore.inactive).toFixed(2)
         : 0,
