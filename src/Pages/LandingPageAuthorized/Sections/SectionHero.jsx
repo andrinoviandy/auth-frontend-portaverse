@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Button } from "@mantine/core";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SMEIcon from "../../../Components/Assets/Icon/SME";
 import SplashArt from "../../../Components/Assets/Pictures/Kapal_Pelindo.gif";
@@ -17,6 +18,7 @@ import hasRole from "../../../Utils/Helpers/hasRole";
 import uppercaseFirstLetterEveryWord from "../../../Utils/Helpers/uppercaseFirstLetterEveryWord";
 
 export default function SectionHero() {
+  const userSocmed = useSelector((st) => st.socialMediaProfile);
   const user = getUserCookie();
   const { email } = user;
   const {
@@ -101,7 +103,7 @@ export default function SectionHero() {
         <div className="flex flex-col gap-5">
           <div className="flex gap-8 items-start border p-6 rounded-md">
             <ProfilePictureWithBadge
-              img={avatar}
+              img={userSocmed?.profilePicture || avatar}
               alt="avatar"
               className="w-[96px] h-[96px] rounded-full border shrink-0"
               badgeIcon={hasRole(["SME"]) ? <SMEIcon /> : null}
