@@ -32,6 +32,8 @@ ENV VITE_TMS_URL=https://staging-talent.portaverse.co.id
 ENV VITE_API_SIGNATURE_SERVICE_URL=https://staging-signature.portaverse.co.id
 ENV VITE_API_SEARCH_ENGINE_SERVICE_URL=https://staging-search-engine.portaverse.co.id
 ENV VITE_API_DAILY_QUIZ_SERVICE_URL=https://staging-daily-quiz.portaverse.co.id
+ENV VITE_API_ASSESSMENT_SERVICE_URL=https://staging-assessment.portaverse.co.id 
+ENV VITE_API_DEVELOPMENT_PLAN_SERVICE_URL=https://staging-development-plan.portaverse.co.id
 
 # ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
 # ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id

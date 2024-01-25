@@ -11,6 +11,7 @@ import PerformanceReport from "../../../Components/Assets/Svg/performance-report
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
 import SignatureManagement from "../../../Components/Assets/Svg/signature-management.svg";
+import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
   SIGNATURE_ENDPOINT,
@@ -37,7 +38,7 @@ export default function SectionPlatformMenu() {
             width={35}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Knowledge Map",
@@ -47,7 +48,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Master Pegawai",
@@ -60,7 +61,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Communities of Practice",
@@ -74,7 +75,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Communities of Interest",
@@ -88,7 +89,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Repository",
@@ -98,7 +99,7 @@ export default function SectionPlatformMenu() {
         icon: (
           <img src={Repository} alt="repo" className="w-[26px]" />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Ask the Expert",
@@ -106,7 +107,7 @@ export default function SectionPlatformMenu() {
           "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
         route: "/ask-expert",
         icon: <img src={AoE} alt="repo" className="w-[40px]" />,
-        shown: true,
+        hasAccess: true,
       },
       // {
       //   label: "Headquarter",
@@ -116,7 +117,8 @@ export default function SectionPlatformMenu() {
       //   icon: (
       //     <Icon icon="ri:hq-line" color={color.primary3} width={40} />
       //   ),
-      //   shown: hasRole(["SA"]),
+      //   hasAccess: hasRole(["SA"]),
+      //   adminOnly: true,
       // },
     ],
     LMS: [
@@ -132,7 +134,7 @@ export default function SectionPlatformMenu() {
             width={35}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Dashboard Learning",
@@ -146,7 +148,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Dashboard Corpu",
@@ -160,7 +162,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU"]),
+        hasAccess: hasRole(["CRPU"]),
+        adminOnly: true,
       },
       {
         label: "Manajemen Kompetensi",
@@ -174,7 +177,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "SA"]),
+        hasAccess: hasRole(["CRPU", "SA"]),
+        adminOnly: true,
       },
       {
         label: "Manajemen Sertifikat",
@@ -188,7 +192,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "SA"]),
+        hasAccess: hasRole(["CRPU", "SA"]),
+        adminOnly: true,
       },
       {
         label: hasRole(["SBCN"])
@@ -206,7 +211,8 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        shown: hasRole(["CRPU", "SA", "SBCN"]),
+        hasAccess: hasRole(["CRPU", "SA", "SBCN"]),
+        adminOnly: true,
       },
       {
         label: hasRole(["VNDR"])
@@ -222,7 +228,8 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        shown: hasRole(["CRPU", "SA", "VNDR"]),
+        hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
+        adminOnly: true,
       },
       {
         label: "Learning Analytics",
@@ -235,7 +242,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "SA"]),
+        hasAccess: hasRole(["CRPU", "SA"]),
+        adminOnly: true,
       },
       {
         label: "Manajemen Wallet",
@@ -249,7 +257,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "SA"]),
+        hasAccess: hasRole(["CRPU", "SA"]),
+        adminOnly: true,
       },
       {
         label: "Manajemen Kuis Harian",
@@ -263,7 +272,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "SA"]),
+        hasAccess: hasRole(["CRPU", "SA"]),
+        adminOnly: true,
       },
       {
         label: "Manajemen Trainer",
@@ -273,7 +283,9 @@ export default function SectionPlatformMenu() {
         icon: (
           <Icon icon="mdi:teach" color={color.primary3} width={40} />
         ),
-        shown: hasRole(["CRPU", "SA", "VNDR"]),
+        hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
+        adminOnly: true,
+        comingSoon: true,
       },
       {
         label: "Manajemen Download",
@@ -287,7 +299,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["CRPU", "VNDR"]),
+        hasAccess: hasRole(["CRPU", "VNDR"]),
+        adminOnly: true,
       },
     ],
     TMS: [
@@ -302,7 +315,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: false,
+        hasAccess: true,
       },
       {
         label: "Smart Plan KPI",
@@ -315,7 +328,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Personal Assessment",
@@ -329,7 +342,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: true,
+        hasAccess: true,
       },
       {
         label: "Manajemen Organisasi",
@@ -343,7 +356,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["SA"]),
+        hasAccess: hasRole(["SA"]),
+        adminOnly: true,
       },
       {
         label: "Development Plan",
@@ -357,7 +371,9 @@ export default function SectionPlatformMenu() {
             className="w-[40px]"
           />
         ),
-        shown: hasRole(["SA"]),
+        hasAccess: hasRole(["SA"]),
+        adminOnly: true,
+        comingSoon: true,
       },
       {
         label: "Manajemen Role",
@@ -371,7 +387,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["SA"]),
+        hasAccess: hasRole(["SA"]),
+        adminOnly: true,
       },
       {
         label: "Headquarter",
@@ -385,7 +402,8 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        shown: hasRole(["SA"]),
+        hasAccess: hasRole(["SA"]),
+        adminOnly: true,
       },
       {
         label: "Promotion & Rotation",
@@ -399,7 +417,9 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
-        shown: hasRole(["SA"]),
+        hasAccess: hasRole(["SA"]),
+        adminOnly: true,
+        comingSoon: true,
       },
       {
         label: "Performance Report",
@@ -413,7 +433,8 @@ export default function SectionPlatformMenu() {
             className="w-[30px]"
           />
         ),
-        shown: hasRole(["SA"]),
+        hasAccess: hasRole(["SA"]),
+        comingSoon: true,
       },
     ],
   });
@@ -453,7 +474,8 @@ export default function SectionPlatformMenu() {
                       className="w-[40px]"
                     />
                   ),
-                  shown: true,
+                  hasAccess: true,
+                  adminOnly: true,
                   state: { fromDashboard: true },
                 },
               ],
@@ -494,19 +516,23 @@ export default function SectionPlatformMenu() {
           </Tabs.Tab>
         </Tabs.List>
       </Tabs>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-3 gap-5">
         {!menus[activeTab].length ? (
           <p className="text-darkGrey">No menu available yet</p>
         ) : (
           menus[activeTab].map((menu) => (
             <MenuCard
+              key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
               route={`${import.meta.env[`VITE_${activeTab}_URL`]}${
                 menu.route
               }`}
               icon={menu?.icon}
-              hidden={!menu?.shown}
+              // hidden={!menu?.hasAccess}
+              disabled={!menu?.hasAccess}
+              adminOnly={!!menu?.adminOnly}
+              comingSoon={!!menu?.comingSoon}
             />
           ))
         )}
@@ -515,20 +541,72 @@ export default function SectionPlatformMenu() {
   );
 }
 
-function MenuCard({ label, description, route, icon, hidden }) {
+function MenuCard({
+  label,
+  description,
+  route,
+  icon,
+  disabled,
+  adminOnly,
+  comingSoon,
+}) {
+  const badgeProp = (() => {
+    if (comingSoon)
+      return {
+        variant: "purple",
+        value: "Coming Soon",
+      };
+    if (adminOnly)
+      return {
+        variant: "primary",
+        value: "Admin Only",
+      };
+    return null;
+  })();
+
   return (
     <a
-      key={label}
-      href={route}
+      href={disabled || comingSoon ? "/landing" : route}
       className={clsx(
-        "flex items-center gap-5 border hover:border-primary3 rounded-lg p-5",
-        hidden && "hidden",
+        "flex items-center gap-5 border rounded-lg px-5 py-4",
+        disabled || comingSoon
+          ? "bg-gray-50 pointer-events-none cursor-not-allowed"
+          : "bg-white hover:border-primary3",
       )}
     >
-      <div className="shrink-0">{icon}</div>
-      <div className="flex flex-col gap-1">
-        <h3 className="font-bold text-lg text-text1">{label}</h3>
-        <p className="text-sm text-darkGrey">{description}</p>
+      <div
+        className="shrink-0"
+        style={
+          disabled || comingSoon
+            ? {
+                filter:
+                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+              }
+            : {}
+        }
+      >
+        {icon}
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <div className="flex gap-3 items-center">
+          <h3
+            className={clsx(
+              "font-bold text-base",
+              disabled || comingSoon ? "text-gray-400" : "text-text1",
+            )}
+          >
+            {label}
+          </h3>
+          {!!badgeProp && (
+            <Badge
+              customClasses="shrink-0"
+              customTextClasses="text-xs"
+              value={badgeProp.value}
+              variant={badgeProp.variant}
+            />
+          )}
+        </div>
+        <p className="text-xs text-darkGrey">{description}</p>
       </div>
     </a>
   );

@@ -21,7 +21,12 @@ export default function SectionStatistic() {
     smartplanService.query(
       SMARTPLAN_ENDPOINT.GET.kpiScore,
       ["kpiScore"],
-      { select: (res) => (res?.score || 0).toFixed(2) },
+      {
+        select: (res) => ({
+          formattedPeriod: res?.detail?.formatted_period,
+          score: (res?.score || 0).toFixed(2),
+        }),
+      },
     );
 
   const { data: remainingDay, isLoading: isLoadingTime } =
@@ -29,10 +34,15 @@ export default function SectionStatistic() {
       SMARTPLAN_ENDPOINT.GET.remainingTime,
       ["remainingTime"],
       {
-        select: (res) =>
-          res?.time_end
+        select: (res) => ({
+          formatted_period: res?.detail?.formatted_period,
+          date: res?.time_end
+            ? dayjs(res?.time_end).format("D MMMM YYYY")
+            : "-",
+          remaining: res?.time_end
             ? dayjs().locale("id").to(res.time_end, true)
             : "Unknown",
+        }),
       },
     );
 
@@ -56,19 +66,16 @@ export default function SectionStatistic() {
             Lihat dan pelajari data-data statistik terpenting Anda
           </p>
         </div>
-        <div className="grid grid-cols-5 justify-center items-start gap-4 text-text1">
+        <div className="grid grid-cols-4 justify-center items-start gap-4 text-text1">
           <StatCard
-            label="Skor KPI"
-            value={kpiScore || "-"}
+            label={`Nilai Kinerja Individu ${
+              kpiScore?.formattedPeriod || ""
+            }`}
+            value={kpiScore?.score || "-"}
             loading={isLoadingKPI}
             tooltip="Total Skor KPI Anda saat ini"
           />
-          <StatCard
-            label="Batas Waktu Isi KPI"
-            value={remainingDay || "-"}
-            loading={isLoadingTime}
-            tooltip="Batas waktu pengisian KPI"
-          />
+
           <StatCard
             label="Learning Hours"
             value={
@@ -79,20 +86,25 @@ export default function SectionStatistic() {
             tooltip="Total waktu pembelajaran kursus"
           />
 
-          {/* TODO: Integrate when API is ready */}
-          <StatCard
-            label="Gamification Points"
-            // value={`${80} Points`}
-            value="-"
-            tooltip="Gabungan point yang ada di KMS dan LMS"
-          />
-
           <StatCard
             label="Individual Wallet"
             value={
               cardBalance ? `Rp. ${formatRupiah(cardBalance)},-` : "-"
             }
             tooltip="Individual Wallet Anda"
+          />
+
+          <StatCard
+            label={`Batas Waktu Pengisian Realisasi KPI Triwulan ${
+              remainingDay?.formatted_period || ""
+            }`}
+            value={
+              remainingDay?.remaining
+                ? `${remainingDay?.remaining} (${remainingDay?.date})`
+                : "-"
+            }
+            loading={isLoadingTime}
+            tooltip="Batas waktu pengisian KPI"
           />
         </div>
       </div>
@@ -103,19 +115,23 @@ export default function SectionStatistic() {
 function StatCard({ label, value, tooltip, loading }) {
   return (
     <div className="flex flex-col gap-1 items-center w-full p-3 rounded-lg border bg-white">
-      <div className="flex gap-2 items-center">
-        <p className="font-semibold">{label}</p>
-        <TooltipIcon
-          label={tooltip}
-          variant="info-filled"
-          color={color.grey2}
-          labelColor="black"
-        />
+      <div className="flex gap-2">
+        <p className="font-semibold text-center">{label}</p>
+        <div className="mt-0.5">
+          <TooltipIcon
+            label={tooltip}
+            variant="info"
+            color={color.darkGrey}
+            labelColor="black"
+          />
+        </div>
       </div>
       {loading ? (
         <Loader variant="dots" className="my-[0.45rem]" />
       ) : (
-        <p className="font-semibold text-primary3">{value}</p>
+        <p className="font-semibold text-center text-primary3">
+          {value}
+        </p>
       )}
     </div>
   );

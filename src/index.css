@@ -197,3 +197,9 @@ select:focus > option:hover {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
+
+/* Captcha reload button styling */
+#reload_href {
+  color: #016db2 !important;
+  font-weight: 600;
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo '🏗️👷 Styling, formatting and building your project before committing'
+
+# Check Prettier, ESLint on staged files
+yarn lint-staged --concurrent false || 
+(
+    echo '🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨';
+    false;
+)
+
+echo '🤔🤔🤔🤔... Alright.... Code looks good... Trying to build now. 🤔🤔🤔🤔'
+
+# Build the project
+echo '🏗️👷 Building your project before committing'
+yarn build || 
+(
+    echo '🚨 Build failed';
+    false;
+)
+
+# If everything passes... Now we can commit
+echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'

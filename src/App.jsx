@@ -18,6 +18,7 @@ import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPa
 import NewLogin from "./Pages/Login";
 import NewPassSuccess from "./Pages/NewPassSuccess";
 import Notifications from "./Pages/Notifications/Notifications";
+import ProgressEvaluationReport from "./Pages/ProgressEvaluationReport/ProgressEvaluationReport";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
@@ -78,6 +79,10 @@ function App() {
             <Route
               path="/notifications"
               element={<Notifications />}
+            />
+            <Route
+              path="/progress-eval-report"
+              element={<ProgressEvaluationReport />}
             />
           </Route>
         </Route>
