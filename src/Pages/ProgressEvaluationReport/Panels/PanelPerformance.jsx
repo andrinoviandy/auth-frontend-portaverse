@@ -4,15 +4,14 @@ import { useState } from "react";
 import PerformanceSheetIllust from "../../../Components/Assets/Pictures/PerformanceSheets.png";
 import TextNumberCard from "../../../Components/Cards/TextNumberCard";
 import TableTemplate from "../../../Components/Table/TableTemplates";
-import finalScoreCategorize from "../../../Utils/Helpers/finalScoreCategorize";
-import "./PanelPerformance.css";
 import {
   BASE_PROXY,
   SMARTPLAN_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
+import finalScoreCategorize from "../../../Utils/Helpers/finalScoreCategorize";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
-import decimalToFraction from "../../../Utils/Helpers/decimalToFraction";
+import "./PanelPerformance.css";
 
 const timelineType = {
   initial: { label: "Awal", color: "#A56EFF" },
@@ -49,10 +48,6 @@ export default function PanelPerformance({ activeTab, year }) {
         params,
       },
     );
-
-  console.log({
-    dataScore,
-  });
 
   const kpiWeight = 80;
   const assessmentWeight = 20;
@@ -257,12 +252,7 @@ export default function PanelPerformance({ activeTab, year }) {
     100
   ).toFixed(2);
   const finalScoreProp = (() => {
-    const temp = finalScoreCategorize(score);
-    return {
-      ...temp,
-      color: `text-${temp?.color}`,
-      colorDark: `text-${temp?.colorDark}`,
-    };
+    return finalScoreCategorize(score);
   })();
 
   if (step === 3) {
@@ -277,8 +267,8 @@ export default function PanelPerformance({ activeTab, year }) {
             <TextNumberCard
               title="RATING PENILAIAN PEKERJA"
               value={finalScoreProp?.label}
-              classNames={{
-                value: finalScoreProp?.color,
+              styles={{
+                color: finalScoreProp?.color,
               }}
             />
           </div>
@@ -507,9 +497,11 @@ export default function PanelPerformance({ activeTab, year }) {
       >
         {/* 1st Slide */}
         <section
+          style={{
+            color: finalScoreProp?.colorDark,
+          }}
           className={clsx(
             "absolute flex flex-col items-center gap-5 anim-slide-1",
-            finalScoreProp.colorDark,
           )}
         >
           <div className="flex items-center justify-center bg-primary5 h-[200px] w-[200px] rounded-full border-[12px] border-primary4">
@@ -536,13 +528,16 @@ export default function PanelPerformance({ activeTab, year }) {
                   color="white"
                   weight={700}
                   align="center"
-                  className="text-5xl font-tertiary rotate-180"
+                  className="text-4xl font-tertiary rotate-180"
                 >
                   {score}
                 </Text>
               }
               sections={[
-                { value: dataScore?.score, color: "#EAB308" }, // KPI Based
+                {
+                  value: ((dataScore?.score || 0) * kpiWeight) / 100,
+                  color: "#EAB308",
+                }, // KPI Based
                 {
                   value:
                     ((dataScore?.assessment_score?.skor_konversi ||
@@ -569,7 +564,10 @@ export default function PanelPerformance({ activeTab, year }) {
               <div className="flex gap-2 items-center font-semibold">
                 <div className="h-[20px] w-[20px] rounded-md bg-yellow-500" />
                 <p className="text-yellow-500">
-                  {dataScore?.score?.toFixed(2)}
+                  {(
+                    ((dataScore?.score || 0) * kpiWeight) /
+                    100
+                  ).toFixed(2)}
                 </p>
                 <p>KPI - Based</p>
               </div>

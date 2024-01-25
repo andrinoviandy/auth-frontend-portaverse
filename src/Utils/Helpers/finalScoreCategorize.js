@@ -2,14 +2,14 @@ const lookupCategory = (score) => [
   {
     label: "Istimewa",
     condition: score > 110 && score <= 120,
-    color: "green",
-    colorDark: "green",
+    color: "#4BB543",
+    colorDark: "#4BB543",
   },
   {
     label: "Sangat Baik",
     condition: score > 105 && score <= 110,
-    color: "primary3",
-    colorDark: "primary1",
+    color: "#016DB2",
+    colorDark: "#C9F3FB",
   },
   {
     label: "Baik",
@@ -20,14 +20,14 @@ const lookupCategory = (score) => [
   {
     label: "Cukup",
     condition: score >= 80 && score < 90,
-    color: "grey",
-    colorDark: "grey",
+    color: "#C1C7CD",
+    colorDark: "#C1C7CD",
   },
   {
     label: "Kurang",
     condition: score < 80,
-    color: "black-500",
-    colorDark: "white",
+    color: "#000",
+    colorDark: "#FFF",
   },
 ];
 
