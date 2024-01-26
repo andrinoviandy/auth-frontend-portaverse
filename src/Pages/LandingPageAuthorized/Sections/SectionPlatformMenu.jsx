@@ -285,7 +285,7 @@ export default function SectionPlatformMenu() {
         ),
         hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
         adminOnly: true,
-        comingSoon: true,
+        comingSoon: false,
       },
       {
         label: "Manajemen Download",

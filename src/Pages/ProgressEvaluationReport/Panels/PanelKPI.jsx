@@ -18,7 +18,7 @@ export default function PanelKPI({ activeTab, year }) {
   const smartplanService = Networks(BASE_PROXY.smartplan);
   const { data, isLoading } = smartplanService.query(
     SMARTPLAN_ENDPOINT.GET.yearlyEvalKPI,
-    ["eval-kpi"],
+    ["eval-kpi", year],
     {
       enabled: activeTab === "kpi",
       select: (res) => ({

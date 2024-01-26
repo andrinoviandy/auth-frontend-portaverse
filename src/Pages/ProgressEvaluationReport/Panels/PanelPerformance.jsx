@@ -21,7 +21,6 @@ const timelineType = {
 
 export default function PanelPerformance({ activeTab, year }) {
   const [step, setStep] = useState(1); // 1, 2, 3c
-  const lastYear = new Date().getFullYear() - 1;
 
   const kpiService = Networks(BASE_PROXY.smartplan);
 
@@ -29,7 +28,7 @@ export default function PanelPerformance({ activeTab, year }) {
 
   const params = {
     employee_number: user.employee.employee_number,
-    year: lastYear,
+    year,
     periode: "TW4",
     with_assessment_score: 1,
   };
