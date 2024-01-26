@@ -113,7 +113,7 @@ export default function SectionStatistic() {
 
 function StatCard({ label, value, tooltip, loading }) {
   return (
-    <div className="flex flex-col gap-1 items-center justify-center h-full w-full p-3 rounded-lg border bg-white">
+    <div className="flex flex-col gap-1 items-center justify-center max-h-[126px] h-full w-full p-3 rounded-lg border bg-white">
       <div className="flex gap-2">
         <p className="font-semibold text-center">{label}</p>
         <div className="mt-0.5">
