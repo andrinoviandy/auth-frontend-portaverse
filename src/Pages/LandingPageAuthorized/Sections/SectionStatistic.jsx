@@ -23,6 +23,7 @@ export default function SectionStatistic() {
       ["kpiScore"],
       {
         select: (res) => ({
+          year: res?.detail?.year,
           formattedPeriod: res?.detail?.formatted_period,
           score: (res?.score || 0).toFixed(2),
         }),
@@ -68,9 +69,7 @@ export default function SectionStatistic() {
         </div>
         <div className="grid grid-cols-4 justify-center items-start gap-4 text-text1">
           <StatCard
-            label={`Nilai Kinerja Individu ${
-              kpiScore?.formattedPeriod || ""
-            }`}
+            label={`Nilai Kinerja Individu ${kpiScore?.year || ""}`}
             value={kpiScore?.score || "-"}
             loading={isLoadingKPI}
             tooltip="Total Skor KPI Anda saat ini"
