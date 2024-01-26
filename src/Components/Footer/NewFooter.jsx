@@ -78,7 +78,7 @@ export default function NewFooter() {
         </div>
       </div>
       <h5 className="p-5 text-darkGrey">
-        © 2023 KMPlus | Powered by KMPlus
+        © 2024 KMPlus | Powered by KMPlus
       </h5>
     </footer>
   );

@@ -22,9 +22,9 @@ export default function PanelKPI({ activeTab, year }) {
     {
       enabled: activeTab === "kpi",
       select: (res) => ({
+        jabatan_utama: res?.jabatan_utama?.[0]?.detail,
         mutation: res?.jabatan_utama?.[0]?.detail,
         job_sharing: res?.job_sharing?.[0]?.detail,
-        jabatan_utama: res?.jabatan_utama?.[0]?.detail,
       }),
     },
   );
@@ -35,17 +35,20 @@ export default function PanelKPI({ activeTab, year }) {
 
   return (
     <div className="flex flex-col rounded-md border">
-      {types.map((type) => (
-        <>
-          <h2 className="font-bold p-5 border-b">
-            Penilaian Kinerja Individu Berbasis KPI - TW {period}{" "}
-            <span className="text-darkGrey font-semibold">
-              (Atasan : {data?.[type]?.employee_atasan?.name || "-"})
-            </span>
-          </h2>
+      {types
+        .filter((type) => !!data?.[type]?.kpis?.length)
+        .map((type) => (
+          <>
+            <h2 className="font-bold p-5 border-b">
+              Penilaian Kinerja Individu Berbasis KPI - TW {period}{" "}
+              <span className="text-darkGrey font-semibold">
+                (Atasan : {data?.[type]?.employee_atasan?.name || "-"}
+                )
+              </span>
+            </h2>
 
-          <div className="flex flex-col gap-5 p-5">
-            {/* <Tabs
+            <div className="flex flex-col gap-5 p-5">
+              {/* <Tabs
           value={type}
           onTabChange={setType}
           variant="pills"
@@ -78,132 +81,134 @@ export default function PanelKPI({ activeTab, year }) {
           />
         </div> */}
 
-            <div className="flex gap-3 items-center font-semibold">
-              <p className="text-lg">Atasan Langsung</p>
-              <Badge
-                value={
-                  type === "job_sharing"
-                    ? "Job Sharing"
-                    : "Jabatan Utama"
+              <div className="flex gap-3 items-center font-semibold">
+                <p className="text-lg">Atasan Langsung</p>
+                <Badge
+                  value={
+                    type === "job_sharing"
+                      ? "Job Sharing"
+                      : "Jabatan Utama"
+                  }
+                />
+              </div>
+
+              <Profile
+                alt="avatar"
+                name={data?.[type]?.employee_atasan?.name}
+                img={data?.[type]?.profile_picture} // TODO: Integrate this
+                subName={
+                  data?.[type]?.employee_atasan?.position?.name
+                }
+                classNames={{ root: "border w-fit p-3 rounded-md" }}
+              />
+
+              <ScrollableTableTemplate
+                width="fit"
+                variant="outline"
+                maxHeight="60vh"
+                infiniteScroll
+                classNames={{
+                  table: "w-max",
+                }}
+                isNoItem={!data?.[type]?.kpis?.length}
+                noItemLabel="Data KPI tidak ditemukan"
+                tHeads={
+                  <>
+                    <tr>
+                      <th
+                        rowSpan={2}
+                        className="bg-white w-[20px] sticky left-0"
+                      >
+                        No
+                      </th>
+                      <th
+                        rowSpan={2}
+                        className="bg-white w-[300px] sticky left-[calc(20px+1.55rem)]"
+                      >
+                        KPI
+                      </th>
+                      <th rowSpan={2}>Satuan</th>
+                      <th rowSpan={2}>Polaritas</th>
+                      <th rowSpan={2}>Formula</th>
+                      <th rowSpan={2}>Periode Monitoring</th>
+                      <th rowSpan={2}>Target TW {period}</th>
+                      <th rowSpan={2}>Bobot</th>
+                      <th rowSpan={1} colSpan={3}>
+                        <p className="text-center border-b pb-2">
+                          Evaluasi
+                        </p>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Target</th>
+                      <th>Realisasi</th>
+                      <th>Skor</th>
+                    </tr>
+                  </>
+                }
+                tRows={
+                  <>
+                    {data?.[type]?.kpis?.map((item, i) => (
+                      <tr key={item?.kpi_id}>
+                        <td className="bg-white w-[20px] sticky left-0 font-semibold text-primary3">
+                          {i + 1}
+                        </td>
+                        <td className="bg-white w-[300px] sticky left-[calc(20px+1.55rem)]">
+                          {item?.nama_kpi || "-"}
+                        </td>
+                        <td>{item?.satuan || "-"}</td>
+                        <td>{item?.polaritas || "-"}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="text-primary3 font-bold w-fit text-start"
+                            onClick={() =>
+                              NiceModal.show(
+                                MODAL_IDS.TMS.SMARTPLAN.KPI_FORMULA,
+                                {
+                                  value: item?.formula || "",
+                                },
+                              )
+                            }
+                          >
+                            Lihat Detail
+                          </button>
+                        </td>
+                        <td>{item?.periode_monitoring || "-"}</td>
+                        <td>{item?.target_tw || "-"}</td>
+                        <td>{item?.bobot || "-"}</td>
+                        <td>{item?.target || "-"}</td>
+                        <td>{item?.realisasi || "-"}</td>
+                        <td>{item?.skor || "-"}</td>
+                      </tr>
+                    ))}
+                    {!!data?.[type]?.kpis?.length && (
+                      <tr className="bg-bg3 font-semibold">
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td>Total Kinerja</td>
+                        <td>
+                          {data?.[type]?.kpis?.reduce(
+                            (acc, curr) =>
+                              (acc || 0) + (curr?.skor || 0),
+                            0,
+                          )}
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 }
               />
             </div>
-
-            <Profile
-              alt="avatar"
-              name={data?.[type]?.employee_atasan?.name}
-              img={null} // TODO: Integrate this
-              subName={null} // TODO: Integrate this
-              classNames={{ root: "border w-fit p-3 rounded-md" }}
-            />
-
-            <ScrollableTableTemplate
-              width="fit"
-              variant="outline"
-              maxHeight="60vh"
-              infiniteScroll
-              classNames={{
-                table: "w-max",
-              }}
-              isNoItem={!data?.[type]?.kpis?.length}
-              noItemLabel="Data KPI tidak ditemukan"
-              tHeads={
-                <>
-                  <tr>
-                    <th
-                      rowSpan={2}
-                      className="bg-white w-[20px] sticky left-0"
-                    >
-                      No
-                    </th>
-                    <th
-                      rowSpan={2}
-                      className="bg-white w-[300px] sticky left-[calc(20px+1.55rem)]"
-                    >
-                      KPI
-                    </th>
-                    <th rowSpan={2}>Satuan</th>
-                    <th rowSpan={2}>Polaritas</th>
-                    <th rowSpan={2}>Formula</th>
-                    <th rowSpan={2}>Periode Monitoring</th>
-                    <th rowSpan={2}>Target TW {period}</th>
-                    <th rowSpan={2}>Bobot</th>
-                    <th rowSpan={1} colSpan={3}>
-                      <p className="text-center border-b pb-2">
-                        Evaluasi
-                      </p>
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>Target</th>
-                    <th>Realisasi</th>
-                    <th>Skor</th>
-                  </tr>
-                </>
-              }
-              tRows={
-                <>
-                  {data?.[type]?.kpis?.map((item, i) => (
-                    <tr key={item?.kpi_id}>
-                      <td className="bg-white w-[20px] sticky left-0 font-semibold text-primary3">
-                        {i + 1}
-                      </td>
-                      <td className="bg-white w-[300px] sticky left-[calc(20px+1.55rem)]">
-                        {item?.nama_kpi || "-"}
-                      </td>
-                      <td>{item?.satuan || "-"}</td>
-                      <td>{item?.polaritas || "-"}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="text-primary3 font-bold w-fit text-start"
-                          onClick={() =>
-                            NiceModal.show(
-                              MODAL_IDS.TMS.SMARTPLAN.KPI_FORMULA,
-                              {
-                                value: item?.formula || "",
-                              },
-                            )
-                          }
-                        >
-                          Lihat Detail
-                        </button>
-                      </td>
-                      <td>{item?.periode_monitoring || "-"}</td>
-                      <td>{item?.target_tw || "-"}</td>
-                      <td>{item?.bobot || "-"}</td>
-                      <td>{item?.target || "-"}</td>
-                      <td>{item?.realisasi || "-"}</td>
-                      <td>{item?.skor || "-"}</td>
-                    </tr>
-                  ))}
-                  {!!data?.[type]?.kpis?.length && (
-                    <tr className="bg-bg3 font-semibold">
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                      <td>Total Kinerja</td>
-                      <td>
-                        {data?.[type]?.kpis?.reduce(
-                          (acc, curr) =>
-                            (acc?.skor || 0) + (curr?.skor || 0),
-                          0,
-                        )}
-                      </td>
-                    </tr>
-                  )}
-                </>
-              }
-            />
-          </div>
-        </>
-      ))}
+          </>
+        ))}
     </div>
   );
 }

@@ -216,7 +216,7 @@ export default function PanelPICA({
           ))}
           isLoading={isLoadingScoreCard}
           isNoItem={!dataScoreCard?.kpis?.length}
-          noItemLabel="No KPI"
+          noItemLabel="No PICA"
         />
         {!!dataScoreCard?.kpis?.length && (
           <Pagination
