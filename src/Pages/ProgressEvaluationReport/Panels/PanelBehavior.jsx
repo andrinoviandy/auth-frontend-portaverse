@@ -21,7 +21,7 @@ export default function PanelBehavior({
       enabled: activeTab === "behavior",
     },
     {
-      params: { year },
+      params: { year: year - 1 },
     },
   );
 
