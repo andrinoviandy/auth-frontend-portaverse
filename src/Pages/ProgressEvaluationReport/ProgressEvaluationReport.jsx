@@ -13,7 +13,7 @@ export default function ProgressEvaluationReport() {
   const user = getUserCookie();
   const employeeNumber = user?.employee?.employee_number;
   const [activeTab, setActiveTab] = useState("performance");
-  const currYear = new Date().getFullYear();
+  const currYear = new Date().getFullYear() - 1;
   const [year, setYear] = useState(currYear);
 
   return (

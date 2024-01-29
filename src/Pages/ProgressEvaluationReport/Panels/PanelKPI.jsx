@@ -27,6 +27,11 @@ export default function PanelKPI({ activeTab, year }) {
         job_sharing: res?.job_sharing?.[0]?.detail,
       }),
     },
+    {
+      params: {
+        year,
+      },
+    },
   );
 
   // if (isLoading) {
