@@ -206,6 +206,18 @@ const notifURLLookup = (type, id, data, { bast_course_id }) => {
       }&comment=${data?.comment_id}`,
       action: "redirect",
     },
+    FORUM_QUESTION_POST: {
+      payload: `${
+        import.meta.env.VITE_KMS_URL
+      }/ask-expert?tab=questions&id=${data}`,
+      action: "redirect",
+    },
+    FORUM_QUESTION_COMMENT_POST: {
+      payload: `${
+        import.meta.env.VITE_KMS_URL
+      }/ask-expert?tab=answers&id=${data}`,
+      action: "redirect",
+    },
 
     // BAST NOTIFICATIONS
     "BAST_CREATE_NEED_INSPECTOR_1.1": {
