@@ -248,7 +248,7 @@ export default function LandingPageAuthorized() {
       {
         label: "Smart Plan KPI",
         description: "Tentukan target KPI divisi dan perusahaan",
-        route: "/smart-plan",
+        route: "/smart-plan-v2",
         icon: <p className="font-bold text-primary3">KPI</p>,
       },
       // {
