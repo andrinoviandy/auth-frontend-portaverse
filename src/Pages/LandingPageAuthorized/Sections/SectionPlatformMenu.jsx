@@ -320,7 +320,7 @@ export default function SectionPlatformMenu() {
       {
         label: "Smart Plan KPI",
         description: "Tentukan target KPI divisi dan perusahaan",
-        route: "/smart-plan",
+        route: "/smart-plan-v2",
         icon: (
           <Icon
             icon="carbon:summary-kpi"
