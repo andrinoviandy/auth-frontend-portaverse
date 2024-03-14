@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
@@ -43,6 +44,7 @@ export default function SectionStatistic() {
           remaining: res?.time_end
             ? dayjs().locale("id").to(res.time_end, true)
             : "Unknown",
+          type: res?.detail?.type,
         }),
       },
     );
@@ -57,6 +59,15 @@ export default function SectionStatistic() {
     COURSE_ENDPOINT.GET.totalEmployeeLearningHours(employeeId),
     ["learningHour"],
   );
+
+  const scheduleTypeTranslated =
+    remainingDay?.type === "MONITORING"
+      ? "Pengisian Realisasi"
+      : remainingDay?.type === "PLANNING"
+      ? "Perencanaan"
+      : remainingDay?.type === "ADJUSTING"
+      ? "Penyesuaian"
+      : "";
 
   return (
     <section className="bg-primary3 text-white">
@@ -94,7 +105,7 @@ export default function SectionStatistic() {
           />
 
           <StatCard
-            label={`Batas Waktu Pengisian Realisasi KPI Triwulan ${
+            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${
               remainingDay?.formatted_period || ""
             }`}
             value={
@@ -103,7 +114,7 @@ export default function SectionStatistic() {
                 : "-"
             }
             loading={isLoadingTime}
-            tooltip="Batas waktu pengisian KPI"
+            tooltip={`Batas Waktu ${scheduleTypeTranslated} KPI`}
           />
         </div>
       </div>
