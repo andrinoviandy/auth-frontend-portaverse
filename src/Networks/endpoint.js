@@ -112,6 +112,11 @@ export const SMARTPLAN_ENDPOINT = {
     getFinalScore: "/kpi/final-score",
   },
 };
+export const SMARTPLAN_ENDPOINT_V2 = {
+  GET: {
+    loggedInAdminEmployees: "/v2/hq/logged-in-admin-employees",
+  },
+};
 
 export const COP_ENDPOINT = {
   GET: {

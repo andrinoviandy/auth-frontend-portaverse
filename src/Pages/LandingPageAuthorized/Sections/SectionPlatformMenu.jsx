@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Tabs, clsx } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
 import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
@@ -15,6 +15,7 @@ import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
   SIGNATURE_ENDPOINT,
+  SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
@@ -24,6 +25,21 @@ import hasRole from "../../../Utils/Helpers/hasRole";
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
   const [activeTab, setActiveTab] = useState("KMS");
+  const kpiService = Networks(BASE_PROXY.smartplan);
+
+  const {
+    data: dataAdminEmployees,
+    isLoading: isLoadingAdminEmployees,
+  } = kpiService.query(
+    SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
+    [
+      SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
+      user.employee.employee_number,
+    ],
+  );
+
+  const hasWerks = !!dataAdminEmployees?.companies?.length;
+
   const [menus, setMenus] = useState({
     KMS: [
       {
@@ -402,7 +418,7 @@ export default function SectionPlatformMenu() {
             width={40}
           />
         ),
-        hasAccess: hasRole(["SA"]),
+        hasAccess: hasWerks || hasRole(["SA"]),
         adminOnly: true,
       },
       {
@@ -438,6 +454,25 @@ export default function SectionPlatformMenu() {
       },
     ],
   });
+
+  useEffect(() => {
+    if (hasWerks) {
+      setMenus((prev) => {
+        return {
+          ...prev,
+          TMS: prev.TMS.map((e) => {
+            if (e.label === "Headquarter") {
+              return {
+                ...e,
+                hasAccess: hasWerks || hasRole(["SA"]),
+              };
+            }
+            return e;
+          }),
+        };
+      });
+    }
+  }, [hasWerks]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   const { data: _ } = signatureService.query(
