@@ -348,7 +348,7 @@ export default function SectionPlatformMenu() {
         label: "Manajemen Organisasi",
         description:
           "Pengelolaan struktur organisasi yang ada di perusahaan",
-        route: "/organization-management/lakhar-job-sharing",
+        route: "/organization-management/secondary-assignment",
         icon: (
           <Icon
             icon="clarity:organization-line"
@@ -444,7 +444,7 @@ export default function SectionPlatformMenu() {
     SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
     [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
     {
-      onError: () => {},
+      onError: () => { },
       onSuccess: (res) => {
         const hasAccepted = !!res?.pass;
         if (hasAccepted) {
@@ -525,9 +525,8 @@ export default function SectionPlatformMenu() {
               key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
-              route={`${import.meta.env[`VITE_${activeTab}_URL`]}${
-                menu.route
-              }`}
+              route={`${import.meta.env[`VITE_${activeTab}_URL`]}${menu.route
+                }`}
               icon={menu?.icon}
               // hidden={!menu?.hasAccess}
               disabled={!menu?.hasAccess}
@@ -579,9 +578,9 @@ function MenuCard({
         style={
           disabled || comingSoon
             ? {
-                filter:
-                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
-              }
+              filter:
+                "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+            }
             : {}
         }
       >
