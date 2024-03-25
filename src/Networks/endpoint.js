@@ -332,5 +332,6 @@ export const DEVELOPMENT_PLAN_ENDPOINT = {
   GET: {
     idp: "/tms/idp",
     getCmcSchedule: "/tms/cmc/settings/schedules",
+    verifyAccessOrgManagement: `tms/organization/verify-access`,
   },
 };
