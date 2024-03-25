@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Icon } from "@iconify/react";
 import { Tabs, clsx } from "@mantine/core";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
 import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
@@ -14,6 +15,7 @@ import SignatureManagement from "../../../Components/Assets/Svg/signature-manage
 import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
+  DEVELOPMENT_PLAN_ENDPOINT,
   SIGNATURE_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
@@ -24,465 +26,471 @@ import hasRole from "../../../Utils/Helpers/hasRole";
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
   const [activeTab, setActiveTab] = useState("KMS");
-  const [menus, setMenus] = useState({
-    KMS: [
-      {
-        label: "Social Media",
-        description:
-          "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
-        route: "/home",
-        icon: (
-          <Icon
-            icon="octicon:home-16"
-            color={color.primary3}
-            width={35}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Knowledge Map",
-        description:
-          "Peta pengetahuan dan aktivitas perusahaan yang diselaraskan dengan tujuan perusahaan",
-        route: "/kmap",
-        icon: (
-          <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Master Pegawai",
-        description: "Daftar semua pegawai Pelindo dalam satu modul",
-        route: "/employees",
-        icon: (
-          <Icon
-            icon="mdi:user-box-outline"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Communities of Practice",
-        description:
-          "Komunitas yang menjadi wadah knowledge sharing untuk topik-topik strategis",
-        route: "/communities",
-        icon: (
-          <Icon
-            icon="fluent:people-community-add-20-regular"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Communities of Interest",
-        description:
-          "Komunitas-komunitas bagi para pegawai yang memiliki minat yang sama",
-        route: "/communities?is-coi=1",
-        icon: (
-          <Icon
-            icon="fluent:people-community-16-regular"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Repository",
-        description:
-          "Wadah yang menampung dan mengelola semua dokumen yang berada di Portaverse",
-        route: "/repository",
-        icon: (
-          <img src={Repository} alt="repo" className="w-[26px]" />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Ask the Expert",
-        description:
-          "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
-        route: "/ask-expert",
-        icon: <img src={AoE} alt="repo" className="w-[40px]" />,
-        hasAccess: true,
-      },
-      // {
-      //   label: "Headquarter",
-      //   description:
-      //     "Modul untuk mengelola dan mengatur semua modul KMS secara terpusat",
-      //   route: "/hq/user-mngmt",
-      //   icon: (
-      //     <Icon icon="ri:hq-line" color={color.primary3} width={40} />
-      //   ),
-      //   hasAccess: hasRole(["SA"]),
-      //   adminOnly: true,
-      // },
-    ],
-    LMS: [
-      {
-        label: "Learning Explore",
-        description:
-          "Modul utama untuk melihat semua kursus, peringkat Learning Hours, dan lainnya",
-        route: "/",
-        icon: (
-          <Icon
-            icon="octicon:home-16"
-            color={color.primary3}
-            width={35}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Dashboard Learning",
-        description:
-          "Modul untuk mengelola semua informasi penting terkait akun Anda dalam LMS",
-        route: "/dashboard",
-        icon: (
-          <Icon
-            icon="carbon:user-avatar-filled-alt"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Dashboard Corpu",
-        description:
-          "Modul terpusat untuk mengelola semua aktivitas kursus-kursus Anda",
-        route: "/course-pool/courses",
-        icon: (
-          <Icon
-            icon="clarity:blocks-group-solid"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU"]),
-        adminOnly: true,
-      },
-      {
-        label: "Manajemen Kompetensi",
-        description:
-          "Modul terpusat untuk mengelola semua kompetensi-kompetensi dalam Portaverse",
-        route: "/competency-management",
-        icon: (
-          <Icon
-            icon="fluent:clipboard-task-list-rtl-24-regular"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Manajemen Sertifikat",
-        description:
-          "Modul terpusat untuk mengelola dan membuat sertifikat dalam Portaverse",
-        route: "/certificate-management",
-        icon: (
-          <Icon
-            icon="mingcute:certificate-2-line"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA"]),
-        adminOnly: true,
-      },
-      {
-        label: hasRole(["SBCN"])
-          ? "Subcon Dashboard"
-          : "Manajemen Subcon",
-        description:
-          "Modul terpusat untuk mengelola semua subcon-Subcon di bawah naungan Anda",
-        route: hasRole(["SBCN"])
-          ? `/subcon-management/${user?.subcon?.subcon_id}`
-          : "/subcon-management",
-        icon: (
-          <img
-            src={SubconDashboardOutline}
-            alt="subcon-dashboard"
-            className="w-[40px]"
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA", "SBCN"]),
-        adminOnly: true,
-      },
-      {
-        label: hasRole(["VNDR"])
-          ? "Vendor Dashboard"
-          : "Manajemen Vendor",
-        description:
-          "Modul terpusat untuk mengelola semua vendor yang beraktivitas di dalam Vendor",
-        route: "/vendor-management",
-        icon: (
-          <img
-            src={VendorDashboardOutline}
-            alt="vendor-dashboard"
-            className="w-[40px]"
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
-        adminOnly: true,
-      },
-      {
-        label: "Learning Analytics",
-        description: "Analisis kursus-kursus yang ada di Portaverse",
-        route: "/analytics",
-        icon: (
-          <Icon
-            icon="majesticons:analytics-line"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Manajemen Wallet",
-        description:
-          "Modul terpusat untuk mengelola individual wallet, group wallet, dan corporate wallet dalam Portaverse",
-        route: "/wallet-management",
-        icon: (
-          <Icon
-            icon="fluent:wallet-credit-card-16-regular"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Manajemen Kuis Harian",
-        description:
-          "Modul berisi pengelolaan kuis harian yang ada di Portaverse",
-        route: "/quiz-management",
-        icon: (
-          <Icon
-            icon="material-symbols:quiz-outline"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Manajemen Trainer",
-        description:
-          "Modul berisi trainer internal maupun eksternal yang tergabung pada aplikasi Portaverse",
-        route: "/trainer-management",
-        icon: (
-          <Icon icon="mdi:teach" color={color.primary3} width={40} />
-        ),
-        hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
-        adminOnly: true,
-        comingSoon: true,
-      },
-      {
-        label: "Manajemen Download",
-        description:
-          "Modul untuk mengunduh dan mendapatkan data-data dalam format Excel dari beberapa aktivitas di Portaverse",
-        route: "/download-manager",
-        icon: (
-          <Icon
-            icon="mdi-light:view-module"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["CRPU", "VNDR"]),
-        adminOnly: true,
-      },
-    ],
-    TMS: [
-      {
-        label: "Dashboard",
-        description: "Profil talenta untuk mendukung kinerja pegawai",
-        route: "/dashboard",
-        icon: (
-          <Icon
-            icon="carbon:user-avatar-filled-alt"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Smart Plan KPI",
-        description: "Tentukan target KPI divisi dan perusahaan",
-        route: "/smart-plan-v2",
-        icon: (
-          <Icon
-            icon="carbon:summary-kpi"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Personal Assessment",
-        description:
-          "Nilai para atasan, rekan kerja, serta bawahan untuk membantu mengembangkan kinerja perusahaan",
-        route: "/assessment",
-        icon: (
-          <Icon
-            icon="mingcute:task-2-line"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: true,
-      },
-      {
-        label: "Manajemen Organisasi",
-        description:
-          "Pengelolaan struktur organisasi yang ada di perusahaan",
-        route: "/organization-management/secondary-assignment",
-        icon: (
-          <Icon
-            icon="clarity:organization-line"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Development Plan",
-        description:
-          "Daftar perencanaan pengembangan talenta dalam suatu perusahaan",
-        route: "/development-plan/my-plan-development",
-        icon: (
-          <img
-            src={DevelopmentPlan}
-            alt="development-plan"
-            className="w-[40px]"
-          />
-        ),
-        hasAccess: hasRole(["SA"]),
-        adminOnly: true,
-        comingSoon: true,
-      },
-      {
-        label: "Manajemen Role",
-        description:
-          "Pengelolaan peran setiap pegawai pelindo dalam sistem Portaverse",
-        route: "/role-management",
-        icon: (
-          <Icon
-            icon="tabler:user-cog"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Headquarter",
-        description:
-          "Sistem untuk mengatur semua module yang ada di TMS",
-        route: "/headquarter/assessment/active",
-        icon: (
-          <Icon
-            icon="mdi:view-dashboard-outline"
-            color={color.primary3}
-            width={40}
-          />
-        ),
-        hasAccess: hasRole(["SA"]),
-        adminOnly: true,
-      },
-      {
-        label: "Promotion & Rotation",
-        description:
-          "Pengembangan talenta dalam menunjang aspirasi karir pegawai",
-        route: "/promotion-rotation",
-        icon: (
-          <img
-            src={PromotionRotation}
-            alt="promotion-rotation"
-            className="w-[30px]"
-          />
-        ),
-        hasAccess: hasRole(["SA"]),
-        adminOnly: true,
-        comingSoon: true,
-      },
-      {
-        label: "Performance Report",
-        description:
-          "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
-        route: "/performance-report",
-        icon: (
-          <img
-            src={PerformanceReport}
-            alt="performance-report"
-            className="w-[30px]"
-          />
-        ),
-        hasAccess: hasRole(["SA"]),
-        comingSoon: true,
-      },
-    ],
-  });
+
+  const [hasAccessOM, setHasAccessOM] = useState(false);
+  const [hasAccessSMS, setHasAccessSMS] = useState(false);
+
+  const menus = useMemo(() => {
+    return {
+      KMS: [
+        {
+          label: "Social Media",
+          description:
+            "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
+          route: "/home",
+          icon: (
+            <Icon
+              icon="octicon:home-16"
+              color={color.primary3}
+              width={35}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Knowledge Map",
+          description:
+            "Peta pengetahuan dan aktivitas perusahaan yang diselaraskan dengan tujuan perusahaan",
+          route: "/kmap",
+          icon: (
+            <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Master Pegawai",
+          description:
+            "Daftar semua pegawai Pelindo dalam satu modul",
+          route: "/employees",
+          icon: (
+            <Icon
+              icon="mdi:user-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Communities of Practice",
+          description:
+            "Komunitas yang menjadi wadah knowledge sharing untuk topik-topik strategis",
+          route: "/communities",
+          icon: (
+            <Icon
+              icon="fluent:people-community-add-20-regular"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Communities of Interest",
+          description:
+            "Komunitas-komunitas bagi para pegawai yang memiliki minat yang sama",
+          route: "/communities?is-coi=1",
+          icon: (
+            <Icon
+              icon="fluent:people-community-16-regular"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Repository",
+          description:
+            "Wadah yang menampung dan mengelola semua dokumen yang berada di Portaverse",
+          route: "/repository",
+          icon: (
+            <img src={Repository} alt="repo" className="w-[26px]" />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Ask the Expert",
+          description:
+            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+          route: "/ask-expert",
+          icon: <img src={AoE} alt="repo" className="w-[40px]" />,
+          hasAccess: true,
+        },
+        // {
+        //   label: "Headquarter",
+        //   description:
+        //     "Modul untuk mengelola dan mengatur semua modul KMS secara terpusat",
+        //   route: "/hq/user-mngmt",
+        //   icon: (
+        //     <Icon icon="ri:hq-line" color={color.primary3} width={40} />
+        //   ),
+        //   hasAccess: hasRole(["SA"]),
+        //   adminOnly: true,
+        // },
+      ],
+      LMS: [
+        {
+          label: "Learning Explore",
+          description:
+            "Modul utama untuk melihat semua kursus, peringkat Learning Hours, dan lainnya",
+          route: "/",
+          icon: (
+            <Icon
+              icon="octicon:home-16"
+              color={color.primary3}
+              width={35}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Dashboard Learning",
+          description:
+            "Modul untuk mengelola semua informasi penting terkait akun Anda dalam LMS",
+          route: "/dashboard",
+          icon: (
+            <Icon
+              icon="carbon:user-avatar-filled-alt"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Dashboard Corpu",
+          description:
+            "Modul terpusat untuk mengelola semua aktivitas kursus-kursus Anda",
+          route: "/course-pool/courses",
+          icon: (
+            <Icon
+              icon="clarity:blocks-group-solid"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU"]),
+          adminOnly: true,
+        },
+        {
+          label: "Manajemen Kompetensi",
+          description:
+            "Modul terpusat untuk mengelola semua kompetensi-kompetensi dalam Portaverse",
+          route: "/competency-management",
+          icon: (
+            <Icon
+              icon="fluent:clipboard-task-list-rtl-24-regular"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Manajemen Sertifikat",
+          description:
+            "Modul terpusat untuk mengelola dan membuat sertifikat dalam Portaverse",
+          route: "/certificate-management",
+          icon: (
+            <Icon
+              icon="mingcute:certificate-2-line"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA"]),
+          adminOnly: true,
+        },
+        {
+          label: hasRole(["SBCN"])
+            ? "Subcon Dashboard"
+            : "Manajemen Subcon",
+          description:
+            "Modul terpusat untuk mengelola semua subcon-Subcon di bawah naungan Anda",
+          route: hasRole(["SBCN"])
+            ? `/subcon-management/${user?.subcon?.subcon_id}`
+            : "/subcon-management",
+          icon: (
+            <img
+              src={SubconDashboardOutline}
+              alt="subcon-dashboard"
+              className="w-[40px]"
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA", "SBCN"]),
+          adminOnly: true,
+        },
+        {
+          label: hasRole(["VNDR"])
+            ? "Vendor Dashboard"
+            : "Manajemen Vendor",
+          description:
+            "Modul terpusat untuk mengelola semua vendor yang beraktivitas di dalam Vendor",
+          route: "/vendor-management",
+          icon: (
+            <img
+              src={VendorDashboardOutline}
+              alt="vendor-dashboard"
+              className="w-[40px]"
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
+          adminOnly: true,
+        },
+        {
+          label: "Learning Analytics",
+          description:
+            "Analisis kursus-kursus yang ada di Portaverse",
+          route: "/analytics",
+          icon: (
+            <Icon
+              icon="majesticons:analytics-line"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Manajemen Wallet",
+          description:
+            "Modul terpusat untuk mengelola individual wallet, group wallet, dan corporate wallet dalam Portaverse",
+          route: "/wallet-management",
+          icon: (
+            <Icon
+              icon="fluent:wallet-credit-card-16-regular"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Manajemen Kuis Harian",
+          description:
+            "Modul berisi pengelolaan kuis harian yang ada di Portaverse",
+          route: "/quiz-management",
+          icon: (
+            <Icon
+              icon="material-symbols:quiz-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Manajemen Trainer",
+          description:
+            "Modul berisi trainer internal maupun eksternal yang tergabung pada aplikasi Portaverse",
+          route: "/trainer-management",
+          icon: (
+            <Icon
+              icon="mdi:teach"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "SA", "VNDR"]),
+          adminOnly: true,
+          comingSoon: true,
+        },
+        {
+          label: "Manajemen Download",
+          description:
+            "Modul untuk mengunduh dan mendapatkan data-data dalam format Excel dari beberapa aktivitas di Portaverse",
+          route: "/download-manager",
+          icon: (
+            <Icon
+              icon="mdi-light:view-module"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CRPU", "VNDR"]),
+          adminOnly: true,
+        },
+        {
+          label: "Manajemen Tanda Tangan",
+          description:
+            "Modul terpusat untuk mengelola dan membuat tanda tangan elektronik",
+          route: "/signature-management",
+          icon: (
+            <img
+              src={SignatureManagement}
+              alt="signature-mngmt"
+              className="w-[40px]"
+            />
+          ),
+          hasAccess: hasAccessSMS,
+          adminOnly: true,
+          state: { fromDashboard: true },
+        },
+      ],
+      TMS: [
+        {
+          label: "Dashboard",
+          description:
+            "Profil talenta untuk mendukung kinerja pegawai",
+          route: "/dashboard",
+          icon: (
+            <Icon
+              icon="carbon:user-avatar-filled-alt"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Smart Plan KPI",
+          description: "Tentukan target KPI divisi dan perusahaan",
+          route: "/smart-plan-v2",
+          icon: (
+            <Icon
+              icon="carbon:summary-kpi"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Personal Assessment",
+          description:
+            "Nilai para atasan, rekan kerja, serta bawahan untuk membantu mengembangkan kinerja perusahaan",
+          route: "/assessment",
+          icon: (
+            <Icon
+              icon="mingcute:task-2-line"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
+          label: "Manajemen Organisasi",
+          description:
+            "Pengelolaan struktur organisasi yang ada di perusahaan",
+          route: "/organization-management/secondary-assignment",
+          icon: (
+            <Icon
+              icon="clarity:organization-line"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasAccessOM,
+          adminOnly: true,
+        },
+        {
+          label: "Development Plan",
+          description:
+            "Daftar perencanaan pengembangan talenta dalam suatu perusahaan",
+          route: "/development-plan/my-plan-development",
+          icon: (
+            <img
+              src={DevelopmentPlan}
+              alt="development-plan"
+              className="w-[40px]"
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+          comingSoon: true,
+        },
+        {
+          label: "Manajemen Role",
+          description:
+            "Pengelolaan peran setiap pegawai pelindo dalam sistem Portaverse",
+          route: "/role-management",
+          icon: (
+            <Icon
+              icon="tabler:user-cog"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Headquarter",
+          description:
+            "Sistem untuk mengatur semua module yang ada di TMS",
+          route: "/headquarter/assessment/active",
+          icon: (
+            <Icon
+              icon="mdi:view-dashboard-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Promotion & Rotation",
+          description:
+            "Pengembangan talenta dalam menunjang aspirasi karir pegawai",
+          route: "/promotion-rotation",
+          icon: (
+            <img
+              src={PromotionRotation}
+              alt="promotion-rotation"
+              className="w-[30px]"
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+          comingSoon: true,
+        },
+        {
+          label: "Performance Report",
+          description:
+            "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
+          route: "/performance-report",
+          icon: (
+            <img
+              src={PerformanceReport}
+              alt="performance-report"
+              className="w-[30px]"
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          comingSoon: true,
+        },
+      ],
+    };
+  }, [hasAccessOM, hasAccessSMS]);
 
   const signatureService = Networks(BASE_PROXY.signature);
-  const { data: _ } = signatureService.query(
+  signatureService.query(
     SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
     [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
     {
-      onError: () => { },
+      onError: () => {},
       onSuccess: (res) => {
         const hasAccepted = !!res?.pass;
-        if (hasAccepted) {
-          setMenus((prev) => {
-            if (
-              prev.LMS.filter((e) =>
-                e?.route?.includes("signature-management"),
-              ).length
-            ) {
-              return { ...prev };
-            }
-            const newMenus = {
-              ...prev,
-              LMS: [
-                ...prev.LMS.filter(
-                  (e) => !e?.route?.includes("signature-management"),
-                ),
-                {
-                  label: "Manajemen Tanda Tangan",
-                  description:
-                    "Modul terpusat untuk mengelola dan membuat tanda tangan elektronik",
-                  route: "/signature-management",
-                  icon: (
-                    <img
-                      src={SignatureManagement}
-                      alt="signature-mngmt"
-                      className="w-[40px]"
-                    />
-                  ),
-                  hasAccess: true,
-                  adminOnly: true,
-                  state: { fromDashboard: true },
-                },
-              ],
-            };
-            return newMenus;
-          });
-        }
+        setHasAccessSMS(hasAccepted);
+      },
+    },
+  );
+
+  const dpService = Networks(BASE_PROXY.developmentPlan);
+  dpService.query(
+    DEVELOPMENT_PLAN_ENDPOINT.GET.verifyAccessOrgManagement,
+    [DEVELOPMENT_PLAN_ENDPOINT.GET.verifyAccessOrgManagement],
+    {
+      onSuccess: (res) => {
+        const hasAccepted = !!res?.has_access;
+        setHasAccessOM(hasAccepted);
       },
     },
   );
@@ -525,8 +533,9 @@ export default function SectionPlatformMenu() {
               key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
-              route={`${import.meta.env[`VITE_${activeTab}_URL`]}${menu.route
-                }`}
+              route={`${import.meta.env[`VITE_${activeTab}_URL`]}${
+                menu.route
+              }`}
               icon={menu?.icon}
               // hidden={!menu?.hasAccess}
               disabled={!menu?.hasAccess}
@@ -578,9 +587,9 @@ function MenuCard({
         style={
           disabled || comingSoon
             ? {
-              filter:
-                "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
-            }
+                filter:
+                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+              }
             : {}
         }
       >

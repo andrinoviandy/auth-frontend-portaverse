@@ -326,5 +326,6 @@ export const ASSESSMENT_ENDPOINT = {
 export const DEVELOPMENT_PLAN_ENDPOINT = {
   GET: {
     idp: "/tms/idp",
+    verifyAccessOrgManagement: `tms/organization/verify-access`,
   },
 };
