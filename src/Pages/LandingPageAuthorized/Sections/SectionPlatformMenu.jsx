@@ -395,7 +395,7 @@ export default function SectionPlatformMenu() {
           label: "Manajemen Organisasi",
           description:
             "Pengelolaan struktur organisasi yang ada di perusahaan",
-          route: "/organization-management/secondary-assignment",
+          route: "/organization-management/organization-master",
           icon: (
             <Icon
               icon="clarity:organization-line"
