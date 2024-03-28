@@ -13,6 +13,7 @@ import { color } from "../../../Utils/Constants";
 import formatLearningHours from "../../../Utils/Helpers/formatLearningHours";
 import formatRupiah from "../../../Utils/Helpers/formatRupiah";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import toFixed2WithoutRound from "../../../Utils/Helpers/toFixed2WithoutRound";
 
 export default function SectionStatistic() {
   const { employee_id: employeeId } = getUserCookie().employee;
@@ -26,7 +27,7 @@ export default function SectionStatistic() {
         select: (res) => ({
           year: res?.detail?.year,
           formattedPeriod: res?.detail?.formatted_period,
-          score: (res?.score || 0).toFixed(2),
+          score: toFixed2WithoutRound(res?.score || 0),
         }),
       },
     );
