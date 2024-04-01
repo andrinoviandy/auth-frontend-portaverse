@@ -112,6 +112,11 @@ export const SMARTPLAN_ENDPOINT = {
     getFinalScore: "/kpi/final-score",
   },
 };
+export const SMARTPLAN_ENDPOINT_V2 = {
+  GET: {
+    loggedInAdminEmployees: "/v2/hq/logged-in-admin-employees",
+  },
+};
 
 export const COP_ENDPOINT = {
   GET: {
@@ -326,5 +331,7 @@ export const ASSESSMENT_ENDPOINT = {
 export const DEVELOPMENT_PLAN_ENDPOINT = {
   GET: {
     idp: "/tms/idp",
+    getCmcSchedule: "/tms/cmc/settings/schedules",
+    verifyAccessOrgManagement: `tms/organization/verify-access`,
   },
 };

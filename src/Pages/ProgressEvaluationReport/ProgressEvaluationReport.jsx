@@ -5,7 +5,6 @@ import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 import { MANTINE_TAB_STYLES } from "../../Utils/Constants";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import PanelBehavior from "./Panels/PanelBehavior";
-import PanelIDP from "./Panels/PanelIDP";
 import PanelKPI from "./Panels/PanelKPI";
 import PanelPICA from "./Panels/PanelPICA";
 import PanelPerformance from "./Panels/PanelPerformance";
@@ -14,7 +13,7 @@ export default function ProgressEvaluationReport() {
   const user = getUserCookie();
   const employeeNumber = user?.employee?.employee_number;
   const [activeTab, setActiveTab] = useState("performance");
-  const currYear = new Date().getFullYear();
+  const currYear = new Date().getFullYear() - 1;
   const [year, setYear] = useState(currYear);
 
   return (
@@ -96,13 +95,13 @@ export default function ProgressEvaluationReport() {
             />
           </Tabs.Panel>
 
-          <Tabs.Panel value="idp" pt="xs">
+          {/* <Tabs.Panel value="idp" pt="xs">
             <PanelIDP
               activeTab={activeTab}
               employeeNumber={employeeNumber}
               year={year}
             />
-          </Tabs.Panel>
+          </Tabs.Panel> */}
         </Tabs>
       </section>
     </div>
