@@ -46,29 +46,64 @@ code {
   right: 10px;
 }
 
-/* width */
-/* ::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
+.scroll-style::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* width of the entire scrollbar */
 }
 
-/* Track */
-/* ::-webkit-scrollbar-track {
-  border-radius: 100vh;
-  background: #edf2f7;
-} */
+.scroll-style::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
 
-/* Handle */
-/* ::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 100vh;
-  border: 3px solid #edf2f7;
-} */
+.scroll-style::-webkit-scrollbar-thumb {
+  background-color: #f2f4f6; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
 
-/* Handle on hover */
-/* ::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
-} */
+.scroll-style::-webkit-scrollbar-thumb:hover {
+  background: #d9fbfb;
+}
+
+::-webkit-search-cancel-button {
+  position: relative;
+  right: 10px;
+}
+
+.scroll-style-3::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* width of the entire scrollbar */
+}
+
+.scroll-style-3::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
+
+.scroll-style-3::-webkit-scrollbar-thumb {
+  background-color: #dde1e6; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
+
+.scroll-style-3::-webkit-scrollbar-thumb:hover {
+  background: #c4c7ca;
+}
+
+.scroll-style-4::-webkit-scrollbar {
+  width: 6px; /* width of the entire scrollbar */
+}
+
+.scroll-style-4::-webkit-scrollbar-track {
+  background: #f2f4f8; /* color of the tracking area */
+  margin-right: 5px;
+  border-radius: 20px;
+}
+
+.scroll-style-4::-webkit-scrollbar-thumb {
+  background-color: #016db2; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
 
 input:focus,
 select:focus,

@@ -85,6 +85,12 @@ export default ({ mode }) => {
           rewrite: (path) =>
             path.replace(/^\/api\/development-plan\/v1/, ""),
         },
+        "/api/cms/v1": {
+          target: process.env.VITE_API_CMS_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api\/cms\/v1/, ""),
+        },
       },
     },
   });
