@@ -61,7 +61,7 @@ export default function NewFooter() {
             />
             <SocmedItem
               href="https://twitter.com/indonesiaport"
-              icon="mdi:twitter"
+              icon="ri:twitter-x-fill"
               text="Twitter"
             />
             <SocmedItem
