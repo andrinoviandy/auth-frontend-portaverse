@@ -1438,6 +1438,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dropzone@npm:^5.8.3":
+  version: 5.10.5
+  resolution: "@mantine/dropzone@npm:5.10.5"
+  dependencies:
+    "@mantine/utils": 5.10.5
+    react-dropzone: 14.2.3
+  peerDependencies:
+    "@mantine/core": 5.10.5
+    "@mantine/hooks": 5.10.5
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 549cd9c0f2f4351f0cebe7936d5dee6c3c0984a99524b6ffa8e72170712db2746449b96834e50aa946e649afcc823a3563d51bfbf60ca3d9a27d9cf64b4f59c9
+  languageName: node
+  linkType: hard
+
 "@mantine/form@npm:^5.8.3":
   version: 5.8.3
   resolution: "@mantine/form@npm:5.8.3"
@@ -2223,6 +2238,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"attr-accept@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "attr-accept@npm:2.2.2"
+  checksum: 496f7249354ab53e522510c1dc8f67a1887382187adde4dc205507d2f014836a247073b05e9d9ea51e2e9c7f71b0d2aa21730af80efa9af2d68303e5f0565c4d
+  languageName: node
+  linkType: hard
+
 "auth-frontend@workspace:.":
   version: 0.0.0-use.local
   resolution: "auth-frontend@workspace:."
@@ -2235,6 +2257,7 @@ __metadata:
     "@iconify/react": ^3.2.2
     "@mantine/core": ^5.8.3
     "@mantine/dates": ^5.8.3
+    "@mantine/dropzone": ^5.8.3
     "@mantine/form": ^5.8.3
     "@mantine/hooks": ^5.8.3
     "@reduxjs/toolkit": ^1.8.2
@@ -3887,6 +3910,15 @@ __metadata:
   dependencies:
     flat-cache: ^3.0.4
   checksum: f49701feaa6314c8127c3c2f6173cfefff17612f5ed2daaafc6da13b5c91fd43e3b2a58fd0d63f9f94478a501b167615931e7200e31485e320f74a33885a9c74
+  languageName: node
+  linkType: hard
+
+"file-selector@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "file-selector@npm:0.6.0"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 7d051b6e5d793f3c6e2ab287ba5e7c2c6a0971bccc9d56e044c8047ba483e18f60fc0b5771c951dc707c0d15f4f36ccb4f1f1aaf385d21ec8f7700dadf8325ba
   languageName: node
   linkType: hard
 
@@ -6239,6 +6271,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dropzone@npm:14.2.3":
+  version: 14.2.3
+  resolution: "react-dropzone@npm:14.2.3"
+  dependencies:
+    attr-accept: ^2.2.2
+    file-selector: ^0.6.0
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ">= 16.8 || 18.0.0"
+  checksum: 174b744d5ca898cf3d84ec1aeb6cef5211c446697e45dc8ece8287a03d291f8d07253206d5a1247ef156fd385d65e7de666d4d5c2986020b8543b8f2434e8b40
+  languageName: node
+  linkType: hard
+
 "react-html-parser@npm:^2.0.2":
   version: 2.0.2
   resolution: "react-html-parser@npm:2.0.2"
@@ -7448,6 +7493,13 @@ __metadata:
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.4.0":
+  version: 2.6.2
+  resolution: "tslib@npm:2.6.2"
+  checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
   languageName: node
   linkType: hard
 

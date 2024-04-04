@@ -1,4 +1,5 @@
 export const BASE_PROXY = {
+  cms: "/api/cms/v1",
   repository: "/api/repository/v1",
   groups: "/api/groups/v1",
   hq: "/api/hq/v1",
@@ -333,5 +334,11 @@ export const DEVELOPMENT_PLAN_ENDPOINT = {
     idp: "/tms/idp",
     getCmcSchedule: "/tms/cmc/settings/schedules",
     verifyAccessOrgManagement: `tms/organization/verify-access`,
+  },
+};
+
+export const CMS_ENDPOINT = {
+  GET: {
+    home: "/lms/home",
   },
 };

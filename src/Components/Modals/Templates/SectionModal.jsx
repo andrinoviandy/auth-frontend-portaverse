@@ -47,8 +47,7 @@ export default function SectionModalTemplate({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel
-                style={{ width }}
-                className={`transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all ${classNames.modal}`}
+                className={`w-[${width}] transform overflow-hidden rounded-md bg-white text-left align-middle shadow-xl transition-all ${classNames.modal}`}
               >
                 <div className="flex items-center justify-between p-5 border-b">
                   <Dialog.Title
@@ -71,8 +70,7 @@ export default function SectionModalTemplate({
                   )}
                 </div>
                 <div
-                  style={{ maxHeight: height }}
-                  className={`${
+                  className={`max-h-[${height}] ${
                     !isNotOverflow
                       ? " overflow-y-auto scroll-smooth"
                       : ""
