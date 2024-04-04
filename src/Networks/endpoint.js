@@ -1,4 +1,5 @@
 export const BASE_PROXY = {
+  cms: "/api/cms/v1",
   repository: "/api/repository/v1",
   groups: "/api/groups/v1",
   hq: "/api/hq/v1",
@@ -110,6 +111,11 @@ export const SMARTPLAN_ENDPOINT = {
     kpi: "/kpi/list",
     qualFeedback: "/pica/qual-idp",
     getFinalScore: "/kpi/final-score",
+  },
+};
+export const SMARTPLAN_ENDPOINT_V2 = {
+  GET: {
+    loggedInAdminEmployees: "/v2/hq/logged-in-admin-employees",
   },
 };
 
@@ -326,6 +332,13 @@ export const ASSESSMENT_ENDPOINT = {
 export const DEVELOPMENT_PLAN_ENDPOINT = {
   GET: {
     idp: "/tms/idp",
+    getCmcSchedule: "/tms/cmc/settings/schedules",
     verifyAccessOrgManagement: `tms/organization/verify-access`,
+  },
+};
+
+export const CMS_ENDPOINT = {
+  GET: {
+    home: "/lms/home",
   },
 };

@@ -21,7 +21,6 @@ const timelineType = {
 
 export default function PanelPerformance({ activeTab, year }) {
   const [step, setStep] = useState(1); // 1, 2, 3c
-  const lastYear = new Date().getFullYear() - 1;
 
   const kpiService = Networks(BASE_PROXY.smartplan);
 
@@ -29,7 +28,7 @@ export default function PanelPerformance({ activeTab, year }) {
 
   const params = {
     employee_number: user.employee.employee_number,
-    year: lastYear,
+    year,
     periode: "TW4",
     with_assessment_score: 1,
   };
@@ -66,7 +65,8 @@ export default function PanelPerformance({ activeTab, year }) {
       aspect:
         "Penilaian Kinerja Individu Berbasis Penilaian Perilaku",
       weight: assessmentWeight,
-      score: dataScore?.assessment_score?.skor_konversi || 0,
+      score:
+        dataScore?.assessment_score?.skor_konversi?.toFixed(2) || 0,
       work_score: (
         ((dataScore?.assessment_score?.skor_konversi || 0) *
           assessmentWeight) /

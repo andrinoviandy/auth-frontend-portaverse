@@ -16,6 +16,8 @@ export const slice = createSlice({
     // start daily quiz
     quizStatus: {},
     // end daily quiz
+
+    socialMediaProfile: {},
   },
 
   reducers: {
@@ -43,10 +45,17 @@ export const slice = createSlice({
       state.quizStatus = temp;
     },
     // end daily quiz
+
+    setSocialMediaProfile: (state, action) => {
+      state.socialMediaProfile = action.payload;
+    },
   },
 });
 
-export const { setUnreadNotification, setDailyQuizStatus } =
-  slice.actions;
+export const {
+  setUnreadNotification,
+  setDailyQuizStatus,
+  setSocialMediaProfile,
+} = slice.actions;
 
 export default slice.reducer;

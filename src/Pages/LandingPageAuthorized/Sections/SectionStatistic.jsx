@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
@@ -12,6 +13,7 @@ import { color } from "../../../Utils/Constants";
 import formatLearningHours from "../../../Utils/Helpers/formatLearningHours";
 import formatRupiah from "../../../Utils/Helpers/formatRupiah";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import toFixed2WithoutRound from "../../../Utils/Helpers/toFixed2WithoutRound";
 
 export default function SectionStatistic() {
   const { employee_id: employeeId } = getUserCookie().employee;
@@ -23,8 +25,9 @@ export default function SectionStatistic() {
       ["kpiScore"],
       {
         select: (res) => ({
+          year: res?.detail?.year,
           formattedPeriod: res?.detail?.formatted_period,
-          score: (res?.score || 0).toFixed(2),
+          score: toFixed2WithoutRound(res?.score || 0),
         }),
       },
     );
@@ -42,6 +45,7 @@ export default function SectionStatistic() {
           remaining: res?.time_end
             ? dayjs().locale("id").to(res.time_end, true)
             : "Unknown",
+          type: res?.detail?.type,
         }),
       },
     );
@@ -57,6 +61,15 @@ export default function SectionStatistic() {
     ["learningHour"],
   );
 
+  const scheduleTypeTranslated =
+    remainingDay?.type === "MONITORING"
+      ? "Pengisian Realisasi"
+      : remainingDay?.type === "PLANNING"
+      ? "Perencanaan"
+      : remainingDay?.type === "ADJUSTING"
+      ? "Penyesuaian"
+      : "";
+
   return (
     <section className="bg-primary3 text-white">
       <div className="flex flex-col gap-8 py-10 px-[5rem]">
@@ -68,9 +81,7 @@ export default function SectionStatistic() {
         </div>
         <div className="grid grid-cols-4 justify-center items-start gap-4 text-text1">
           <StatCard
-            label={`Nilai Kinerja Individu ${
-              kpiScore?.formattedPeriod || ""
-            }`}
+            label={`Nilai Kinerja Individu ${kpiScore?.year || ""}`}
             value={kpiScore?.score || "-"}
             loading={isLoadingKPI}
             tooltip="Total Skor KPI Anda saat ini"
@@ -95,7 +106,7 @@ export default function SectionStatistic() {
           />
 
           <StatCard
-            label={`Batas Waktu Pengisian Realisasi KPI Triwulan ${
+            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${
               remainingDay?.formatted_period || ""
             }`}
             value={
@@ -104,7 +115,7 @@ export default function SectionStatistic() {
                 : "-"
             }
             loading={isLoadingTime}
-            tooltip="Batas waktu pengisian KPI"
+            tooltip={`Batas Waktu ${scheduleTypeTranslated} KPI`}
           />
         </div>
       </div>
@@ -114,7 +125,7 @@ export default function SectionStatistic() {
 
 function StatCard({ label, value, tooltip, loading }) {
   return (
-    <div className="flex flex-col gap-1 items-center w-full p-3 rounded-lg border bg-white">
+    <div className="flex flex-col gap-1 items-center justify-center max-h-[126px] h-full w-full p-3 rounded-lg border bg-white">
       <div className="flex gap-2">
         <p className="font-semibold text-center">{label}</p>
         <div className="mt-0.5">

@@ -8,6 +8,9 @@ const MODAL_IDS = {
 
   // LMS Modals
   LMS: {
+    GENERAL: {
+      CMS_EDIT_FORM: "home-cms-edit-form",
+    },
     DASHBOARD: {
       DECLINE_EXT_COURSE_CLAIM: "dashboard-decline-ext-course-claim",
     },

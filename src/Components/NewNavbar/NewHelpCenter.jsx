@@ -14,9 +14,7 @@ function HelpCenter() {
     fitur Portaverse`,
       icon: "fluent:chat-bubbles-question-16-filled",
       handleClick: () => {
-        openInNewTab(
-          "https://portaverse.atlassian.net/servicedesk/customer/portal/3",
-        );
+        openInNewTab("https://docs.portaverse.co.id");
       },
     },
     {
@@ -25,9 +23,7 @@ function HelpCenter() {
       lapor kami`,
       icon: "jam:triangle-danger-f",
       handleClick: () => {
-        openInNewTab(
-          "https://portaverse.atlassian.net/servicedesk/customer/portal/3/group/-1",
-        );
+        openInNewTab("https://pelindo.service-now.com");
       },
     },
     {
@@ -37,7 +33,7 @@ function HelpCenter() {
       icon: "fluent:call-24-filled",
       handleClick: () => {
         openInNewTab(
-          "https://api.whatsapp.com/send/?phone=%2B6281911111375&text&type=phone_number&app_absent=0",
+          "https://api.whatsapp.com/send/?phone=%2B628113117698&text&type=phone_number&app_absent=0",
         );
       },
     },

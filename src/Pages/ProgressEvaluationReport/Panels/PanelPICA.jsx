@@ -47,7 +47,7 @@ export default function PanelPICA({
   const { data: dataScoreCard, isLoading: isLoadingScoreCard } =
     smartplan.query(
       SMARTPLAN_ENDPOINT.GET.kpi,
-      ["kpi", pageScoreCard],
+      ["kpi", pageScoreCard, year],
       {
         enabled: activeTab === "pica",
       },
@@ -64,7 +64,7 @@ export default function PanelPICA({
 
   smartplan.query(
     SMARTPLAN_ENDPOINT.GET.kpi,
-    ["kpiInput"],
+    ["kpiInput", year],
     {
       enabled: activeTab === "pica",
       onSuccess: (res) =>
@@ -90,7 +90,7 @@ export default function PanelPICA({
 
   const { data: dataPica } = smartplan.query(
     SMARTPLAN_ENDPOINT.GET.pica,
-    ["pica"],
+    ["pica", year],
     {
       enabled: activeTab === "pica",
       onSuccess: (res) => {
@@ -118,6 +118,7 @@ export default function PanelPICA({
         page: 1,
         size: 9999,
         "employee-number": employeeNumber,
+        "period-code": periodCode,
         year,
       },
     },
@@ -125,7 +126,7 @@ export default function PanelPICA({
 
   const { isLoading: isLoadingFeedback } = smartplan.query(
     SMARTPLAN_ENDPOINT.GET.qualFeedback,
-    ["qualFeedback"],
+    ["qualFeedback", year],
     {
       enabled: activeTab === "pica",
       onSuccess: (res) => {
@@ -216,7 +217,7 @@ export default function PanelPICA({
           ))}
           isLoading={isLoadingScoreCard}
           isNoItem={!dataScoreCard?.kpis?.length}
-          noItemLabel="No KPI"
+          noItemLabel="No PICA"
         />
         {!!dataScoreCard?.kpis?.length && (
           <Pagination
@@ -354,9 +355,7 @@ function RowItemKPI({ data, counter }) {
         </a>
       </td>
       <td className="bg-white ">
-        <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center mx-3 ${classNames.wrapper} bg-primary4`}
-        >
+        <div className="w-8 h-8 rounded-full flex items-center justify-center mx-3 bg-primary4">
           <p className="mx-[16px] text-white">{data?.satuan}</p>
         </div>
       </td>

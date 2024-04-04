@@ -17,6 +17,7 @@ import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
   SIGNATURE_ENDPOINT,
+  SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
@@ -29,6 +30,22 @@ export default function SectionPlatformMenu() {
 
   const [hasAccessOM, setHasAccessOM] = useState(false);
   const [hasAccessSMS, setHasAccessSMS] = useState(false);
+  const [hasWerks, setHasWerks] = useState(false);
+
+  const kpiService = Networks(BASE_PROXY.smartplan);
+
+  kpiService.query(
+    SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
+    [
+      SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
+      user.employee.employee_number,
+    ],
+    {
+      onSuccess: (res) => {
+        setHasWerks(!!res?.companies?.length);
+      },
+    },
+  );
 
   const menus = useMemo(() => {
     return {
@@ -378,7 +395,7 @@ export default function SectionPlatformMenu() {
           label: "Manajemen Organisasi",
           description:
             "Pengelolaan struktur organisasi yang ada di perusahaan",
-          route: "/organization-management/secondary-assignment",
+          route: "/organization-management/organization-master",
           icon: (
             <Icon
               icon="clarity:organization-line"
@@ -432,7 +449,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["SA"]),
+          hasAccess: hasWerks || hasRole(["SA"]),
           adminOnly: true,
         },
         {
@@ -468,7 +485,7 @@ export default function SectionPlatformMenu() {
         },
       ],
     };
-  }, [hasAccessOM, hasAccessSMS]);
+  }, [hasAccessOM, hasAccessSMS, hasWerks]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   signatureService.query(
