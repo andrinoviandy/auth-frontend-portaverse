@@ -265,8 +265,15 @@ export default function PanelPerformance({ activeTab, year }) {
               value={score}
             />
             <TextNumberCard
-              title="RATING PENILAIAN PEKERJA"
-              value={finalScoreProp?.label}
+              title={`${
+                !dataScore?.static_score?.calibration
+                  ? "RATING PENILAIAN PEKERJA"
+                  : "Rating Penilaian Pekerja Hasil Kalibrasi"
+              }`}
+              value={
+                dataScore?.static_score?.calibration ||
+                finalScoreProp?.label
+              }
               styles={{
                 color: finalScoreProp?.color,
               }}
