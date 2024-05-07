@@ -261,14 +261,14 @@ export default function PanelPerformance({ activeTab, year }) {
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <div className="grid grid-cols-2 gap-5 w-full">
             <TextNumberCard
-              title={`NILAI AKHIR KINERJA INDIVIDU ${year}`}
+              title="NILAI KINERJA INDIVIDU BERBASIS KPI & ASSESSMENT"
               value={score}
             />
             <TextNumberCard
               title={`${
                 !dataScore?.static_score?.calibration
                   ? "RATING PENILAIAN PEKERJA"
-                  : "Rating Penilaian Pekerja Hasil Kalibrasi"
+                  : "RATING PENILAIAN PEKERJA HASIL KALIBRASI"
               }`}
               value={
                 dataScore?.static_score?.calibration ||
@@ -503,26 +503,27 @@ export default function PanelPerformance({ activeTab, year }) {
         }}
       >
         {/* 1st Slide */}
-        <section
+        {/* No Animation */}
+        {/* <section
           style={{
             color: finalScoreProp?.colorDark,
           }}
           className={clsx(
-            "absolute flex flex-col items-center gap-5 anim-slide-1",
+            "absolute flex flex-col items-center gap-5 -anim-slide-1",
           )}
         >
           <div className="flex items-center justify-center bg-primary5 h-[200px] w-[200px] rounded-full border-[12px] border-primary4">
-            <p className="text-5xl font-semibold font-tertiary anim-slide-1-fadein">
+            <p className="text-5xl font-semibold font-tertiary -anim-slide-1-fadein">
               {score}
             </p>
           </div>
-          <p className="text-3xl font-semibold anim-slide-1-fadein">
+          <p className="text-3xl font-semibold -anim-slide-1-fadein">
             {finalScoreProp.label}
           </p>
-        </section>
+        </section> */}
 
         {/* 2nd Slide */}
-        <section className="absolute flex flex-col items-center gap-5 anim-slide-2">
+        <section className="absolute flex flex-col items-center gap-5 -anim-slide-2">
           <div className="flex gap-5 items-center">
             <RingProgress
               size={225}
@@ -583,7 +584,7 @@ export default function PanelPerformance({ activeTab, year }) {
           <Button
             variant="outline"
             size="md"
-            className="text-white border-white anim-slide-2-fadein"
+            className="text-white border-white -anim-slide-2-fadein"
             onClick={() => setStep(3)}
           >
             Lihat Detail
