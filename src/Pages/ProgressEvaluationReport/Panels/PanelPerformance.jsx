@@ -280,15 +280,8 @@ export default function PanelPerformance({
               value={score}
             />
             <TextNumberCard
-              title={`${
-                !dataScore?.static_score?.calibration
-                  ? "RATING PENILAIAN PEKERJA"
-                  : "RATING PENILAIAN PEKERJA HASIL KALIBRASI"
-              }`}
-              value={
-                dataScore?.static_score?.calibration ||
-                finalScoreProp?.label
-              }
+              title="RATING PENILAIAN PEKERJA"
+              value={finalScoreProp?.label}
               styles={{
                 color: finalScoreProp?.color,
               }}
