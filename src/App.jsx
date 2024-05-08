@@ -84,6 +84,10 @@ function App() {
               path="/progress-eval-report"
               element={<ProgressEvaluationReport />}
             />
+            <Route
+              path="/progress-eval-report/:employeeId"
+              element={<ProgressEvaluationReport />}
+            />
           </Route>
         </Route>
 
