@@ -19,7 +19,11 @@ const timelineType = {
   job_sharing: { label: "Job Sharing", color: "#F5BB5C" },
 };
 
-export default function PanelPerformance({ activeTab, year }) {
+export default function PanelPerformance({
+  activeTab,
+  year,
+  employeeNumber,
+}) {
   const [step, setStep] = useState(1); // 1, 2, 3c
 
   const kpiService = Networks(BASE_PROXY.smartplan);
@@ -27,7 +31,7 @@ export default function PanelPerformance({ activeTab, year }) {
   const user = getUserCookie();
 
   const params = {
-    employee_number: user.employee.employee_number,
+    employee_number: employeeNumber || user.employee.employee_number,
     year,
     periode: "TW4",
     with_assessment_score: 1,
