@@ -418,7 +418,8 @@ export default function SectionPlatformMenu() {
               className="w-[40px]"
             />
           ),
-          hasAccess: true,
+          hasAccess: false,
+          comingSoon: true,
         },
         {
           label: "Manajemen Role",
@@ -462,7 +463,8 @@ export default function SectionPlatformMenu() {
               className="w-[30px]"
             />
           ),
-          hasAccess: true,
+          hasAccess: false,
+          comingSoon: true,
         },
         {
           label: "Performance Report",
@@ -477,7 +479,8 @@ export default function SectionPlatformMenu() {
               className="w-[30px]"
             />
           ),
-          hasAccess: true,
+          hasAccess: false,
+          comingSoon: true,
         },
       ],
     };

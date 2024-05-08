@@ -1,5 +1,6 @@
 import { Tabs } from "@mantine/core";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import YearlyPicker from "../../Components/CustomInputs/DateDropdown/YearlyPicker";
 import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 import { MANTINE_TAB_STYLES } from "../../Utils/Constants";
@@ -10,8 +11,13 @@ import PanelPICA from "./Panels/PanelPICA";
 import PanelPerformance from "./Panels/PanelPerformance";
 
 export default function ProgressEvaluationReport() {
+  const { employeeId } = useParams();
+
+  const employeeIdParams = employeeId ? atob(employeeId) : null;
+
   const user = getUserCookie();
-  const employeeNumber = user?.employee?.employee_number;
+  const employeeNumber =
+    employeeIdParams || user?.employee?.employee_number;
   const [activeTab, setActiveTab] = useState("performance");
   const currYear = new Date().getFullYear() - 1;
   const [year, setYear] = useState(currYear);
@@ -72,11 +78,19 @@ export default function ProgressEvaluationReport() {
           </Tabs.List>
 
           <Tabs.Panel value="performance" pt="xs">
-            <PanelPerformance activeTab={activeTab} year={year} />
+            <PanelPerformance
+              activeTab={activeTab}
+              year={year}
+              employeeNumber={employeeNumber}
+            />
           </Tabs.Panel>
 
           <Tabs.Panel value="kpi" pt="xs">
-            <PanelKPI activeTab={activeTab} year={year} />
+            <PanelKPI
+              activeTab={activeTab}
+              year={year}
+              employeeNumber={employeeNumber}
+            />
           </Tabs.Panel>
 
           <Tabs.Panel value="behavior" pt="xs">
