@@ -43,7 +43,7 @@ export default function SectionStatistic() {
             ? dayjs(res?.time_end).format("D MMMM YYYY")
             : "-",
           remaining: res?.time_end
-            ? dayjs().locale("id").to(res.time_end, true)
+            ? dayjs().locale("id").to(new Date(res.time_end), true)
             : "Unknown",
           type: res?.detail?.type,
         }),
@@ -68,6 +68,8 @@ export default function SectionStatistic() {
       ? "Perencanaan"
       : remainingDay?.type === "ADJUSTING"
       ? "Penyesuaian"
+      : remainingDay?.type === "SPARE"
+      ? "Luang"
       : "";
 
   return (
