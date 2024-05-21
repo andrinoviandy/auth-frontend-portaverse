@@ -276,7 +276,7 @@ export default function PanelPerformance({
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <div className="grid grid-cols-2 gap-5 w-full">
             <TextNumberCard
-              title="NILAI KINERJA INDIVIDU BERBASIS KPI & ASSESSMENT"
+              title="NILAI KINERJA INDIVIDU BERBASIS KPI & PERILAKU"
               value={score}
             />
             <TextNumberCard
