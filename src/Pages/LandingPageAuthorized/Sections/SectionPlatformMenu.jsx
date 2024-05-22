@@ -75,6 +75,20 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
+          label: "SME Dashboard",
+          description:
+            "Modul untuk pengelolaan, monitoring, dan pengembangan narasumber ahli di Pelindo",
+          route: "/dashboard-sme",
+          icon: (
+            <Icon
+              icon="clarity:organization-line"
+              width={40}
+              color={color.primary3}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
           label: "Master Pegawai",
           description:
             "Daftar semua pegawai Pelindo dalam satu modul",
@@ -134,6 +148,7 @@ export default function SectionPlatformMenu() {
           icon: <img src={AoE} alt="repo" className="w-[40px]" />,
           hasAccess: true,
         },
+
         // {
         //   label: "Headquarter",
         //   description:
