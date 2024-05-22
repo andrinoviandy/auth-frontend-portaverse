@@ -199,7 +199,7 @@ export default function NewLogin() {
 
         <a
           className="text-darkGrey mt-7 flex items-center font-semibold"
-          href="http://wa.me/+6281911111375"
+          href="http://wa.me/+628113117698"
         >
           <Icon
             icon="mingcute:service-fill"

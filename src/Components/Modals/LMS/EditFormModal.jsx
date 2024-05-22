@@ -290,6 +290,7 @@ const EditFormModal = NiceModal.create(
         isOpen={modal.visible}
         handleClose={handleClose}
         title={title}
+        classNames={{ modal: "w-[40vw]" }}
         footerElement={
           <>
             <Button

@@ -19,7 +19,11 @@ const timelineType = {
   job_sharing: { label: "Job Sharing", color: "#F5BB5C" },
 };
 
-export default function PanelPerformance({ activeTab, year }) {
+export default function PanelPerformance({
+  activeTab,
+  year,
+  employeeNumber,
+}) {
   const [step, setStep] = useState(1); // 1, 2, 3c
 
   const kpiService = Networks(BASE_PROXY.smartplan);
@@ -27,7 +31,7 @@ export default function PanelPerformance({ activeTab, year }) {
   const user = getUserCookie();
 
   const params = {
-    employee_number: user.employee.employee_number,
+    employee_number: employeeNumber || user.employee.employee_number,
     year,
     periode: "TW4",
     with_assessment_score: 1,
@@ -55,9 +59,14 @@ export default function PanelPerformance({ activeTab, year }) {
     {
       aspect: "Penilaian Kinerja Individu Berbasis KPI",
       weight: kpiWeight,
-      score: dataScore?.score?.toFixed(2),
+      score: (
+        dataScore?.static_score?.kpi_final_score || dataScore?.score
+      )?.toFixed(2),
       work_score: (
-        ((dataScore?.score || 0) * kpiWeight) /
+        ((dataScore?.static_score?.kpi_final_score ||
+          dataScore?.score ||
+          0) *
+          kpiWeight) /
         100
       ).toFixed(2),
     },
@@ -66,9 +75,14 @@ export default function PanelPerformance({ activeTab, year }) {
         "Penilaian Kinerja Individu Berbasis Penilaian Perilaku",
       weight: assessmentWeight,
       score:
-        dataScore?.assessment_score?.skor_konversi?.toFixed(2) || 0,
+        (
+          dataScore?.static_score?.assessment_score ||
+          dataScore?.assessment_score?.skor_konversi
+        )?.toFixed(2) || 0,
       work_score: (
-        ((dataScore?.assessment_score?.skor_konversi || 0) *
+        ((dataScore?.static_score?.assessment_score ||
+          dataScore?.assessment_score?.skor_konversi ||
+          0) *
           assessmentWeight) /
         100
       ).toFixed(2),
@@ -243,13 +257,14 @@ export default function PanelPerformance({ activeTab, year }) {
   ];
 
   const score = (
+    dataScore?.static_score?.final_score ||
     ((dataScore?.score ? parseFloat(dataScore?.score) : 0) *
       kpiWeight +
       (dataScore?.assessment_score?.skor_konversi
         ? parseFloat(dataScore?.assessment_score?.skor_konversi)
         : 0) *
         assessmentWeight) /
-    100
+      100
   ).toFixed(2);
   const finalScoreProp = (() => {
     return finalScoreCategorize(score);
@@ -261,12 +276,19 @@ export default function PanelPerformance({ activeTab, year }) {
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <div className="grid grid-cols-2 gap-5 w-full">
             <TextNumberCard
-              title={`NILAI AKHIR KINERJA INDIVIDU ${year}`}
+              title="NILAI KINERJA INDIVIDU BERBASIS KPI & PERILAKU"
               value={score}
             />
             <TextNumberCard
-              title="RATING PENILAIAN PEKERJA"
-              value={finalScoreProp?.label}
+              title={`${
+                !dataScore?.static_score?.calibration
+                  ? "RATING PENILAIAN PEKERJA"
+                  : "RATING PENILAIAN PEKERJA HASIL KALIBRASI"
+              }`}
+              value={
+                dataScore?.static_score?.calibration ||
+                finalScoreProp?.label
+              }
               styles={{
                 color: finalScoreProp?.color,
               }}
@@ -397,7 +419,7 @@ export default function PanelPerformance({ activeTab, year }) {
 
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <TextNumberCard
-            title="NILAI AKHIR SKOR TERTIMBANG KPI"
+            title="NILAI AKHIR SKOR TERTIMBANG KPI (SYSTEM SOURCE)"
             value={dataScore?.score?.toFixed(2)}
             classNames={{ root: "w-full" }}
           />
@@ -496,26 +518,27 @@ export default function PanelPerformance({ activeTab, year }) {
         }}
       >
         {/* 1st Slide */}
-        <section
+        {/* No Animation */}
+        {/* <section
           style={{
             color: finalScoreProp?.colorDark,
           }}
           className={clsx(
-            "absolute flex flex-col items-center gap-5 anim-slide-1",
+            "absolute flex flex-col items-center gap-5 -anim-slide-1",
           )}
         >
           <div className="flex items-center justify-center bg-primary5 h-[200px] w-[200px] rounded-full border-[12px] border-primary4">
-            <p className="text-5xl font-semibold font-tertiary anim-slide-1-fadein">
+            <p className="text-5xl font-semibold font-tertiary -anim-slide-1-fadein">
               {score}
             </p>
           </div>
-          <p className="text-3xl font-semibold anim-slide-1-fadein">
+          <p className="text-3xl font-semibold -anim-slide-1-fadein">
             {finalScoreProp.label}
           </p>
-        </section>
+        </section> */}
 
         {/* 2nd Slide */}
-        <section className="absolute flex flex-col items-center gap-5 anim-slide-2">
+        <section className="absolute flex flex-col items-center gap-5 -anim-slide-2">
           <div className="flex gap-5 items-center">
             <RingProgress
               size={225}
@@ -535,12 +558,18 @@ export default function PanelPerformance({ activeTab, year }) {
               }
               sections={[
                 {
-                  value: ((dataScore?.score || 0) * kpiWeight) / 100,
+                  value:
+                    ((dataScore?.static_score?.kpi_final_score ||
+                      dataScore?.score ||
+                      0) *
+                      kpiWeight) /
+                    100,
                   color: "#EAB308",
                 }, // KPI Based
                 {
                   value:
-                    ((dataScore?.assessment_score?.skor_konversi ||
+                    ((dataScore?.static_score?.assessment_score ||
+                      dataScore?.assessment_score?.skor_konversi ||
                       0) *
                       assessmentWeight) /
                     100,
@@ -553,7 +582,8 @@ export default function PanelPerformance({ activeTab, year }) {
                 <div className="h-[20px] w-[20px] rounded-md bg-green" />
                 <p className="text-green">
                   {(
-                    ((dataScore?.assessment_score?.skor_konversi ||
+                    ((dataScore?.static_score?.assessment_score ||
+                      dataScore?.assessment_score?.skor_konversi ||
                       0) *
                       assessmentWeight) /
                     100
@@ -565,7 +595,10 @@ export default function PanelPerformance({ activeTab, year }) {
                 <div className="h-[20px] w-[20px] rounded-md bg-yellow-500" />
                 <p className="text-yellow-500">
                   {(
-                    ((dataScore?.score || 0) * kpiWeight) /
+                    ((dataScore?.static_score?.kpi_final_score ||
+                      dataScore?.score ||
+                      0) *
+                      kpiWeight) /
                     100
                   ).toFixed(2)}
                 </p>
@@ -576,7 +609,7 @@ export default function PanelPerformance({ activeTab, year }) {
           <Button
             variant="outline"
             size="md"
-            className="text-white border-white anim-slide-2-fadein"
+            className="text-white border-white -anim-slide-2-fadein"
             onClick={() => setStep(3)}
           >
             Lihat Detail

@@ -75,6 +75,20 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
+          label: "SME Dashboard",
+          description:
+            "Modul untuk pengelolaan, monitoring, dan pengembangan narasumber ahli di Pelindo",
+          route: "/dashboard-sme",
+          icon: (
+            <Icon
+              icon="clarity:organization-line"
+              width={40}
+              color={color.primary3}
+            />
+          ),
+          hasAccess: true,
+        },
+        {
           label: "Master Pegawai",
           description:
             "Daftar semua pegawai Pelindo dalam satu modul",
@@ -134,6 +148,7 @@ export default function SectionPlatformMenu() {
           icon: <img src={AoE} alt="repo" className="w-[40px]" />,
           hasAccess: true,
         },
+
         // {
         //   label: "Headquarter",
         //   description:
@@ -418,8 +433,7 @@ export default function SectionPlatformMenu() {
               className="w-[40px]"
             />
           ),
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
+          hasAccess: false,
           comingSoon: true,
         },
         {
@@ -464,15 +478,15 @@ export default function SectionPlatformMenu() {
               className="w-[30px]"
             />
           ),
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
+          hasAccess: false,
           comingSoon: true,
         },
         {
           label: "Performance Report",
           description:
             "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
-          route: "/performance-report",
+          route: "/progress-eval-report",
+          host: import.meta.env.VITE_SSO_URL,
           icon: (
             <img
               src={PerformanceReport}
@@ -480,7 +494,7 @@ export default function SectionPlatformMenu() {
               className="w-[30px]"
             />
           ),
-          hasAccess: hasRole(["SA"]),
+          hasAccess: false,
           comingSoon: true,
         },
         {
@@ -563,9 +577,9 @@ export default function SectionPlatformMenu() {
               key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
-              route={`${import.meta.env[`VITE_${activeTab}_URL`]}${
-                menu.route
-              }`}
+              route={`${
+                menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
+              }${menu.route}`}
               icon={menu?.icon}
               // hidden={!menu?.hasAccess}
               disabled={!menu?.hasAccess}

@@ -10,7 +10,11 @@ import {
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 
-export default function PanelKPI({ activeTab, year }) {
+export default function PanelKPI({
+  activeTab,
+  year,
+  employeeNumber,
+}) {
   const period = "IV";
   const [type, setType] = useState("job_sharing");
   const types = ["job_sharing", "jabatan_utama"];
@@ -30,6 +34,7 @@ export default function PanelKPI({ activeTab, year }) {
     {
       params: {
         year,
+        employee_number: employeeNumber,
       },
     },
   );
