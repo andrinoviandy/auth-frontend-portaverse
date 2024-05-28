@@ -19,7 +19,11 @@ const timelineType = {
   job_sharing: { label: "Job Sharing", color: "#F5BB5C" },
 };
 
-export default function PanelPerformance({ activeTab, year }) {
+export default function PanelPerformance({
+  activeTab,
+  year,
+  employeeNumber,
+}) {
   const [step, setStep] = useState(1); // 1, 2, 3c
 
   const kpiService = Networks(BASE_PROXY.smartplan);
@@ -27,7 +31,7 @@ export default function PanelPerformance({ activeTab, year }) {
   const user = getUserCookie();
 
   const params = {
-    employee_number: user.employee.employee_number,
+    employee_number: employeeNumber || user.employee.employee_number,
     year,
     periode: "TW4",
     with_assessment_score: 1,
@@ -272,12 +276,19 @@ export default function PanelPerformance({ activeTab, year }) {
         <section className="flex flex-col gap-5 items-center p-5 rounded-md border">
           <div className="grid grid-cols-2 gap-5 w-full">
             <TextNumberCard
-              title={`NILAI AKHIR KINERJA INDIVIDU ${year}`}
+              title="NILAI KINERJA INDIVIDU BERBASIS KPI & PERILAKU"
               value={score}
             />
             <TextNumberCard
-              title="RATING PENILAIAN PEKERJA"
-              value={finalScoreProp?.label}
+              title={`${
+                !dataScore?.static_score?.calibration
+                  ? "RATING PENILAIAN PEKERJA"
+                  : "RATING PENILAIAN PEKERJA HASIL KALIBRASI"
+              }`}
+              value={
+                dataScore?.static_score?.calibration ||
+                finalScoreProp?.label
+              }
               styles={{
                 color: finalScoreProp?.color,
               }}
@@ -507,26 +518,27 @@ export default function PanelPerformance({ activeTab, year }) {
         }}
       >
         {/* 1st Slide */}
-        <section
+        {/* No Animation */}
+        {/* <section
           style={{
             color: finalScoreProp?.colorDark,
           }}
           className={clsx(
-            "absolute flex flex-col items-center gap-5 anim-slide-1",
+            "absolute flex flex-col items-center gap-5 -anim-slide-1",
           )}
         >
           <div className="flex items-center justify-center bg-primary5 h-[200px] w-[200px] rounded-full border-[12px] border-primary4">
-            <p className="text-5xl font-semibold font-tertiary anim-slide-1-fadein">
+            <p className="text-5xl font-semibold font-tertiary -anim-slide-1-fadein">
               {score}
             </p>
           </div>
-          <p className="text-3xl font-semibold anim-slide-1-fadein">
+          <p className="text-3xl font-semibold -anim-slide-1-fadein">
             {finalScoreProp.label}
           </p>
-        </section>
+        </section> */}
 
         {/* 2nd Slide */}
-        <section className="absolute flex flex-col items-center gap-5 anim-slide-2">
+        <section className="absolute flex flex-col items-center gap-5 -anim-slide-2">
           <div className="flex gap-5 items-center">
             <RingProgress
               size={225}
@@ -597,7 +609,7 @@ export default function PanelPerformance({ activeTab, year }) {
           <Button
             variant="outline"
             size="md"
-            className="text-white border-white anim-slide-2-fadein"
+            className="text-white border-white -anim-slide-2-fadein"
             onClick={() => setStep(3)}
           >
             Lihat Detail
