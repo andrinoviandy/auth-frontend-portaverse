@@ -8,6 +8,7 @@ import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboa
 import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
+import Podium from "../../../Components/Assets/Svg/podium.svg";
 import PerformanceReport from "../../../Components/Assets/Svg/performance-report.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
@@ -511,6 +512,45 @@ export default function SectionPlatformMenu() {
           hasAccess: hasRole(["USER"]),
         },
       ],
+      IMS: [
+        {
+          label: "Dashboard Innovation",
+          description:
+            "Modul untuk menyampaikan dan mengembangkan ide-ide inovasi",
+          route: "/innovation-management-system",
+          icon: (
+            <Icon
+              icon="iconoir:light-bulb"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Competition Innovation",
+          description:
+            "Modul untuk mengikuti kegiatan kompetisi inovasi yang ada di Pelindo Grup",
+          route: "/competition-management-system",
+          icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Headquarter Innovation",
+          description:
+            "Modul untuk mengelola dan mengatur semua modul IMS secara terpusat",
+          route: "/headquarter-innovation",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+      ],
     };
   }, [hasAccessOM, hasAccessSMS, hasWerks]);
 
@@ -548,24 +588,15 @@ export default function SectionPlatformMenu() {
         sx={MANTINE_TAB_STYLES.default.sx}
       >
         <Tabs.List grow>
-          <Tabs.Tab
-            sx={MANTINE_TAB_STYLES.default.sxChild}
-            value="KMS"
-          >
-            KMS
-          </Tabs.Tab>
-          <Tabs.Tab
-            sx={MANTINE_TAB_STYLES.default.sxChild}
-            value="LMS"
-          >
-            LMS
-          </Tabs.Tab>
-          <Tabs.Tab
-            sx={MANTINE_TAB_STYLES.default.sxChild}
-            value="TMS"
-          >
-            TMS
-          </Tabs.Tab>
+          {["KMS", "LMS", "TMS", "IMS"].map((tab) => (
+            <Tabs.Tab
+              key={tab}
+              sx={MANTINE_TAB_STYLES.default.sxChild}
+              value={tab}
+            >
+              {tab}
+            </Tabs.Tab>
+          ))}
         </Tabs.List>
       </Tabs>
       <div className="grid grid-cols-3 gap-5">
@@ -620,7 +651,7 @@ function MenuCard({
     <a
       href={disabled || comingSoon ? "/landing" : route}
       className={clsx(
-        "flex items-center gap-5 border rounded-lg px-5 py-4",
+        "flex items-center gap-3 border rounded-lg px-5 py-4",
         disabled || comingSoon
           ? "bg-gray-50 pointer-events-none cursor-not-allowed"
           : "bg-white hover:border-primary3",
