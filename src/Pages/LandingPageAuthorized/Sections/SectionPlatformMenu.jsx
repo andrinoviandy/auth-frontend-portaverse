@@ -551,6 +551,73 @@ export default function SectionPlatformMenu() {
           adminOnly: true,
         },
       ],
+      CMS: [
+        {
+          label: "Change Catalyst Management System",
+          description:
+            "Modul untuk monitoring dan manajemen program budaya Change Catalyst Team (CCT) yang dilaksanakan di Pelindo Group.",
+          route: "/change-catalyst-team-monitoring-system",
+          icon: (
+            <Icon
+              icon="iconoir:light-bulb"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Management System",
+          description:
+            "Modul untuk monitoring dan manajemen program Internalisasi Budaya yang dilaksanakan di Pelindo Group.",
+          route: "/change-catalyst-team-monitoring-system",
+          icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Change Catalyst Member Management",
+          description:
+            "Modul untuk manajemen anggota Change Catalyst Team (CCT) terkait status keanggotaan dan penugasan.",
+          route: "/change-catalyst-member-management",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Analytics",
+          description:
+            "Modul untuk melihat data terkait pelaksanaan program Change Catalyst Team dan Internalisasi Budaya.",
+          route: "/analytics",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Headquarter",
+          description:
+            "Modul untuk manajemen pengaturan modul CCTMS dan CMS.",
+          route: "/culture-hq",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+      ],
     };
   }, [hasAccessOM, hasAccessSMS, hasWerks]);
 
@@ -559,7 +626,7 @@ export default function SectionPlatformMenu() {
     SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
     [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
     {
-      onError: () => {},
+      onError: () => { },
       onSuccess: (res) => {
         const hasAccepted = !!res?.pass;
         setHasAccessSMS(hasAccepted);
@@ -588,7 +655,7 @@ export default function SectionPlatformMenu() {
         sx={MANTINE_TAB_STYLES.default.sx}
       >
         <Tabs.List grow>
-          {["KMS", "LMS", "TMS", "IMS"].map((tab) => (
+          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
             <Tabs.Tab
               key={tab}
               sx={MANTINE_TAB_STYLES.default.sxChild}
@@ -608,9 +675,8 @@ export default function SectionPlatformMenu() {
               key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
-              route={`${
-                menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
-              }${menu.route}`}
+              route={`${menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
+                }${menu.route}`}
               icon={menu?.icon}
               // hidden={!menu?.hasAccess}
               disabled={!menu?.hasAccess}
@@ -662,9 +728,9 @@ function MenuCard({
         style={
           disabled || comingSoon
             ? {
-                filter:
-                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
-              }
+              filter:
+                "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+            }
             : {}
         }
       >
