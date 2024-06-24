@@ -553,7 +553,7 @@ export default function SectionPlatformMenu() {
       ],
       CMS: [
         {
-          label: "Change Catalyst Management System",
+          label: "Change Catalyst Monitoring System",
           description:
             "Modul untuk monitoring dan manajemen program budaya Change Catalyst Team (CCT) yang dilaksanakan di Pelindo Group.",
           route: "/change-catalyst-team-monitoring-system",
@@ -567,7 +567,7 @@ export default function SectionPlatformMenu() {
           hasAccess: hasRole(["USER"]),
         },
         {
-          label: "Culture Management System",
+          label: "Culture Monitoring System",
           description:
             "Modul untuk monitoring dan manajemen program Internalisasi Budaya yang dilaksanakan di Pelindo Group.",
           route: "/change-catalyst-team-monitoring-system",
