@@ -17,6 +17,7 @@ import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
+  INNOVATION_ENDPOINT,
   SIGNATURE_ENDPOINT,
   SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
@@ -27,13 +28,16 @@ import hasRole from "../../../Utils/Helpers/hasRole";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
+  const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
 
   const [hasAccessOM, setHasAccessOM] = useState(false);
   const [hasAccessSMS, setHasAccessSMS] = useState(false);
   const [hasWerks, setHasWerks] = useState(false);
+  const [hasAccessIMSHQ, setHasAccessIMSHQ] = useState(false);
 
   const kpiService = Networks(BASE_PROXY.smartplan);
+  const innovationService = Networks(BASE_PROXY.innovation);
 
   kpiService.query(
     SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
@@ -44,6 +48,16 @@ export default function SectionPlatformMenu() {
     {
       onSuccess: (res) => {
         setHasWerks(!!res?.companies?.length);
+      },
+    },
+  );
+
+  innovationService.query(
+    INNOVATION_ENDPOINT.GET.userRole(employeeId),
+    ["ims-user-role", employeeId],
+    {
+      onSuccess: (res) => {
+        setHasAccessIMSHQ(!!res?.is_regional || !!res?.is_admin);
       },
     },
   );
@@ -547,7 +561,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["SA"]),
+          hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
           adminOnly: true,
         },
       ],
