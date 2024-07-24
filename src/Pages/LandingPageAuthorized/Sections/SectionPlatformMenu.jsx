@@ -434,8 +434,7 @@ export default function SectionPlatformMenu() {
               className="w-[40px]"
             />
           ),
-          hasAccess: false,
-          comingSoon: true,
+          hasAccess: true,
         },
         {
           label: "Manajemen Role",
@@ -482,22 +481,22 @@ export default function SectionPlatformMenu() {
           hasAccess: false,
           comingSoon: true,
         },
-        {
-          label: "Performance Report",
-          description:
-            "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
-          route: "/progress-eval-report",
-          host: import.meta.env.VITE_SSO_URL,
-          icon: (
-            <img
-              src={PerformanceReport}
-              alt="performance-report"
-              className="w-[30px]"
-            />
-          ),
-          hasAccess: false,
-          comingSoon: true,
-        },
+        // {
+        //   label: "Performance Report",
+        //   description:
+        //     "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
+        //   route: "/progress-eval-report",
+        //   host: import.meta.env.VITE_SSO_URL,
+        //   icon: (
+        //     <img
+        //       src={PerformanceReport}
+        //       alt="performance-report"
+        //       className="w-[30px]"
+        //     />
+        //   ),
+        //   hasAccess: false,
+        //   comingSoon: true,
+        // },
         {
           label: "My Profile",
           description: "Profil lengkap pekerja Pelindo",
@@ -626,7 +625,7 @@ export default function SectionPlatformMenu() {
     SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
     [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
     {
-      onError: () => { },
+      onError: () => {},
       onSuccess: (res) => {
         const hasAccepted = !!res?.pass;
         setHasAccessSMS(hasAccepted);
@@ -675,8 +674,9 @@ export default function SectionPlatformMenu() {
               key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
-              route={`${menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
-                }${menu.route}`}
+              route={`${
+                menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
+              }${menu.route}`}
               icon={menu?.icon}
               // hidden={!menu?.hasAccess}
               disabled={!menu?.hasAccess}
@@ -728,9 +728,9 @@ function MenuCard({
         style={
           disabled || comingSoon
             ? {
-              filter:
-                "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
-            }
+                filter:
+                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+              }
             : {}
         }
       >
