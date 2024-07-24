@@ -433,8 +433,7 @@ export default function SectionPlatformMenu() {
               className="w-[40px]"
             />
           ),
-          hasAccess: false,
-          comingSoon: true,
+          hasAccess: true,
         },
         {
           label: "Manajemen Role",
@@ -481,22 +480,22 @@ export default function SectionPlatformMenu() {
           hasAccess: false,
           comingSoon: true,
         },
-        {
-          label: "Performance Report",
-          description:
-            "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
-          route: "/progress-eval-report",
-          host: import.meta.env.VITE_SSO_URL,
-          icon: (
-            <img
-              src={PerformanceReport}
-              alt="performance-report"
-              className="w-[30px]"
-            />
-          ),
-          hasAccess: false,
-          comingSoon: true,
-        },
+        // {
+        //   label: "Performance Report",
+        //   description:
+        //     "Laporan hasil kinerja selama satu tahun berdasarkan penilaian atasan, rekan dan bawahan",
+        //   route: "/progress-eval-report",
+        //   host: import.meta.env.VITE_SSO_URL,
+        //   icon: (
+        //     <img
+        //       src={PerformanceReport}
+        //       alt="performance-report"
+        //       className="w-[30px]"
+        //     />
+        //   ),
+        //   hasAccess: false,
+        //   comingSoon: true,
+        // },
       ],
     };
   }, [hasAccessOM, hasAccessSMS, hasWerks]);
