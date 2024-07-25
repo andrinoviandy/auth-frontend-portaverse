@@ -124,6 +124,18 @@ function Notifications() {
                 TMS {view(unread?.tms, false)}
               </div>
             </Tabs.Tab>
+            <Tabs.Tab value="cms">
+              <div
+                className={`flex gap-2 items-center ${
+                  activeTab !== "cms"
+                    ? "text-darkGrey"
+                    : "text-primary3"
+                }`}
+              >
+                {" "}
+                CMS {view(unread?.cms, false)}
+              </div>
+            </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="all">
             <NotificationSection
@@ -152,6 +164,14 @@ function Notifications() {
           <Tabs.Panel value="tms">
             <NotificationSection
               origin="tms"
+              isPage
+              tab={activeTab}
+              unreadCount={unread}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel value="cms">
+            <NotificationSection
+              origin="cms"
               isPage
               tab={activeTab}
               unreadCount={unread}
