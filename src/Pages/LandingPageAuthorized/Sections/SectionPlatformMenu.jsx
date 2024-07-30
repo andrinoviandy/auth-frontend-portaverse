@@ -480,6 +480,18 @@ export default function SectionPlatformMenu() {
           hasAccess: false,
           comingSoon: true,
         },
+        {
+          label: "My Profile",
+          description: "Profil lengkap pekerja Pelindo",
+          route: "/my-profile/personal-data",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
         // {
         //   label: "Performance Report",
         //   description:
