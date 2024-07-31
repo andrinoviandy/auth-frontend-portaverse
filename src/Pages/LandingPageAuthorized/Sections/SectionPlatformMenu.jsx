@@ -488,6 +488,7 @@ export default function SectionPlatformMenu() {
             <Icon
               icon="material-symbols:account-box-outline"
               width={40}
+              color={color.primary3}
             />
           ),
           hasAccess: true,
