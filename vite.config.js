@@ -91,6 +91,13 @@ export default ({ mode }) => {
           secure: false,
           rewrite: (path) => path.replace(/^\/api\/cms\/v1/, ""),
         },
+        "/api/innovation/v1": {
+          target: process.env.VITE_API_INNOVATION_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) =>
+            path.replace(/^\/api\/innovation\/v1/, ""),
+        },
       },
     },
   });
