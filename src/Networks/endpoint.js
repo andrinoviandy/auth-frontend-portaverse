@@ -21,6 +21,7 @@ export const BASE_PROXY = {
   searchEngine: "/api/search-engine/v1",
   dailyQuiz: "/api/daily-quiz/v1",
   developmentPlan: "/api/development-plan/v1",
+  innovation: "/api/innovation/v1",
 };
 
 export const KMAP_ENDPOINT = {
@@ -340,5 +341,11 @@ export const DEVELOPMENT_PLAN_ENDPOINT = {
 export const CMS_ENDPOINT = {
   GET: {
     home: "/lms/home",
+  },
+};
+
+export const INNOVATION_ENDPOINT = {
+  GET: {
+    userRole: (employeeId) => `/employeeRole/${employeeId}`,
   },
 };
