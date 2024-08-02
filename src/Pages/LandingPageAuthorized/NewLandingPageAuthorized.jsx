@@ -15,6 +15,8 @@ import SectionCourse from "./Sections/SectionCourse";
 import SectionHero from "./Sections/SectionHero";
 import SectionPlatformMenu from "./Sections/SectionPlatformMenu";
 import SectionStatistic from "./Sections/SectionStatistic";
+import checkCmsAdminHoAccess from "../../Utils/Helpers/checkCmsAdminHoAccess";
+import checkCmsAdminClusterAccess from "../../Utils/Helpers/checkCmsAdminClusterAccess";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -40,6 +42,8 @@ function Card({ title, description, icon, loading }) {
 export default function NewLandingPageAuthorized() {
   checkSubconAccess();
   checkVendorAccess();
+  checkCmsAdminHoAccess();
+  checkCmsAdminClusterAccess();
 
   return (
     <div className="flex flex-col">

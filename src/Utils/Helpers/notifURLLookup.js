@@ -206,6 +206,18 @@ const notifURLLookup = (type, id, data, { bast_course_id }) => {
       }&comment=${data?.comment_id}`,
       action: "redirect",
     },
+    FORUM_QUESTION_POST: {
+      payload: `${
+        import.meta.env.VITE_KMS_URL
+      }/ask-expert?tab=questions&id=${data}`,
+      action: "redirect",
+    },
+    FORUM_QUESTION_COMMENT_POST: {
+      payload: `${
+        import.meta.env.VITE_KMS_URL
+      }/ask-expert?tab=answers&id=${data}`,
+      action: "redirect",
+    },
 
     // BAST NOTIFICATIONS
     "BAST_CREATE_NEED_INSPECTOR_1.1": {
@@ -260,6 +272,42 @@ const notifURLLookup = (type, id, data, { bast_course_id }) => {
       payload: `${
         import.meta.env.VITE_LMS_URL
       }/vendor-management/${vendorId}/bast/${bast_course_id}`,
+      action: "redirect",
+    },
+    CCMM_MEMBER_LIMIT_CHANGE_AGENT: {
+      payload: `${
+        import.meta.env.VITE_CMS_URL
+      }/change-catalyst-member-management`,
+      action: "redirect",
+    },
+    CCMM_MEMBER_LIMIT_CHANGE_CHAMPION: {
+      payload: `${
+        import.meta.env.VITE_CMS_URL
+      }/change-catalyst-member-management`,
+      action: "redirect",
+    },
+    CCMM_MEMBER_LIMIT_AGENT_LESS: {
+      payload: `${
+        import.meta.env.VITE_CMS_URL
+      }/change-catalyst-member-management?main_tab=member-setting&list_tab=CHANGE_AGENT`,
+      action: "redirect",
+    },
+    CCMM_MEMBER_LIMIT_AGENT_MORE: {
+      payload: `${
+        import.meta.env.VITE_CMS_URL
+      }/change-catalyst-member-management?main_tab=member-setting&list_tab=CHANGE_AGENT`,
+      action: "redirect",
+    },
+    CCMM_MEMBER_LIMIT_CHAMPION_LESS: {
+      payload: `${
+        import.meta.env.VITE_CMS_URL
+      }/change-catalyst-member-management?main_tab=member-setting&list_tab=CHANGE_CHAMPION`,
+      action: "redirect",
+    },
+    CCMM_MEMBER_LIMIT_CHAMPION_MORE: {
+      payload: `${
+        import.meta.env.VITE_CMS_URL
+      }/change-catalyst-member-management?main_tab=member-setting&list_tab=CHANGE_CHAMPION`,
       action: "redirect",
     },
   };
