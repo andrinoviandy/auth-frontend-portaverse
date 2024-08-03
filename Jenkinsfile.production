@@ -1,7 +1,7 @@
 def CURRENT_STAGE
 def APPS_NAME    = 'auth-frontend'  //shoud be changed
 def IMAGE_PREFIX = "kmplussmartsystem/${APPS_NAME}"
-def REPO_HELM    = 'github.com/smartsystemkmplus/helm-auth-frontend.git' //shoud be changed
+def REPO_HELM    = '10.93.1.21/external/kms/helm-auth-frontend.git' //shoud be changed
 def EMAIL        = 'farhan.ramadhan@ilcs.co.id'
 def USER_NAME    = 'farhan'
 def BRANCH_NAME  = 'main'
