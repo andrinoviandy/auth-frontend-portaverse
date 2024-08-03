@@ -112,7 +112,7 @@ pipeline {
               sh "sed  -i -e 's/tag:.*/tag: ${ENV_YAML}${env.BUILD_NUMBER}/g' ${MANIFEST_VALUE}"
               sh "git add ."
               sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
-              sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@${REPO_HELM} HEAD:main"
+              sh "git push http://${GIT_USERNAME}:${GIT_PASSWORD}@${REPO_HELM} HEAD:main"
             }
           }
         }
