@@ -524,19 +524,6 @@ export default function SectionPlatformMenu() {
         //   hasAccess: false,
         //   comingSoon: true,
         // },
-        {
-          label: "My Profile",
-          description: "Profil lengkap pekerja Pelindo",
-          route: "/my-profile",
-          icon: (
-            <Icon
-              icon="material-symbols:account-box-outline"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: hasRole(["USER"]),
-        },
       ],
       IMS: [
         {
