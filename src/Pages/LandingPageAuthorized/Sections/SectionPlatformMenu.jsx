@@ -573,7 +573,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
+          hasAccess: hasAccessIMSHQ,
           adminOnly: true,
         },
       ],
