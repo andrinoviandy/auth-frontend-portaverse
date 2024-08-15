@@ -525,45 +525,45 @@ export default function SectionPlatformMenu() {
         //   comingSoon: true,
         // },
       ],
-      // IMS: [
-      //   {
-      //     label: "Dashboard Innovation",
-      //     description:
-      //       "Modul untuk menyampaikan dan mengembangkan ide-ide inovasi",
-      //     route: "/innovation-management-system",
-      //     icon: (
-      //       <Icon
-      //         icon="iconoir:light-bulb"
-      //         color={color.primary3}
-      //         width={40}
-      //       />
-      //     ),
-      //     hasAccess: hasRole(["USER"]),
-      //   },
-      //   {
-      //     label: "Competition Innovation",
-      //     description:
-      //       "Modul untuk mengikuti kegiatan kompetisi inovasi yang ada di Pelindo Grup",
-      //     route: "/competition-management-system",
-      //     icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
-      //     hasAccess: hasRole(["USER"]),
-      //   },
-      //   {
-      //     label: "Headquarter Innovation",
-      //     description:
-      //       "Modul untuk mengelola dan mengatur semua modul IMS secara terpusat",
-      //     route: "/headquarter-innovation",
-      //     icon: (
-      //       <Icon
-      //         icon="material-symbols:account-box-outline"
-      //         color={color.primary3}
-      //         width={40}
-      //       />
-      //     ),
-      //     hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
-      //     adminOnly: true,
-      //   },
-      // ],
+      IMS: [
+        {
+          label: "Dashboard Innovation",
+          description:
+            "Modul untuk menyampaikan dan mengembangkan ide-ide inovasi",
+          route: "/innovation-management-system",
+          icon: (
+            <Icon
+              icon="iconoir:light-bulb"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Competition Innovation",
+          description:
+            "Modul untuk mengikuti kegiatan kompetisi inovasi yang ada di Pelindo Grup",
+          route: "/competition-management-system",
+          icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Headquarter Innovation",
+          description:
+            "Modul untuk mengelola dan mengatur semua modul IMS secara terpusat",
+          route: "/headquarter-innovation",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
+          adminOnly: true,
+        },
+      ],
       // CMS: [
       //   {
       //     label: "Change Catalyst Team Monitoring System",
