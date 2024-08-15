@@ -626,7 +626,13 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["USER"]),
+          hasAccess: hasRole([
+            "ADMIN_HO",
+            "ADMIN_UNIT_KERJA",
+            "CHANGE_AGENT",
+            "CHANGE_CHAMPION",
+            "CHANGE_LEADER",
+          ]),
         },
         {
           label: "Culture Headquarter",
