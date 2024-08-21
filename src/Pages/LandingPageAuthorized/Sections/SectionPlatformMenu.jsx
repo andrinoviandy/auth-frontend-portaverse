@@ -674,8 +674,8 @@ export default function SectionPlatformMenu() {
         sx={MANTINE_TAB_STYLES.default.sx}
       >
         <Tabs.List grow>
-          {["KMS", "LMS", "TMS", "IMS"].map((tab) => (
-            // {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
+          {/* {["KMS", "LMS", "TMS", "IMS"].map((tab) => ( */}
+          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
             <Tabs.Tab
               key={tab}
               sx={MANTINE_TAB_STYLES.default.sxChild}
