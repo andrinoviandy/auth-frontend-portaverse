@@ -560,77 +560,83 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
+          hasAccess: hasAccessIMSHQ,
           adminOnly: true,
         },
       ],
-      // CMS: [
-      //   {
-      //     label: "Change Catalyst Team Monitoring System",
-      //     description:
-      //       "Modul untuk monitoring dan manajemen program budaya Change Catalyst Team (CCT) yang dilaksanakan di Pelindo Group.",
-      //     route: "/change-catalyst-team-monitoring-system",
-      //     icon: (
-      //       <Icon
-      //         icon="iconoir:light-bulb"
-      //         color={color.primary3}
-      //         width={40}
-      //       />
-      //     ),
-      //     hasAccess: hasRole(["USER"]),
-      //   },
-      //   {
-      //     label: "Culture Monitoring System",
-      //     description:
-      //       "Modul untuk monitoring dan manajemen program Internalisasi Budaya yang dilaksanakan di Pelindo Group.",
-      //     route: "/culture-monitoring-system",
-      //     icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
-      //     hasAccess: hasRole(["USER"]),
-      //   },
-      //   {
-      //     label: "Change Catalyst Member Management",
-      //     description:
-      //       "Modul untuk manajemen anggota Change Catalyst Team (CCT) terkait status keanggotaan dan penugasan.",
-      //     route: "/change-catalyst-member-management",
-      //     icon: (
-      //       <Icon
-      //         icon="material-symbols:account-box-outline"
-      //         color={color.primary3}
-      //         width={40}
-      //       />
-      //     ),
-      //     hasAccess: hasRole(["USER"]),
-      //   },
-      //   {
-      //     label: "Culture Analytics",
-      //     description:
-      //       "Modul untuk melihat data terkait pelaksanaan program Change Catalyst Team dan Internalisasi Budaya.",
-      //     route: "/analytics",
-      //     icon: (
-      //       <Icon
-      //         icon="material-symbols:account-box-outline"
-      //         color={color.primary3}
-      //         width={40}
-      //       />
-      //     ),
-      //     hasAccess: hasRole(["USER"]),
-      //   },
-      //   {
-      //     label: "Culture Headquarter",
-      //     description:
-      //       "Modul untuk manajemen pengaturan modul CCTMS dan CMS.",
-      //     route: "/culture-hq",
-      //     icon: (
-      //       <Icon
-      //         icon="material-symbols:account-box-outline"
-      //         color={color.primary3}
-      //         width={40}
-      //       />
-      //     ),
-      //     hasAccess: hasRole(["SA"]),
-      //     adminOnly: true,
-      //   },
-      // ],
+      CMS: [
+        {
+          label: "Change Catalyst Team Monitoring System",
+          description:
+            "Modul untuk monitoring dan manajemen program budaya Change Catalyst Team (CCT) yang dilaksanakan di Pelindo Group.",
+          route: "/change-catalyst-team-monitoring-system",
+          icon: (
+            <Icon
+              icon="iconoir:light-bulb"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Monitoring System",
+          description:
+            "Modul untuk monitoring dan manajemen program Internalisasi Budaya yang dilaksanakan di Pelindo Group.",
+          route: "/culture-monitoring-system",
+          icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Change Catalyst Member Management",
+          description:
+            "Modul untuk manajemen anggota Change Catalyst Team (CCT) terkait status keanggotaan dan penugasan.",
+          route: "/change-catalyst-member-management",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Analytics",
+          description:
+            "Modul untuk melihat data terkait pelaksanaan program Change Catalyst Team dan Internalisasi Budaya.",
+          route: "/analytics",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole([
+            "ADMIN_HO",
+            "ADMIN_UNIT_KERJA",
+            "CHANGE_AGENT",
+            "CHANGE_CHAMPION",
+            "CHANGE_LEADER",
+          ]),
+        },
+        {
+          label: "Culture Headquarter",
+          description:
+            "Modul untuk manajemen pengaturan modul CCTMS dan CMS.",
+          route: "/culture-hq",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+      ],
     };
   }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code]);
 
