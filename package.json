@@ -44,6 +44,7 @@
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.1",
     "swiper": "^8.3.2",
+    "tailwind-merge": "^2.3.0",
     "worker-timers": "^7.0.60",
     "yup": "^0.32.11",
     "zustand": "^4.5.2"

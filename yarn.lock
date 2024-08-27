@@ -2741,6 +2741,7 @@ __metadata:
     redux-persist: ^6.0.0
     socket.io-client: ^4.7.1
     swiper: ^8.3.2
+    tailwind-merge: ^2.3.0
     tailwindcss: ^3.4.3
     typescript: ^5.4.5
     vite: ^5.2.0
@@ -8902,6 +8903,13 @@ __metadata:
   version: 6.2.0
   resolution: "tabbable@npm:6.2.0"
   checksum: f8440277d223949272c74bb627a3371be21735ca9ad34c2570f7e1752bd646ccfc23a9d8b1ee65d6561243f4134f5fbbf1ad6b39ac3c4b586554accaff4a1300
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^2.3.0":
+  version: 2.5.2
+  resolution: "tailwind-merge@npm:2.5.2"
+  checksum: af745fc16245ac14eb5d3f0b9d076c024321877ad45f43b324465f6aa7f8b5de3816640594fbf6ac8b3500f70ff2687345787888744196ff6f82dfe9a1f99b97
   languageName: node
   linkType: hard
 
