@@ -20,7 +20,7 @@ import Image2 from "../../Components/Assets/Pictures/carou2.png";
 import Analytics from "../../Components/Assets/Svg/Analytics.svg";
 import SubconDashboard from "../../Components/Assets/Svg/SubconDashboard.svg";
 import VendorDashboard from "../../Components/Assets/Svg/VendorDashboard.svg";
-import Navbar from "../../Components/Navbar";
+import NewNavbar from "../../Components/NewNavbar";
 import NotificationPanel from "../../Components/NotificationPanel/NotificationPanel";
 import {
   BASE_PROXY,
@@ -280,7 +280,9 @@ export default function LandingPageAuthorized() {
 
   return (
     <div className="flex flex-col gap-5 pb-10">
-      <Navbar />
+      {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
+      {/* <Navbar /> */}
+      <NewNavbar />
       <section className="mt-10 px-[5vw]">
         <div className="flex items-start justify-between gap-10">
           <div className="flex flex-col justify-between gap-5 text-2xl font-bold">
