@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { clsx } from "@mantine/core";
+import clsx from "clsx"
 import { forwardRef, useMemo } from "react";
 
 const ActionContainer = forwardRef((props, ref) => {

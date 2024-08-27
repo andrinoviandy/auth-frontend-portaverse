@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
-import { Loader, clsx } from "@mantine/core";
+import { Loader } from "@mantine/core";
+import clsx from "clsx"
 import dayjs from "dayjs";
 import parse from "html-react-parser";
 import PropTypes from "prop-types";

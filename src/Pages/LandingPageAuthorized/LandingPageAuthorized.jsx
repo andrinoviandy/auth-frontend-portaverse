@@ -1,15 +1,17 @@
 import { Icon } from "@iconify/react";
-import { Loader, Tabs, clsx } from "@mantine/core";
+import { Loader, Tabs } from "@mantine/core";
+import clsx from "clsx";
 import dayjs from "dayjs";
-import "dayjs/locale/id";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import { useState } from "react";
 import { Autoplay, Navigation, Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "dayjs/locale/id";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
+
 import Employee from "../../Components/Assets/Icon/Employee";
 import KMAP from "../../Components/Assets/Icon/KMAP";
 import Image1 from "../../Components/Assets/Pictures/carou1.png";
@@ -18,7 +20,7 @@ import Image2 from "../../Components/Assets/Pictures/carou2.png";
 import Analytics from "../../Components/Assets/Svg/Analytics.svg";
 import SubconDashboard from "../../Components/Assets/Svg/SubconDashboard.svg";
 import VendorDashboard from "../../Components/Assets/Svg/VendorDashboard.svg";
-import NewNavbar from "../../Components/NewNavbar/NewNavbar";
+import Navbar from "../../Components/Navbar";
 import NotificationPanel from "../../Components/NotificationPanel/NotificationPanel";
 import {
   BASE_PROXY,
@@ -36,14 +38,14 @@ dayjs.extend(updateLocale);
 function Card({ title, description, icon, loading }) {
   return (
     <div className="flex flex-col justify-between gap-5 rounded-md bg-bg4 p-3">
-      <div className="flex justify-between items-center gap-2">
-        <p className="font-bold text-base">{title}</p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-base font-bold">{title}</p>
         <span className="text-primary3">{icon}</span>
       </div>
       {loading ? (
         <Loader size="sm" />
       ) : (
-        <p className="text-primary3 font-bold text-xl">
+        <p className="text-xl font-bold text-primary3">
           {description}
         </p>
       )}
@@ -55,16 +57,6 @@ const CarouselImages = [Image1, Image2];
 
 const NavButtonClassName =
   "absolute z-10 m-0 w-fit h-fit p-3 top-1/2 bottom-1/2 bg-white rounded-full after:content-none text-primary3 disabled:opacity-0";
-
-const TabStyle = {
-  background: "#FFF",
-  border: "1px solid #C1C7CD",
-  color: "#C1C7CD",
-  fontWeight: 500,
-  paddingLeft: "1rem",
-  paddingRight: "1rem",
-  borderRadius: "0.25rem",
-};
 
 export default function LandingPageAuthorized() {
   checkSubconAccess();
@@ -186,7 +178,7 @@ export default function LandingPageAuthorized() {
           <img
             src={SubconDashboard}
             alt="analytics"
-            className="w-[23px] h-[23px]"
+            className="size-[23px]"
           />
         ),
         hidden: !hasRole(["CRPU", "SA", "SBCN"]),
@@ -200,7 +192,7 @@ export default function LandingPageAuthorized() {
           <img
             src={VendorDashboard}
             alt="analytics"
-            className="w-[21px] h-[21px]"
+            className="size-[21px]"
           />
         ),
         hidden: !hasRole(["CRPU", "SA", "VNDR"]),
@@ -212,7 +204,7 @@ export default function LandingPageAuthorized() {
           <img
             src={Analytics}
             alt="analytics"
-            className="w-[23px] h-[23px]"
+            className="size-[23px]"
           />
         ),
         hidden: !hasRole(["CRPU", "SA"]),
@@ -288,10 +280,10 @@ export default function LandingPageAuthorized() {
 
   return (
     <div className="flex flex-col gap-5 pb-10">
-      <NewNavbar />
-      <section className="px-[5vw] mt-10">
-        <div className="flex justify-between items-start gap-10">
-          <div className="flex flex-col gap-5 text-2xl font-bold justify-between">
+      <Navbar />
+      <section className="mt-10 px-[5vw]">
+        <div className="flex items-start justify-between gap-10">
+          <div className="flex flex-col justify-between gap-5 text-2xl font-bold">
             <div className="text-3xl">
               <p>
                 <span className="text-primary3">Portaverse</span>
@@ -315,9 +307,9 @@ export default function LandingPageAuthorized() {
               Ikuti Daily Quiz!
             </Button> */}
 
-            <div className="p-5 rounded-md bg-bg2 mt-[2.5vh]">
-              <h3 className="font-bold mb-3">Statistik</h3>
-              <div className="flex gap-3 items-center">
+            <div className="mt-[2.5vh] rounded-md bg-bg2 p-5">
+              <h3 className="mb-3 font-bold">Statistik</h3>
+              <div className="flex items-center gap-3">
                 {/* <Card
                   title="Learning Hours"
                   icon={<Icon icon="ic:round-access-time-filled" />}
@@ -353,31 +345,18 @@ export default function LandingPageAuthorized() {
         <div className="w-1/2">
           <Tabs
             value={activeTab}
-            onTabChange={setActiveTab}
+            onChange={setActiveTab}
             variant="pills"
             classNames={{ tabsList: "gap-3" }}
-            sx={(theme) => ({
-              "[data-active]": {
-                background: `#C9F3FB !important`,
-                borderColor: `${theme.colors.primary[6]} !important`,
-                color: `${theme.colors.primary[6]} !important`,
-              },
-            })}
           >
             <Tabs.List>
-              <Tabs.Tab sx={TabStyle} value="KMS">
-                KMS
-              </Tabs.Tab>
-              <Tabs.Tab sx={TabStyle} value="LMS">
-                LMS
-              </Tabs.Tab>
-              <Tabs.Tab sx={TabStyle} value="TMS">
-                TMS
-              </Tabs.Tab>
+              <Tabs.Tab value="KMS">KMS</Tabs.Tab>
+              <Tabs.Tab value="LMS">LMS</Tabs.Tab>
+              <Tabs.Tab value="TMS">TMS</Tabs.Tab>
             </Tabs.List>
           </Tabs>
 
-          <div className="grid grid-cols-2 gap-8 mt-5">
+          <div className="mt-5 grid grid-cols-2 gap-8">
             {!Menus[activeTab].length ? (
               <p className="text-darkGrey">No menu available yet</p>
             ) : (
@@ -392,17 +371,17 @@ export default function LandingPageAuthorized() {
                     menu?.hidden && "hidden",
                   )}
                 >
-                  <div className="w-14 h-14 text-primary3 flex items-center justify-center rounded-md bg-bg2 mb-2">
+                  <div className="mb-2 flex size-14 items-center justify-center rounded-md bg-bg2 text-primary3">
                     {menu.icon}
                   </div>
-                  <h3 className="font-bold text-lg">{menu.label}</h3>
+                  <h3 className="text-lg font-bold">{menu.label}</h3>
                   <p className="text-sm">{menu.description}</p>
                 </a>
               ))
             )}
           </div>
         </div>
-        <div className="relative items-center justify-between w-1/2 mt-10">
+        <div className="relative mt-10 w-1/2 items-center justify-between">
           <button
             id="landing-button-prev"
             type="button"
@@ -428,11 +407,11 @@ export default function LandingPageAuthorized() {
           >
             {CarouselImages.map((img, i) => (
               <SwiperSlide
-                className="w-full flex justify-center"
+                className="flex w-full justify-center"
                 key={i}
               >
                 <img
-                  className="cursor-pointer w-full h-[40vh] rounded-t-md object-cover"
+                  className="h-[40vh] w-full cursor-pointer rounded-t-md object-cover"
                   src={img}
                   alt={`slide-${i}`}
                   loading="lazy"
