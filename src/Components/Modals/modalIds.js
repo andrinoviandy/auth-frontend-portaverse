@@ -7,6 +7,7 @@ const MODAL_IDS = {
   },
   CALENDAR: {
     CREATE_AGENDA: "calendar-create-agenda",
+    DATE_DETAIL: "calendar-date-detail",
   },
 
   // LMS Modals

@@ -53,13 +53,10 @@ export default function PanelCalendar() {
     },
   );
 
-  const handleClickDate = (val: DateValue, dateData) => {
-    if (dateData?.agenda?.length !== 0) {
-      // NiceModal.show(MODAL_IDS.DASHBOARD.CALENDAR_DETAIL, {
-      //   date: new Date(val),
-      //   data: dateData?.agenda,
-      // });
-    }
+  const handleClickDate = (date: DateValue) => {
+    NiceModal.show(MODAL_IDS.CALENDAR.DATE_DETAIL, {
+      date: dayjs(date).toDate(),
+    });
   };
 
   return (
@@ -96,16 +93,7 @@ export default function PanelCalendar() {
       <Divider />
 
       <DatePicker
-        onChange={(val) =>
-          handleClickDate(
-            val,
-            data?.find(
-              (v) =>
-                dayjs(val).format("YYYY/MM/DD") ===
-                dayjs(v.date).format("YYYY/MM/DD"),
-            ),
-          )
-        }
+        onChange={handleClickDate}
         date={month}
         renderDay={(d) => {
           const todayDate = new Date().getDate();
@@ -163,13 +151,13 @@ export default function PanelCalendar() {
               {hasNotif && (
                 <Group gap="sm">
                   <Group align="center" gap={5}>
-                    <Indicator size={4} />
+                    <Indicator zIndex={1} size={4} />
                     <p className="text-xs font-medium text-primary3">
                       7
                     </p>
                   </Group>
                   <Group align="center" gap={5}>
-                    <Indicator size={4} color="red" />
+                    <Indicator zIndex={1} size={4} color="red" />
                     <p className="text-xs font-medium text-danger3">
                       7
                     </p>
@@ -182,7 +170,7 @@ export default function PanelCalendar() {
         size="xl"
         classNames={{
           month: "w-full",
-          day: "w-full h-[80px]",
+          day: "w-full h-[80px] data-[selected=true]:bg-transparent",
           weekdaysRow: "[&>th]:py-2",
           monthRow: "[&>td]:border",
           calendarHeader: "hidden",
