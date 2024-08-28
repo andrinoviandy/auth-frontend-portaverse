@@ -5,6 +5,9 @@ const MODAL_IDS = {
   DAILY_QUIZ: {
     END_USER_DO_QUIZ: "END_USER_DO_QUIZ",
   },
+  CALENDAR: {
+    CREATE_AGENDA: "calendar-create-agenda",
+  },
 
   // LMS Modals
   LMS: {

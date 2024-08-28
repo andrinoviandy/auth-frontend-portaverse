@@ -10,7 +10,7 @@ import SMEIcon from "../../../Components/Assets/Icon/SME";
 import SplashArt from "../../../Components/Assets/Pictures/Kapal_Pelindo.gif";
 import YearlyReportIllust from "../../../Components/Assets/Pictures/YearlyReport.png";
 import Wave from "../../../Components/Assets/Svg/wave-half.svg";
-import ProfilePictureWithBadge from "../../../Components/ProfilePictureWithBadge/ProfilePictureWithBadge";
+import ProfilePicture from "../../../Components/ProfilePicture";
 import {
   BASE_PROXY,
   SMARTPLAN_ENDPOINT,
@@ -107,10 +107,12 @@ export default function SectionHero() {
         </div>
         <div className="flex flex-col gap-5">
           <div className="flex items-start gap-8 rounded-md border p-6">
-            <ProfilePictureWithBadge
-              img={userSocmed?.profilePicture || avatar}
+            <ProfilePicture
+              imageUrl={userSocmed?.profilePicture || avatar}
               alt="avatar"
-              className="size-[96px] shrink-0 rounded-full border"
+              size={96}
+              className="shrink-0 rounded-full border"
+              name={name}
               badgeIcon={hasRole(["SME"]) ? <SMEIcon /> : null}
             />
             <div className="flex flex-col">

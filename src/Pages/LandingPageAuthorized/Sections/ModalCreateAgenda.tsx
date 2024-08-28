@@ -1,0 +1,399 @@
+/* eslint-disable react/jsx-props-no-spreading */
+import { VALIDATION_REGEX } from "@constants";
+import NiceModal, { useModal } from "@ebay/nice-modal-react";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Loader,
+  Radio,
+  Stack,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
+import {
+  DatePickerInput,
+  DateValue,
+  TimeInput,
+} from "@mantine/dates";
+import { useForm, yupResolver } from "@mantine/form";
+import { useDebouncedValue } from "@mantine/hooks";
+import dayjs from "dayjs";
+import { ComponentType, useMemo, useRef, useState } from "react";
+import { InfiniteData } from "react-query";
+import * as yup from "yup";
+
+import { EmployeeOptions, EmployeesResponse } from "../index.types";
+import SMEIcon from "../../../Components/Assets/Icon/SME";
+import PersonCard from "../../../Components/Cards/PersonCard";
+import MultiSelect from "../../../Components/Inputs/MultiSelect";
+import MODAL_IDS from "../../../Components/Modals/modalIds";
+import SectionModalTemplate from "../../../Components/Modals/Templates/SectionModal";
+import {
+  BASE_PROXY,
+  EMPLOYEES_ENDPOINT,
+} from "../../../Networks/endpoint";
+import { Networks } from "../../../Networks/factory";
+import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
+import combineDateAndTime from "../../../Utils/Helpers/combineDateAndTime";
+import useInfiniteQuery from "../../../Utils/Hooks/useInfiniteQuery";
+
+const PAGE_SIZE = 10;
+
+interface FormValues {
+  title: string;
+  date: Date | null;
+  start_time: string;
+  end_time: string;
+  employee_ids: string[];
+  type: string | null;
+  offline_location: string;
+  online_url: string;
+  description: string;
+}
+
+interface ModalCreateAgendaProps {
+  isEdit?: boolean;
+}
+const ModalCreateAgenda = NiceModal.create(
+  ({ isEdit }: ModalCreateAgendaProps) => {
+    const modalId = MODAL_IDS.CALENDAR.CREATE_AGENDA;
+    const modal = useModal(modalId);
+
+    const dateInputRef = useRef<HTMLButtonElement>(null);
+    const timeStartInputRef = useRef<HTMLInputElement>(null);
+    const timeEndInputRef = useRef<HTMLInputElement>(null);
+
+    const form = useForm<FormValues>({
+      initialValues: {
+        title: "",
+        date: null,
+        start_time: "",
+        end_time: "",
+        employee_ids: [],
+        type: null,
+        offline_location: "",
+        online_url: "",
+        description: "",
+      },
+      validate: yupResolver(
+        yup.object().shape({
+          title: yup.string().required("Field tidak boleh kosong"),
+          date: yup.date().required("Field tidak boleh kosong"),
+          start_time: yup
+            .string()
+            .required("Field tidak boleh kosong"),
+          end_time: yup.string().required("Field tidak boleh kosong"),
+          employee_ids: yup
+            .array(yup.string())
+            .required("Field tidak boleh kosong"),
+          type: yup.string().required("Field tidak boleh kosong"),
+          offline_location: yup.string().when("type", {
+            is: "Offline",
+            then: yup.string().required("Field tidak boleh kosong"),
+          }),
+          online_url: yup.string().when("type", {
+            is: "Online",
+            then: yup
+              .string()
+              .matches(VALIDATION_REGEX.url, "Format URL tidak valid")
+              .required("Field tidak boleh kosong"),
+          }),
+          description: yup
+            .string()
+            .required("Field tidak boleh kosong"),
+        }),
+      ),
+    });
+
+    const [searchEmployee, setSearchEmployee] = useState("");
+    const [dbcSearchEmployee] = useDebouncedValue(
+      searchEmployee,
+      500,
+    );
+
+    const { infiniteQuery } = Networks(BASE_PROXY.employees);
+    const {
+      ref: refEmployees,
+      isLoading: isLoadingEmployees,
+      isFetchingNextPage: isFetchingNextEmployees,
+      ...restQuery
+    } = useInfiniteQuery(
+      infiniteQuery(
+        EMPLOYEES_ENDPOINT.GET.allEmployees,
+        ["allEmployees-agenda", dbcSearchEmployee],
+        {
+          getNextPageParam: (lastPage, allPages) => {
+            const maxPages = lastPage.data.totalAccount / PAGE_SIZE;
+            const nextPage = allPages.length + 1;
+            return nextPage <= Math.ceil(maxPages)
+              ? nextPage
+              : undefined;
+          },
+          select: (res: InfiniteData<EmployeesResponse>) =>
+            res.pages
+              .map((page) =>
+                page.employees.map((item) => ({
+                  label: item?.name || "",
+                  value: `${item.id}`,
+                  // Fields below will be used for PersonCard component props
+                  name: item?.name,
+                  positionName: item?.employee_number,
+                  imageUrl: item?.profile_picture,
+                  badgeIcon: item?.sme ? <SMEIcon size={12} /> : null,
+                })),
+              )
+              .flat() as EmployeeOptions,
+        },
+        {
+          params: {
+            size: PAGE_SIZE,
+            query: dbcSearchEmployee,
+            "without-me": 1,
+          },
+        },
+      ),
+    );
+
+    const dataEmployees = restQuery.data;
+
+    const optionsEmployee = useMemo(() => {
+      let result: EmployeeOptions = [];
+      if (dataEmployees?.length) {
+        result = [...dataEmployees];
+      }
+      return result;
+    }, [dataEmployees]);
+
+    const showEditConfirmation = () => {
+      NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
+        message: "Konfirmasi",
+        subMessage:
+          "Apakah Anda yakin untuk menyimpan perubahan agenda ini?",
+        variant: "warning",
+        handleConfirm: () =>
+          closeNiceModal(MODAL_IDS.GENERAL.CONFIRMATION),
+      });
+    };
+
+    const showDeleteConfirmation = () => {
+      NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
+        message: "Konfirmasi",
+        subMessage: "Apakah Anda yakin untuk menghapus agenda ini?",
+        variant: "danger",
+        handleConfirm: () =>
+          closeNiceModal(MODAL_IDS.GENERAL.CONFIRMATION),
+      });
+    };
+
+    const minTime = useMemo(() => {
+      const currDate = dayjs().date();
+      const selectedDate = dayjs(form.values.date).date();
+      if (currDate === selectedDate) {
+        return dayjs().format("HH:mm");
+      }
+      return undefined;
+    }, [form.values.date]);
+
+    const handleChangeDate = (value: DateValue) => {
+      const currDate = dayjs().date();
+      const selectedDate = dayjs(value).date();
+      const currTime = dayjs().unix();
+      const selectedStartTime = dayjs(
+        combineDateAndTime(value!, form.values.start_time),
+      ).unix();
+      const selectedEndTime = dayjs(
+        combineDateAndTime(value!, form.values.end_time),
+      ).unix();
+
+      if (currDate === selectedDate && selectedStartTime < currTime) {
+        form.setFieldValue("start_time", dayjs().format("HH:mm"));
+      }
+
+      if (currDate === selectedDate && selectedEndTime < currTime) {
+        form.setFieldValue(
+          "end_time",
+          dayjs().add(1, "minute").format("HH:mm"),
+        );
+      }
+
+      form.setFieldValue("date", value);
+    };
+
+    return (
+      <SectionModalTemplate
+        title={isEdit ? "Ubah Agenda" : "Buat Agenda"}
+        isOpen={modal.visible}
+        withCloseButton
+        handleClose={() => closeNiceModal(modalId)}
+        width="70vw"
+        height="60vh"
+        withFooter
+        footerElement={
+          <Group justify="space-between" className="w-full">
+            <Button
+              variant="outline"
+              onClick={() => closeNiceModal(modalId)}
+            >
+              Kembali
+            </Button>
+
+            <Group>
+              {isEdit && (
+                <Button
+                  variant="outline"
+                  color="red"
+                  onClick={showDeleteConfirmation}
+                >
+                  Hapus Agenda
+                </Button>
+              )}
+              <Button
+                onClick={isEdit ? showEditConfirmation : () => {}}
+                disabled={!form.isValid() || !form.isDirty()}
+              >
+                {isEdit ? "Simpan Perubahan" : "Buat Agenda"}
+              </Button>
+            </Group>
+          </Group>
+        }
+      >
+        <div className="flex flex-col gap-5 p-5">
+          <TextInput
+            label="Nama Agenda"
+            placeholder="Masukkan nama agenda"
+            required
+            {...form.getInputProps("title")}
+          />
+
+          <div className="grid grid-cols-3 gap-3">
+            <DatePickerInput
+              ref={dateInputRef}
+              label="Tanggal Mulai"
+              placeholder="Pilih Tanggal Mulai"
+              required
+              minDate={new Date()}
+              rightSection={
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  onClick={() => dateInputRef.current?.click()}
+                >
+                  <Icon icon="ic:round-date-range" />
+                </ActionIcon>
+              }
+              {...form.getInputProps("date")}
+              onChange={handleChangeDate}
+            />
+            <TimeInput
+              ref={timeStartInputRef}
+              label="Waktu Mulai"
+              placeholder="Pilih Waktu Mulai"
+              required
+              minTime={minTime}
+              maxTime={form.values.end_time || undefined}
+              rightSection={
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  onClick={() =>
+                    timeStartInputRef.current?.showPicker()
+                  }
+                >
+                  <Icon icon="mdi:clock-outline" />
+                </ActionIcon>
+              }
+              {...form.getInputProps("start_time")}
+            />
+            <TimeInput
+              ref={timeEndInputRef}
+              label="Waktu Selesai"
+              placeholder="Pilih Waktu Selesai"
+              required
+              minTime={form.values.start_time || minTime}
+              rightSection={
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  onClick={() =>
+                    timeEndInputRef.current?.showPicker()
+                  }
+                >
+                  <Icon icon="mdi:clock-outline" />
+                </ActionIcon>
+              }
+              {...form.getInputProps("end_time")}
+            />
+          </div>
+
+          <MultiSelect
+            label="Nama Pekerja"
+            placeholder="Cari nama pekerja"
+            classNames={{ label: "text-primary-main mb-1" }}
+            leftSection={<Icon icon="ic:twotone-search" />}
+            rightSection={
+              isLoadingEmployees || isFetchingNextEmployees ? (
+                <Loader size="xs" />
+              ) : (
+                <div />
+              )
+            }
+            renderValueOutside
+            inputWrapperOrder={[
+              "label",
+              "input",
+              "description",
+              "error",
+            ]}
+            searchable
+            searchValue={searchEmployee}
+            onSearchChange={setSearchEmployee}
+            data={optionsEmployee || []}
+            scrollAreaProps={{ viewportRef: refEmployees }}
+            valueComponent={PersonCard as ComponentType}
+            valueComponentProps={{
+              withRemoveButton: true,
+              classNames: { textWrapper: "w-[125px]" },
+            }}
+            {...form.getInputProps("employee_ids")}
+          />
+
+          <Radio.Group
+            label="Tipe Agenda"
+            required
+            {...form.getInputProps("type")}
+          >
+            <Stack gap="xs" mt="xs">
+              <Radio value="Offline" label="Offline" />
+              {form.values.type === "Offline" && (
+                <TextInput
+                  placeholder="Masukkan lokasi agenda"
+                  {...form.getInputProps("offline_location")}
+                />
+              )}
+
+              <Radio value="Online" label="Online" />
+              {form.values.type === "Online" && (
+                <TextInput
+                  placeholder="Masukkan tautan lokasi agenda"
+                  {...form.getInputProps("online_url")}
+                />
+              )}
+            </Stack>
+          </Radio.Group>
+
+          <Textarea
+            label="Deskripsi Agenda"
+            placeholder="Masukkan deskripsi agenda..."
+            required
+            resize="vertical"
+            minRows={5}
+            {...form.getInputProps("description")}
+          />
+        </div>
+      </SectionModalTemplate>
+    );
+  },
+);
+export default ModalCreateAgenda;

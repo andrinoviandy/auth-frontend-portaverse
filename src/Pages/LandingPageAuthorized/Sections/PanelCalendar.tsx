@@ -1,9 +1,11 @@
+import NiceModal from "@ebay/nice-modal-react";
 import { Button, Divider, Group, Indicator } from "@mantine/core";
 import { DatePicker, DateValue } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import "dayjs/locale/id";
 
+import MODAL_IDS from "../../../Components/Modals/modalIds";
 import MonthSlider from "../../../Components/MonthSlider";
 import { BASE_PROXY } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
@@ -69,18 +71,24 @@ export default function PanelCalendar() {
         p={16}
       >
         <MonthSlider value={month} onChange={setMonth} />
-        <Button>Buat Agenda</Button>
+        <Button
+          onClick={() =>
+            NiceModal.show(MODAL_IDS.CALENDAR.CREATE_AGENDA)
+          }
+        >
+          Buat Agenda
+        </Button>
       </Group>
 
       <Divider />
 
       <Group py={16} px={24} gap="lg">
         <Group align="center" gap="xs">
-          <Indicator />
+          <Indicator zIndex={1} />
           <p className="text-sm text-darkGrey">Agenda Pribadi</p>
         </Group>
         <Group align="center" gap="xs">
-          <Indicator color="red" />
+          <Indicator zIndex={1} color="red" />
           <p className="text-sm text-darkGrey">Agenda Komunitas</p>
         </Group>
       </Group>
