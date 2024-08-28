@@ -24,6 +24,7 @@ import { ComponentType, useMemo, useRef, useState } from "react";
 import { InfiniteData } from "react-query";
 import * as yup from "yup";
 
+import { AgendaGuest } from "./index.types";
 import { EmployeeOptions, EmployeesResponse } from "../index.types";
 import SMEIcon from "../../../Components/Assets/Icon/SME";
 import PersonCard from "../../../Components/Cards/PersonCard";
@@ -41,6 +42,19 @@ import useInfiniteQuery from "../../../Utils/Hooks/useInfiniteQuery";
 
 const PAGE_SIZE = 10;
 
+export interface AgendaData {
+  title: string;
+  /** Date formatted in ISO String */
+  start_date: string;
+  /** Date formatted in ISO String */
+  end_date: string;
+  guests: AgendaGuest[];
+  type: string;
+  offline_location: string | null;
+  online_url: string | null;
+  description: string;
+}
+
 interface FormValues {
   title: string;
   date: Date | null;
@@ -55,9 +69,11 @@ interface FormValues {
 
 interface ModalCreateAgendaProps {
   isEdit?: boolean;
+  personalAgendaId?: number;
+  agendaData?: AgendaData;
 }
 const ModalCreateAgenda = NiceModal.create(
-  ({ isEdit }: ModalCreateAgendaProps) => {
+  ({ isEdit, agendaData }: ModalCreateAgendaProps) => {
     const modalId = MODAL_IDS.CALENDAR.CREATE_AGENDA;
     const modal = useModal(modalId);
 
@@ -67,15 +83,22 @@ const ModalCreateAgenda = NiceModal.create(
 
     const form = useForm<FormValues>({
       initialValues: {
-        title: "",
-        date: null,
-        start_time: "",
-        end_time: "",
-        employee_ids: [],
-        type: null,
-        offline_location: "",
-        online_url: "",
-        description: "",
+        title: agendaData?.title || "",
+        date: agendaData?.start_date
+          ? dayjs(agendaData.start_date).startOf("day").toDate()
+          : null,
+        start_time: agendaData?.start_date
+          ? dayjs(agendaData.start_date).format("HH:mm")
+          : "",
+        end_time: agendaData?.end_date
+          ? dayjs(agendaData.end_date).format("HH:mm")
+          : "",
+        employee_ids:
+          agendaData?.guests?.map((g) => `${g?.employee_id}`) || [],
+        type: agendaData?.type || null,
+        offline_location: agendaData?.offline_location || "",
+        online_url: agendaData?.online_url || "",
+        description: agendaData?.description || "",
       },
       validate: yupResolver(
         yup.object().shape({
@@ -163,8 +186,20 @@ const ModalCreateAgenda = NiceModal.create(
       if (dataEmployees?.length) {
         result = [...dataEmployees];
       }
+      if (agendaData?.guests?.length) {
+        const mapped = agendaData.guests.map((g) => ({
+          value: `${g?.employee_id}`,
+          label: `${g?.name}`,
+          // Fields below will be used for PersonCard component props
+          name: g?.name,
+          positionName: g?.employee_number,
+          imageUrl: g?.profile_picture,
+          badgeIcon: g?.is_sme ? <SMEIcon size={12} /> : null,
+        })) as EmployeeOptions;
+        result = [...mapped, ...result];
+      }
       return result;
-    }, [dataEmployees]);
+    }, [dataEmployees, agendaData]);
 
     const showEditConfirmation = () => {
       NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {

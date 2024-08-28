@@ -27,6 +27,7 @@ import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 // const PAGE_SIZE = 10;
 
 interface AgendaCardProps {
+  agendaId?: number;
   title: string;
   communityName?: string;
   description: string | null;
@@ -43,6 +44,7 @@ interface AgendaCardProps {
 }
 
 function AgendaCard({
+  agendaId,
   title,
   communityName,
   description,
@@ -95,6 +97,18 @@ function AgendaCard({
               onClick={() =>
                 NiceModal.show(MODAL_IDS.CALENDAR.CREATE_AGENDA, {
                   isEdit: true,
+                  personalAgendaId: agendaId,
+                  agendaData: {
+                    title,
+                    start_date: startDate,
+                    end_date: endDate,
+                    guests,
+                    type,
+                    offline_location:
+                      type === "Offline" ? location : null,
+                    online_url: type === "Online" ? location : null,
+                    description,
+                  },
                 })
               }
             >
@@ -368,6 +382,7 @@ const ModalDetailCalendar = NiceModal.create(
                 return dataPersonal.map((item) => (
                   <AgendaCard
                     key={`personal-agenda-${item.personal_agenda_id}`}
+                    agendaId={item?.personal_agenda_id}
                     title={item?.title}
                     description={item?.description}
                     startDate={item?.start_date}
