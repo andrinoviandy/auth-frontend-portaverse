@@ -103,7 +103,8 @@ export default function PanelCalendar() {
           const todayDate = new Date().getDate();
           const day = d.getDate();
           const monthName = dayjs(d).format("MMM");
-          const isCurrentMonth = d.getMonth() === month.getMonth();
+          const isCurrentMonth =
+            d.getMonth() === new Date().getMonth();
           const isPastDate = day < todayDate;
 
           const cellClassName = (() => {
