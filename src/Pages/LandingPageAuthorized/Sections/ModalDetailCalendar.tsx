@@ -21,6 +21,11 @@ import {
 import NoItems from "../../../Components/Errors/NoItems";
 import MODAL_IDS from "../../../Components/Modals/modalIds";
 import SectionModalTemplate from "../../../Components/Modals/Templates/SectionModal";
+import {
+  BASE_PROXY,
+  SOCIAL_ENDPOINT,
+} from "../../../Networks/endpoint";
+import { Networks } from "../../../Networks/factory";
 import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 
@@ -210,135 +215,42 @@ const ModalDetailCalendar = NiceModal.create(
       "personal",
     );
 
-    const isLoading = false;
-    const dataPersonal: PersonalAgenda[] = [
+    const { query } = Networks(BASE_PROXY.social);
+    const {
+      data: fetchedPersonalData,
+      isLoading: isLoadingPersonal,
+    } = query(
+      SOCIAL_ENDPOINT.GET.agendaPersonal,
+      ["agendaPersonal", date],
       {
-        personal_agenda_id: 1,
-        creator_employee_id: 7,
-        title: "Team Building Workshop",
-        description:
-          "A workshop focused on team-building activities and exercises.",
-        type: "Offline",
-        start_date: "2024-09-10T09:00:00Z",
-        end_date: "2024-09-10T17:00:00Z",
-        offline_location: "Conference Room A, HQ Building",
-        online_url: null,
-        guests: [
-          {
-            employee_id: 102,
-            social_employee_profile_id: 201,
-            name: "Alice Johnson",
-            profile_picture: "https://example.com/profiles/alice.jpg",
-            employee_number: "E123",
-            is_sme: false,
-          },
-          {
-            employee_id: 103,
-            social_employee_profile_id: 202,
-            name: "Bob Smith",
-            profile_picture: "https://example.com/profiles/bob.jpg",
-            employee_number: "E124",
-            is_sme: true,
-          },
-        ],
+        enabled: activeTab === "personal",
       },
       {
-        personal_agenda_id: 2,
-        creator_employee_id: 104,
-        title: "Monthly Sync Meeting",
-        description:
-          "A regular meeting to discuss the progress of ongoing projects.",
-        type: "Online",
-        start_date: "2024-09-15T14:00:00Z",
-        end_date: "2024-09-15T15:00:00Z",
-        offline_location: null,
-        online_url: "https://example.com/meeting/12345",
-        guests: [
-          {
-            employee_id: 105,
-            social_employee_profile_id: 203,
-            name: "Carol Davis",
-            profile_picture: "https://example.com/profiles/carol.jpg",
-            employee_number: "E125",
-            is_sme: false,
-          },
-          {
-            employee_id: 106,
-            social_employee_profile_id: 204,
-            name: "David Lee",
-            profile_picture: "https://example.com/profiles/david.jpg",
-            employee_number: "E126",
-            is_sme: true,
-          },
-        ],
+        params: {
+          start_date: date,
+          end_date: date,
+        },
       },
-    ];
+    );
+    const {
+      data: fetchedCommunityData,
+      isLoading: isLoadingCommunity,
+    } = query(
+      SOCIAL_ENDPOINT.GET.agendaCommunity,
+      ["agendaCommunity", date],
+      {
+        enabled: activeTab === "community",
+      },
+      {
+        params: {
+          start_date: date,
+          end_date: date,
+        },
+      },
+    );
 
-    const dataCommunity: CommunityAgenda[] = [
-      {
-        agenda_id: 1,
-        cop_id: 10,
-        cop_name: "Community Name",
-        title: "Tech Innovations Webinar",
-        description:
-          "A webinar discussing the latest in tech innovations.",
-        type: "Online",
-        start_date: "2024-09-15T14:00:00Z",
-        end_date: "2024-09-15T15:30:00Z",
-        speaker: {
-          employee_id: 101,
-          social_employee_profile_id: 20204,
-          name: "Alice Johnson",
-        },
-        offline_location: null,
-        online_url: "https://example.com/webinar-tech-innovations",
-        is_coi: false,
-        picture_url:
-          "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-      },
-      {
-        agenda_id: 2,
-        cop_id: 10,
-        cop_name: "Community Name",
-        title: "Annual Marketing Conference",
-        description:
-          "An annual conference focusing on marketing strategies and trends.",
-        type: "Offline",
-        start_date: "2024-10-05T09:00:00Z",
-        end_date: "2024-10-05T17:00:00Z",
-        speaker: {
-          employee_id: 202,
-          social_employee_profile_id: 30507,
-          name: "Bob Smith",
-        },
-        offline_location: "Convention Center, Downtown",
-        online_url: null,
-        is_coi: true,
-        picture_url:
-          "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-      },
-      {
-        agenda_id: 3,
-        cop_id: 10,
-        cop_name: "Community Name",
-        title: "Remote Team Building Workshop",
-        description:
-          "A workshop designed to enhance teamwork among remote teams.",
-        type: "Online",
-        start_date: "2024-11-01T11:00:00Z",
-        end_date: "2024-11-01T12:30:00Z",
-        speaker: {
-          employee_id: 303,
-          social_employee_profile_id: 40608,
-          name: "Carla Davis",
-        },
-        offline_location: null,
-        online_url: "https://example.com/remote-team-building",
-        is_coi: false,
-        picture_url:
-          "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-      },
-    ];
+    const dataPersonal: PersonalAgenda[] = fetchedPersonalData;
+    const dataCommunity: CommunityAgenda[] = fetchedCommunityData;
 
     return (
       <SectionModalTemplate
@@ -374,8 +286,8 @@ const ModalDetailCalendar = NiceModal.create(
 
           <section className="flex flex-col gap-4">
             {(() => {
-              if (isLoading) {
-                return <Loader />;
+              if (isLoadingCommunity || isLoadingPersonal) {
+                return <Loader className="mx-auto my-10" />;
               }
 
               if (activeTab === "personal" && dataPersonal?.length) {
