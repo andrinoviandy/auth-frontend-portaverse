@@ -247,6 +247,7 @@ export const SOCIAL_ENDPOINT = {
     activities: (employeeId) =>
       `/social-employee/employee/${employeeId}/activities`,
     socialEmployees: `/social-employee/employee`,
+    calendarSummary: "/social-post/employee/post/count-agenda",
   },
   PUT: {
     post: (postId) => `/social-post/employee/post/${postId}`,

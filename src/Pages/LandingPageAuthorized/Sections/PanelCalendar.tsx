@@ -5,9 +5,13 @@ import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import "dayjs/locale/id";
 
+import { CalendarDate, CalendarSummaryResponse } from "./index.types";
 import MODAL_IDS from "../../../Components/Modals/modalIds";
 import MonthSlider from "../../../Components/MonthSlider";
-import { BASE_PROXY } from "../../../Networks/endpoint";
+import {
+  BASE_PROXY,
+  SOCIAL_ENDPOINT,
+} from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 import cn from "../../../Utils/Helpers/cn";
 
@@ -40,18 +44,21 @@ export default function PanelCalendar() {
   }, [month]);
 
   const { query } = Networks(BASE_PROXY.cop);
-  const { data } = query(
-    "",
+  const { data: fetchedData } = query(
+    SOCIAL_ENDPOINT.GET.calendarSummary,
     ["myAgendaListCalendar", getRangeFilter],
     {
-      select: (res) => res?.result,
+      select: (res: CalendarSummaryResponse) => res?.date,
     },
     {
       params: {
-        dates: getRangeFilter?.join(",").slice(0, -1),
+        start_date: getRangeFilter[0],
+        end_date: getRangeFilter[getRangeFilter.length - 1],
       },
     },
   );
+
+  const data: CalendarDate[] = fetchedData;
 
   const handleClickDate = (date: DateValue) => {
     NiceModal.show(MODAL_IDS.CALENDAR.DATE_DETAIL, {
@@ -111,21 +118,15 @@ export default function PanelCalendar() {
             return "bg-bg2";
           })();
 
-          // const filteredData = data?.find(
-          //   (v) =>
-          //     dayjs(v?.date).format("YYYY/MM/DD") ===
-          //     dayjs(d).format("YYYY/MM/DD"),
-          // )?.agenda;
+          const filteredData = data?.find(
+            (v) =>
+              dayjs(v?.date).format("YYYY/MM/DD") ===
+              dayjs(d).format("YYYY/MM/DD"),
+          );
 
-          // const agenda = (() => {
-          //   if (filteredData?.length > 2) {
-          //     return [filteredData?.[0]];
-          //   }
-          //   return filteredData;
-          // })();
-
-          // TODO: Should be dynamic
-          const hasNotif = day % 2 === 0;
+          const hasNotif =
+            !!filteredData?.counts.community ||
+            filteredData?.counts.personal;
 
           return (
             <div
@@ -147,19 +148,18 @@ export default function PanelCalendar() {
                 </p>
               </div>
 
-              {/* //TODO: Should be dynamically rendered */}
               {hasNotif && (
                 <Group gap="sm">
                   <Group align="center" gap={5}>
                     <Indicator zIndex={1} size={4} />
                     <p className="text-xs font-medium text-primary3">
-                      7
+                      {filteredData?.counts?.personal}
                     </p>
                   </Group>
                   <Group align="center" gap={5}>
                     <Indicator zIndex={1} size={4} color="red" />
                     <p className="text-xs font-medium text-danger3">
-                      7
+                      {filteredData?.counts?.community}
                     </p>
                   </Group>
                 </Group>

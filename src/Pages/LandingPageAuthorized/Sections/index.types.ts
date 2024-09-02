@@ -40,3 +40,14 @@ export interface CommunityAgenda {
   is_coi: boolean;
   picture_url: string | null;
 }
+
+export interface CalendarDate {
+  date: string;
+  counts: {
+    personal: number;
+    community: number;
+  };
+}
+export interface CalendarSummaryResponse {
+  date: CalendarDate[];
+}
