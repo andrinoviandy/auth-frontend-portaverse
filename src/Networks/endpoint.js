@@ -226,6 +226,7 @@ export const SOCIAL_ENDPOINT = {
     mention: (postId) =>
       `/social-post/employee/post/${postId}/mentions`,
     report: (postId) => `/social-post/employee/post/report/${postId}`,
+    agendaPersonal: "/social-post/employee/user-agenda",
   },
   DELETE: {
     post: (postId) => `/social-post/employee/post/${postId}`,
@@ -234,6 +235,8 @@ export const SOCIAL_ENDPOINT = {
     postComment: (commentId) =>
       `/social-post/employee/post/comments/${commentId}`,
     poll: (pollId) => `/social-post/employee/post/poll/${pollId}`,
+    agendaPersonal: (personalAgendaId) =>
+      `/social-post/employee/user-agenda/${personalAgendaId}`,
   },
   GET: {
     timelinePost: "/social-post/employee/post",
@@ -253,6 +256,8 @@ export const SOCIAL_ENDPOINT = {
   },
   PUT: {
     post: (postId) => `/social-post/employee/post/${postId}`,
+    agendaPersonal: (personalAgendaId) =>
+      `/social-post/employee/user-agenda/${personalAgendaId}`,
   },
 };
 

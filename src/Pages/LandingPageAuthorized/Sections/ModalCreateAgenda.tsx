@@ -21,7 +21,7 @@ import { useForm, yupResolver } from "@mantine/form";
 import { useDebouncedValue } from "@mantine/hooks";
 import dayjs from "dayjs";
 import { ComponentType, useMemo, useRef, useState } from "react";
-import { InfiniteData } from "react-query";
+import { InfiniteData, useQueryClient } from "react-query";
 import * as yup from "yup";
 
 import { AgendaGuest } from "./index.types";
@@ -34,6 +34,7 @@ import SectionModalTemplate from "../../../Components/Modals/Templates/SectionMo
 import {
   BASE_PROXY,
   EMPLOYEES_ENDPOINT,
+  SOCIAL_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
@@ -73,7 +74,11 @@ interface ModalCreateAgendaProps {
   agendaData?: AgendaData;
 }
 const ModalCreateAgenda = NiceModal.create(
-  ({ isEdit, agendaData }: ModalCreateAgendaProps) => {
+  ({
+    isEdit,
+    personalAgendaId,
+    agendaData,
+  }: ModalCreateAgendaProps) => {
     const modalId = MODAL_IDS.CALENDAR.CREATE_AGENDA;
     const modal = useModal(modalId);
 
@@ -137,6 +142,15 @@ const ModalCreateAgenda = NiceModal.create(
     );
 
     const { infiniteQuery } = Networks(BASE_PROXY.employees);
+    const { mutation } = Networks(BASE_PROXY.social);
+
+    const { mutate: mutateDelete, isLoading: isLoadingDelete } =
+      mutation("delete");
+    const { mutate: mutatePost, isLoading: isLoadingPost } =
+      mutation("post");
+    const { mutate: mutatePut, isLoading: isLoadingPut } =
+      mutation("put");
+
     const {
       ref: refEmployees,
       isLoading: isLoadingEmployees,
@@ -201,24 +215,91 @@ const ModalCreateAgenda = NiceModal.create(
       return result;
     }, [dataEmployees, agendaData]);
 
+    const queryClient = useQueryClient();
+
+    const handleSuccessMutate = () => {
+      closeNiceModal(modalId).then(() => {
+        queryClient.invalidateQueries(["agendaPersonal"]);
+        queryClient.invalidateQueries(["agendaCommunity"]);
+        queryClient.invalidateQueries(["myAgendaListCalendar"]);
+      });
+    };
+
+    const getReqBody = () => {
+      return {
+        name: form.values.title,
+        invited_social_employee_profile_id:
+          form.values.employee_ids.map((id) => +id),
+        start_date: combineDateAndTime(
+          form.values.date!,
+          form.values.start_time,
+        ),
+        end_date: combineDateAndTime(
+          form.values.date!,
+          form.values.end_time,
+        ),
+        type: form.values.type,
+        location:
+          form.values.type === "Online"
+            ? form.values.online_url
+            : form.values.offline_location,
+        description: form.values.description,
+      };
+    };
+
+    const handleCreate = () => {
+      mutatePost(
+        {
+          endpoint: SOCIAL_ENDPOINT.POST.agendaPersonal,
+          data: getReqBody(),
+        },
+        { onSuccess: handleSuccessMutate },
+      );
+    };
+
     const showEditConfirmation = () => {
+      const handleEdit = () => {
+        mutatePut(
+          {
+            endpoint:
+              SOCIAL_ENDPOINT.PUT.agendaPersonal(personalAgendaId),
+            data: getReqBody(),
+          },
+          { onSuccess: handleSuccessMutate },
+        );
+      };
+
       NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
         message: "Konfirmasi",
         subMessage:
           "Apakah Anda yakin untuk menyimpan perubahan agenda ini?",
         variant: "warning",
         handleConfirm: () =>
-          closeNiceModal(MODAL_IDS.GENERAL.CONFIRMATION),
+          closeNiceModal(MODAL_IDS.GENERAL.CONFIRMATION).then(
+            handleEdit,
+          ),
       });
     };
 
     const showDeleteConfirmation = () => {
+      const handleDelete = () => {
+        mutateDelete(
+          {
+            endpoint:
+              SOCIAL_ENDPOINT.DELETE.agendaPersonal(personalAgendaId),
+          },
+          { onSuccess: handleSuccessMutate },
+        );
+      };
+
       NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
         message: "Konfirmasi",
         subMessage: "Apakah Anda yakin untuk menghapus agenda ini?",
         variant: "danger",
         handleConfirm: () =>
-          closeNiceModal(MODAL_IDS.GENERAL.CONFIRMATION),
+          closeNiceModal(MODAL_IDS.GENERAL.CONFIRMATION).then(
+            handleDelete,
+          ),
       });
     };
 
@@ -270,6 +351,9 @@ const ModalCreateAgenda = NiceModal.create(
             <Button
               variant="outline"
               onClick={() => closeNiceModal(modalId)}
+              disabled={
+                isLoadingPost || isLoadingPut || isLoadingDelete
+              }
             >
               Kembali
             </Button>
@@ -280,13 +364,20 @@ const ModalCreateAgenda = NiceModal.create(
                   variant="outline"
                   color="red"
                   onClick={showDeleteConfirmation}
+                  loading={isLoadingDelete}
+                  disabled={isLoadingPost || isLoadingPut}
                 >
                   Hapus Agenda
                 </Button>
               )}
               <Button
-                onClick={isEdit ? showEditConfirmation : () => {}}
-                disabled={!form.isValid() || !form.isDirty()}
+                onClick={isEdit ? showEditConfirmation : handleCreate}
+                disabled={
+                  !form.isValid() ||
+                  !form.isDirty() ||
+                  isLoadingDelete
+                }
+                loading={isLoadingPost || isLoadingPut}
               >
                 {isEdit ? "Simpan Perubahan" : "Buat Agenda"}
               </Button>
