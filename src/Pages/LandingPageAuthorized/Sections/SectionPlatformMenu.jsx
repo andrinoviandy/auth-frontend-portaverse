@@ -170,7 +170,7 @@ export default function SectionPlatformMenu() {
           route: "/virtu-vr",
           icon: (
             <Icon
-              icon="material-symbols:head-mounted-device"
+              icon="material-symbols:3d-rotation"
               color={color.primary3}
               width={40}
             />
