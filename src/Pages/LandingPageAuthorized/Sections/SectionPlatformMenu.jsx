@@ -163,7 +163,20 @@ export default function SectionPlatformMenu() {
           icon: <img src={AoE} alt="repo" className="w-[40px]" />,
           hasAccess: true,
         },
-
+        {
+          label: "Virtu VR",
+          description:
+            "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+          route: "/virtu-vr",
+          icon: (
+            <Icon
+              icon="material-symbols:head-mounted-device"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
         // {
         //   label: "Headquarter",
         //   description:
@@ -495,19 +508,6 @@ export default function SectionPlatformMenu() {
           hasAccess: false,
           comingSoon: true,
         },
-        {
-          label: "My Profile",
-          description: "Profil lengkap pekerja Pelindo",
-          route: "/my-profile/personal-data",
-          icon: (
-            <Icon
-              icon="material-symbols:account-box-outline"
-              width={40}
-              color={color.primary3}
-            />
-          ),
-          hasAccess: true,
-        },
         // {
         //   label: "Performance Report",
         //   description:
@@ -524,6 +524,19 @@ export default function SectionPlatformMenu() {
         //   hasAccess: false,
         //   comingSoon: true,
         // },
+        {
+          label: "My Profile",
+          description: "Profil lengkap pekerja Pelindo",
+          route: "/my-profile",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
       ],
       IMS: [
         {
@@ -560,7 +573,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasAccessIMSHQ,
+          hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
           adminOnly: true,
         },
       ],
@@ -633,7 +646,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["CADH"]),
+          hasAccess: hasRole(["SA"]),
           adminOnly: true,
         },
       ],
@@ -645,7 +658,7 @@ export default function SectionPlatformMenu() {
     SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
     [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
     {
-      onError: () => { },
+      onError: () => {},
       onSuccess: (res) => {
         const hasAccepted = !!res?.pass;
         setHasAccessSMS(hasAccepted);
@@ -674,7 +687,6 @@ export default function SectionPlatformMenu() {
         sx={MANTINE_TAB_STYLES.default.sx}
       >
         <Tabs.List grow>
-          {/* {["KMS", "LMS", "TMS", "IMS"].map((tab) => ( */}
           {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
             <Tabs.Tab
               key={tab}
@@ -695,8 +707,9 @@ export default function SectionPlatformMenu() {
               key={`${activeTab}-${menu?.label}`}
               label={menu?.label}
               description={menu?.description}
-              route={`${menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
-                }${menu.route}`}
+              route={`${
+                menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
+              }${menu.route}`}
               icon={menu?.icon}
               // hidden={!menu?.hasAccess}
               disabled={!menu?.hasAccess}
@@ -748,9 +761,9 @@ function MenuCard({
         style={
           disabled || comingSoon
             ? {
-              filter:
-                "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
-            }
+                filter:
+                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+              }
             : {}
         }
       >
