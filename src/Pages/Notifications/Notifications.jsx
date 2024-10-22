@@ -1,8 +1,8 @@
 import { Tabs } from "@mantine/core";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import NewNavbar from "../../Components/NewNavbar/NewNavbar";
 
+import NewNavbar from "../../Components/NewNavbar";
 import NotificationSection from "../../Components/Notification/NotificationSection";
 
 function Notifications() {
@@ -14,15 +14,13 @@ function Notifications() {
       return (
         <div
           className={`${
-            isAbsolute
-              ? "absolute h-3.5 min-w-[1.5rem]"
-              : "h-5 min-w-[2rem]"
-          } flex justify-center items-center   rounded-full bg-red-700 top-1 left-5`}
+            isAbsolute ? "absolute h-3.5 min-w-6" : "h-5 min-w-8"
+          } left-5 top-1 flex   items-center justify-center rounded-full bg-red-700`}
         >
           <h6
             className={`${
               isAbsolute ? "" : "text-md"
-            } text-white font-semibold px-0.5`}
+            } px-0.5 font-semibold text-white`}
           >
             99
           </h6>
@@ -37,20 +35,22 @@ function Notifications() {
     return (
       <div
         className={`${
-          isAbsolute ? "absolute h-3.5 " : "h-5 min-w-[1.5rem]"
-        } flex justify-center items-center min-w-[0.875rem] rounded-full bg-red-700 top-1 left-5`}
+          isAbsolute ? "absolute h-3.5 " : "h-5 min-w-6"
+        } left-5 top-1 flex min-w-3.5 items-center justify-center rounded-full bg-red-700`}
       >
-        <h6 className="text-white font-semibold px-0.5">{v}</h6>
+        <h6 className="px-0.5 font-semibold text-white">{v}</h6>
       </div>
     );
   };
 
   return (
     <div className="flex flex-col">
+      {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
+      {/* <Navbar /> */}
       <NewNavbar />
-      <div className="px-[6rem] py-8">
-        <div className="flex justify-between items-center">
-          <h1 className="font-semibold pb-4">Notifikasi</h1>
+      <div className="px-24 py-8">
+        <div className="flex items-center justify-between">
+          <h1 className="pb-4 font-semibold">Notifikasi</h1>
           {/* <Button
             onClick={() => {
               window.location.href = `${
@@ -66,8 +66,8 @@ function Notifications() {
         </div>{" "}
         <Tabs
           value={activeTab}
-          onTabChange={setActiveTab}
-          sx={() => ({
+          onChange={setActiveTab}
+          style={() => ({
             "[data-active]": {
               color: "rgb(1, 109, 178) !important",
             },
@@ -79,7 +79,7 @@ function Notifications() {
           <Tabs.List>
             <Tabs.Tab value="all">
               <div
-                className={`flex gap-2 items-center ${
+                className={`flex items-center gap-2 ${
                   activeTab !== "all"
                     ? "text-darkGrey"
                     : "text-primary3"
@@ -90,7 +90,7 @@ function Notifications() {
             </Tabs.Tab>
             <Tabs.Tab value="kms">
               <div
-                className={`flex gap-2 items-center ${
+                className={`flex items-center gap-2 ${
                   activeTab !== "kms"
                     ? "text-darkGrey"
                     : "text-primary3"
@@ -102,7 +102,7 @@ function Notifications() {
 
             <Tabs.Tab value="lms">
               <div
-                className={`flex gap-2 items-center ${
+                className={`flex items-center gap-2 ${
                   activeTab !== "lms"
                     ? "text-darkGrey"
                     : "text-primary3"
@@ -114,7 +114,7 @@ function Notifications() {
             </Tabs.Tab>
             <Tabs.Tab value="tms">
               <div
-                className={`flex gap-2 items-center ${
+                className={`flex items-center gap-2 ${
                   activeTab !== "tms"
                     ? "text-darkGrey"
                     : "text-primary3"
@@ -126,7 +126,7 @@ function Notifications() {
             </Tabs.Tab>
             <Tabs.Tab value="cms">
               <div
-                className={`flex gap-2 items-center ${
+                className={`flex items-center gap-2 ${
                   activeTab !== "cms"
                     ? "text-darkGrey"
                     : "text-primary3"

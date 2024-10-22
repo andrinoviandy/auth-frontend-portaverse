@@ -1,6 +1,7 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { Icon } from "@iconify/react";
-import { ActionIcon, clsx } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
+import clsx from "clsx"
 import { useState } from "react";
 import { BASE_PROXY, CMS_ENDPOINT } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";

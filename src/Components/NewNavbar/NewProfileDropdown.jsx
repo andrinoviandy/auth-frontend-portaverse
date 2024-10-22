@@ -2,6 +2,9 @@ import { Icon } from "@iconify/react";
 import { Popover } from "@mantine/core";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import Exit from "../Assets/Icon/Exit";
+import ProfilePicture from "../ProfilePicture";
 import { setSocialMediaProfile } from "../../Configs/Redux/slice";
 import {
   AUTH_ENDPOINT,
@@ -10,8 +13,6 @@ import {
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
-import Exit from "../Assets/Icon/Exit";
-import ProfilePicture from "../ProfilePicture";
 
 export default function ProfileDropdown() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function ProfileDropdown() {
   const img = user?.employee?.profile_picture;
 
   const auth = Networks(BASE_PROXY.auth);
-  const { mutate: logout, isLoading } = auth.mutation("post", {
+  const { mutate: logout } = auth.mutation("post", {
     onSuccess: () => {
       navigate("/login");
     },
@@ -65,12 +66,12 @@ export default function ProfileDropdown() {
       width={400}
       radius="md"
     >
-      <Popover.Target className="flex justify-center items-center gap-1.5 mr-2.5">
+      <Popover.Target className="mr-2.5 flex items-center justify-center gap-1.5">
         <button type="button">
           <ProfilePicture
             name={name}
-            img={data?.profilePicture || img}
-            className="w-7 h-7 rounded-full object-cover"
+            imageUrl={data?.profilePicture || img}
+            size={28}
             alt="profile"
           />
           <Icon
@@ -81,16 +82,17 @@ export default function ProfileDropdown() {
         </button>
       </Popover.Target>
 
-      <Popover.Dropdown className="rounded-xl w-[320px] p-0 shadow-md">
+      <Popover.Dropdown className="shadow-md w-[320px] rounded-xl p-0">
         <div className="flex gap-3 p-4">
           <ProfilePicture
             name={name}
-            img={data?.profilePicture || img}
-            className="w-10 h-10 rounded-full object-cover"
+            imageUrl={data?.profilePicture || img}
+            size={40}
             alt="profile"
           />
+
           <div>
-            <p className="font-semibold text-lg break-words">
+            <p className="break-words text-lg font-semibold">
               {name}
             </p>
             <p className="font-semibold text-darkGrey">
@@ -102,7 +104,7 @@ export default function ProfileDropdown() {
           </div>
         </div>
 
-        <div className="[&>*]:border-t [&>*]:border-grey2 [&>*]:px-5 [&>*]:py-4 [&>*]:w-full">
+        <div className="[&>*]:w-full [&>*]:border-t [&>*]:border-grey2 [&>*]:px-5 [&>*]:py-4">
           {/* <button
             type="button"
             className="hover:bg-bg2"
@@ -120,7 +122,7 @@ export default function ProfileDropdown() {
               logout({ endpoint: AUTH_ENDPOINT.POST.logout })
             }
           >
-            <div className="flex gap-2 items-center text-red-800">
+            <div className="flex items-center gap-2 text-red-800">
               <Exit />
               <p className="font-medium">Sign out</p>
             </div>

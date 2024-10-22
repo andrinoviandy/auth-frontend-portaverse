@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import "@mantine/core/styles.css";
+@import "@mantine/dropzone/styles.css";
+@import "@mantine/dates/styles.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -237,4 +241,81 @@ select:focus > option:hover {
 #reload_href {
   color: #016db2 !important;
   font-weight: 600;
+}
+
+
+.mantine-Tabs-list {
+  &[data-variant="default"] {
+    &::before {
+      border-color: #f2f4f8;
+    }
+  }
+}
+
+.mantine-Tabs-tab {
+  &[data-variant="default"] {
+    color: #878d96;
+    font-weight: 600;
+    font-size: 16;
+    padding-bottom: 0.75rem;
+    &:hover {
+      background: white;
+    }
+    &[data-active="true"] {
+      color: #016db2;
+      border-color: #016db2;
+    }
+  }
+
+  &[data-variant="pills"] {
+    background: white;
+    border: 1px solid;
+    border-color: #878d96;
+    color: #878d96;
+    font-weight: 500;
+    margin-right: 10px;
+
+    &:disabled {
+      background: #f2f4f8;
+      color: #878d96;
+      border-color: #878d96;
+    }
+
+    &[data-active="true"] {
+      color: #016db2;
+      background: #c9f3fb;
+      border-color: #016db2;
+    }
+  }
+}
+
+.mantine-ActionIcon-root {
+  /* Override Mantine's 'transparent' variant disabled state of ActionIcon component */
+  &[data-variant="transparent"]:disabled {
+    background-color: transparent;
+  }
+}
+
+
+/* Override Mantine's Button 'outline' variant default style */
+.mantine-Button-root {
+  flex-shrink: 0;
+  &[data-variant="outline"] {
+    &:disabled {
+      border: 1.5px solid #dde1e6;
+      background-color: transparent;
+    }
+  }
+  &[data-variant="transparent"] {
+    &:disabled {
+      background-color: transparent;
+    }
+  }
+}
+
+/* Override Mantine's Input disabled text color */
+.mantine-Input-input {
+  &:disabled {
+    color: black;
+  }
 }

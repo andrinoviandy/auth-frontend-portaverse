@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from "react";
 import dayjs from "dayjs";
-import { clsx } from "@mantine/core";
+import clsx from "clsx"
 import { Icon } from "@iconify/react";
 import CellCalendarMonth from "../CellCalendarMonth";
 import { LIST_OF_SHORT_MONTH } from "../../../../Utils/Constants";

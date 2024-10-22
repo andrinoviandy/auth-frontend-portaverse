@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { clsx } from "@mantine/core";
+import clsx from "clsx"
 import PropTypes from "prop-types";
 import { color } from "../../Utils/Constants";
 

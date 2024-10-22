@@ -7,7 +7,10 @@ import { useForm } from "@mantine/form";
 import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
-import { CustomMantineDropzone } from "../../../Components/Dropzone/Dropzone";
+
+import MODAL_IDS from "../modalIds";
+import SectionModalTemplate from "../Templates/SectionModal";
+import { CustomMantineDropzone } from "../../Dropzone/Dropzone";
 import {
   postFile,
   putBannerSection,
@@ -23,8 +26,6 @@ import {
 import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
 import showErrorDialog from "../../../Utils/Helpers/showErrorDialog";
 import showSuccessDialog from "../../../Utils/Helpers/showSuccessDialog";
-import MODAL_IDS from "../modalIds";
-import SectionModalTemplate from "../Templates/SectionModal";
 
 const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
 const EditFormModal = NiceModal.create(
@@ -267,7 +268,7 @@ const EditFormModal = NiceModal.create(
 
     if (isPreview) {
       return (
-        <div className="fixed flex justify-between items-center top-0 px-5 py-4 bg-primary1 shadow w-full z-[100]">
+        <div className="shadow fixed top-0 z-[100] flex w-full items-center justify-between bg-primary1 px-5 py-4">
           <p className="font-semibold">Pratinjau Perubahan</p>
           <div className="flex gap-2">
             <Button
@@ -310,7 +311,7 @@ const EditFormModal = NiceModal.create(
           </>
         }
       >
-        <form className="flex flex-col w-full p-4">
+        <form className="flex w-full flex-col p-4">
           {type === "text" && (
             <Textarea
               variant="unstyled"
@@ -342,7 +343,7 @@ const EditFormModal = NiceModal.create(
             </Input.Wrapper>
           )}
           {type === "socmed" && (
-            <div className="flex flex-col w-full gap-5">
+            <div className="flex w-full flex-col gap-5">
               <TextInput
                 classNames={{
                   icon: "bg-bg2 text-black/60 rounded-l",

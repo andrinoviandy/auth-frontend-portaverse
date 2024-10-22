@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Icon } from "@iconify/react";
-import { Tabs, clsx } from "@mantine/core";
+import { Tabs } from "@mantine/core";
+import clsx from "clsx"
 import { useMemo, useState } from "react";
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
@@ -669,16 +670,16 @@ export default function SectionPlatformMenu() {
     <section className="flex flex-col gap-10 py-16 px-[5rem]">
       <Tabs
         value={activeTab}
-        onTabChange={setActiveTab}
+        onChange={setActiveTab}
         radius="lg"
-        sx={MANTINE_TAB_STYLES.default.sx}
+       
       >
         <Tabs.List grow>
           {/* {["KMS", "LMS", "TMS", "IMS"].map((tab) => ( */}
           {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
             <Tabs.Tab
               key={tab}
-              sx={MANTINE_TAB_STYLES.default.sxChild}
+              
               value={tab}
             >
               {tab}

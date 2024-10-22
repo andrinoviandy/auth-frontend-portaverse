@@ -3,6 +3,9 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { Button, Textarea } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import * as yup from "yup";
+
+import MODAL_IDS from "../modalIds";
+import SectionModalTemplate from "../Templates/SectionModal";
 import {
   BASE_PROXY,
   COURSE_ENDPOINT,
@@ -10,8 +13,6 @@ import {
 import { Networks } from "../../../Networks/factory";
 import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
 import showSuccessDialog from "../../../Utils/Helpers/showSuccessDialog";
-import SectionModalTemplate from "../Templates/SectionModal";
-import MODAL_IDS from "../modalIds";
 
 const ModalDeclineExtCourseClaim = NiceModal.create(
   ({ courseClaimIds, onSuccess, note }) => {
@@ -103,7 +104,7 @@ const ModalDeclineExtCourseClaim = NiceModal.create(
           </>
         }
       >
-        <div className="p-5 max-h-[50vh] overflow-y-auto scroll-style-3">
+        <div className="scroll-style-3 max-h-[50vh] overflow-y-auto p-5">
           <Textarea
             label="Alasan Penolakan"
             placeholder="Tuliskan alasan penolakan Anda..."
