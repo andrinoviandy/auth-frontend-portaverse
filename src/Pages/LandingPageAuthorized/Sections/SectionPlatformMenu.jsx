@@ -104,20 +104,6 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-          label: "Master Pegawai",
-          description:
-            "Daftar semua pegawai Pelindo dalam satu modul",
-          route: "/employees",
-          icon: (
-            <Icon
-              icon="mdi:user-box-outline"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: true,
-        },
-        {
           label: "Communities of Practice",
           description:
             "Komunitas yang menjadi wadah knowledge sharing untuk topik-topik strategis",
@@ -524,6 +510,20 @@ export default function SectionPlatformMenu() {
         //   hasAccess: false,
         //   comingSoon: true,
         // },
+        {
+          label: "Master Pegawai",
+          description:
+            "Daftar semua pegawai Pelindo dalam satu modul",
+          route: "/employees",
+          icon: (
+            <Icon
+              icon="mdi:user-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
       ],
       IMS: [
         {
