@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Icon } from "@iconify/react";
 import { Tabs } from "@mantine/core";
-import clsx from "clsx"
+import clsx from "clsx";
 import { useMemo, useState } from "react";
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
@@ -100,20 +100,6 @@ export default function SectionPlatformMenu() {
               icon="clarity:organization-line"
               width={40}
               color={color.primary3}
-            />
-          ),
-          hasAccess: true,
-        },
-        {
-          label: "Master Pegawai",
-          description:
-            "Daftar semua pegawai Pelindo dalam satu modul",
-          route: "/employees",
-          icon: (
-            <Icon
-              icon="mdi:user-box-outline"
-              color={color.primary3}
-              width={40}
             />
           ),
           hasAccess: true,
@@ -526,17 +512,18 @@ export default function SectionPlatformMenu() {
         //   comingSoon: true,
         // },
         {
-          label: "My Profile",
-          description: "Profil lengkap pekerja Pelindo",
-          route: "/my-profile",
+          label: "Master Pegawai",
+          description:
+            "Daftar semua pegawai Pelindo dalam satu modul",
+          route: "/employees",
           icon: (
             <Icon
-              icon="material-symbols:account-box-outline"
+              icon="mdi:user-box-outline"
               color={color.primary3}
               width={40}
             />
           ),
-          hasAccess: hasRole(["USER"]),
+          hasAccess: true,
         },
       ],
       IMS: [
@@ -681,19 +668,10 @@ export default function SectionPlatformMenu() {
 
   return (
     <section className="flex flex-col gap-10 py-16 px-[5rem]">
-      <Tabs
-        value={activeTab}
-        onChange={setActiveTab}
-        radius="lg"
-       
-      >
+      <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
         <Tabs.List grow>
           {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
-            <Tabs.Tab
-              key={tab}
-              
-              value={tab}
-            >
+            <Tabs.Tab key={tab} value={tab}>
               {tab}
             </Tabs.Tab>
           ))}
