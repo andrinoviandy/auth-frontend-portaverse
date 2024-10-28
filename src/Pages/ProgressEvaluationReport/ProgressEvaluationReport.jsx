@@ -7,7 +7,7 @@ import PanelKPI from "./Panels/PanelKPI";
 import PanelPerformance from "./Panels/PanelPerformance";
 import PanelPICA from "./Panels/PanelPICA";
 import YearlyPicker from "../../Components/CustomInputs/DateDropdown/YearlyPicker";
-import NewNavbar from "../../Components/NewNavbar";
+import Navbar from "../../Components/Navbar";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
 
 export default function ProgressEvaluationReport() {
@@ -25,8 +25,8 @@ export default function ProgressEvaluationReport() {
   return (
     <div className="flex flex-col">
       {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
-      {/* <Navbar /> */}
-      <NewNavbar />
+      <Navbar />
+      {/* <NewNavbar /> */}
 
       <section className="flex flex-col gap-5 px-20 py-5">
         <div className="flex items-center justify-between">

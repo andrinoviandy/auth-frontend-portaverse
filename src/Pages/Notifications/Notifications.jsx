@@ -2,7 +2,7 @@ import { Tabs } from "@mantine/core";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import NewNavbar from "../../Components/NewNavbar";
+import Navbar from "../../Components/Navbar";
 import NotificationSection from "../../Components/Notification/NotificationSection";
 
 function Notifications() {
@@ -46,8 +46,8 @@ function Notifications() {
   return (
     <div className="flex flex-col">
       {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
-      {/* <Navbar /> */}
-      <NewNavbar />
+      <Navbar />
+      {/* <NewNavbar /> */}
       <div className="px-24 py-8">
         <div className="flex items-center justify-between">
           <h1 className="pb-4 font-semibold">Notifikasi</h1>

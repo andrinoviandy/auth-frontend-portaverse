@@ -13,7 +13,7 @@ import SectionPlatformMenu from "./Sections/SectionPlatformMenu";
 import SectionStatistic from "./Sections/SectionStatistic";
 // import DashedPlayButton from "../../Components/Assets/Svg/dashed-play-button.svg";
 import NewFooter from "../../Components/Footer/NewFooter";
-import NewNavbar from "../../Components/NewNavbar";
+import Navbar from "../../Components/Navbar";
 import checkCmsAdminClusterAccess from "../../Utils/Helpers/checkCmsAdminClusterAccess";
 import checkCmsAdminHoAccess from "../../Utils/Helpers/checkCmsAdminHoAccess";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
@@ -49,8 +49,8 @@ export default function NewLandingPageAuthorized() {
   return (
     <div className="flex flex-col">
       {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
-      {/* <Navbar /> */}
-      <NewNavbar />
+      <Navbar />
+      {/* <NewNavbar /> */}
 
       <SectionHero />
       <SectionStatistic />
