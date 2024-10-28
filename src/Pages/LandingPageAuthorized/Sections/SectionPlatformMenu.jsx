@@ -3,17 +3,17 @@ import { Icon } from "@iconify/react";
 import { Tabs } from "@mantine/core";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-// import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
-import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
-import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
+
 import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
 import Podium from "../../../Components/Assets/Svg/podium.svg";
-import PerformanceReport from "../../../Components/Assets/Svg/performance-report.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
 import SignatureManagement from "../../../Components/Assets/Svg/signature-management.svg";
+// import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
+import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
+import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
 import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
@@ -23,7 +23,7 @@ import {
   SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
-import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
+import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
 
@@ -495,6 +495,19 @@ export default function SectionPlatformMenu() {
           hasAccess: false,
           comingSoon: true,
         },
+        {
+          label: "My Profile",
+          description: "Profil lengkap pekerja Pelindo",
+          route: "/my-profile/personal-data",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              width={40}
+              color={color.primary3}
+            />
+          ),
+          hasAccess: true,
+        },
         // {
         //   label: "Performance Report",
         //   description:
@@ -667,7 +680,7 @@ export default function SectionPlatformMenu() {
   );
 
   return (
-    <section className="flex flex-col gap-10 py-16 px-[5rem]">
+    <section className="flex flex-col gap-10 px-20 py-16">
       <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
         <Tabs.List grow>
           {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
@@ -729,9 +742,9 @@ function MenuCard({
     <a
       href={disabled || comingSoon ? "/landing" : route}
       className={clsx(
-        "flex items-center gap-3 border rounded-lg px-5 py-4",
+        "flex items-center gap-3 rounded-lg border px-5 py-4",
         disabled || comingSoon
-          ? "bg-gray-50 pointer-events-none cursor-not-allowed"
+          ? "pointer-events-none cursor-not-allowed bg-gray-50"
           : "bg-white hover:border-primary3",
       )}
     >
@@ -749,10 +762,10 @@ function MenuCard({
         {icon}
       </div>
       <div className="flex flex-col gap-0.5">
-        <div className="flex gap-3 items-center">
+        <div className="flex items-center gap-3">
           <h3
             className={clsx(
-              "font-bold text-base",
+              "text-base font-bold",
               disabled || comingSoon ? "text-gray-400" : "text-text1",
             )}
           >
