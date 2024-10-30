@@ -1,5 +1,6 @@
 import { ModalDef } from "@ebay/nice-modal-react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import Error404 from "./Components/Errors/404";
 import ErrorHandling from "./Components/Errors/ErrorHandling";
 import SuccessHandling from "./Components/Errors/SuccessHandling";
@@ -7,8 +8,8 @@ import LoginLayout from "./Components/Layouts/LoginLayout";
 import MainLayout from "./Components/Layouts/MainLayout";
 import MobileBanner from "./Components/Misc/MobileBanner";
 import Confirmations from "./Components/Modals/Confirmations";
-import ModalPortal from "./Components/Modals/ModalPortal";
 import MODAL_IDS from "./Components/Modals/modalIds";
+import ModalPortal from "./Components/Modals/ModalPortal";
 import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
 import DailyQuizRoute from "./Pages/DailyQuiz/Route";

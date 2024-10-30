@@ -153,8 +153,8 @@ function NewNotification({ icon }) {
         </Menu.Label>
         <Tabs
           value={activeTab}
-          onTabChange={setActiveTab}
-          sx={() => ({
+          onChange={setActiveTab}
+          style={() => ({
             "[data-active]": {
               color: "rgb(1, 109, 178) !important",
             },

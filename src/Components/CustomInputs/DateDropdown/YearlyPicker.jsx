@@ -8,8 +8,8 @@ import {
   Popover,
   Text,
   TextInput,
-  clsx,
 } from "@mantine/core";
+import clsx from "clsx"
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useState } from "react";
@@ -86,6 +86,7 @@ export default function YearlyPicker({
             onFocusCapture={() => setPopoverOpened(true)}
           >
             <ActionIcon
+            variant='transparent'
               onClick={() => {
                 setYearContent(
                   yearsArray.length - 1 === yearContent
@@ -109,6 +110,7 @@ export default function YearlyPicker({
               - {yearsArray[yearContent][0]}
             </Text>
             <ActionIcon
+            variant='transparent'
               onClick={() => {
                 setYearContent(
                   yearContent === 0 ? 0 : yearContent - 1,
@@ -128,7 +130,7 @@ export default function YearlyPicker({
               return (
                 <Box
                   key={i}
-                  sx={() => ({
+                  style={() => ({
                     padding: "1rem .5rem",
                     borderRadius: "0.5rem",
                     background: `${

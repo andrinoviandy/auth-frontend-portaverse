@@ -1,4 +1,5 @@
-import { Button, RingProgress, Text, clsx } from "@mantine/core";
+import { Button, RingProgress, Text } from "@mantine/core";
+import clsx from "clsx"
 import dayjs from "dayjs";
 import { useState } from "react";
 import PerformanceSheetIllust from "../../../Components/Assets/Pictures/PerformanceSheets.png";

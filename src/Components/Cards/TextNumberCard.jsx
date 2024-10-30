@@ -1,4 +1,4 @@
-import { clsx } from "@mantine/core";
+import clsx from "clsx"
 
 export default function TextNumberCard({
   title,
