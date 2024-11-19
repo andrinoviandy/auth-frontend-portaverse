@@ -14,7 +14,7 @@ function HelpCenter() {
     fitur Portaverse`,
       icon: "fluent:chat-bubbles-question-16-filled",
       handleClick: () => {
-        openInNewTab("https://docs.portaverse.co.id");
+        openInNewTab("https://docs-portaverse.pelindo.co.id");
       },
     },
     {
