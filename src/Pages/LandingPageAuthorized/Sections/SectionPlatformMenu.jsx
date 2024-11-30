@@ -538,20 +538,20 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-        {
-          label: "Kamus Indikator Kinerja",
-          description:
-            "Daftar semua Kamus Indikator Kerja",
-          route: "/dictionary",
-          icon: (
-            <Icon
-              icon="mage:book-text"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: true,
-        },
+        // {
+        //   label: "Kamus Indikator Kinerja",
+        //   description:
+        //     "Daftar semua Kamus Indikator Kerja",
+        //   route: "/dictionary",
+        //   icon: (
+        //     <Icon
+        //       icon="mage:book-text"
+        //       color={color.primary3}
+        //       width={40}
+        //     />
+        //   ),
+        //   hasAccess: true,
+        // },
       ],
       IMS: [
         {
