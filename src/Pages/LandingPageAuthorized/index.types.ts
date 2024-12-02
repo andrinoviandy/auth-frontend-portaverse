@@ -25,6 +25,22 @@ export interface EmployeesResponse {
   hasMe: boolean;
 }
 
+export interface SocialEmployee {
+  social_employee_profile_id: number;
+  employee_id: number;
+  firstName: string;
+  role_code?: string;
+  group_name?: string;
+  position_name?: string;
+  profile_picture: string;
+  isSme: boolean;
+  employee_number?: string;
+}
+export interface SocialEmployeeResponse {
+  socialEmployees: SocialEmployee[];
+  totalPage: number;
+}
+
 export interface EmployeeOptionItem {
   label: string;
   value: string;
