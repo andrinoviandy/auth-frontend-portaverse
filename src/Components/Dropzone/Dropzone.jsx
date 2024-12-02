@@ -8,8 +8,8 @@ import {
   Overlay,
   SimpleGrid,
   Text,
-  clsx,
 } from "@mantine/core";
+import clsx from "clsx"
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";

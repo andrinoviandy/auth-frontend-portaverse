@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import ProfilePictureWithBadge from "../ProfilePictureWithBadge";
+
+import ProfilePicture from "../ProfilePicture";
 
 export default function Profile({
   alt,
@@ -10,7 +11,6 @@ export default function Profile({
   badgeIcon,
   rightIcon,
   withImage,
-  noImgVariant = "light",
   classNames = {
     root: "",
     textWrapper: "",
@@ -23,29 +23,29 @@ export default function Profile({
   return (
     <div className={`flex gap-3 ${classNames.root}`}>
       {withImage && (
-        <ProfilePictureWithBadge
-          noImgVariant={noImgVariant}
+        <ProfilePicture
           alt={alt}
           name={name}
-          img={img}
+          imageUrl={img}
+          size={40}
           badgeIcon={badgeIcon}
-          className={`h-[40px] w-[40px] rounded-full shrink-0 ${classNames.profilePicture}`}
+          className="shrink-0"
         />
       )}
       <div
-        className={`flex flex-col text-start items-start justify-center ${classNames.textWrapper}`}
+        className={`flex flex-col items-start justify-center text-start ${classNames.textWrapper}`}
       >
         <div className="flex items-center gap-2">
           <p className={`font-medium ${classNames.name}`}>{name}</p>
           {rightIcon}
         </div>
         <p
-          className={`font-normal text-sm text-darkGrey ${classNames.subName}`}
+          className={`text-sm font-normal text-darkGrey ${classNames.subName}`}
         >
           {subName}
         </p>
         <p
-          className={`font-normal text-sm text-darkGrey ${classNames.subSubName}`}
+          className={`text-sm font-normal text-darkGrey ${classNames.subSubName}`}
         >
           {subSubName}
         </p>

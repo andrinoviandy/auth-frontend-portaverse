@@ -1,4 +1,5 @@
-import { Tooltip, clsx } from "@mantine/core";
+import { Tooltip } from "@mantine/core";
+import clsx from "clsx"
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import trimString from "../../Utils/Helpers/trimString";

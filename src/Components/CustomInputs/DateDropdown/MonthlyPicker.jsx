@@ -63,7 +63,7 @@ export default function MonthlyPicker({ setValueMonth }) {
               return (
                 <Box
                   key={i}
-                  sx={(theme) => ({
+                  style={(theme) => ({
                     padding: "1rem",
                     borderRadius: "0.5rem",
                     background: `${

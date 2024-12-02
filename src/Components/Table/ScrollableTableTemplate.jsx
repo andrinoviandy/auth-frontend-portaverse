@@ -1,4 +1,5 @@
-import { Loader, clsx } from "@mantine/core";
+import { Loader } from "@mantine/core";
+import clsx from "clsx"
 import {
   forwardRef,
   useCallback,

@@ -21,7 +21,7 @@ axiosSSOClient.interceptors.request.use(
 );
 
 // timeout
-axiosSSOClient.defaults.timeout = 5000;
+axiosSSOClient.defaults.timeout = 30000;
 
 // redirect when cookies expired
 axiosSSOClient.interceptors.response.use(

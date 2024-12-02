@@ -1,4 +1,5 @@
-import { Menu, clsx } from "@mantine/core";
+import { Menu } from "@mantine/core";
+import clsx from "clsx"
 import React from "react";
 import openInNewTab from "../../Utils/Helpers/openInNewTab";
 import ActionContainer from "./ActionContainer";

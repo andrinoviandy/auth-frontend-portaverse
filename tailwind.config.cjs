@@ -56,11 +56,21 @@ module.exports = {
       info3: "#3267E3",
       info4: "#193AA3",
     },
+    boxShadow: {
+      button: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+      card: "0px 0px 1px 0px rgba(0, 0, 0, 0.25), 0px 2px 1px 0px rgba(0, 0, 0, 0.05)",
+      sidebar: "1px 0px 10px 0px rgba(0, 0, 0, 0.04)",
+      navbar: "0px 2px 2px 0px rgba(0, 0, 0, 0.05)",
+      footer: "0px -1px 10px 0px rgba(0, 0, 0, 0.04)",
+      popover:
+        "0px 2px 10px 0px rgba(0, 0, 0, 0.10), 0px 0px 2px 0px rgba(0, 0, 0, 0.20)",
+      modal:
+        "0px 26px 80px 0px rgba(0, 0, 0, 0.20), 0px 0px 1px 0px rgba(0, 0, 0, 0.20)",
+    },
     fontFamily: {
       primary: ["Inter", "ui-serif", "Georgia"],
       secondary: ["Inter", "Roboto", "system-ui"],
       tertiary: ["IBM Plex Sans", "Roboto", "system-ui"],
     },
-    plugins: [],
   },
 };

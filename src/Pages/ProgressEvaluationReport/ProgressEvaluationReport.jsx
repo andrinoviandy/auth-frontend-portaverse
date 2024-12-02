@@ -1,14 +1,14 @@
 import { Tabs } from "@mantine/core";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import YearlyPicker from "../../Components/CustomInputs/DateDropdown/YearlyPicker";
-import NewNavbar from "../../Components/NewNavbar/NewNavbar";
-import { MANTINE_TAB_STYLES } from "../../Utils/Constants";
-import getUserCookie from "../../Utils/Helpers/getUserCookie";
+
 import PanelBehavior from "./Panels/PanelBehavior";
 import PanelKPI from "./Panels/PanelKPI";
-import PanelPICA from "./Panels/PanelPICA";
 import PanelPerformance from "./Panels/PanelPerformance";
+import PanelPICA from "./Panels/PanelPICA";
+import YearlyPicker from "../../Components/CustomInputs/DateDropdown/YearlyPicker";
+import Navbar from "../../Components/Navbar";
+import getUserCookie from "../../Utils/Helpers/getUserCookie";
 
 export default function ProgressEvaluationReport() {
   const { employeeId } = useParams();
@@ -24,11 +24,13 @@ export default function ProgressEvaluationReport() {
 
   return (
     <div className="flex flex-col">
-      <NewNavbar />
+      {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
+      <Navbar />
+      {/* <NewNavbar /> */}
 
-      <section className="flex flex-col gap-5 py-5 px-[5rem]">
-        <div className="flex justify-between items-center">
-          <h1 className="font-bold font-tertiary">
+      <section className="flex flex-col gap-5 px-20 py-5">
+        <div className="flex items-center justify-between">
+          <h1 className="font-tertiary font-bold">
             Progress Evaluation Report
           </h1>
           <YearlyPicker
@@ -38,39 +40,14 @@ export default function ProgressEvaluationReport() {
             maxYear={currYear}
           />
         </div>
-        <Tabs
-          value={activeTab}
-          onTabChange={setActiveTab}
-          radius="lg"
-          sx={MANTINE_TAB_STYLES.default.sx}
-        >
+        <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
           <Tabs.List>
-            <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.default.sxChild}
-              value="performance"
-            >
-              Nilai Kinerja
-            </Tabs.Tab>
-            <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.default.sxChild}
-              value="kpi"
-            >
-              KPI Individu
-            </Tabs.Tab>
-            <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.default.sxChild}
-              value="behavior"
-            >
-              Perilaku Individu
-            </Tabs.Tab>
-            <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.default.sxChild}
-              value="pica"
-            >
-              PICA
-            </Tabs.Tab>
+            <Tabs.Tab value="performance">Nilai Kinerja</Tabs.Tab>
+            <Tabs.Tab value="kpi">KPI Individu</Tabs.Tab>
+            <Tabs.Tab value="behavior">Perilaku Individu</Tabs.Tab>
+            <Tabs.Tab value="pica">PICA</Tabs.Tab>
             {/* <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.default.sxChild}
+              
               value="idp"
             >
               IDP
