@@ -226,7 +226,7 @@ export const SOCIAL_ENDPOINT = {
     mention: (postId) =>
       `/social-post/employee/post/${postId}/mentions`,
     report: (postId) => `/social-post/employee/post/report/${postId}`,
-    agendaPersonal: "/social-post/employee/user-agenda",
+    agendaPersonal: "/social-post/employee/post/user-agenda",
   },
   DELETE: {
     post: (postId) => `/social-post/employee/post/${postId}`,
@@ -257,7 +257,7 @@ export const SOCIAL_ENDPOINT = {
   PUT: {
     post: (postId) => `/social-post/employee/post/${postId}`,
     agendaPersonal: (personalAgendaId) =>
-      `/social-post/employee/user-agenda/${personalAgendaId}`,
+      `/social-post/employee/post/user-agenda/${personalAgendaId}`,
   },
 };
 

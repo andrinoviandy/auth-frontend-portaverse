@@ -25,7 +25,10 @@ import { InfiniteData, useQueryClient } from "react-query";
 import * as yup from "yup";
 
 import { AgendaGuest } from "./index.types";
-import { EmployeeOptions, EmployeesResponse } from "../index.types";
+import {
+  EmployeeOptions,
+  SocialEmployeeResponse,
+} from "../index.types";
 import SMEIcon from "../../../Components/Assets/Icon/SME";
 import PersonCard from "../../../Components/Cards/PersonCard";
 import MultiSelect from "../../../Components/Inputs/MultiSelect";
@@ -33,7 +36,6 @@ import MODAL_IDS from "../../../Components/Modals/modalIds";
 import SectionModalTemplate from "../../../Components/Modals/Templates/SectionModal";
 import {
   BASE_PROXY,
-  EMPLOYEES_ENDPOINT,
   SOCIAL_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
@@ -141,8 +143,7 @@ const ModalCreateAgenda = NiceModal.create(
       500,
     );
 
-    const { infiniteQuery } = Networks(BASE_PROXY.employees);
-    const { mutation } = Networks(BASE_PROXY.social);
+    const { mutation, infiniteQuery } = Networks(BASE_PROXY.social);
 
     const { mutate: mutateDelete, isLoading: isLoadingDelete } =
       mutation("delete");
@@ -158,27 +159,29 @@ const ModalCreateAgenda = NiceModal.create(
       ...restQuery
     } = useInfiniteQuery(
       infiniteQuery(
-        EMPLOYEES_ENDPOINT.GET.allEmployees,
+        SOCIAL_ENDPOINT.GET.socialEmployees,
         ["allEmployees-agenda", dbcSearchEmployee],
         {
           getNextPageParam: (lastPage, allPages) => {
-            const maxPages = lastPage.data.totalAccount / PAGE_SIZE;
+            const maxPages = lastPage.totalPage;
             const nextPage = allPages.length + 1;
             return nextPage <= Math.ceil(maxPages)
               ? nextPage
               : undefined;
           },
-          select: (res: InfiniteData<EmployeesResponse>) =>
+          select: (res: InfiniteData<SocialEmployeeResponse>) =>
             res.pages
               .map((page) =>
-                page.employees.map((item) => ({
-                  label: item?.name || "",
-                  value: `${item.id}`,
+                page.socialEmployees.map((item) => ({
+                  label: item?.firstName || "",
+                  value: `${item.social_employee_profile_id}`,
                   // Fields below will be used for PersonCard component props
-                  name: item?.name,
-                  positionName: item?.employee_number,
+                  name: item?.firstName,
+                  positionName: item?.employee_number || "-",
                   imageUrl: item?.profile_picture,
-                  badgeIcon: item?.sme ? <SMEIcon size={12} /> : null,
+                  badgeIcon: item?.isSme ? (
+                    <SMEIcon size={12} />
+                  ) : null,
                 })),
               )
               .flat() as EmployeeOptions,
@@ -186,7 +189,7 @@ const ModalCreateAgenda = NiceModal.create(
         {
           params: {
             size: PAGE_SIZE,
-            query: dbcSearchEmployee,
+            search: dbcSearchEmployee,
             "without-me": 1,
           },
         },
@@ -206,7 +209,7 @@ const ModalCreateAgenda = NiceModal.create(
           label: `${g?.name}`,
           // Fields below will be used for PersonCard component props
           name: g?.name,
-          positionName: g?.employee_number,
+          positionName: g?.employee_number || "-",
           imageUrl: g?.profile_picture,
           badgeIcon: g?.is_sme ? <SMEIcon size={12} /> : null,
         })) as EmployeeOptions;
