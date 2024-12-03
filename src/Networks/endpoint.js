@@ -236,7 +236,7 @@ export const SOCIAL_ENDPOINT = {
       `/social-post/employee/post/comments/${commentId}`,
     poll: (pollId) => `/social-post/employee/post/poll/${pollId}`,
     agendaPersonal: (personalAgendaId) =>
-      `/social-post/employee/user-agenda/${personalAgendaId}`,
+      `/social-post/employee/post/user-agenda/${personalAgendaId}`,
   },
   GET: {
     timelinePost: "/social-post/employee/post",

@@ -43,7 +43,7 @@ export default function PanelCalendar() {
     ];
   }, [month]);
 
-  const { query } = Networks(BASE_PROXY.cop);
+  const { query } = Networks(BASE_PROXY.social);
   const { data: fetchedData } = query(
     SOCIAL_ENDPOINT.GET.calendarSummary,
     ["myAgendaListCalendar", getRangeFilter],

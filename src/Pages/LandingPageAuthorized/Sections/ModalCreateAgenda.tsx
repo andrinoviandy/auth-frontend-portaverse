@@ -114,7 +114,6 @@ const ModalCreateAgenda = NiceModal.create(
           start_time: yup
             .string()
             .required("Field tidak boleh kosong"),
-          end_time: yup.string().required("Field tidak boleh kosong"),
           employee_ids: yup
             .array(yup.string())
             .required("Field tidak boleh kosong"),
@@ -237,10 +236,12 @@ const ModalCreateAgenda = NiceModal.create(
           form.values.date!,
           form.values.start_time,
         ),
-        end_date: combineDateAndTime(
-          form.values.date!,
-          form.values.end_time,
-        ),
+        end_date: form.values.end_time
+          ? combineDateAndTime(
+              form.values.date!,
+              form.values.end_time,
+            )
+          : null,
         type: form.values.type,
         location:
           form.values.type === "Online"
@@ -439,7 +440,6 @@ const ModalCreateAgenda = NiceModal.create(
               ref={timeEndInputRef}
               label="Waktu Selesai"
               placeholder="Pilih Waktu Selesai"
-              required
               minTime={form.values.start_time || minTime}
               rightSection={
                 <ActionIcon
@@ -459,6 +459,7 @@ const ModalCreateAgenda = NiceModal.create(
           <MultiSelect
             label="Nama Pekerja"
             placeholder="Cari nama pekerja"
+            description="Pekerja terpilih akan mendapatkan notifikasi dan kalender agenda"
             classNames={{ label: "text-primary-main mb-1" }}
             leftSection={<Icon icon="ic:twotone-search" />}
             rightSection={
