@@ -306,9 +306,11 @@ const ModalDetailCalendar = NiceModal.create(
                         ? item?.online_url || ""
                         : item?.offline_location || ""
                     }
-                    creatorEmpId={item?.creator_employee_id}
+                    creatorEmpId={item?.creator_social_employee_id}
                     guests={item?.guests}
-                    canEdit={employeeId === item?.creator_employee_id}
+                    canEdit={
+                      employeeId === item?.creator_social_employee_id
+                    }
                   />
                 ));
               }
