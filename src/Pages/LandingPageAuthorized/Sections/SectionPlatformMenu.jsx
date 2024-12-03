@@ -26,6 +26,7 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
+import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
@@ -537,6 +538,15 @@ export default function SectionPlatformMenu() {
             />
           ),
           hasAccess: true,
+        },
+        {
+          label: "Master Kamus Indikator Kinerja",
+          description:
+            "Pengelolaan Daftar semua Kamus Indikator Kerja",
+          route: "/master-dictionary",
+          icon: <MasterDictionary />,
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
         },
         {
           label: "Kamus Indikator Kinerja",
