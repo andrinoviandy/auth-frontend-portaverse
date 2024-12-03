@@ -459,6 +459,7 @@ const ModalCreateAgenda = NiceModal.create(
           <MultiSelect
             label="Nama Pekerja"
             placeholder="Cari nama pekerja"
+            description="Pekerja terpilih akan mendapatkan notifikasi dan kalender agenda"
             classNames={{ label: "text-primary-main mb-1" }}
             leftSection={<Icon icon="ic:twotone-search" />}
             rightSection={
