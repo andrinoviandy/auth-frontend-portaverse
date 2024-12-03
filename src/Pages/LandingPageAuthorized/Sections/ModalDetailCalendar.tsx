@@ -208,6 +208,7 @@ const ModalDetailCalendar = NiceModal.create(
     const modalId = MODAL_IDS.CALENDAR.DATE_DETAIL;
     const modal = useModal(modalId);
 
+    const paramDate = dayjs(date).format("YYYY-MM-DD");
     const user = getUserCookie();
     const employeeId = user?.employee?.employee_id;
 
@@ -227,8 +228,8 @@ const ModalDetailCalendar = NiceModal.create(
       },
       {
         params: {
-          start_date: date,
-          end_date: date,
+          start_date: paramDate,
+          end_date: paramDate,
         },
       },
     );
@@ -243,8 +244,8 @@ const ModalDetailCalendar = NiceModal.create(
       },
       {
         params: {
-          start_date: date,
-          end_date: date,
+          start_date: paramDate,
+          end_date: paramDate,
         },
       },
     );
