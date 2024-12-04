@@ -9,6 +9,8 @@ export interface AgendaGuest {
 export interface PersonalAgenda {
   personal_agenda_id: number;
   creator_social_employee_id: number;
+  creator_social_employee_profile_id: number;
+  creator_name: string;
   title: string;
   description: string;
   /** 'Online' / 'Offline' */
