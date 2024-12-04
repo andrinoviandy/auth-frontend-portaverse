@@ -307,7 +307,15 @@ const ModalDetailCalendar = NiceModal.create(
                         : item?.offline_location || ""
                     }
                     creatorEmpId={item?.creator_social_employee_id}
-                    guests={item?.guests}
+                    guests={[
+                      {
+                        employee_id: item?.creator_social_employee_id,
+                        social_employee_profile_id:
+                          item?.creator_social_employee_profile_id,
+                        name: item?.creator_name,
+                      },
+                      ...(item?.guests || []),
+                    ]}
                     canEdit={
                       employeeId === item?.creator_social_employee_id
                     }
