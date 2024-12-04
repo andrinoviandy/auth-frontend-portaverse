@@ -151,20 +151,35 @@ export default function SectionPlatformMenu() {
           icon: <img src={AoE} alt="repo" className="w-[40px]" />,
           hasAccess: true,
         },
-        // {
-        //   label: "Virtu VR",
-        //   description:
-        //     "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
-        //   route: "/virtu-vr",
-        //   icon: (
-        //     <Icon
-        //       icon="material-symbols:3d-rotation"
-        //       color={color.primary3}
-        //       width={40}
-        //     />
-        //   ),
-        //   hasAccess: true,
-        // },
+        {
+          label: "Master Virtu VR",
+          description:
+            "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+          route: "/master-virtu-vr",
+          icon: (
+            <Icon
+              icon="material-symbols:head-mounted-device"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Virtu VR",
+          description:
+            "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+          route: "/virtu-vr",
+          icon: (
+            <Icon
+              icon="material-symbols:3d-rotation"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
         // {
         //   label: "Headquarter",
         //   description:
