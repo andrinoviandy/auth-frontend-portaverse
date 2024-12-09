@@ -17,9 +17,9 @@ export default function MobileBanner() {
 
   const openApp = () => {
     window.location.replace("portaverse://home");
-    setTimeout(() => {
-      window.location.replace(appStoreUrl);
-    }, 700);
+    // setTimeout(() => {
+    //   window.location.replace(appStoreUrl);
+    // }, 700);
   };
 
   useEffect(() => {
@@ -28,36 +28,36 @@ export default function MobileBanner() {
     }
   }, []);
 
-  if (open && isMobile) {
-    return (
-      <div className="relative flex items-center justify-between gap-5 bg-[#F5FDFF] px-5 py-2 w-full">
-        <img
-          className="absolute z-[1] bottom-0 w-full left-[-1.25rem]"
-          alt="wave"
-          src={wave}
-        />
+  // if (open && isMobile) {
+  //   return (
+  //     <div className="relative flex items-center justify-between gap-5 bg-[#F5FDFF] px-5 py-2 w-full">
+  //       <img
+  //         className="absolute z-[1] bottom-0 w-full left-[-1.25rem]"
+  //         alt="wave"
+  //         src={wave}
+  //       />
 
-        <div className="flex items-center gap-2 z-[2]">
-          <button type="button" onClick={() => setOpen(false)}>
-            <Icon icon="ph:x-bold" />
-          </button>
+  //       <div className="flex items-center gap-2 z-[2]">
+  //         <button type="button" onClick={() => setOpen(false)}>
+  //           <Icon icon="ph:x-bold" />
+  //         </button>
 
-          <img
-            src={portaverse}
-            alt="logo"
-            className="w-[2.2rem] object-contain"
-            loading="lazy"
-          />
-          <p className="font-semibold text-sm">
-            Mari menggunakan aplikasi Portaverse!
-          </p>
-        </div>
+  //         <img
+  //           src={portaverse}
+  //           alt="logo"
+  //           className="w-[2.2rem] object-contain"
+  //           loading="lazy"
+  //         />
+  //         <p className="font-semibold text-sm">
+  //           Mari menggunakan aplikasi Portaverse!
+  //         </p>
+  //       </div>
 
-        <Button onClick={openApp} className="z-[2]">
-          Buka App
-        </Button>
-      </div>
-    );
-  }
+  //       <Button onClick={openApp} className="z-[2]">
+  //         Buka App
+  //       </Button>
+  //     </div>
+  //   );
+  // }
   return null;
 }

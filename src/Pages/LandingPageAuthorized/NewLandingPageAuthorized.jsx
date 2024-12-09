@@ -18,6 +18,14 @@ import checkCmsAdminClusterAccess from "../../Utils/Helpers/checkCmsAdminCluster
 import checkCmsAdminHoAccess from "../../Utils/Helpers/checkCmsAdminHoAccess";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
 import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
+import SectionPlatformMenuMobile from "./Sections/SectionPlatformMenuMobile";
+import SectionStatisticMobile from "./Sections/SectionStatisticMobile";
+import SectionHeroMobile from "./Sections/SectionHeroMobile";
+import NewFooterMobile from "../../Components/Footer/NewFooterMobile";
+import { isAndroid, isIOS } from "react-device-detect";
+import SectionCourseMobile from "./Sections/SectionCourseMobile";
+import NewNavbar from "../../Components/NewNavbar";
+import NewNavbarMobile from "../../Components/NewNavbar/NewNavbarMobile";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -47,16 +55,31 @@ export default function NewLandingPageAuthorized() {
   checkCmsAdminClusterAccess();
 
   return (
-    <div className="flex flex-col">
-      {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
-      <Navbar />
-      {/* <NewNavbar /> */}
+    <>
+      <div className="flex flex-col">
+        {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
+        {/* <NewNavbar /> */}
+        {isAndroid || isIOS ? (
+          <>
+            <NewNavbarMobile />
 
-      <SectionHero />
-      <SectionStatistic />
-      <SectionPlatformMenu />
-      <SectionCourse />
-      <NewFooter />
-    </div>
+            <SectionHeroMobile />
+            <SectionStatisticMobile />
+            <SectionPlatformMenuMobile />
+            <SectionCourseMobile />
+            <NewFooterMobile />
+          </>
+        ) : (
+          <>
+            <Navbar />
+            <SectionHero />
+            <SectionStatistic />
+            <SectionPlatformMenu />
+            <SectionCourse />
+            <NewFooter />
+          </>
+        )}
+      </div>
+    </>
   );
 }

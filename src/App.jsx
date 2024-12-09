@@ -23,7 +23,8 @@ import ProgressEvaluationReport from "./Pages/ProgressEvaluationReport/ProgressE
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
-
+import { isAndroid, isIOS } from "react-device-detect";
+import NewLoginMobile from "./Pages/Login/NewLoginMobile";
 
 function App() {
   document.title = "Portaverse - Pelindo";
@@ -103,22 +104,47 @@ function App() {
             />
           }
         >
-          <Route element={<LoginLayout />}>
-            {/* Can only be access when user not logged in */}
-            <Route path="/login" element={<NewLogin />} />
-            <Route
-              path="/forgot-password"
-              element={<NewForgotPassword />}
-            />
+          {isAndroid || isIOS ? (
+            <Route>
+              {/* Can only be access when user not logged in */}
+              <Route path="/login" element={<NewLoginMobile />} />
+              <Route
+                path="/forgot-password"
+                element={<NewForgotPassword />}
+              />
 
-            {/* Can only be access by the app flow and user not logged in */}
-            <Route path="/check-email" element={<NewCheckEmail />} />
-            <Route
-              path="/reset-password"
-              element={<NewSetNewPassword />}
-            />
-            <Route path="/success" element={<NewPassSuccess />} />
-          </Route>
+              {/* Can only be access by the app flow and user not logged in */}
+              <Route
+                path="/check-email"
+                element={<NewCheckEmail />}
+              />
+              <Route
+                path="/reset-password"
+                element={<NewSetNewPassword />}
+              />
+              <Route path="/success" element={<NewPassSuccess />} />
+            </Route>
+          ) : (
+            <Route element={<LoginLayout />}>
+              {/* Can only be access when user not logged in */}
+              <Route path="/login" element={<NewLogin />} />
+              <Route
+                path="/forgot-password"
+                element={<NewForgotPassword />}
+              />
+
+              {/* Can only be access by the app flow and user not logged in */}
+              <Route
+                path="/check-email"
+                element={<NewCheckEmail />}
+              />
+              <Route
+                path="/reset-password"
+                element={<NewSetNewPassword />}
+              />
+              <Route path="/success" element={<NewPassSuccess />} />
+            </Route>
+          )}
         </Route>
 
         {/* Public */}
