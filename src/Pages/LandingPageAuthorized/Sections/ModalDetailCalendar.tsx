@@ -312,6 +312,8 @@ const ModalDetailCalendar = NiceModal.create(
                         employee_id: item?.creator_social_employee_id,
                         social_employee_profile_id:
                           item?.creator_social_employee_profile_id,
+                        employee_number:
+                          item?.creator_employee_number || "",
                         name: item?.creator_name,
                       },
                       ...(item?.guests || []),
