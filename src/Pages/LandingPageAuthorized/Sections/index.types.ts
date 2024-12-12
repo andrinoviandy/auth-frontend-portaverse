@@ -11,6 +11,7 @@ export interface PersonalAgenda {
   creator_social_employee_id: number;
   creator_social_employee_profile_id: number;
   creator_name: string;
+  creator_employee_number: string;
   title: string;
   description: string;
   /** 'Online' / 'Offline' */
