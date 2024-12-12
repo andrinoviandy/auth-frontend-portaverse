@@ -18,6 +18,13 @@ import checkCmsAdminClusterAccess from "../../Utils/Helpers/checkCmsAdminCluster
 import checkCmsAdminHoAccess from "../../Utils/Helpers/checkCmsAdminHoAccess";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
 import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
+import { isAndroid, isIOS } from "react-device-detect";
+import NewNavbarMobile from "../../Components/NewNavbar/NewNavbarMobile";
+import SectionHeroMobile from "./Sections/SectionHeroMobile";
+import SectionStatisticMobile from "./Sections/SectionStatisticMobile";
+import SectionPlatformMenuMobile from "./Sections/SectionPlaftormMenuMobile";
+import SectionCourseMobile from "./Sections/SectionCourseMobile";
+import NewFooterMobile from "../../Components/Footer/NewFooterMobile";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -48,15 +55,29 @@ export default function NewLandingPageAuthorized() {
 
   return (
     <div className="flex flex-col">
-      {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
-      <Navbar />
-      {/* <NewNavbar /> */}
+      {isAndroid || isIOS ? (
+        <>
+          <NewNavbarMobile />
 
-      <SectionHero />
-      <SectionStatistic />
-      <SectionPlatformMenu />
-      <SectionCourse />
-      <NewFooter />
+          <SectionHeroMobile />
+          <SectionStatisticMobile />
+          <SectionPlatformMenuMobile />
+          <SectionCourseMobile />
+          <NewFooterMobile />
+        </>
+      ) : (
+        <>
+          {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
+          <Navbar />
+          {/* <NewNavbar /> */}
+
+          <SectionHero />
+          <SectionStatistic />
+          <SectionPlatformMenu />
+          <SectionCourse />
+          <NewFooter />
+        </>
+      )}
     </div>
   );
 }
