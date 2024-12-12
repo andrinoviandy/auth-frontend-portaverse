@@ -27,6 +27,7 @@ import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
 import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
+import { isAndroid, isIOS } from "react-device-detect";
 
 export default function SectionPlatformMenuMobile() {
   const user = getUserCookie();
@@ -65,6 +66,41 @@ export default function SectionPlatformMenuMobile() {
   );
 
   const menus = useMemo(() => {
+    if (isAndroid || isIOS) {
+      return {
+        KMS: [
+          {
+            label: "Virtu VR",
+            description:
+              "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+            route: "/virtu-vr",
+            icon: (
+              <Icon
+                icon="material-symbols:3d-rotation"
+                color={color.primary3}
+                width={40}
+              />
+            ),
+            hasAccess: true,
+          },
+          {
+            label: "Master Virtu VR",
+            description:
+              "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+            route: "/master-virtu-vr",
+            icon: (
+              <Icon
+                icon="material-symbols:head-mounted-device"
+                color={color.primary3}
+                width={40}
+              />
+            ),
+            hasAccess: hasRole(["SA"]),
+            adminOnly: true,
+          },
+        ],
+      };
+    }
     return {
       KMS: [
         {
@@ -721,7 +757,10 @@ export default function SectionPlatformMenuMobile() {
     <section className="flex flex-col gap-4 px-4 py-6">
       <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
         <Tabs.List grow>
-          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
+          {(isAndroid || isIOS
+            ? ["KMS"]
+            : ["KMS", "LMS", "TMS", "IMS", "CMS"]
+          ).map((tab) => (
             <Tabs.Tab key={tab} value={tab}>
               {tab}
             </Tabs.Tab>
