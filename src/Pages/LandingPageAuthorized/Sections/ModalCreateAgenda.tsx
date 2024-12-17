@@ -72,12 +72,14 @@ interface FormValues {
 
 interface ModalCreateAgendaProps {
   isEdit?: boolean;
+  creatorEmpId?: number;
   personalAgendaId?: number;
   agendaData?: AgendaData;
 }
 const ModalCreateAgenda = NiceModal.create(
   ({
     isEdit,
+    creatorEmpId,
     personalAgendaId,
     agendaData,
   }: ModalCreateAgendaProps) => {
@@ -101,7 +103,9 @@ const ModalCreateAgenda = NiceModal.create(
           ? dayjs(agendaData.end_date).format("HH:mm")
           : "",
         employee_ids:
-          agendaData?.guests?.map((g) => `${g?.employee_id}`) || [],
+          agendaData?.guests
+            ?.filter((g) => g.employee_id !== creatorEmpId)
+            .map((g) => `${g?.social_employee_profile_id}`) || [],
         type: agendaData?.type || null,
         offline_location: agendaData?.offline_location || "",
         online_url: agendaData?.online_url || "",
@@ -203,8 +207,11 @@ const ModalCreateAgenda = NiceModal.create(
         result = [...dataEmployees];
       }
       if (agendaData?.guests?.length) {
-        const mapped = agendaData.guests.map((g) => ({
-          value: `${g?.employee_id}`,
+        const withoutCreator = agendaData.guests.filter(
+          (g) => g.employee_id !== creatorEmpId,
+        );
+        const mapped = withoutCreator.map((g) => ({
+          value: `${g?.social_employee_profile_id}`,
           label: `${g?.name}`,
           // Fields below will be used for PersonCard component props
           name: g?.name,
