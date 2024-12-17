@@ -103,6 +103,7 @@ function AgendaCard({
                 NiceModal.show(MODAL_IDS.CALENDAR.CREATE_AGENDA, {
                   isEdit: true,
                   personalAgendaId: agendaId,
+                  creatorEmpId,
                   agendaData: {
                     title,
                     start_date: startDate,
