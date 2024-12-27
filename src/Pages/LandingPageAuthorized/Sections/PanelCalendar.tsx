@@ -143,7 +143,7 @@ export default function PanelCalendar() {
                     : "",
                 )}
               >
-                <p className="text-xs">
+                <p className="text-center text-xs">
                   {isCurrentMonth ? day : `${day} ${monthName}`}
                 </p>
               </div>

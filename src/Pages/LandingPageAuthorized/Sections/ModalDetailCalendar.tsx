@@ -28,6 +28,7 @@ import {
 import { Networks } from "../../../Networks/factory";
 import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import uppercaseFirstLetterEveryWord from "../../../Utils/Helpers/uppercaseFirstLetterEveryWord";
 
 // const PAGE_SIZE = 10;
 
@@ -330,25 +331,36 @@ const ModalDetailCalendar = NiceModal.create(
                 activeTab === "community" &&
                 dataCommunity?.length
               ) {
-                return dataCommunity.map((item) => (
-                  <AgendaCard
-                    key={`community-agenda-${item.agenda_id}`}
-                    title={item?.title}
-                    communityName={item?.cop_name}
-                    description={item?.description}
-                    startDate={item?.start_date}
-                    endDate={item?.end_date}
-                    type={item?.type}
-                    location={
-                      item?.type === "Online"
-                        ? item?.online_url || ""
-                        : item?.offline_location || ""
+                return dataCommunity.map((item) => {
+                  const guests = (() => {
+                    let result: AgendaGuest[] = [];
+                    if (item?.speaker?.length) {
+                      result = [...item.speaker];
                     }
-                    guests={[item?.speaker]}
-                    imageUrl={item?.picture_url}
-                    href={`${import.meta.env.VITE_KMS_URL}/communities/${item?.cop_id}/${item?.agenda_id}${item?.is_coi ? "?is-coi=1" : ""}`}
-                  />
-                ));
+                    return result;
+                  })();
+                  return (
+                    <AgendaCard
+                      key={`community-agenda-${item.agenda_id}`}
+                      title={item?.title}
+                      communityName={item?.cop_name}
+                      description={item?.description}
+                      startDate={item?.start_date}
+                      endDate={item?.end_date}
+                      type={uppercaseFirstLetterEveryWord(
+                        item?.type || "",
+                      )}
+                      location={
+                        item?.type === "ONLINE"
+                          ? item?.online_url || ""
+                          : item?.offline_location || ""
+                      }
+                      guests={guests}
+                      imageUrl={item?.bg_pic}
+                      href={`${import.meta.env.VITE_KMS_URL}/communities/${item?.cop_id}/${item?.agenda_id}${item?.is_coi ? "?is-coi=1" : ""}`}
+                    />
+                  );
+                });
               }
 
               return <NoItems label="Agenda tidak ditemukan" />;
