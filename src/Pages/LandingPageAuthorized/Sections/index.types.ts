@@ -37,11 +37,11 @@ export interface CommunityAgenda {
   start_date: string;
   /** Date formatted in ISO String */
   end_date: string;
-  speaker: AgendaGuest;
+  speaker: AgendaGuest[];
   offline_location: string | null;
   online_url: string | null;
   is_coi: boolean;
-  picture_url: string | null;
+  bg_pic: string | null;
 }
 
 export interface CalendarDate {
