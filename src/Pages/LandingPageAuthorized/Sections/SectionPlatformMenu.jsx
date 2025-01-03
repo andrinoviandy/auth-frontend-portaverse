@@ -31,8 +31,8 @@ import userId from "../../../Utils/Helpers/userId";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
-  const rolesRequired = ["USER"];
-  const user_id = userId(rolesRequired);
+  // const rolesRequired = ["USER"];
+  // const user_id = userId(rolesRequired);
   const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
 
@@ -68,7 +68,8 @@ export default function SectionPlatformMenu() {
   );
 
   const menus = useMemo(() => {
-    const baseMenus = {
+    return {
+    // const baseMenus = {
       KMS: [
         {
           label: "Social Media",
@@ -557,28 +558,28 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-        // {
-        //   label: "Master Kamus Indikator Kinerja",
-        //   description:
-        //     "Pengelolaan Daftar semua Kamus Indikator Kerja",
-        //   route: "/master-dictionary",
-        //   icon: <MasterDictionary />,
-        //   hasAccess: hasRole(["SA"]),
-        //   adminOnly: true,
-        // },
-        // {
-        //   label: "Kamus Indikator Kinerja",
-        //   description: "Daftar semua Kamus Indikator Kerja",
-        //   route: "/dictionary",
-        //   icon: (
-        //     <Icon
-        //       icon="mage:book-text"
-        //       color={color.primary3}
-        //       width={40}
-        //     />
-        //   ),
-        //   hasAccess: true,
-        // },
+        {
+          label: "Master Kamus Indikator Kinerja",
+          description:
+            "Pengelolaan Daftar semua Kamus Indikator Kerja",
+          route: "/master-dictionary",
+          icon: <MasterDictionary />,
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Kamus Indikator Kinerja",
+          description: "Daftar semua Kamus Indikator Kerja",
+          route: "/dictionary",
+          icon: (
+            <Icon
+              icon="mage:book-text"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
       ],
       IMS: [
         {
@@ -694,29 +695,30 @@ export default function SectionPlatformMenu() {
       ],
     };
 
-    if (user_id === 125) {
-      baseMenus.TMS = baseMenus.TMS || [];
-      baseMenus.TMS.push(
-        {
-          label: "Master Kamus Indikator Kinerja",
-          description: "Pengelolaan Daftar semua Kamus Indikator Kerja",
-          route: "/master-dictionary",
-          icon: <MasterDictionary />,
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
-        },
-        {
-          label: "Kamus Indikator Kinerja",
-          description: "Daftar semua Kamus Indikator Kerja",
-          route: "/dictionary",
-          icon: <Icon icon="mage:book-text" color={color.primary3} width={40} />,
-          hasAccess: true,
-        }
-      );
-    }
+    // if (user_id === 125) {
+    //   baseMenus.TMS = baseMenus.TMS || [];
+    //   baseMenus.TMS.push(
+    //     {
+    //       label: "Master Kamus Indikator Kinerja",
+    //       description: "Pengelolaan Daftar semua Kamus Indikator Kerja",
+    //       route: "/master-dictionary",
+    //       icon: <MasterDictionary />,
+    //       hasAccess: hasRole(["SA"]),
+    //       adminOnly: true,
+    //     },
+    //     {
+    //       label: "Kamus Indikator Kinerja",
+    //       description: "Daftar semua Kamus Indikator Kerja",
+    //       route: "/dictionary",
+    //       icon: <Icon icon="mage:book-text" color={color.primary3} width={40} />,
+    //       hasAccess: true,
+    //     }
+    //   );
+    // }
   
-    return baseMenus;
-  }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
+    // return baseMenus;
+  // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
+  }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   signatureService.query(
