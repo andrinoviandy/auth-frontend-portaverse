@@ -38,7 +38,11 @@ export interface CommunityAgenda {
   /** Date formatted in ISO String */
   end_date: string;
   speaker: AgendaGuest[];
-  offline_location: string | null;
+  offline_location: {
+    address: string;
+    name: string;
+    url: string;
+  } | null;
   online_url: string | null;
   is_coi: boolean;
   bg_pic: string | null;
