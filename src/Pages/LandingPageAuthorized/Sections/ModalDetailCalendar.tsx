@@ -353,7 +353,8 @@ const ModalDetailCalendar = NiceModal.create(
                       location={
                         item?.type === "ONLINE"
                           ? item?.online_url || ""
-                          : item?.offline_location || ""
+                          : `${item?.offline_location?.name}, ${item?.offline_location?.address}` ||
+                            ""
                       }
                       guests={guests}
                       imageUrl={item?.bg_pic}
