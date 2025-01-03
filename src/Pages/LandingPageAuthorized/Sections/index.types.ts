@@ -46,6 +46,7 @@ export interface CommunityAgenda {
   online_url: string | null;
   is_coi: boolean;
   bg_pic: string | null;
+  profile_pic: string | null;
 }
 
 export interface CalendarDate {
