@@ -357,7 +357,7 @@ const ModalDetailCalendar = NiceModal.create(
                             ""
                       }
                       guests={guests}
-                      imageUrl={item?.bg_pic}
+                      imageUrl={item?.profile_pic}
                       href={`${import.meta.env.VITE_KMS_URL}/communities/${item?.cop_id}/${item?.agenda_id}${item?.is_coi ? "?is-coi=1" : ""}`}
                     />
                   );
