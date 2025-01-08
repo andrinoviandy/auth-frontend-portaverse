@@ -65,12 +65,12 @@ export default function SectionStatistic() {
     remainingDay?.type === "MONITORING"
       ? "Pengisian Realisasi"
       : remainingDay?.type === "PLANNING"
-      ? "Perencanaan"
-      : remainingDay?.type === "ADJUSTING"
-      ? "Penyesuaian"
-      : remainingDay?.type === "SPARE"
-      ? "Luang"
-      : "";
+        ? "Perencanaan"
+        : remainingDay?.type === "ADJUSTING"
+          ? "Penyesuaian"
+          : remainingDay?.type === "SPARE"
+            ? "Luang"
+            : "";
 
   return (
     <section className="bg-primary3 text-white">
@@ -96,7 +96,7 @@ export default function SectionStatistic() {
                 ? formatLearningHours(totalLearningHours)
                 : "-"
             }
-            tooltip="Total waktu pembelajaran kursus"
+            tooltip="Angka yg muncul merupakan angka per 31 desember 2024 dan akan dibekukan sampai masa pengisian KPI 2024 selesai"
           />
 
           <StatCard
