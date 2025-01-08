@@ -8,6 +8,7 @@ import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboa
 import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
+import Podium from "../../../Components/Assets/Svg/podium.svg";
 import PerformanceReport from "../../../Components/Assets/Svg/performance-report.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
@@ -16,6 +17,7 @@ import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
+  INNOVATION_ENDPOINT,
   SIGNATURE_ENDPOINT,
   SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
@@ -23,16 +25,23 @@ import { Networks } from "../../../Networks/factory";
 import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
+import userId from "../../../Utils/Helpers/userId";
+import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
+  const rolesRequired = ["USER"];
+  const user_id = userId(rolesRequired);
+  const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
 
   const [hasAccessOM, setHasAccessOM] = useState(false);
   const [hasAccessSMS, setHasAccessSMS] = useState(false);
   const [hasWerks, setHasWerks] = useState(false);
+  const [hasAccessIMSHQ, setHasAccessIMSHQ] = useState(false);
 
   const kpiService = Networks(BASE_PROXY.smartplan);
+  const innovationService = Networks(BASE_PROXY.innovation);
 
   kpiService.query(
     SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
@@ -47,8 +56,18 @@ export default function SectionPlatformMenu() {
     },
   );
 
+  innovationService.query(
+    INNOVATION_ENDPOINT.GET.userRole(employeeId),
+    ["ims-user-role", employeeId],
+    {
+      onSuccess: (res) => {
+        setHasAccessIMSHQ(!!res?.is_regional || !!res?.is_admin);
+      },
+    },
+  );
+
   const menus = useMemo(() => {
-    return {
+    const baseMenus = {
       KMS: [
         {
           label: "Social Media",
@@ -84,20 +103,6 @@ export default function SectionPlatformMenu() {
               icon="clarity:organization-line"
               width={40}
               color={color.primary3}
-            />
-          ),
-          hasAccess: true,
-        },
-        {
-          label: "Master Pegawai",
-          description:
-            "Daftar semua pegawai Pelindo dalam satu modul",
-          route: "/employees",
-          icon: (
-            <Icon
-              icon="mdi:user-box-outline"
-              color={color.primary3}
-              width={40}
             />
           ),
           hasAccess: true,
@@ -509,9 +514,187 @@ export default function SectionPlatformMenu() {
         //   hasAccess: false,
         //   comingSoon: true,
         // },
+        {
+          label: "Master Pegawai",
+          description:
+            "Daftar semua pegawai Pelindo dalam satu modul",
+          route: "/employees",
+          icon: (
+            <Icon
+              icon="mdi:user-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+        // {
+        //   label: "Master Kamus Indikator Kinerja",
+        //   description:
+        //     "Pengelolaan Daftar semua Kamus Indikator Kerja",
+        //   route: "/master-dictionary",
+        //   icon: <MasterDictionary />,
+        //   hasAccess: hasRole(["SA"]),
+        //   adminOnly: true,
+        // },
+        // {
+        //   label: "Kamus Indikator Kinerja",
+        //   description: "Daftar semua Kamus Indikator Kerja",
+        //   route: "/dictionary",
+        //   icon: (
+        //     <Icon
+        //       icon="mage:book-text"
+        //       color={color.primary3}
+        //       width={40}
+        //     />
+        //   ),
+        //   hasAccess: true,
+        // },
+      ],
+      IMS: [
+        {
+          label: "Dashboard Innovation",
+          description:
+            "Modul untuk menyampaikan dan mengembangkan ide-ide inovasi",
+          route: "/innovation-management-system",
+          icon: (
+            <Icon
+              icon="iconoir:light-bulb"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Competition Innovation",
+          description:
+            "Modul untuk mengikuti kegiatan kompetisi inovasi yang ada di Pelindo Grup",
+          route: "/competition-management-system",
+          icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Headquarter Innovation",
+          description:
+            "Modul untuk mengelola dan mengatur semua modul IMS secara terpusat",
+          route: "/headquarter-innovation",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasAccessIMSHQ,
+          adminOnly: true,
+        },
+      ],
+      CMS: [
+        {
+          label: "Change Catalyst Team Monitoring System",
+          description:
+            "Modul untuk monitoring dan manajemen program budaya Change Catalyst Team (CCT) yang dilaksanakan di Pelindo Group.",
+          route: "/change-catalyst-team-monitoring-system",
+          icon: (
+            <Icon
+              icon="iconoir:light-bulb"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Monitoring System",
+          description:
+            "Modul untuk monitoring dan manajemen program Internalisasi Budaya yang dilaksanakan di Pelindo Group.",
+          route: "/culture-monitoring-system",
+          icon: <img src={Podium} alt="kmap" className="w-[40px]" />,
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Change Catalyst Member Management",
+          description:
+            "Modul untuk manajemen anggota Change Catalyst Team (CCT) terkait status keanggotaan dan penugasan.",
+          route: "/change-catalyst-member-management",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["USER"]),
+        },
+        {
+          label: "Culture Analytics",
+          description:
+            "Modul untuk melihat data terkait pelaksanaan program Change Catalyst Team dan Internalisasi Budaya.",
+          route: "/analytics",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole([
+            "ADMIN_HO",
+            "ADMIN_UNIT_KERJA",
+            "CHANGE_AGENT",
+            "CHANGE_CHAMPION",
+            "CHANGE_LEADER",
+          ]),
+        },
+        {
+          label: "Culture Headquarter",
+          description:
+            "Modul untuk manajemen pengaturan modul CCTMS dan CMS.",
+          route: "/culture-hq",
+          icon: (
+            <Icon
+              icon="material-symbols:account-box-outline"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["CADH"]),
+          adminOnly: true,
+        },
       ],
     };
-  }, [hasAccessOM, hasAccessSMS, hasWerks]);
+
+    if (user_id === 125) {
+      baseMenus.TMS = baseMenus.TMS || [];
+      baseMenus.TMS.push(
+        {
+          label: "Master Kamus Indikator Kinerja",
+          description:
+            "Pengelolaan Daftar semua Kamus Indikator Kerja",
+          route: "/master-dictionary",
+          icon: <MasterDictionary />,
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Kamus Indikator Kinerja",
+          description: "Daftar semua Kamus Indikator Kerja",
+          route: "/dictionary",
+          icon: (
+            <Icon
+              icon="mage:book-text"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
+      );
+    }
+
+    return baseMenus;
+  }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   signatureService.query(
@@ -547,24 +730,16 @@ export default function SectionPlatformMenu() {
         sx={MANTINE_TAB_STYLES.default.sx}
       >
         <Tabs.List grow>
-          <Tabs.Tab
-            sx={MANTINE_TAB_STYLES.default.sxChild}
-            value="KMS"
-          >
-            KMS
-          </Tabs.Tab>
-          <Tabs.Tab
-            sx={MANTINE_TAB_STYLES.default.sxChild}
-            value="LMS"
-          >
-            LMS
-          </Tabs.Tab>
-          <Tabs.Tab
-            sx={MANTINE_TAB_STYLES.default.sxChild}
-            value="TMS"
-          >
-            TMS
-          </Tabs.Tab>
+          {/* {["KMS", "LMS", "TMS", "IMS"].map((tab) => ( */}
+          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
+            <Tabs.Tab
+              key={tab}
+              sx={MANTINE_TAB_STYLES.default.sxChild}
+              value={tab}
+            >
+              {tab}
+            </Tabs.Tab>
+          ))}
         </Tabs.List>
       </Tabs>
       <div className="grid grid-cols-3 gap-5">
@@ -619,7 +794,7 @@ function MenuCard({
     <a
       href={disabled || comingSoon ? "/landing" : route}
       className={clsx(
-        "flex items-center gap-5 border rounded-lg px-5 py-4",
+        "flex items-center gap-3 border rounded-lg px-5 py-4",
         disabled || comingSoon
           ? "bg-gray-50 pointer-events-none cursor-not-allowed"
           : "bg-white hover:border-primary3",
