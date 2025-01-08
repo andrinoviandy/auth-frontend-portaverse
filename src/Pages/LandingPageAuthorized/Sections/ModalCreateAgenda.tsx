@@ -138,6 +138,7 @@ const ModalCreateAgenda = NiceModal.create(
             .required("Field tidak boleh kosong"),
         }),
       ),
+      validateInputOnBlur: true,
     });
 
     const [searchEmployee, setSearchEmployee] = useState("");
