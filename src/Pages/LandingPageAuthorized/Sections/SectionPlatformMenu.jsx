@@ -26,6 +26,8 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
+import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
+
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
@@ -149,6 +151,27 @@ export default function SectionPlatformMenu() {
           route: "/ask-expert",
           icon: <img src={AoE} alt="repo" className="w-[40px]" />,
           hasAccess: true,
+        },
+        {
+          label: "KM Analytics",
+          description:
+            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+          route: "/km-analytics",
+          icon: <Icon icon="majesticons:analytics-line"
+          color={color.primary3}
+          width={38}
+          />,
+          hasAccess: hasRole(["SA"]),
+        },
+        {
+          label: "External User",
+          description:
+            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+          route: "/external-user",
+          icon: (
+            <img src={ExternalIcon} alt="external-user" className="w-[40px]" />
+          ),
+          hasAccess: hasRole(["SA"]),
         },
         {
           label: "Master Virtu VR",
