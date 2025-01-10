@@ -155,7 +155,7 @@ export default function SectionPlatformMenu() {
         {
           label: "KM Analytics",
           description:
-            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+            "Modul untuk monitoring kegiatan knowledge Management (KM)",
           route: "/km-analytics",
           icon: <Icon icon="majesticons:analytics-line"
           color={color.primary3}
@@ -166,7 +166,7 @@ export default function SectionPlatformMenu() {
         {
           label: "External User",
           description:
-            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+            "Penggelolaan atau konfigurasi daftar pengguna eksternal",
           route: "/external-user",
           icon: (
             <img src={ExternalIcon} alt="external-user" className="w-[40px]" />
