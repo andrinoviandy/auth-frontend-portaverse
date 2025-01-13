@@ -21,7 +21,9 @@ export default function PanelBehavior({
       enabled: activeTab === "behavior",
     },
     {
-      params: { year: year + 1 },
+      params: {
+        year: year ? parseFloat(year) + 1 : null
+      },
     },
   );
 
@@ -46,9 +48,8 @@ export default function PanelBehavior({
           />
           <TextNumberCard
             title="SKOR KINERJA INDIVIDU BERBASIS PERILAKU (SKALA LIKERT)"
-            value={`${toFixedTrim(data?.final_score || 0, 2)}/${
-              data?.adaptif?.rate_range_end || 6
-            }`}
+            value={`${toFixedTrim(data?.final_score || 0, 2)}/${data?.adaptif?.rate_range_end || 6
+              }`}
           />
         </div>
         <div className="grid grid-cols-3 gap-5">
