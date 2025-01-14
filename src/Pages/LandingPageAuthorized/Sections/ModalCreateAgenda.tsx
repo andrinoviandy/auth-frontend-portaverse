@@ -114,7 +114,10 @@ const ModalCreateAgenda = NiceModal.create(
       validate: yupResolver(
         yup.object().shape({
           title: yup.string().required("Field tidak boleh kosong"),
-          date: yup.date().required("Field tidak boleh kosong"),
+          date: yup
+            .date()
+            .required("Field tidak boleh kosong")
+            .typeError("Field tidak boleh kosong"),
           start_time: yup
             .string()
             .required("Field tidak boleh kosong"),
