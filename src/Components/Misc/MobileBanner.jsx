@@ -17,9 +17,9 @@ export default function MobileBanner() {
 
   const openApp = () => {
     window.location.replace("portaverse://home");
-    setTimeout(() => {
-      window.location.replace(appStoreUrl);
-    }, 700);
+    // setTimeout(() => {
+    //   window.location.replace(appStoreUrl);
+    // }, 700);
   };
 
   // useEffect(() => {

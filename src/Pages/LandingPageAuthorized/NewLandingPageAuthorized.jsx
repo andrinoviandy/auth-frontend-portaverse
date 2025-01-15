@@ -18,6 +18,14 @@ import checkCmsAdminClusterAccess from "../../Utils/Helpers/checkCmsAdminCluster
 import checkCmsAdminHoAccess from "../../Utils/Helpers/checkCmsAdminHoAccess";
 import checkSubconAccess from "../../Utils/Helpers/checkSubconAccess";
 import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
+import SectionPlatformMenuMobile from "./Sections/SectionPlatformMenuMobile";
+import SectionStatisticMobile from "./Sections/SectionStatisticMobile";
+import SectionHeroMobile from "./Sections/SectionHeroMobile";
+import NewFooterMobile from "../../Components/Footer/NewFooterMobile";
+import { isAndroid, isIOS } from "react-device-detect";
+import SectionCourseMobile from "./Sections/SectionCourseMobile";
+import NewNavbar from "../../Components/NewNavbar";
+import NewNavbarMobile from "../../Components/NewNavbar/NewNavbarMobile";
 import { isAndroid, isIOS } from "react-device-detect";
 import NewNavbarMobile from "../../Components/NewNavbar/NewNavbarMobile";
 import SectionHeroMobile from "./Sections/SectionHeroMobile";

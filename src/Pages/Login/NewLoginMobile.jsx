@@ -12,6 +12,7 @@ import {
   loadCaptchaEnginge,
   validateCaptcha,
 } from "react-simple-captcha";
+
 import EyeOffOutline from "../../Components/Assets/Icon/EyeOffOutline";
 import EyeOutline from "../../Components/Assets/Icon/EyeOutline";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.png";
@@ -103,23 +104,23 @@ export default function NewLoginMobile() {
   }, [wrongCredsAttempt]);
 
   return (
-    <div className="flex flex-col justify-center min-h-screen gap-16 w-full px-2">
-      <div className="border p-5 rounded-xl shadow-card space-y-10">
-        <div className="flex flex-col gap-2 items-start">
+    <div className="flex min-h-screen w-full flex-col justify-center gap-16 px-2">
+      <div className="space-y-10 rounded-xl border p-5 shadow-card">
+        <div className="flex flex-col items-start gap-2">
           <img
             src={PortaverseLogo}
             alt="company_logo"
             className="h-[60px] object-contain"
           />
-          <p className="text-darkGrey font-medium">
+          <p className="font-medium text-darkGrey">
             Universe of Growth & Agility
           </p>
         </div>
 
-        <div className="flex justify-center flex-col items-center">
+        <div className="flex flex-col items-center justify-center">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4 w-full"
+            className="flex w-full flex-col gap-4"
           >
             <TextInput
               radius="md"
@@ -155,7 +156,7 @@ export default function NewLoginMobile() {
                 visibilityToggleIcon={onToggleVisibility}
               />
 
-              <p className="text-red-500 text-center text-sm mt-2">
+              <p className="mt-2 text-center text-sm text-red-500">
                 {fetchError}
               </p>
             </div>
@@ -172,10 +173,10 @@ export default function NewLoginMobile() {
               </>
             )}
 
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <Link
                 to="/forgot-password"
-                className="text-primary3 font-secondary text-base font-semibold"
+                className="font-secondary text-base font-semibold text-primary3"
               >
                 Forgot password?
               </Link>
@@ -199,12 +200,12 @@ export default function NewLoginMobile() {
           </form>
 
           <a
-            className="text-darkGrey mt-7 flex items-center font-semibold"
+            className="mt-7 flex items-center font-semibold text-darkGrey"
             href="http://wa.me/+628113117698"
           >
             <Icon
               icon="mingcute:service-fill"
-              className="inline mr-2"
+              className="mr-2 inline"
               width={20}
             />
             Helpdesk
