@@ -74,7 +74,7 @@ export default function SectionPlatformMenu() {
 
   const menus = useMemo(() => {
     return {
-    // const baseMenus = {
+      // const baseMenus = {
       KMS: [
         {
           label: "Social Media",
@@ -761,9 +761,9 @@ export default function SectionPlatformMenu() {
     //     }
     //   );
     // }
-  
+
     // return baseMenus;
-  // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
+    // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
   }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code]);
 
   const signatureService = Networks(BASE_PROXY.signature);
