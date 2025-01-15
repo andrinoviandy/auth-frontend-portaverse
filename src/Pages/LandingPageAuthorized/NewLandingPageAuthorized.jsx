@@ -26,6 +26,13 @@ import { isAndroid, isIOS } from "react-device-detect";
 import SectionCourseMobile from "./Sections/SectionCourseMobile";
 import NewNavbar from "../../Components/NewNavbar";
 import NewNavbarMobile from "../../Components/NewNavbar/NewNavbarMobile";
+import { isAndroid, isIOS } from "react-device-detect";
+import NewNavbarMobile from "../../Components/NewNavbar/NewNavbarMobile";
+import SectionHeroMobile from "./Sections/SectionHeroMobile";
+import SectionStatisticMobile from "./Sections/SectionStatisticMobile";
+import SectionPlatformMenuMobile from "./Sections/SectionPlaftormMenuMobile";
+import SectionCourseMobile from "./Sections/SectionCourseMobile";
+import NewFooterMobile from "../../Components/Footer/NewFooterMobile";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
@@ -55,31 +62,30 @@ export default function NewLandingPageAuthorized() {
   checkCmsAdminClusterAccess();
 
   return (
-    <>
-      <div className="flex flex-col">
-        {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
-        {/* <NewNavbar /> */}
-        {isAndroid || isIOS ? (
-          <>
-            <NewNavbarMobile />
+    <div className="flex flex-col">
+      {isAndroid || isIOS ? (
+        <>
+          <NewNavbarMobile />
 
-            <SectionHeroMobile />
-            <SectionStatisticMobile />
-            <SectionPlatformMenuMobile />
-            <SectionCourseMobile />
-            <NewFooterMobile />
-          </>
-        ) : (
-          <>
-            <Navbar />
-            <SectionHero />
-            <SectionStatistic />
-            <SectionPlatformMenu />
-            <SectionCourse />
-            <NewFooter />
-          </>
-        )}
-      </div>
-    </>
+          <SectionHeroMobile />
+          <SectionStatisticMobile />
+          <SectionPlatformMenuMobile />
+          <SectionCourseMobile />
+          <NewFooterMobile />
+        </>
+      ) : (
+        <>
+          {/* // TODO: Replace NewNavbar with Navbar if development is on ILCS env (GitLab) */}
+          <Navbar />
+          {/* <NewNavbar /> */}
+
+          <SectionHero />
+          <SectionStatistic />
+          <SectionPlatformMenu />
+          <SectionCourse />
+          <NewFooter />
+        </>
+      )}
+    </div>
   );
 }

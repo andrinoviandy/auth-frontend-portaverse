@@ -8,7 +8,10 @@ export interface AgendaGuest {
 }
 export interface PersonalAgenda {
   personal_agenda_id: number;
-  creator_employee_id: number;
+  creator_social_employee_id: number;
+  creator_social_employee_profile_id: number;
+  creator_name: string;
+  creator_employee_number: string;
   title: string;
   description: string;
   /** 'Online' / 'Offline' */
@@ -34,11 +37,16 @@ export interface CommunityAgenda {
   start_date: string;
   /** Date formatted in ISO String */
   end_date: string;
-  speaker: AgendaGuest;
-  offline_location: string | null;
+  speaker: AgendaGuest[];
+  offline_location: {
+    address: string;
+    name: string;
+    url: string;
+  } | null;
   online_url: string | null;
   is_coi: boolean;
-  picture_url: string | null;
+  bg_pic: string | null;
+  profile_pic: string | null;
 }
 
 export interface CalendarDate {

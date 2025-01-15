@@ -25,7 +25,10 @@ import { InfiniteData, useQueryClient } from "react-query";
 import * as yup from "yup";
 
 import { AgendaGuest } from "./index.types";
-import { EmployeeOptions, EmployeesResponse } from "../index.types";
+import {
+  EmployeeOptions,
+  SocialEmployeeResponse,
+} from "../index.types";
 import SMEIcon from "../../../Components/Assets/Icon/SME";
 import PersonCard from "../../../Components/Cards/PersonCard";
 import MultiSelect from "../../../Components/Inputs/MultiSelect";
@@ -33,7 +36,6 @@ import MODAL_IDS from "../../../Components/Modals/modalIds";
 import SectionModalTemplate from "../../../Components/Modals/Templates/SectionModal";
 import {
   BASE_PROXY,
-  EMPLOYEES_ENDPOINT,
   SOCIAL_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
@@ -70,12 +72,14 @@ interface FormValues {
 
 interface ModalCreateAgendaProps {
   isEdit?: boolean;
+  creatorEmpId?: number;
   personalAgendaId?: number;
   agendaData?: AgendaData;
 }
 const ModalCreateAgenda = NiceModal.create(
   ({
     isEdit,
+    creatorEmpId,
     personalAgendaId,
     agendaData,
   }: ModalCreateAgendaProps) => {
@@ -99,7 +103,9 @@ const ModalCreateAgenda = NiceModal.create(
           ? dayjs(agendaData.end_date).format("HH:mm")
           : "",
         employee_ids:
-          agendaData?.guests?.map((g) => `${g?.employee_id}`) || [],
+          agendaData?.guests
+            ?.filter((g) => g.employee_id !== creatorEmpId)
+            .map((g) => `${g?.social_employee_profile_id}`) || [],
         type: agendaData?.type || null,
         offline_location: agendaData?.offline_location || "",
         online_url: agendaData?.online_url || "",
@@ -108,11 +114,13 @@ const ModalCreateAgenda = NiceModal.create(
       validate: yupResolver(
         yup.object().shape({
           title: yup.string().required("Field tidak boleh kosong"),
-          date: yup.date().required("Field tidak boleh kosong"),
+          date: yup
+            .date()
+            .required("Field tidak boleh kosong")
+            .typeError("Field tidak boleh kosong"),
           start_time: yup
             .string()
             .required("Field tidak boleh kosong"),
-          end_time: yup.string().required("Field tidak boleh kosong"),
           employee_ids: yup
             .array(yup.string())
             .required("Field tidak boleh kosong"),
@@ -133,6 +141,7 @@ const ModalCreateAgenda = NiceModal.create(
             .required("Field tidak boleh kosong"),
         }),
       ),
+      validateInputOnBlur: true,
     });
 
     const [searchEmployee, setSearchEmployee] = useState("");
@@ -141,8 +150,7 @@ const ModalCreateAgenda = NiceModal.create(
       500,
     );
 
-    const { infiniteQuery } = Networks(BASE_PROXY.employees);
-    const { mutation } = Networks(BASE_PROXY.social);
+    const { mutation, infiniteQuery } = Networks(BASE_PROXY.social);
 
     const { mutate: mutateDelete, isLoading: isLoadingDelete } =
       mutation("delete");
@@ -158,27 +166,29 @@ const ModalCreateAgenda = NiceModal.create(
       ...restQuery
     } = useInfiniteQuery(
       infiniteQuery(
-        EMPLOYEES_ENDPOINT.GET.allEmployees,
+        SOCIAL_ENDPOINT.GET.socialEmployees,
         ["allEmployees-agenda", dbcSearchEmployee],
         {
           getNextPageParam: (lastPage, allPages) => {
-            const maxPages = lastPage.data.totalAccount / PAGE_SIZE;
+            const maxPages = lastPage.totalPage;
             const nextPage = allPages.length + 1;
             return nextPage <= Math.ceil(maxPages)
               ? nextPage
               : undefined;
           },
-          select: (res: InfiniteData<EmployeesResponse>) =>
+          select: (res: InfiniteData<SocialEmployeeResponse>) =>
             res.pages
               .map((page) =>
-                page.employees.map((item) => ({
-                  label: item?.name || "",
-                  value: `${item.id}`,
+                page.socialEmployees.map((item) => ({
+                  label: item?.firstName || "",
+                  value: `${item.social_employee_profile_id}`,
                   // Fields below will be used for PersonCard component props
-                  name: item?.name,
-                  positionName: item?.employee_number,
+                  name: item?.firstName,
+                  positionName: item?.employee_number || "-",
                   imageUrl: item?.profile_picture,
-                  badgeIcon: item?.sme ? <SMEIcon size={12} /> : null,
+                  badgeIcon: item?.isSme ? (
+                    <SMEIcon size={12} />
+                  ) : null,
                 })),
               )
               .flat() as EmployeeOptions,
@@ -186,7 +196,7 @@ const ModalCreateAgenda = NiceModal.create(
         {
           params: {
             size: PAGE_SIZE,
-            query: dbcSearchEmployee,
+            search: dbcSearchEmployee,
             "without-me": 1,
           },
         },
@@ -201,12 +211,15 @@ const ModalCreateAgenda = NiceModal.create(
         result = [...dataEmployees];
       }
       if (agendaData?.guests?.length) {
-        const mapped = agendaData.guests.map((g) => ({
-          value: `${g?.employee_id}`,
+        const withoutCreator = agendaData.guests.filter(
+          (g) => g.employee_id !== creatorEmpId,
+        );
+        const mapped = withoutCreator.map((g) => ({
+          value: `${g?.social_employee_profile_id}`,
           label: `${g?.name}`,
           // Fields below will be used for PersonCard component props
           name: g?.name,
-          positionName: g?.employee_number,
+          positionName: g?.employee_number || "-",
           imageUrl: g?.profile_picture,
           badgeIcon: g?.is_sme ? <SMEIcon size={12} /> : null,
         })) as EmployeeOptions;
@@ -234,10 +247,12 @@ const ModalCreateAgenda = NiceModal.create(
           form.values.date!,
           form.values.start_time,
         ),
-        end_date: combineDateAndTime(
-          form.values.date!,
-          form.values.end_time,
-        ),
+        end_date: form.values.end_time
+          ? combineDateAndTime(
+              form.values.date!,
+              form.values.end_time,
+            )
+          : null,
         type: form.values.type,
         location:
           form.values.type === "Online"
@@ -436,7 +451,6 @@ const ModalCreateAgenda = NiceModal.create(
               ref={timeEndInputRef}
               label="Waktu Selesai"
               placeholder="Pilih Waktu Selesai"
-              required
               minTime={form.values.start_time || minTime}
               rightSection={
                 <ActionIcon
@@ -456,6 +470,7 @@ const ModalCreateAgenda = NiceModal.create(
           <MultiSelect
             label="Nama Pekerja"
             placeholder="Cari nama pekerja"
+            description="Pekerja terpilih akan mendapatkan notifikasi dan kalender agenda"
             classNames={{ label: "text-primary-main mb-1" }}
             leftSection={<Icon icon="ic:twotone-search" />}
             rightSection={

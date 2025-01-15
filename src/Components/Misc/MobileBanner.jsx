@@ -22,11 +22,11 @@ export default function MobileBanner() {
     // }, 700);
   };
 
-  useEffect(() => {
-    if (isMobile) {
-      openApp();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     openApp();
+  //   }
+  // }, []);
 
   // if (open && isMobile) {
   //   return (

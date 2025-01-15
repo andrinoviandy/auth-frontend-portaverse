@@ -26,18 +26,11 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
-<<<<<<< HEAD
-import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
-
-=======
 import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
-import userId from "../../../Utils/Helpers/userId";
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
+import { isAndroid, isIOS } from "react-device-detect";
 
-export default function SectionPlatformMenu() {
+export default function SectionPlatformMenuMobile() {
   const user = getUserCookie();
-  // const rolesRequired = ["USER"];
-  // const user_id = userId(rolesRequired);
   const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
 
@@ -73,8 +66,42 @@ export default function SectionPlatformMenu() {
   );
 
   const menus = useMemo(() => {
+    if (isAndroid || isIOS) {
+      return {
+        KMS: [
+          {
+            label: "Virtu VR",
+            description:
+              "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+            route: "/virtu-vr",
+            icon: (
+              <Icon
+                icon="material-symbols:3d-rotation"
+                color={color.primary3}
+                width={40}
+              />
+            ),
+            hasAccess: true,
+          },
+          {
+            label: "Master Virtu VR",
+            description:
+              "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+            route: "/master-virtu-vr",
+            icon: (
+              <Icon
+                icon="material-symbols:head-mounted-device"
+                color={color.primary3}
+                width={40}
+              />
+            ),
+            hasAccess: hasRole(["SA"]),
+            adminOnly: true,
+          },
+        ],
+      };
+    }
     return {
-    // const baseMenus = {
       KMS: [
         {
           label: "Social Media",
@@ -161,30 +188,6 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-<<<<<<< HEAD
-          label: "KM Analytics",
-          description:
-            "Modul untuk monitoring kegiatan knowledge Management (KM)",
-          route: "/km-analytics",
-          icon: <Icon icon="majesticons:analytics-line"
-          color={color.primary3}
-          width={38}
-          />,
-          hasAccess: hasRole(["SA"]),
-        },
-        {
-          label: "External User",
-          description:
-            "Penggelolaan atau konfigurasi daftar pengguna eksternal",
-          route: "/external-user",
-          icon: (
-            <img src={ExternalIcon} alt="external-user" className="w-[40px]" />
-          ),
-          hasAccess: hasRole(["SA"]),
-        },
-        {
-=======
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
           label: "Master Virtu VR",
           description:
             "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
@@ -587,22 +590,6 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-<<<<<<< HEAD
-        // {
-        //   label: "Kamus Indikator Kinerja",
-        //   description:
-        //     "Daftar semua Kamus Indikator Kerja",
-        //   route: "/dictionary",
-        //   icon: (
-        //     <Icon
-        //       icon="mage:book-text"
-        //       color={color.primary3}
-        //       width={40}
-        //     />
-        //   ),
-        //   hasAccess: true,
-        // },
-=======
         {
           label: "Master Kamus Indikator Kinerja",
           description:
@@ -625,7 +612,6 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
       ],
       IMS: [
         {
@@ -740,30 +726,6 @@ export default function SectionPlatformMenu() {
         },
       ],
     };
-
-    // if (user_id === 125) {
-    //   baseMenus.TMS = baseMenus.TMS || [];
-    //   baseMenus.TMS.push(
-    //     {
-    //       label: "Master Kamus Indikator Kinerja",
-    //       description: "Pengelolaan Daftar semua Kamus Indikator Kerja",
-    //       route: "/master-dictionary",
-    //       icon: <MasterDictionary />,
-    //       hasAccess: hasRole(["SA"]),
-    //       adminOnly: true,
-    //     },
-    //     {
-    //       label: "Kamus Indikator Kinerja",
-    //       description: "Daftar semua Kamus Indikator Kerja",
-    //       route: "/dictionary",
-    //       icon: <Icon icon="mage:book-text" color={color.primary3} width={40} />,
-    //       hasAccess: true,
-    //     }
-    //   );
-    // }
-  
-    // return baseMenus;
-  // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
   }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code]);
 
   const signatureService = Networks(BASE_PROXY.signature);
@@ -792,17 +754,20 @@ export default function SectionPlatformMenu() {
   );
 
   return (
-    <section className="flex flex-col gap-10 px-20 py-16">
+    <section className="flex flex-col gap-4 px-4 py-6">
       <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
         <Tabs.List grow>
-          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
+          {(isAndroid || isIOS
+            ? ["KMS"]
+            : ["KMS", "LMS", "TMS", "IMS", "CMS"]
+          ).map((tab) => (
             <Tabs.Tab key={tab} value={tab}>
               {tab}
             </Tabs.Tab>
           ))}
         </Tabs.List>
       </Tabs>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="flex flex-col gap-y-4">
         {!menus[activeTab].length ? (
           <p className="text-darkGrey">No menu available yet</p>
         ) : (

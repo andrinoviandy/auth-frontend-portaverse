@@ -65,12 +65,12 @@ export default function SectionStatistic() {
     remainingDay?.type === "MONITORING"
       ? "Pengisian Realisasi"
       : remainingDay?.type === "PLANNING"
-      ? "Perencanaan"
-      : remainingDay?.type === "ADJUSTING"
-      ? "Penyesuaian"
-      : remainingDay?.type === "SPARE"
-      ? "Luang"
-      : "";
+        ? "Perencanaan"
+        : remainingDay?.type === "ADJUSTING"
+          ? "Penyesuaian"
+          : remainingDay?.type === "SPARE"
+            ? "Luang"
+            : "";
 
   return (
     <section className="bg-primary3 text-white">
@@ -86,7 +86,7 @@ export default function SectionStatistic() {
             label={`Nilai Kinerja Individu ${kpiScore?.year || ""}`}
             value={kpiScore?.score || "-"}
             loading={isLoadingKPI}
-            tooltip="Total Skor KPI Anda saat ini"
+            tooltip="Total Skor KPI Anda saat ini. (80% KPI + 20% Assessment)"
           />
 
           <StatCard
@@ -108,9 +108,8 @@ export default function SectionStatistic() {
           />
 
           <StatCard
-            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${
-              remainingDay?.formatted_period || ""
-            }`}
+            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${remainingDay?.formatted_period || ""
+              }`}
             value={
               remainingDay?.remaining
                 ? `${remainingDay?.remaining} (${remainingDay?.date})`

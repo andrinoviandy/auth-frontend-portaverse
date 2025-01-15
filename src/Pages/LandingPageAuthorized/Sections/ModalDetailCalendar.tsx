@@ -28,6 +28,7 @@ import {
 import { Networks } from "../../../Networks/factory";
 import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
+import uppercaseFirstLetterEveryWord from "../../../Utils/Helpers/uppercaseFirstLetterEveryWord";
 
 // const PAGE_SIZE = 10;
 
@@ -103,6 +104,7 @@ function AgendaCard({
                 NiceModal.show(MODAL_IDS.CALENDAR.CREATE_AGENDA, {
                   isEdit: true,
                   personalAgendaId: agendaId,
+                  creatorEmpId,
                   agendaData: {
                     title,
                     start_date: startDate,
@@ -125,8 +127,8 @@ function AgendaCard({
         <Stack gap={2} className="text-sm">
           <p>Tanggal Agenda</p>
           <p className="text-darkGrey">
-            {dayjs(startDate).format("DD/MM/YYYY, HH:mm")} -{" "}
-            {dayjs(endDate).format("HH:mm")}
+            {dayjs(startDate).format("DD/MM/YYYY, HH:mm")}{" "}
+            {endDate && <>- {dayjs(endDate).format("HH:mm")}</>}
           </p>
         </Stack>
 
@@ -208,6 +210,7 @@ const ModalDetailCalendar = NiceModal.create(
     const modalId = MODAL_IDS.CALENDAR.DATE_DETAIL;
     const modal = useModal(modalId);
 
+    const paramDate = dayjs(date).format("YYYY-MM-DD");
     const user = getUserCookie();
     const employeeId = user?.employee?.employee_id;
 
@@ -227,8 +230,8 @@ const ModalDetailCalendar = NiceModal.create(
       },
       {
         params: {
-          start_date: date,
-          end_date: date,
+          start_date: paramDate,
+          end_date: paramDate,
         },
       },
     );
@@ -243,8 +246,8 @@ const ModalDetailCalendar = NiceModal.create(
       },
       {
         params: {
-          start_date: date,
-          end_date: date,
+          start_date: paramDate,
+          end_date: paramDate,
         },
       },
     );
@@ -305,9 +308,21 @@ const ModalDetailCalendar = NiceModal.create(
                         ? item?.online_url || ""
                         : item?.offline_location || ""
                     }
-                    creatorEmpId={item?.creator_employee_id}
-                    guests={item?.guests}
-                    canEdit={employeeId === item?.creator_employee_id}
+                    creatorEmpId={item?.creator_social_employee_id}
+                    guests={[
+                      {
+                        employee_id: item?.creator_social_employee_id,
+                        social_employee_profile_id:
+                          item?.creator_social_employee_profile_id,
+                        employee_number:
+                          item?.creator_employee_number || "",
+                        name: item?.creator_name,
+                      },
+                      ...(item?.guests || []),
+                    ]}
+                    canEdit={
+                      employeeId === item?.creator_social_employee_id
+                    }
                   />
                 ));
               }
@@ -316,25 +331,37 @@ const ModalDetailCalendar = NiceModal.create(
                 activeTab === "community" &&
                 dataCommunity?.length
               ) {
-                return dataCommunity.map((item) => (
-                  <AgendaCard
-                    key={`community-agenda-${item.agenda_id}`}
-                    title={item?.title}
-                    communityName={item?.cop_name}
-                    description={item?.description}
-                    startDate={item?.start_date}
-                    endDate={item?.end_date}
-                    type={item?.type}
-                    location={
-                      item?.type === "Online"
-                        ? item?.online_url || ""
-                        : item?.offline_location || ""
+                return dataCommunity.map((item) => {
+                  const guests = (() => {
+                    let result: AgendaGuest[] = [];
+                    if (item?.speaker?.length) {
+                      result = [...item.speaker];
                     }
-                    guests={[item?.speaker]}
-                    imageUrl={item?.picture_url}
-                    href={`${import.meta.env.VITE_KMS_URL}/communities/${item?.cop_id}/${item?.agenda_id}${item?.is_coi ? "?is-coi=1" : ""}`}
-                  />
-                ));
+                    return result;
+                  })();
+                  return (
+                    <AgendaCard
+                      key={`community-agenda-${item.agenda_id}`}
+                      title={item?.title}
+                      communityName={item?.cop_name}
+                      description={item?.description}
+                      startDate={item?.start_date}
+                      endDate={item?.end_date}
+                      type={uppercaseFirstLetterEveryWord(
+                        item?.type || "",
+                      )}
+                      location={
+                        item?.type === "ONLINE"
+                          ? item?.online_url || ""
+                          : `${item?.offline_location?.name}, ${item?.offline_location?.address}` ||
+                            ""
+                      }
+                      guests={guests}
+                      imageUrl={item?.profile_pic}
+                      href={`${import.meta.env.VITE_KMS_URL}/communities/${item?.cop_id}/${item?.agenda_id}${item?.is_coi ? "?is-coi=1" : ""}`}
+                    />
+                  );
+                });
               }
 
               return <NoItems label="Agenda tidak ditemukan" />;

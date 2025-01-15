@@ -1,4 +1,5 @@
 import { ModalDef } from "@ebay/nice-modal-react";
+import { isAndroid, isIOS } from "react-device-detect";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Error404 from "./Components/Errors/404";
@@ -14,17 +15,17 @@ import PrivateRoutes from "./Components/Private/PrivateRoutes";
 import NewCheckEmail from "./Pages/CheckEmail/NewCheckEmail";
 import DailyQuizRoute from "./Pages/DailyQuiz/Route";
 import NewForgotPassword from "./Pages/ForgotPassword/NewForgotPassword";
+import NewForgotPasswordMobile from "./Pages/ForgotPassword/NewForgotPasswordMobile";
 import LandingPage from "./Pages/LandingPage";
 import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
 import NewLogin from "./Pages/Login";
+import NewLoginMobile from "./Pages/Login/NewLoginMobile";
 import NewPassSuccess from "./Pages/NewPassSuccess";
 import Notifications from "./Pages/Notifications/Notifications";
 import ProgressEvaluationReport from "./Pages/ProgressEvaluationReport/ProgressEvaluationReport";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
-import { isAndroid, isIOS } from "react-device-detect";
-import NewLoginMobile from "./Pages/Login/NewLoginMobile";
 
 function App() {
   document.title = "Portaverse - Pelindo";
@@ -106,14 +107,11 @@ function App() {
         >
           {isAndroid || isIOS ? (
             <Route>
-              {/* Can only be access when user not logged in */}
               <Route path="/login" element={<NewLoginMobile />} />
               <Route
                 path="/forgot-password"
-                element={<NewForgotPassword />}
+                element={<NewForgotPasswordMobile />}
               />
-
-              {/* Can only be access by the app flow and user not logged in */}
               <Route
                 path="/check-email"
                 element={<NewCheckEmail />}

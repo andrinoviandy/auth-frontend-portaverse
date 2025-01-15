@@ -20,7 +20,7 @@ export default function ProgressEvaluationReport() {
     employeeIdParams || user?.employee?.employee_number;
   const [activeTab, setActiveTab] = useState("performance");
   const currYear = new Date().getFullYear() - 1;
-  const [year, setYear] = useState(currYear);
+  const [year, setYear] = useState(null);
 
   return (
     <div className="flex flex-col">
@@ -47,7 +47,7 @@ export default function ProgressEvaluationReport() {
             <Tabs.Tab value="behavior">Perilaku Individu</Tabs.Tab>
             <Tabs.Tab value="pica">PICA</Tabs.Tab>
             {/* <Tabs.Tab
-              
+
               value="idp"
             >
               IDP
@@ -57,7 +57,7 @@ export default function ProgressEvaluationReport() {
           <Tabs.Panel value="performance" pt="xs">
             <PanelPerformance
               activeTab={activeTab}
-              year={year}
+              year={year || currYear}
               employeeNumber={employeeNumber}
             />
           </Tabs.Panel>
@@ -65,7 +65,7 @@ export default function ProgressEvaluationReport() {
           <Tabs.Panel value="kpi" pt="xs">
             <PanelKPI
               activeTab={activeTab}
-              year={year}
+              year={year || currYear}
               employeeNumber={employeeNumber}
             />
           </Tabs.Panel>
@@ -82,7 +82,7 @@ export default function ProgressEvaluationReport() {
             <PanelPICA
               activeTab={activeTab}
               employeeNumber={employeeNumber}
-              year={year}
+              year={year || currYear}
             />
           </Tabs.Panel>
 
