@@ -1,4 +1,5 @@
-import { Loader, clsx } from "@mantine/core";
+import { Loader } from "@mantine/core";
+import clsx from "clsx"
 import PropTypes from "prop-types";
 import { forwardRef, useMemo } from "react";
 import NoItems from "../Errors/NoItems";

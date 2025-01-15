@@ -35,7 +35,7 @@ export default function Weekly({ data, setData }) {
               `,
               });
             }}
-            sx={(theme) => ({
+            style={(theme) => ({
               "[data-selected]": {
                 background: `${theme.colors.bg[1]} !important`,
                 color: `${theme.colors.dark[8]} !important`,

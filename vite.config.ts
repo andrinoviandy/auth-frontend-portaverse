@@ -1,11 +1,38 @@
+import federation from "@originjs/vite-plugin-federation";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+export default defineConfig(({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
-  return defineConfig({
-    plugins: [react()],
+  return {
+    plugins: [
+      react(),
+      federation({
+        name: "sso",
+        remotes: {
+          navbarApp: process.env.VITE_NAVBAR_URL!,
+        },
+        shared: ["react", "react-dom", "zustand"],
+      }),
+    ],
+    build: {
+      modulePreload: false,
+      target: "esnext",
+      minify: false,
+      cssCodeSplit: false,
+    },
+    resolve: {
+      alias: {
+        "@components": "/src/Components",
+        "@configs": "/src/Configs",
+        "@constants": "/src/Utils/Constants",
+        "@hooks": "/src/Utils/Hooks",
+        "@networks": "/src/Networks",
+        "@helpers": "/src/Utils/Helpers",
+        "@modules": "/src/Modules",
+      },
+    },
     server: {
       port: 3000,
       proxy: {
@@ -100,5 +127,5 @@ export default ({ mode }) => {
         },
       },
     },
-  });
-};
+  };
+});

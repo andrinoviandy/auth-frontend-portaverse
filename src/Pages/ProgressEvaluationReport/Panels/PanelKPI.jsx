@@ -60,19 +60,16 @@ export default function PanelKPI({
             <div className="flex flex-col gap-5 p-5">
               {/* <Tabs
           value={type}
-          onTabChange={setType}
+          onChange={setType}
           variant="pills"
-          sx={MANTINE_TAB_STYLES.pill.sx}
         >
           <Tabs.List>
             <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.pill.sxChild}
               value="job_sharing"
             >
               Job Sharing
             </Tabs.Tab>
             <Tabs.Tab
-              sx={MANTINE_TAB_STYLES.pill.sxChild}
               value="mutation"
             >
               Mutasi

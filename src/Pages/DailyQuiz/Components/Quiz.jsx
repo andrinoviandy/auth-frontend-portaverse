@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { Divider, Radio, Text, Tooltip, clsx } from "@mantine/core";
+import { Divider, Radio, Text, Tooltip } from "@mantine/core";
+import clsx from "clsx"
 import dayjs from "dayjs";
 import { color } from "../../../Utils/Constants";
 import trimString from "../../../Utils/Helpers/trimString";

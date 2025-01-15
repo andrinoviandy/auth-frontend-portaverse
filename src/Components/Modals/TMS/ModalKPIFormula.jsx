@@ -1,9 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { Button, Textarea } from "@mantine/core";
-import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
-import SectionModalTemplate from "../Templates/SectionModal";
+
 import MODAL_IDS from "../modalIds";
+import SectionModalTemplate from "../Templates/SectionModal";
+import closeNiceModal from "../../../Utils/Helpers/closeNiceModal";
 
 const ModalKPIFormula = NiceModal.create(({ value }) => {
   const modalId = MODAL_IDS.TMS.SMARTPLAN.KPI_FORMULA;
@@ -19,7 +20,7 @@ const ModalKPIFormula = NiceModal.create(({ value }) => {
         <Button onClick={() => closeNiceModal(modalId)}>Tutup</Button>
       }
     >
-      <div className="flex flex-col gap-5 p-5 max-h-[40vh] overflow-y-auto scroll-style-3">
+      <div className="scroll-style-3 flex max-h-[40vh] flex-col gap-5 overflow-y-auto p-5">
         <Textarea
           placeholder="Tidak ada formula"
           value={value}

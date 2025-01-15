@@ -1,18 +1,20 @@
 import { Icon } from "@iconify/react";
-import { Loader, clsx } from "@mantine/core";
+import { Loader } from "@mantine/core";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import parse from "html-react-parser";
 import PropTypes from "prop-types";
 import { useQueryClient } from "react-query";
+
+import KPI from "../../../Components/Assets/Icon/KPI";
+import NoItems from "../../../Components/Errors/NoItems";
 import {
   BASE_PROXY,
   NOTIFICATION_ENDPOINT,
-} from "../../Networks/endpoint";
-import { Networks } from "../../Networks/factory";
-import { color } from "../../Utils/Constants";
-import notifURLLookup from "../../Utils/Helpers/notifURLLookup";
-import KPI from "../Assets/Icon/KPI";
-import NoItems from "../Errors/NoItems";
+} from "../../../Networks/endpoint";
+import { Networks } from "../../../Networks/factory";
+import { color } from "../../../Utils/Constants";
+import notifURLLookup from "../../../Utils/Helpers/notifURLLookup";
 
 const MODULE_ICONS = {
   Assessment: (
@@ -32,12 +34,12 @@ function Item({ moduleName, message, date, viewed, onClick }) {
   return (
     <button
       type="button"
-      className="flex gap-4 items-start text-start bg-bg4 rounded-md py-3 px-5"
+      className="flex items-start gap-4 rounded-md bg-bg4 px-5 py-3 text-start"
       onClick={onClick}
     >
       <div className="shrink-0">{MODULE_ICONS[moduleName]}</div>
 
-      <div className="flex flex-col gap-1 grow-0">
+      <div className="flex grow-0 flex-col gap-1">
         <p className="font-bold">{moduleName}</p>
         <p className="text-sm">{parse(message)}</p>
         <p className="text-sm text-darkGrey">
@@ -48,7 +50,7 @@ function Item({ moduleName, message, date, viewed, onClick }) {
   );
 }
 
-export default function NewNotificationPanel({
+export default function PanelNotification({
   classNames = { root: "" },
 }) {
   const queryClient = useQueryClient();
@@ -124,23 +126,20 @@ export default function NewNotificationPanel({
 
   return (
     <div
-      className={clsx(
-        "flex flex-col rounded-md border",
-        classNames.root,
-      )}
+      className={clsx("flex flex-col rounded-md", classNames.root)}
     >
       {/* TODO: Uncomment status banner if Backend is ready */}
       {/* <StatusBanner
         variant="error"
         message="Mohon Maaf dikarenakan adanya gangguan pengisian KPI. Mohon tunggu beberapa saat."
       /> */}
-      <div className="flex justify-between items-center border-b px-5 py-5">
-        <h3 className="font-bold text-base">Pemberitahuan</h3>
+      <div className="flex items-center justify-between border-b p-5">
+        <h3 className="text-base font-bold">Pemberitahuan</h3>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={markAsReadHandler}
-            className="flex items-center gap-2 text-primary3 font-semibold"
+            className="flex items-center gap-2 font-semibold text-primary3"
           >
             <Icon icon="ci:check-all-big" fontSize={24} />
             Tandai Sudah Dibaca
@@ -148,7 +147,7 @@ export default function NewNotificationPanel({
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 max-h-[590px] p-5 overflow-y-auto scroll-style-4">
+      <div className="scroll-style-4 flex max-h-[590px] flex-col gap-2 overflow-y-auto p-5">
         {(() => {
           if (isLoading) return <Loader className="mx-auto" />;
 
@@ -181,13 +180,13 @@ export default function NewNotificationPanel({
   );
 }
 
-NewNotificationPanel.propTypes = {
+PanelNotification.propTypes = {
   classNames: PropTypes.shape({
     root: PropTypes.string,
   }),
 };
 
-NewNotificationPanel.defaultProps = {
+PanelNotification.defaultProps = {
   classNames: {
     root: "",
   },

@@ -6,7 +6,7 @@ import {
   Pagination,
   Spoiler,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, DatePickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import TableTemplate from "../../../Components/Table/TableTemplates";
@@ -309,13 +309,13 @@ function ItemPICA({ data, kpiItems }) {
       <div className="border" />
       <p className="text-darkGrey text-xs font-medium">WAKTU</p>
       <div className="flex gap-2">
-        <DatePicker
+        <DatePickerInput
           placeholder="Start Date"
           defaultValue={data?.date_start}
           clearable={false}
           disabled
         />
-        <DatePicker
+        <DatePickerInput
           placeholder="End Date"
           defaultValue={data?.date_end}
           clearable={false}

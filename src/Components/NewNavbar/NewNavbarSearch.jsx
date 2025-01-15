@@ -3,16 +3,16 @@ import { Icon } from "@iconify/react";
 import { Anchor, Loader, Select } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useMemo, useState } from "react";
+
+import SMEIcon from "../Assets/Icon/SME";
+import ProfilePicture from "../ProfilePicture";
 import {
   BASE_PROXY,
   SEARCH_ENGINE_ENDPOINT,
 } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
-import { COURSE_TYPES, color } from "../../Utils/Constants";
+import { color, COURSE_TYPES } from "../../Utils/Constants";
 import trimString from "../../Utils/Helpers/trimString";
-import SMEIcon from "../Assets/Icon/SME";
-import ProfilePictureWithBadge from "../ProfilePictureWithBadge/ProfilePictureWithBadge";
-import parseMention from "../../Utils/Helpers/parseMention";
 
 const mapTrainer = {
   External: {
@@ -73,21 +73,16 @@ function EmployeeTypeItem({
   positionName,
 }) {
   return (
-    <div className="flex items-center max-w-full gap-2">
+    <div className="flex max-w-full items-center gap-2">
       <div className="block">
         {withAvatar ? (
-          <ProfilePictureWithBadge
-            className="object-cover w-6 h-6 border rounded-full"
-            img={avatar}
-            noImgVariant="light"
-            badgeIcon={
-              isSme ? (
-                <div className="absolute -right-1 -bottom-2">
-                  <SMEIcon size={12} />
-                </div>
-              ) : null
-            }
+          <ProfilePicture
+            alt="avatar"
             name={employeeName}
+            imageUrl={avatar}
+            size={24}
+            badgeIcon={isSme ? <SMEIcon size={12} /> : null}
+            className="border"
           />
         ) : (
           <Icon
@@ -100,7 +95,7 @@ function EmployeeTypeItem({
       </div>
       <div className="w-full text-sm font-medium text-coffee">
         {employeeName}
-        <span className="w-full font-normal truncate text-darkGrey">
+        <span className="w-full truncate font-normal text-darkGrey">
           {employeeNumber && <> &bull; {employeeNumber}</>}
           {positionName && (
             <> &bull; {trimString(positionName, 30)}</>
@@ -120,18 +115,13 @@ function TrainerTypeItem({
   return (
     <div className="flex items-center gap-2">
       <div className="block">
-        <ProfilePictureWithBadge
-          className="object-cover w-6 h-6 border rounded-full"
-          img={avatar}
-          noImgVariant="light"
-          badgeIcon={
-            isSme ? (
-              <div className="absolute -right-1 -bottom-2">
-                <SMEIcon size={12} />
-              </div>
-            ) : null
-          }
+        <ProfilePicture
+          alt="avatar"
           name={trainerName}
+          imageUrl={avatar}
+          size={24}
+          badgeIcon={isSme ? <SMEIcon size={12} /> : null}
+          className="border"
         />
       </div>
       <div className="text-sm font-medium text-coffee">
@@ -403,7 +393,7 @@ export default function NavbarSearch() {
       searchValue={searchValue}
       nothingFound={
         isLoading ? (
-          <div className="flex items-center justify-center w-full">
+          <div className="flex w-full items-center justify-center">
             <Loader />
           </div>
         ) : (

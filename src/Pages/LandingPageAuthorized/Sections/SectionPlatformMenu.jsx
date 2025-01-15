@@ -1,18 +1,19 @@
 /* eslint-disable react/prop-types */
 import { Icon } from "@iconify/react";
-import { Tabs, clsx } from "@mantine/core";
+import { Tabs } from "@mantine/core";
+import clsx from "clsx";
 import { useMemo, useState } from "react";
-// import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
-import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
-import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
+
 import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
 import Podium from "../../../Components/Assets/Svg/podium.svg";
-import PerformanceReport from "../../../Components/Assets/Svg/performance-report.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
 import SignatureManagement from "../../../Components/Assets/Svg/signature-management.svg";
+// import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
+import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
+import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
 import Badge from "../../../Components/Badge/Badge";
 import {
   BASE_PROXY,
@@ -22,16 +23,16 @@ import {
   SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
-import { MANTINE_TAB_STYLES, color } from "../../../Utils/Constants";
+import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
-import userId from "../../../Utils/Helpers/userId";
 import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
+import userId from "../../../Utils/Helpers/userId";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
-  const rolesRequired = ["USER"];
-  const user_id = userId(rolesRequired);
+  // const rolesRequired = ["USER"];
+  // const user_id = userId(rolesRequired);
   const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
 
@@ -67,7 +68,8 @@ export default function SectionPlatformMenu() {
   );
 
   const menus = useMemo(() => {
-    const baseMenus = {
+    return {
+      // const baseMenus = {
       KMS: [
         {
           label: "Social Media",
@@ -153,7 +155,35 @@ export default function SectionPlatformMenu() {
           icon: <img src={AoE} alt="repo" className="w-[40px]" />,
           hasAccess: true,
         },
-
+        {
+          label: "Master Virtu VR",
+          description:
+            "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+          route: "/master-virtu-vr",
+          icon: (
+            <Icon
+              icon="material-symbols:head-mounted-device"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Virtu VR",
+          description:
+            "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+          route: "/virtu-vr",
+          icon: (
+            <Icon
+              icon="material-symbols:3d-rotation"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
         // {
         //   label: "Headquarter",
         //   description:
@@ -528,28 +558,28 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-        // {
-        //   label: "Master Kamus Indikator Kinerja",
-        //   description:
-        //     "Pengelolaan Daftar semua Kamus Indikator Kerja",
-        //   route: "/master-dictionary",
-        //   icon: <MasterDictionary />,
-        //   hasAccess: hasRole(["SA"]),
-        //   adminOnly: true,
-        // },
-        // {
-        //   label: "Kamus Indikator Kinerja",
-        //   description: "Daftar semua Kamus Indikator Kerja",
-        //   route: "/dictionary",
-        //   icon: (
-        //     <Icon
-        //       icon="mage:book-text"
-        //       color={color.primary3}
-        //       width={40}
-        //     />
-        //   ),
-        //   hasAccess: true,
-        // },
+        {
+          label: "Master Kamus Indikator Kinerja",
+          description:
+            "Pengelolaan Daftar semua Kamus Indikator Kerja",
+          route: "/master-dictionary",
+          icon: <MasterDictionary />,
+          hasAccess: hasRole(["SA"]),
+          adminOnly: true,
+        },
+        {
+          label: "Kamus Indikator Kinerja",
+          description: "Daftar semua Kamus Indikator Kerja",
+          route: "/dictionary",
+          icon: (
+            <Icon
+              icon="mage:book-text"
+              color={color.primary3}
+              width={40}
+            />
+          ),
+          hasAccess: true,
+        },
       ],
       IMS: [
         {
@@ -586,7 +616,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasAccessIMSHQ,
+          hasAccess: hasRole(["SA"]) || hasAccessIMSHQ,
           adminOnly: true,
         },
       ],
@@ -659,42 +689,36 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["CADH"]),
+          hasAccess: hasRole(["SA"]),
           adminOnly: true,
         },
       ],
     };
 
-    if (user_id === 125) {
-      baseMenus.TMS = baseMenus.TMS || [];
-      baseMenus.TMS.push(
-        {
-          label: "Master Kamus Indikator Kinerja",
-          description:
-            "Pengelolaan Daftar semua Kamus Indikator Kerja",
-          route: "/master-dictionary",
-          icon: <MasterDictionary />,
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
-        },
-        {
-          label: "Kamus Indikator Kinerja",
-          description: "Daftar semua Kamus Indikator Kerja",
-          route: "/dictionary",
-          icon: (
-            <Icon
-              icon="mage:book-text"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: true,
-        },
-      );
-    }
+    // if (user_id === 125) {
+    //   baseMenus.TMS = baseMenus.TMS || [];
+    //   baseMenus.TMS.push(
+    //     {
+    //       label: "Master Kamus Indikator Kinerja",
+    //       description: "Pengelolaan Daftar semua Kamus Indikator Kerja",
+    //       route: "/master-dictionary",
+    //       icon: <MasterDictionary />,
+    //       hasAccess: hasRole(["SA"]),
+    //       adminOnly: true,
+    //     },
+    //     {
+    //       label: "Kamus Indikator Kinerja",
+    //       description: "Daftar semua Kamus Indikator Kerja",
+    //       route: "/dictionary",
+    //       icon: <Icon icon="mage:book-text" color={color.primary3} width={40} />,
+    //       hasAccess: true,
+    //     }
+    //   );
+    // }
 
-    return baseMenus;
-  }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
+    // return baseMenus;
+    // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
+  }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   signatureService.query(
@@ -722,21 +746,11 @@ export default function SectionPlatformMenu() {
   );
 
   return (
-    <section className="flex flex-col gap-10 py-16 px-[5rem]">
-      <Tabs
-        value={activeTab}
-        onTabChange={setActiveTab}
-        radius="lg"
-        sx={MANTINE_TAB_STYLES.default.sx}
-      >
+    <section className="flex flex-col gap-10 px-20 py-16">
+      <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
         <Tabs.List grow>
-          {/* {["KMS", "LMS", "TMS", "IMS"].map((tab) => ( */}
           {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
-            <Tabs.Tab
-              key={tab}
-              sx={MANTINE_TAB_STYLES.default.sxChild}
-              value={tab}
-            >
+            <Tabs.Tab key={tab} value={tab}>
               {tab}
             </Tabs.Tab>
           ))}
@@ -794,9 +808,9 @@ function MenuCard({
     <a
       href={disabled || comingSoon ? "/landing" : route}
       className={clsx(
-        "flex items-center gap-3 border rounded-lg px-5 py-4",
+        "flex items-center gap-3 rounded-lg border px-5 py-4",
         disabled || comingSoon
-          ? "bg-gray-50 pointer-events-none cursor-not-allowed"
+          ? "pointer-events-none cursor-not-allowed bg-gray-50"
           : "bg-white hover:border-primary3",
       )}
     >
@@ -814,10 +828,10 @@ function MenuCard({
         {icon}
       </div>
       <div className="flex flex-col gap-0.5">
-        <div className="flex gap-3 items-center">
+        <div className="flex items-center gap-3">
           <h3
             className={clsx(
-              "font-bold text-base",
+              "text-base font-bold",
               disabled || comingSoon ? "text-gray-400" : "text-text1",
             )}
           >

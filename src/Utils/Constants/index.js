@@ -210,6 +210,7 @@ export const color = {
   baseGradient: "#6CC7FE",
   topGradient: "#111111",
   iconGradient: "#FEFEFE",
+  white: "#FFF"
 };
 
 export const LIST_OF_MONTH_INDONESIA = [
