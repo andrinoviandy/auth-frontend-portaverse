@@ -156,9 +156,9 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-          label: "Master Virtu VR",
+          label: "Master VirtuVR",
           description:
-            "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+            "Pengelolaan Modul VR",
           route: "/master-virtu-vr",
           icon: (
             <Icon
@@ -171,9 +171,9 @@ export default function SectionPlatformMenu() {
           adminOnly: true,
         },
         {
-          label: "Virtu VR",
+          label: "VirtuVR",
           description:
-            "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+            "Eksplorasi VR 360",
           route: "/virtu-vr",
           icon: (
             <Icon
