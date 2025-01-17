@@ -65,21 +65,12 @@ export default function SectionStatisticMobile() {
     remainingDay?.type === "MONITORING"
       ? "Pengisian Realisasi"
       : remainingDay?.type === "PLANNING"
-<<<<<<< HEAD
-      ? "Perencanaan"
-      : remainingDay?.type === "ADJUSTING"
-      ? "Penyesuaian"
-      : remainingDay?.type === "SPARE"
-      ? "Luang"
-      : "";
-=======
         ? "Perencanaan"
         : remainingDay?.type === "ADJUSTING"
           ? "Penyesuaian"
           : remainingDay?.type === "SPARE"
             ? "Luang"
             : "";
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
 
   return (
     <section className="bg-primary3 text-white">
@@ -95,11 +86,7 @@ export default function SectionStatisticMobile() {
             label={`Nilai Kinerja Individu ${kpiScore?.year || ""}`}
             value={kpiScore?.score || "-"}
             loading={isLoadingKPI}
-<<<<<<< HEAD
-            tooltip="Total Skor KPI Anda saat ini"
-=======
             tooltip="Total Skor KPI Anda saat ini. (80% KPI + 20% Assessment)"
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
           />
 
           <StatCard
@@ -121,14 +108,8 @@ export default function SectionStatisticMobile() {
           />
 
           <StatCard
-<<<<<<< HEAD
-            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${
-              remainingDay?.formatted_period || ""
-            }`}
-=======
             label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${remainingDay?.formatted_period || ""
               }`}
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
             value={
               remainingDay?.remaining
                 ? `${remainingDay?.remaining} (${remainingDay?.date})`
@@ -157,10 +138,6 @@ function StatCard({ label, value, tooltip, loading }) {
           />
         </div>
       </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
       {loading ? (
         <Loader variant="dots" className="my-[0.45rem]" />
       ) : (
