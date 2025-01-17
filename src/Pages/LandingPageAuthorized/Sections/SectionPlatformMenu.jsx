@@ -26,13 +26,7 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
-<<<<<<< HEAD
 import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
-
-=======
-import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
-import userId from "../../../Utils/Helpers/userId";
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
@@ -161,7 +155,6 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-<<<<<<< HEAD
           label: "KM Analytics",
           description:
             "Modul untuk monitoring kegiatan knowledge Management (KM)",
@@ -183,11 +176,9 @@ export default function SectionPlatformMenu() {
           hasAccess: hasRole(["SA"]),
         },
         {
-=======
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
-          label: "Master Virtu VR",
+          label: "Master VirtuVR",
           description:
-            "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+            "Pengelolaan Modul VR",
           route: "/master-virtu-vr",
           icon: (
             <Icon
@@ -200,9 +191,9 @@ export default function SectionPlatformMenu() {
           adminOnly: true,
         },
         {
-          label: "Virtu VR",
+          label: "VirtuVR",
           description:
-            "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
+            "Eksplorasi VR 360",
           route: "/virtu-vr",
           icon: (
             <Icon
@@ -587,7 +578,6 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-<<<<<<< HEAD
         // {
         //   label: "Kamus Indikator Kinerja",
         //   description:
@@ -602,30 +592,6 @@ export default function SectionPlatformMenu() {
         //   ),
         //   hasAccess: true,
         // },
-=======
-        {
-          label: "Master Kamus Indikator Kinerja",
-          description:
-            "Pengelolaan Daftar semua Kamus Indikator Kerja",
-          route: "/master-dictionary",
-          icon: <MasterDictionary />,
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
-        },
-        {
-          label: "Kamus Indikator Kinerja",
-          description: "Daftar semua Kamus Indikator Kerja",
-          route: "/dictionary",
-          icon: (
-            <Icon
-              icon="mage:book-text"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: true,
-        },
->>>>>>> 52f58261d159fd36f0bf624210b052f592b8d31a
       ],
       IMS: [
         {

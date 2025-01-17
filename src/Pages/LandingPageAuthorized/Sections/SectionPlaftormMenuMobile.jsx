@@ -70,23 +70,9 @@ export default function SectionPlatformMenuMobile() {
       return {
         KMS: [
           {
-            label: "Virtu VR",
+            label: "Master VirtuVR",
             description:
-              "Modul untuk melihat secara virtual layanan secara 3 Dimensi",
-            route: "/virtu-vr",
-            icon: (
-              <Icon
-                icon="material-symbols:3d-rotation"
-                color={color.primary3}
-                width={40}
-              />
-            ),
-            hasAccess: true,
-          },
-          {
-            label: "Master Virtu VR",
-            description:
-              "Pengelolaan Modul untuk virtual layanan secara 3 Dimensi",
+              "Pengelolaan Modul VR",
             route: "/master-virtu-vr",
             icon: (
               <Icon
@@ -97,6 +83,20 @@ export default function SectionPlatformMenuMobile() {
             ),
             hasAccess: hasRole(["SA"]),
             adminOnly: true,
+          },
+          {
+            label: "VirtuVR",
+            description:
+              "Eksplorasi VR 360",
+            route: "/virtu-vr",
+            icon: (
+              <Icon
+                icon="material-symbols:3d-rotation"
+                color={color.primary3}
+                width={40}
+              />
+            ),
+            hasAccess: true,
           },
         ],
       };
