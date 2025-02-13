@@ -3,7 +3,9 @@ import { Icon } from "@iconify/react";
 import { Tabs } from "@mantine/core";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
+import { isAndroid, isIOS } from "react-device-detect";
 
+import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
 import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
@@ -26,8 +28,6 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
-import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
-import { isAndroid, isIOS } from "react-device-detect";
 
 export default function SectionPlatformMenuMobile() {
   const user = getUserCookie();
@@ -71,8 +71,7 @@ export default function SectionPlatformMenuMobile() {
         KMS: [
           {
             label: "Master VirtuVR",
-            description:
-              "Pengelolaan Modul VR",
+            description: "Pengelolaan Modul VR",
             route: "/master-virtu-vr",
             icon: (
               <Icon
@@ -86,8 +85,7 @@ export default function SectionPlatformMenuMobile() {
           },
           {
             label: "VirtuVR",
-            description:
-              "Eksplorasi VR 360",
+            description: "Eksplorasi VR 360",
             route: "/virtu-vr",
             icon: (
               <Icon

@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
+import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
 import Podium from "../../../Components/Assets/Svg/podium.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
@@ -26,7 +27,6 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
-import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
@@ -159,10 +159,13 @@ export default function SectionPlatformMenu() {
           description:
             "Modul untuk monitoring kegiatan knowledge Management (KM)",
           route: "/km-analytics",
-          icon: <Icon icon="majesticons:analytics-line"
-          color={color.primary3}
-          width={38}
-          />,
+          icon: (
+            <Icon
+              icon="majesticons:analytics-line"
+              color={color.primary3}
+              width={38}
+            />
+          ),
           hasAccess: hasRole(["SA"]),
         },
         {
@@ -171,14 +174,18 @@ export default function SectionPlatformMenu() {
             "Penggelolaan atau konfigurasi daftar pengguna eksternal",
           route: "/external-user",
           icon: (
-            <img src={ExternalIcon} alt="external-user" className="w-[40px]" />
+            <img
+              src={ExternalIcon}
+              alt="external-user"
+              className="w-[40px]"
+            />
           ),
           hasAccess: hasRole(["SA"]),
         },
         {
           label: "Master VirtuVR",
-          description:
-            "Pengelolaan Modul VR",
+
+          description: "Pengelolaan Modul VR",
           route: "/master-virtu-vr",
           icon: (
             <Icon
@@ -192,8 +199,7 @@ export default function SectionPlatformMenu() {
         },
         {
           label: "VirtuVR",
-          description:
-            "Eksplorasi VR 360",
+          description: "Eksplorasi VR 360",
           route: "/virtu-vr",
           icon: (
             <Icon
