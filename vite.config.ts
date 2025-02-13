@@ -125,6 +125,12 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) =>
             path.replace(/^\/api\/innovation\/v1/, ""),
         },
+        "/api/kmap/v1": {
+          target: process.env.VITE_API_KMAP_SERVICE_URL,
+          changeOrigin: true,
+          secure: true,
+          rewrite: (path) => path.replace(/^\/api\/kmap\/v1/, ""),
+        },
       },
     },
   };
