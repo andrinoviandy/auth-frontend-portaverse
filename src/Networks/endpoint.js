@@ -29,6 +29,8 @@ export const KMAP_ENDPOINT = {
     importantKnowledges: "/kmap/other/ik",
     kmapGroups: "/kmap-group",
     kmapGroup: (id) => `/kmap-group/${id}`,
+    kmapOrgOrGroupDetailByID: (id) =>
+      `/kmap-group/v2/get-group/${id}`,
   },
   POST: {
     kmapGroup: "/kmap-group",

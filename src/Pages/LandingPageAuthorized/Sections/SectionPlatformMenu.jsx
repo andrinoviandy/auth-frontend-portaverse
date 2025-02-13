@@ -12,6 +12,7 @@ import Podium from "../../../Components/Assets/Svg/podium.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
 import Repository from "../../../Components/Assets/Svg/repository.svg";
 import SignatureManagement from "../../../Components/Assets/Svg/signature-management.svg";
+import SME from "../../../Components/Assets/Svg/sme.svg";
 // import DashedPlayButton from "../../../Components/Assets/Svg/dashed-play-button.svg";
 import SubconDashboardOutline from "../../../Components/Assets/Svg/SubconDashboardOutline.svg";
 import VendorDashboardOutline from "../../../Components/Assets/Svg/VendorDashboardOutline.svg";
@@ -20,6 +21,7 @@ import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
   INNOVATION_ENDPOINT,
+  KMAP_ENDPOINT,
   SIGNATURE_ENDPOINT,
   SMARTPLAN_ENDPOINT_V2,
 } from "../../../Networks/endpoint";
@@ -42,6 +44,25 @@ export default function SectionPlatformMenu() {
 
   const kpiService = Networks(BASE_PROXY.smartplan);
   const innovationService = Networks(BASE_PROXY.innovation);
+  const kmapService = Networks(BASE_PROXY.kmap);
+
+  const userGroupId = user?.employee?.group?.group_id;
+
+  const { data: dataGroup, isLoading: isLoadingGroup } =
+    kmapService.query(
+      KMAP_ENDPOINT.GET.kmapOrgOrGroupDetailByID(userGroupId),
+      ["get-group", userGroupId],
+    );
+
+  const userDeepestTierId = useMemo(() => {
+    if ((dataGroup?.group?.tier || 0) >= 3) {
+      return dataGroup?.parent.find((g) => g.tier === 3)?.id;
+    }
+    if (dataGroup?.group?.tier < 3) {
+      return dataGroup?.group?.id;
+    }
+    return undefined;
+  }, [dataGroup]);
 
   kpiService.query(
     SMARTPLAN_ENDPOINT_V2.GET.loggedInAdminEmployees,
@@ -88,7 +109,9 @@ export default function SectionPlatformMenu() {
           label: "Knowledge Map",
           description:
             "Peta pengetahuan dan aktivitas perusahaan yang diselaraskan dengan tujuan perusahaan",
-          route: "/kmap",
+          route: userDeepestTierId
+            ? `/kmap/group/${userDeepestTierId}`
+            : "/kmap/group",
           icon: (
             <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
           ),
@@ -100,10 +123,14 @@ export default function SectionPlatformMenu() {
             "Modul untuk pengelolaan, monitoring, dan pengembangan narasumber ahli di Pelindo",
           route: "/dashboard-sme",
           icon: (
-            <Icon
-              icon="clarity:organization-line"
-              width={40}
-              color={color.primary3}
+            <img
+              src={SME}
+              alt="sme"
+              className="w-[40px]"
+              style={{
+                filter:
+                  "invert(24%) sepia(96%) saturate(1553%) hue-rotate(183deg) brightness(100%) contrast(99%)",
+              }}
             />
           ),
           hasAccess: true,
@@ -184,7 +211,6 @@ export default function SectionPlatformMenu() {
         },
         {
           label: "Master VirtuVR",
-
           description: "Pengelolaan Modul VR",
           route: "/master-virtu-vr",
           icon: (
@@ -736,7 +762,14 @@ export default function SectionPlatformMenu() {
 
     // return baseMenus;
     // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
-  }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code]);
+  }, [
+    hasAccessOM,
+    hasAccessSMS,
+    hasWerks,
+    user.role_code,
+    isLoadingGroup,
+    userDeepestTierId,
+  ]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   signatureService.query(
