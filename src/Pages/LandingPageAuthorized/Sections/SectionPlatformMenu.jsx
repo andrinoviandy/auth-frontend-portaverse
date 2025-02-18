@@ -4,7 +4,6 @@ import { Tabs } from "@mantine/core";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 
-import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
@@ -92,9 +91,9 @@ export default function SectionPlatformMenu() {
       // const baseMenus = {
       KMS: [
         {
-          label: "Social Media",
+          label: "Social Media & Ask the Expert",
           description:
-            "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
+            "Media untuk bersosialisasi, berkolaborasi, berbagi knowledge, dan berkomunikasi langsung dengan narasumber ahli",
           route: "/home",
           icon: (
             <Icon
@@ -173,14 +172,14 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-        {
-          label: "Ask the Expert",
-          description:
-            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
-          route: "/ask-expert",
-          icon: <img src={AoE} alt="repo" className="w-[40px]" />,
-          hasAccess: true,
-        },
+        // {
+        //   label: "Ask the Expert",
+        //   description:
+        //     "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+        //   route: "/ask-expert",
+        //   icon: <img src={AoE} alt="repo" className="w-[40px]" />,
+        //   hasAccess: true,
+        // },
         {
           label: "KM Analytics",
           description:
