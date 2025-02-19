@@ -3,11 +3,12 @@ import { Icon } from "@iconify/react";
 import { ActionIcon } from "@mantine/core";
 import clsx from "clsx";
 import { useState } from "react";
+
+import MODAL_IDS from "../Modals/modalIds";
 import { BASE_PROXY, CMS_ENDPOINT } from "../../Networks/endpoint";
 import { Networks } from "../../Networks/factory";
 import { color } from "../../Utils/Constants";
 import hasRole from "../../Utils/Helpers/hasRole";
-import MODAL_IDS from "../Modals/modalIds";
 // import portaverse from "../Assets/Pictures/PelindoLogo.png";
 
 export default function NewFooterMobile() {
@@ -48,8 +49,8 @@ export default function NewFooterMobile() {
   };
 
   return (
-    <footer className="bg-white flex flex-col items-center justify-center my-6">
-      <div className="flex flex-col justify-between items-center border-b w-full">
+    <footer className="my-6 flex flex-col items-center justify-center bg-white">
+      <div className="flex w-full flex-col items-center justify-between border-b">
         <div className="w-full">
           {/* <img
             src={portaverse}
@@ -87,12 +88,12 @@ export default function NewFooterMobile() {
                 contentData?.footer_logo_picture
               }
               alt="company_logo"
-              className="h-[50px] mb-5"
+              className="mb-5 h-[50px]"
               loading="lazy"
             />
           </div>
-          <div className="flex items-start mb-2">
-            <div className="flex flex-col gap-3 w-[50%]">
+          <div className="mb-2 flex items-start">
+            <div className="flex w-[50%] flex-col gap-3">
               <div className="flex gap-2">
                 {canEdit && (
                   <ActionIcon
@@ -122,7 +123,7 @@ export default function NewFooterMobile() {
                     />
                   </ActionIcon>
                 )}
-                <h6 className="font-bold text-base">
+                <h6 className="text-base font-bold">
                   {previewData?.footer_title ||
                     contentData?.footer_title}
                 </h6>
@@ -165,7 +166,7 @@ export default function NewFooterMobile() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <h6 className="font-bold text-base">Kantor Pusat</h6>
+              <h6 className="text-base font-bold">Kantor Pusat</h6>
               <div className="text-darkGrey">
                 <p>PT Pelabuhan Indonesia (Persero)</p>
                 <p>Jl. Pasoso No.1, Tanjung Priok, Jakarta Utara,</p>
@@ -175,9 +176,9 @@ export default function NewFooterMobile() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 ml-9 mr-auto">
-          <h6 className="font-bold text-base">Social Media</h6>
-          <ul className="flex flex-col gap-3 my-2 text-darkGrey">
+        <div className="ml-9 mr-auto flex flex-col gap-3">
+          <h6 className="text-base font-bold">Social Media</h6>
+          <ul className="my-2 flex flex-col gap-3 text-darkGrey">
             <SocmedItem
               href="https://www.instagram.com/pelindo"
               icon="ant-design:instagram-filled"
@@ -224,7 +225,7 @@ function SocmedItem({ icon, text, href }) {
         href={href}
         target="_blank"
         className={clsx(
-          "flex items-center gap-1 cursor-pointer font-medium",
+          "flex cursor-pointer items-center gap-1 font-medium",
           hovered && "text-primary3",
         )}
         rel="noreferrer"

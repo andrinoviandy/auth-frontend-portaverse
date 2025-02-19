@@ -316,8 +316,10 @@ export default function NavbarSearch() {
             const { display } = e || {};
             const div = document.createElement("div");
             div.innerHTML = display;
-            const parsedDisplay =
-              div.textContent || div.innerText || "";
+            const parsedDisplay = parseMention(
+              div.textContent || div.innerText || "",
+              false,
+            );
 
             data = {
               postContent: parsedDisplay,
@@ -327,8 +329,10 @@ export default function NavbarSearch() {
             const { display } = e || {};
             const div = document.createElement("div");
             div.innerHTML = display;
-            const parsedDisplay =
-              div.textContent || div.innerText || "";
+            const parsedDisplay = parseMention(
+              div.textContent || div.innerText || "",
+              false,
+            );
 
             data = {
               postContent: parsedDisplay,
@@ -365,7 +369,7 @@ export default function NavbarSearch() {
         input: "border-0",
         separator: "px-4 py-3",
         separatorLabel: "text-sm",
-        dropdown: "top-[58px]",
+        dropdown: "top-[54px]",
       }}
       styles={{
         separatorLabel: {
@@ -373,7 +377,6 @@ export default function NavbarSearch() {
           "&::after": { borderTop: "none" },
         },
       }}
-      size="lg"
       placeholder="Cari sesuatu"
       icon={
         <Icon
@@ -384,6 +387,7 @@ export default function NavbarSearch() {
       }
       rightSection={<div />}
       searchable
+      filter={() => true}
       maxDropdownHeight={450}
       onSearchChange={onSearchChange}
       searchValue={searchValue}

@@ -138,7 +138,6 @@ function StatCard({ label, value, tooltip, loading }) {
           />
         </div>
       </div>
-
       {loading ? (
         <Loader variant="dots" className="my-[0.45rem]" />
       ) : (

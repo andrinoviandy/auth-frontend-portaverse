@@ -4,9 +4,8 @@ import { Tabs } from "@mantine/core";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
 
-import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
-import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
+import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
 import Podium from "../../../Components/Assets/Svg/podium.svg";
 import PromotionRotation from "../../../Components/Assets/Svg/promotion-rotation.svg";
@@ -92,9 +91,9 @@ export default function SectionPlatformMenu() {
       // const baseMenus = {
       KMS: [
         {
-          label: "Social Media",
+          label: "Social Media & Ask the Expert",
           description:
-            "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
+            "Media untuk bersosialisasi, berkolaborasi, berbagi knowledge, dan berkomunikasi langsung dengan narasumber ahli",
           route: "/home",
           icon: (
             <Icon
@@ -173,13 +172,41 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
+        // {
+        //   label: "Ask the Expert",
+        //   description:
+        //     "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+        //   route: "/ask-expert",
+        //   icon: <img src={AoE} alt="repo" className="w-[40px]" />,
+        //   hasAccess: true,
+        // },
         {
-          label: "Ask the Expert",
+          label: "KM Analytics",
           description:
-            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
-          route: "/ask-expert",
-          icon: <img src={AoE} alt="repo" className="w-[40px]" />,
-          hasAccess: true,
+            "Modul untuk monitoring kegiatan knowledge Management (KM)",
+          route: "/km-analytics",
+          icon: (
+            <Icon
+              icon="majesticons:analytics-line"
+              color={color.primary3}
+              width={38}
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
+        },
+        {
+          label: "External User",
+          description:
+            "Penggelolaan atau konfigurasi daftar pengguna eksternal",
+          route: "/external-user",
+          icon: (
+            <img
+              src={ExternalIcon}
+              alt="external-user"
+              className="w-[40px]"
+            />
+          ),
+          hasAccess: hasRole(["SA"]),
         },
         {
           label: "Master VirtuVR",
@@ -582,28 +609,20 @@ export default function SectionPlatformMenu() {
           ),
           hasAccess: true,
         },
-        {
-          label: "Master Kamus Indikator Kinerja",
-          description:
-            "Pengelolaan Daftar semua Kamus Indikator Kerja",
-          route: "/master-dictionary",
-          icon: <MasterDictionary />,
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
-        },
-        {
-          label: "Kamus Indikator Kinerja",
-          description: "Daftar semua Kamus Indikator Kerja",
-          route: "/dictionary",
-          icon: (
-            <Icon
-              icon="mage:book-text"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: true,
-        },
+        // {
+        //   label: "Kamus Indikator Kinerja",
+        //   description:
+        //     "Daftar semua Kamus Indikator Kerja",
+        //   route: "/dictionary",
+        //   icon: (
+        //     <Icon
+        //       icon="mage:book-text"
+        //       color={color.primary3}
+        //       width={40}
+        //     />
+        //   ),
+        //   hasAccess: true,
+        // },
       ],
       IMS: [
         {

@@ -1,7 +1,6 @@
 import { Loader } from "@mantine/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import updateLocale from "dayjs/plugin/updateLocale";
 import { isAndroid, isIOS } from "react-device-detect";
 import { useDispatch } from "react-redux";
 import "dayjs/locale/id";
@@ -32,7 +31,6 @@ import checkVendorAccess from "../../Utils/Helpers/checkVendorAccess";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
 
 dayjs.extend(relativeTime);
-dayjs.extend(updateLocale);
 
 function Card({ title, description, icon, loading }) {
   return (

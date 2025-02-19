@@ -3,10 +3,7 @@ import { Icon } from "@iconify/react";
 import { Tabs } from "@mantine/core";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { isAndroid, isIOS } from "react-device-detect";
 
-import MasterDictionary from "../../../Components/Assets/Icon/MasterDictionary";
-import AoE from "../../../Components/Assets/Svg/ask.svg";
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import KMAPOutline from "../../../Components/Assets/Svg/kmap-outline.svg";
 import Podium from "../../../Components/Assets/Svg/podium.svg";
@@ -66,45 +63,12 @@ export default function SectionPlatformMenuMobile() {
   );
 
   const menus = useMemo(() => {
-    if (isAndroid || isIOS) {
-      return {
-        KMS: [
-          {
-            label: "Master VirtuVR",
-            description: "Pengelolaan Modul VR",
-            route: "/master-virtu-vr",
-            icon: (
-              <Icon
-                icon="material-symbols:head-mounted-device"
-                color={color.primary3}
-                width={40}
-              />
-            ),
-            hasAccess: hasRole(["SA"]),
-            adminOnly: true,
-          },
-          {
-            label: "VirtuVR",
-            description: "Eksplorasi VR 360",
-            route: "/virtu-vr",
-            icon: (
-              <Icon
-                icon="material-symbols:3d-rotation"
-                color={color.primary3}
-                width={40}
-              />
-            ),
-            hasAccess: true,
-          },
-        ],
-      };
-    }
     return {
       KMS: [
         {
-          label: "Social Media",
+          label: "Social Media & Ask the Expert",
           description:
-            "Media sosialisasi, kolaborasi, dan knowledge sharing antar pegawai",
+            "Media untuk bersosialisasi, berkolaborasi, berbagi knowledge, dan berkomunikasi langsung dengan narasumber ahli",
           route: "/home",
           icon: (
             <Icon
@@ -177,14 +141,14 @@ export default function SectionPlatformMenuMobile() {
           ),
           hasAccess: true,
         },
-        {
-          label: "Ask the Expert",
-          description:
-            "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
-          route: "/ask-expert",
-          icon: <img src={AoE} alt="repo" className="w-[40px]" />,
-          hasAccess: true,
-        },
+        // {
+        //   label: "Ask the Expert",
+        //   description:
+        //     "Modul yang menjembatani komunikasi antara narasumber ahli dengan seluruh pegawai",
+        //   route: "/ask-expert",
+        //   icon: <img src={AoE} alt="repo" className="w-[40px]" />,
+        //   hasAccess: true,
+        // },
         {
           label: "Master Virtu VR",
           description:
@@ -588,28 +552,20 @@ export default function SectionPlatformMenuMobile() {
           ),
           hasAccess: true,
         },
-        {
-          label: "Master Kamus Indikator Kinerja",
-          description:
-            "Pengelolaan Daftar semua Kamus Indikator Kerja",
-          route: "/master-dictionary",
-          icon: <MasterDictionary />,
-          hasAccess: hasRole(["SA"]),
-          adminOnly: true,
-        },
-        {
-          label: "Kamus Indikator Kinerja",
-          description: "Daftar semua Kamus Indikator Kerja",
-          route: "/dictionary",
-          icon: (
-            <Icon
-              icon="mage:book-text"
-              color={color.primary3}
-              width={40}
-            />
-          ),
-          hasAccess: true,
-        },
+        // {
+        //   label: "Kamus Indikator Kinerja",
+        //   description:
+        //     "Daftar semua Kamus Indikator Kerja",
+        //   route: "/dictionary",
+        //   icon: (
+        //     <Icon
+        //       icon="mage:book-text"
+        //       color={color.primary3}
+        //       width={40}
+        //     />
+        //   ),
+        //   hasAccess: true,
+        // },
       ],
       IMS: [
         {
@@ -755,10 +711,7 @@ export default function SectionPlatformMenuMobile() {
     <section className="flex flex-col gap-4 px-4 py-6">
       <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
         <Tabs.List grow>
-          {(isAndroid || isIOS
-            ? ["KMS"]
-            : ["KMS", "LMS", "TMS", "IMS", "CMS"]
-          ).map((tab) => (
+          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
             <Tabs.Tab key={tab} value={tab}>
               {tab}
             </Tabs.Tab>

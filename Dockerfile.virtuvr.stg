@@ -1,8 +1,8 @@
-FROM node:22-alpine AS builder
+FROM node:20 AS builder
 
 WORKDIR /app
 COPY package.json .
-RUN npm i -g vite@5.2.0
+RUN npm i -g vite
 COPY .yarn ./.yarn
 COPY .yarnrc.yml .
 RUN yarn install
@@ -18,6 +18,7 @@ ENV VITE_FIREBASE_APP_ID=1:634072245724:web:bc597de032b02082f95b19
 ENV VITE_JWT_KEY=smartkms2022
 ENV VITE_API_KEY=smartkms20221
 
+ENV VITE_KMS_URL=https://virtuvr-qa-portaverse.ilcs.co.id
 ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee-qa-portaverse.ilcs.co.id
 ENV VITE_API_AUTH_SERVICE_URL=https://user-auth-qa-portaverse.ilcs.co.id
 ENV VITE_API_CMS_SERVICE_URL=https://cms-qa-portaverse.ilcs.co.id
@@ -28,18 +29,15 @@ ENV VITE_API_SMARTPLAN_SERVICE_URL=https://smartplan-qa-portaverse.ilcs.co.id
 ENV VITE_API_COURSE_SERVICE_URL=https://course-qa-portaverse.ilcs.co.id
 ENV VITE_API_SEARCH_ENGINE_SERVICE_URL=https://search-engine-qa-portaverse.ilcs.co.id
 ENV VITE_SSO_URL=https://sso-qa-portaverse.ilcs.co.id
-ENV VITE_KMS_URL=https://knowledge-qa-portaverse.ilcs.co.id
-ENV VITE_LMS_URL=https://lmsv2-qa-portaverse.ilcs.co.id
+ENV VITE_LMS_URL=https://learning-qa-portaverse.ilcs.co.id
 ENV VITE_TMS_URL=https://talent-qa-portaverse.ilcs.co.id
 ENV VITE_IMS_URL=https://ims-qa-portaverse.ilcs.co.id
 ENV VITE_CMS_URL=https://cms-qa-frontend-portaverse.ilcs.co.id
-ENV VITE_NAVBAR_URL=https://navbar-qa-portaverse.ilcs.co.id/assets/remoteEntry.js
 ENV VITE_API_SIGNATURE_SERVICE_URL=https://signature-qa-portaverse.ilcs.co.id
 ENV VITE_API_DAILY_QUIZ_SERVICE_URL=https://daily-quiz-qa-portaverse.ilcs.co.id
 ENV VITE_API_ASSESSMENT_SERVICE_URL=https://assessment-qa-portaverse.ilcs.co.id
 ENV VITE_API_DEVELOPMENT_PLAN_SERVICE_URL=https://development-plan-qa-portaverse.ilcs.co.id
 ENV VITE_API_INNOVATION_SERVICE_URL=https://innovation-qa-portaverse.ilcs.co.id
-ENV VITE_API_KMAP_SERVICE_URL=https://kmap-qa-portaverse.ilcs.co.id
 
 RUN yarn build
 
