@@ -54,10 +54,10 @@ export default function SectionPlatformMenu() {
     );
 
   const userDeepestTierId = useMemo(() => {
-    if ((dataGroup?.group?.tier || 0) >= 3) {
+    if ((dataGroup?.group?.tier || 0) > 3) {
       return dataGroup?.parent.find((g) => g.tier === 3)?.id;
     }
-    if (dataGroup?.group?.tier < 3) {
+    if (dataGroup?.group?.tier <= 3) {
       return dataGroup?.group?.id;
     }
     return undefined;
