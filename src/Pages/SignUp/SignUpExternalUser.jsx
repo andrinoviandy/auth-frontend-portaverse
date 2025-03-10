@@ -16,12 +16,22 @@ import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.pn
 import baseURLRepositoryFile from "../../Utils/Helpers/baseURLRepositoryFile";
 import { useGetExternalUser } from "./Hooks/useGetExternalUser";
 import dayjs from "dayjs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useExternalPost } from "./Hooks/useExternalPost";
 
 export default function SignUpExternalUser() {
   const { invitationCode } = useParams();
-  useEffect(() => {}, [invitationCode]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(invitationCode)) {
+      navigate("*");
+    }
+  }, [invitationCode, navigate]);
+
   const form = useForm({
     initialValues: {
       name: "",
@@ -29,6 +39,9 @@ export default function SignUpExternalUser() {
       birthday: "",
       address: "",
       password: "",
+      phoneNumber: "",
+      invitationId: 0,
+      roleCode: "USER",
     },
     validate: {
       email: (value) =>
@@ -47,6 +60,7 @@ export default function SignUpExternalUser() {
 
   const [fileKey, setFileKey] = useState(Date.now());
   const [previewImage, setPreviewImage] = useState("");
+  const [fetchError, setFetchError] = useState("");
 
   const handleImageUpload = async (file) => {
     if (!file) return;
@@ -60,6 +74,7 @@ export default function SignUpExternalUser() {
         formData,
         {
           headers: {
+            "smartkmsystem-authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJtTktnQkpvTVlmVTVsQXVoVjl6bWV1WFpXSW0yIiwidXNlcl9pZCI6MTI1LCJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6NSwiZW1wbG95ZWVfbnVtYmVyIjoidXNlcmQifSwicm9sZV9jb2RlIjpbIlNNRSIsIlVTRVIiLCJTQSIsbnVsbF0sInByaXZpbGVnZXMiOlsicGxlYXNlIGdldCBpdCBvbiBncm91cCBzZXJ2aWNlIChlYWNoIG1vZHVsZSkiXSwicmFuZG9tIjoiUHJldmVudGl2ZSBtZWFzdXJlcyIsImV4cCI6MTc0MjA1NDI0MiwiaWF0IjoxNzQxNjIyMjQyfQ.zfugYuv8Hf8oNKv4ykMO_EPS0m8G401Z6zItomyfyaU`,
             "Content-Type": "multipart/form-data",
           },
         },
@@ -76,6 +91,17 @@ export default function SignUpExternalUser() {
     }
   };
 
+  const handleBirthChange = (value) => {
+    form.setFieldValue("birth", value);
+
+    const parsedDate =
+      value && dayjs(value).isValid()
+        ? dayjs(value)
+        : dayjs(new Date());
+
+    form.setFieldValue("birthday", parsedDate.format("YYYY-MM-DD"));
+  };
+
   const { data: dataUser } = useGetExternalUser({
     invitationCode: invitationCode,
   });
@@ -83,26 +109,27 @@ export default function SignUpExternalUser() {
   useEffect(() => {
     if (dataUser?.data) {
       const {
-        userId,
+        invitationListId,
         name,
         email,
         period,
         birthday,
         address,
-        phoneNumber,
         status,
       } = dataUser.data;
 
-      let parsedbirth = dayjs(birthday, "DD/MM/YYYY").toDate();
+      let parsedbirth = dayjs(birthday, "DD/MM/YYYY");
+      parsedbirth = parsedbirth.isValid()
+        ? parsedbirth.toDate()
+        : dayjs().toDate();
 
       form.setValues({
-        userId: userId || "",
+        invitationId: invitationListId || "",
         name: name || "",
         email: email || "",
-        birth: parsedbirth,
-        birthday: parsedbirth,
+        birth: parsedbirth || "",
+        birthday: parsedbirth || "",
         address: address || "",
-        phoneNumber: phoneNumber || "",
         status: status || "",
       });
     }
@@ -113,31 +140,31 @@ export default function SignUpExternalUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFetchError("");
+    const isValid = form.validate();
+    if (!isValid) return;
+
     const formData = {
       ...form.values,
-      fileId: Number(form.values.fileId),
+      birthday: form.values.birthday,
+      invitationId: form.values.invitationId || 0,
+      roleCode: "USER",
+      startDate: "2025-03-10",
+      endDate: "2025-03-30",
+      fileId: form.values.fileId || 23536,
     };
-
     const handleError = (error) => {
-      showErrorDialog("Gagal Signup disimpan");
+      const errorMessage =
+        error?.response?.data?.message || "Something went wrong!";
+      setFetchError(errorMessage);
     };
 
     postData(formData, {
       onSuccess: () => {
-        postData(formData, {
-          onSuccess: () => {
-            form.reset();
-            // showSuccessDialog(
-            //   "External User berhasil diedit dan disimpan",
-            // );
-          },
-          onError: handleError,
-        });
-
         form.reset();
-        // showSuccessDialog(
-        //   "External User berhasil diedit dan disimpan",
-        // );
+        setTimeout(() => {
+          navigate("/login");
+        }, 4000);
       },
       onError: handleError,
     });
@@ -166,7 +193,9 @@ export default function SignUpExternalUser() {
           </Text>
           <div className="relative flex items-center">
             <Avatar
-              src={previewImage || ""}
+              src={
+                previewImage || dataUser?.data.profilePicture || ""
+              }
               alt="Profile Picture"
               size={80}
             />
@@ -186,7 +215,6 @@ export default function SignUpExternalUser() {
               )}
             </FileButton>
           </div>
-
           <TextInput
             label="Nama"
             size="md"
@@ -206,8 +234,12 @@ export default function SignUpExternalUser() {
             label="Tanggal Lahir"
             size="md"
             placeholder="Pilih Tanggal Lahir"
-            error={form.errors.birthday}
-            {...form.getInputProps("birthday")}
+            leftSection={
+              <Icon fontSize="20" icon="solar:calendar-outline" />
+            }
+            error={form.errors.birth}
+            {...form.getInputProps("birth")}
+            onChange={handleBirthChange}
           />
           <Textarea
             label="Alamat"
@@ -216,15 +248,22 @@ export default function SignUpExternalUser() {
             error={form.errors.address}
             {...form.getInputProps("address")}
           />
-          <PasswordInput
-            label="Password"
-            size="md"
-            placeholder="Masukkan password"
-            error={form.errors.password}
-            {...form.getInputProps("password")}
-          />
+          <div>
+            <PasswordInput
+              label="Password"
+              size="md"
+              placeholder="Masukkan password"
+              error={form.errors.password}
+              {...form.getInputProps("password")}
+            />{" "}
+            <p className="text-red-500 text-center text-sm mt-2">
+              {fetchError}
+            </p>
+          </div>
 
-          <Button type="submit">Submit</Button>
+          <Button loading={loadingPost} type="submit">
+            Submit
+          </Button>
         </form>
 
         <a
