@@ -41,7 +41,7 @@ export default function SignUpExternalUser() {
       password: "",
       phoneNumber: "",
       invitationId: 0,
-      roleCode: "USER",
+      roleCode: "",
     },
     validate: {
       email: (value) =>
@@ -60,7 +60,7 @@ export default function SignUpExternalUser() {
 
   const [fileKey, setFileKey] = useState(Date.now());
   const [previewImage, setPreviewImage] = useState("");
-  const [fetchError, setFetchError] = useState("");
+  const [fetchError, setFetchError] = useState([]);
 
   const handleImageUpload = async (file) => {
     if (!file) return;
@@ -116,21 +116,36 @@ export default function SignUpExternalUser() {
         birthday,
         address,
         status,
+        roleCode,
       } = dataUser.data;
+
+      let birth = dayjs(birthday, "DD/MM/YYYY").format("YYYY-MM-DD");
 
       let parsedbirth = dayjs(birthday, "DD/MM/YYYY");
       parsedbirth = parsedbirth.isValid()
         ? parsedbirth.toDate()
         : dayjs().toDate();
 
+      let startDate = "";
+      let endDate = "";
+
+      if (period) {
+        const [start, end] = period.split("-");
+        startDate = dayjs(start, "DD/MM/YYYY").format("YYYY-MM-DD");
+        endDate = dayjs(end, "DD/MM/YYYY").format("YYYY-MM-DD");
+      }
+
       form.setValues({
         invitationId: invitationListId || "",
         name: name || "",
         email: email || "",
+        roleCode: roleCode || "",
         birth: parsedbirth || "",
         birthday: parsedbirth || "",
         address: address || "",
         status: status || "",
+        startDate: startDate || "",
+        endDate: endDate || "",
       });
     }
   }, [dataUser]);
@@ -140,23 +155,22 @@ export default function SignUpExternalUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFetchError("");
+    setFetchError([]);
     const isValid = form.validate();
     if (!isValid) return;
 
     const formData = {
       ...form.values,
-      birthday: form.values.birthday,
-      invitationId: form.values.invitationId || 0,
-      roleCode: "USER",
-      startDate: "2025-03-10",
-      endDate: "2025-03-30",
-      fileId: form.values.fileId || 23536,
+      fileId: Number(form.values.fileId),
     };
+
     const handleError = (error) => {
-      const errorMessage =
-        error?.response?.data?.message || "Something went wrong!";
-      setFetchError(errorMessage);
+      const messages = error?.response?.data?.message || [];
+      if (Array.isArray(messages)) {
+        setFetchError(messages.map((err) => err.message)); // Extract only the messages
+      } else {
+        setFetchError(["Something went wrong!"]); // Fallback to default message
+      }
     };
 
     postData(formData, {
@@ -219,14 +233,14 @@ export default function SignUpExternalUser() {
             label="Nama"
             size="md"
             placeholder="Masukkan nama"
-            error={form.errors.name}
+            error={form?.errors?.name}
             {...form.getInputProps("name")}
           />
           <TextInput
             label="Email"
             size="md"
             placeholder="Masukkan email"
-            error={form.errors.email}
+            error={form?.errors?.email}
             {...form.getInputProps("email")}
           />
           <DateInput
@@ -237,7 +251,7 @@ export default function SignUpExternalUser() {
             leftSection={
               <Icon fontSize="20" icon="solar:calendar-outline" />
             }
-            error={form.errors.birth}
+            error={form?.errors?.birth}
             {...form.getInputProps("birth")}
             onChange={handleBirthChange}
           />
@@ -245,7 +259,7 @@ export default function SignUpExternalUser() {
             label="Alamat"
             size="md"
             placeholder="Masukkan Alamat"
-            error={form.errors.address}
+            error={form?.errors?.address}
             {...form.getInputProps("address")}
           />
           <div>
@@ -253,12 +267,18 @@ export default function SignUpExternalUser() {
               label="Password"
               size="md"
               placeholder="Masukkan password"
-              error={form.errors.password}
+              error={form?.errors?.password}
               {...form.getInputProps("password")}
-            />{" "}
-            <p className="text-red-500 text-center text-sm mt-2">
-              {fetchError}
-            </p>
+            />
+            {fetchError.length > 0 && (
+              <div className="text-red-500 text-sm mt-6 pl-4">
+                {fetchError.map((msg, index) => (
+                  <ul key={index}>
+                    <li className="list-disc">{msg}</li>
+                  </ul>
+                ))}
+              </div>
+            )}
           </div>
 
           <Button loading={loadingPost} type="submit">
