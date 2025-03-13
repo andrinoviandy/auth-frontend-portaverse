@@ -18,10 +18,16 @@ import { useGetExternalUser } from "./Hooks/useGetExternalUser";
 import dayjs from "dayjs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useExternalPost } from "./Hooks/useExternalPost";
+import { setSocialMediaProfile } from "../../Configs/Redux/slice";
+import NiceModal from "@ebay/nice-modal-react";
+import MODAL_IDS from "../../Components/Modals/modalIds";
+import closeNiceModal from "../../Utils/Helpers/closeNiceModal";
 
 export default function SignUpExternalUser() {
   const { invitationCode } = useParams();
   const navigate = useNavigate();
+  const defaultAvatar =
+    "https://dev-obs-portaverse.ilcs.co.id/files/default-user.jpeg";
 
   useEffect(() => {
     const uuidRegex =
@@ -32,10 +38,12 @@ export default function SignUpExternalUser() {
     }
   }, [invitationCode, navigate]);
 
+  const today = dayjs().toDate();
   const form = useForm({
     initialValues: {
       name: "",
       email: "",
+      birth: "",
       birthday: "",
       address: "",
       password: "",
@@ -52,8 +60,18 @@ export default function SignUpExternalUser() {
             : "Email tidak valid",
       name: (value) => (!value ? "Nama harus diisi" : null),
       address: (value) => (!value ? "Alamat harus diisi" : null),
+      birth: (value) =>
+        !value
+          ? "Tanggal Lahir harus diisi"
+          : value === today
+            ? "Isi tanggal lahir dengan benar"
+            : null,
       birthday: (value) =>
-        !value ? "Tanggal Lahir harus diisi" : null,
+        !value
+          ? "Tanggal Lahir harus diisi"
+          : value === today
+            ? "Isi tanggal lahir dengan benar"
+            : null,
       password: (value) => (!value ? "Password harus diisi" : null),
     },
   });
@@ -74,7 +92,7 @@ export default function SignUpExternalUser() {
         formData,
         {
           headers: {
-            "smartkmsystem-authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJtTktnQkpvTVlmVTVsQXVoVjl6bWV1WFpXSW0yIiwidXNlcl9pZCI6MTI1LCJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6NSwiZW1wbG95ZWVfbnVtYmVyIjoidXNlcmQifSwicm9sZV9jb2RlIjpbIlNNRSIsIlVTRVIiLCJTQSIsbnVsbF0sInByaXZpbGVnZXMiOlsicGxlYXNlIGdldCBpdCBvbiBncm91cCBzZXJ2aWNlIChlYWNoIG1vZHVsZSkiXSwicmFuZG9tIjoiUHJldmVudGl2ZSBtZWFzdXJlcyIsImV4cCI6MTc0MjA1NDI0MiwiaWF0IjoxNzQxNjIyMjQyfQ.zfugYuv8Hf8oNKv4ykMO_EPS0m8G401Z6zItomyfyaU`,
+            "api-key": "smartkms2022",
             "Content-Type": "multipart/form-data",
           },
         },
@@ -117,6 +135,8 @@ export default function SignUpExternalUser() {
         address,
         status,
         roleCode,
+        startDate,
+        endDate,
       } = dataUser.data;
 
       let birth = dayjs(birthday, "DD/MM/YYYY").format("YYYY-MM-DD");
@@ -124,16 +144,7 @@ export default function SignUpExternalUser() {
       let parsedbirth = dayjs(birthday, "DD/MM/YYYY");
       parsedbirth = parsedbirth.isValid()
         ? parsedbirth.toDate()
-        : dayjs().toDate();
-
-      let startDate = "";
-      let endDate = "";
-
-      if (period) {
-        const [start, end] = period.split("-");
-        startDate = dayjs(start, "DD/MM/YYYY").format("YYYY-MM-DD");
-        endDate = dayjs(end, "DD/MM/YYYY").format("YYYY-MM-DD");
-      }
+        : null;
 
       form.setValues({
         invitationId: invitationListId || "",
@@ -147,6 +158,7 @@ export default function SignUpExternalUser() {
         startDate: startDate || "",
         endDate: endDate || "",
       });
+      form.validateField("birthday");
     }
   }, [dataUser]);
 
@@ -167,18 +179,26 @@ export default function SignUpExternalUser() {
     const handleError = (error) => {
       const messages = error?.response?.data?.message || [];
       if (Array.isArray(messages)) {
-        setFetchError(messages.map((err) => err.message)); // Extract only the messages
+        setFetchError(messages.map((err) => err.message));
       } else {
-        setFetchError(["Something went wrong!"]); // Fallback to default message
+        setFetchError(["Something went wrong!"]);
       }
     };
 
     postData(formData, {
       onSuccess: () => {
         form.reset();
+        NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
+          message: "Berhasil Sign Up",
+          subMessage: "Silahkan Login untuk melanjutkan",
+          variant: "safe",
+          withCancel: false,
+          withConfirm: false,
+        });
         setTimeout(() => {
+          NiceModal.hide(MODAL_IDS.GENERAL.CONFIRMATION);
           navigate("/login");
-        }, 4000);
+        }, 2000);
       },
       onError: handleError,
     });
@@ -202,13 +222,15 @@ export default function SignUpExternalUser() {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full"
         >
-          <Text className="text-text1" size="lg" weight={600}>
+          <Text size="lg" fw={500}>
             Profile Photo
           </Text>
           <div className="relative flex items-center">
             <Avatar
               src={
-                previewImage || dataUser?.data.profilePicture || ""
+                previewImage ||
+                dataUser?.data.profilePicture ||
+                defaultAvatar
               }
               alt="Profile Picture"
               size={80}
@@ -230,6 +252,7 @@ export default function SignUpExternalUser() {
             </FileButton>
           </div>
           <TextInput
+            withAsterisk
             label="Nama"
             size="md"
             placeholder="Masukkan nama"
@@ -237,6 +260,7 @@ export default function SignUpExternalUser() {
             {...form.getInputProps("name")}
           />
           <TextInput
+            withAsterisk
             label="Email"
             size="md"
             placeholder="Masukkan email"
@@ -244,6 +268,7 @@ export default function SignUpExternalUser() {
             {...form.getInputProps("email")}
           />
           <DateInput
+            withAsterisk
             valueFormat="DD MMMM YYYY"
             label="Tanggal Lahir"
             size="md"
@@ -256,6 +281,7 @@ export default function SignUpExternalUser() {
             onChange={handleBirthChange}
           />
           <Textarea
+            withAsterisk
             label="Alamat"
             size="md"
             placeholder="Masukkan Alamat"
@@ -264,6 +290,7 @@ export default function SignUpExternalUser() {
           />
           <div>
             <PasswordInput
+              withAsterisk
               label="Password"
               size="md"
               placeholder="Masukkan password"
@@ -281,7 +308,11 @@ export default function SignUpExternalUser() {
             )}
           </div>
 
-          <Button loading={loadingPost} type="submit">
+          <Button
+            className="mt-4"
+            loading={loadingPost}
+            type="submit"
+          >
             Submit
           </Button>
         </form>
