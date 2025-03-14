@@ -22,6 +22,7 @@ import { setSocialMediaProfile } from "../../Configs/Redux/slice";
 import NiceModal from "@ebay/nice-modal-react";
 import MODAL_IDS from "../../Components/Modals/modalIds";
 import closeNiceModal from "../../Utils/Helpers/closeNiceModal";
+import showSuccessDialog from "../../Utils/Helpers/showSuccessDialog";
 
 export default function SignUpExternalUser() {
   const { invitationCode } = useParams();
@@ -41,6 +42,7 @@ export default function SignUpExternalUser() {
   const today = dayjs().toDate();
   const form = useForm({
     initialValues: {
+      fileId: "",
       name: "",
       email: "",
       birth: "",
@@ -99,6 +101,8 @@ export default function SignUpExternalUser() {
       );
 
       if (response?.data?.data?.file_id) {
+        form.setFieldValue("fileId", response.data.data.file_id);
+        showSuccessDialog("Gambar berhasil di upload");
         setFileKey(Date.now());
         const reader = new FileReader();
         reader.onload = (e) => setPreviewImage(e.target?.result);
