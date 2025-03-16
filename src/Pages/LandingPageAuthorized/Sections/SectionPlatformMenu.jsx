@@ -814,38 +814,84 @@ export default function SectionPlatformMenu() {
     },
   );
 
+  const menuItems = externalMenu?.data?.data?.[0]?.menu || [];
+  const tabsToShow = userExternal
+    ? menuItems.map((item) => item.name)
+    : [];
+
   return (
     <section className="flex flex-col gap-10 px-20 py-16">
-      <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
-        <Tabs.List grow>
-          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
-            <Tabs.Tab key={tab} value={tab}>
-              {tab}
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-      </Tabs>
-      <div className="grid grid-cols-3 gap-5">
-        {!menus[activeTab].length ? (
-          <p className="text-darkGrey">No menu available yet</p>
-        ) : (
-          menus[activeTab].map((menu) => (
-            <MenuCard
-              key={`${activeTab}-${menu?.label}`}
-              label={menu?.label}
-              description={menu?.description}
-              route={`${
-                menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
-              }${menu.route}`}
-              icon={menu?.icon}
-              // hidden={!menu?.hasAccess}
-              disabled={!menu?.hasAccess}
-              adminOnly={!!menu?.adminOnly}
-              comingSoon={!!menu?.comingSoon}
-            />
-          ))
-        )}
-      </div>
+      {/* Render tabs for external users dynamically */}
+      {userExternal === 1 && tabsToShow.length > 0 ? (
+        <>
+          <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
+            <Tabs.List grow>
+              {tabsToShow.map((tabName) => (
+                <Tabs.Tab key={tabName} value={tabName}>
+                  {tabName}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+          </Tabs>
+          <div className="grid grid-cols-3 gap-5">
+            {!menus[activeTab].length ? (
+              <p className="text-darkGrey">No menu available yet</p>
+            ) : (
+              menus[activeTab].map((menu) => (
+                <MenuCard
+                  key={`${activeTab}-${menu?.label}`}
+                  label={menu?.label}
+                  description={menu?.description}
+                  route={`${
+                    menu?.host ||
+                    import.meta.env[`VITE_${activeTab}_URL`]
+                  }${menu.route}`}
+                  icon={menu?.icon}
+                  // hidden={!menu?.hasAccess}
+                  disabled={!menu?.hasAccess}
+                  adminOnly={!!menu?.adminOnly}
+                  comingSoon={!!menu?.comingSoon}
+                />
+              ))
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Render default tabs if the user is not an external user */}
+          <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
+            <Tabs.List grow>
+              {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
+                <Tabs.Tab key={tab} value={tab}>
+                  {tab}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+          </Tabs>
+          <div className="grid grid-cols-3 gap-5">
+            {!menus[activeTab].length ? (
+              <p className="text-darkGrey">No menu available yet</p>
+            ) : (
+              menus[activeTab].map((menu) => (
+                <MenuCard
+                  key={`${activeTab}-${menu?.label}`}
+                  label={menu?.label}
+                  description={menu?.description}
+                  route={`${
+                    menu?.host ||
+                    import.meta.env[`VITE_${activeTab}_URL`]
+                  }${menu.route}`}
+                  icon={menu?.icon}
+                  // hidden={!menu?.hasAccess}
+                  disabled={!menu?.hasAccess}
+                  adminOnly={!!menu?.adminOnly}
+                  comingSoon={!!menu?.comingSoon}
+                />
+              ))
+            )}
+          </div>
+        </>
+      )}
     </section>
   );
 }
