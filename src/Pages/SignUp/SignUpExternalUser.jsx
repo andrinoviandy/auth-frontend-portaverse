@@ -143,20 +143,20 @@ export default function SignUpExternalUser() {
         endDate,
       } = dataUser.data;
 
-      let birth = dayjs(birthday, "DD/MM/YYYY").format("YYYY-MM-DD");
+      // let birth = dayjs(birthday, "DD/MM/YYYY").format("YYYY-MM-DD");
 
-      let parsedbirth = dayjs(birthday, "DD/MM/YYYY");
-      parsedbirth = parsedbirth.isValid()
-        ? parsedbirth.toDate()
-        : null;
+      // let parsedbirth = dayjs(birthday, "DD/MM/YYYY");
+      // parsedbirth = parsedbirth.isValid()
+      //   ? parsedbirth.toDate()
+      //   : null;
 
       form.setValues({
         invitationId: invitationListId || "",
         name: name || "",
         email: email || "",
         roleCode: roleCode || "",
-        birth: parsedbirth || "",
-        birthday: parsedbirth || "",
+        // birth: parsedbirth || "",
+        // birthday: parsedbirth || "",
         address: address || "",
         status: status || "",
         startDate: startDate || "",
