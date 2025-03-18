@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   FileButton,
+  Loader,
   PasswordInput,
   Text,
   Textarea,
@@ -82,8 +83,12 @@ export default function SignUpExternalUser() {
   const [previewImage, setPreviewImage] = useState("");
   const [fetchError, setFetchError] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   const handleImageUpload = async (file) => {
     if (!file) return;
+
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -110,9 +115,10 @@ export default function SignUpExternalUser() {
       }
     } catch (error) {
       console.error("File upload failed", error);
+    } finally {
+      setLoading(false);
     }
   };
-
   const handleBirthChange = (value) => {
     form.setFieldValue("birth", value);
 
@@ -230,29 +236,36 @@ export default function SignUpExternalUser() {
             Profile Photo
           </Text>
           <div className="relative flex items-center">
-            <Avatar
-              src={
-                previewImage ||
-                dataUser?.data.profilePicture ||
-                defaultAvatar
-              }
-              alt="Profile Picture"
-              size={80}
-            />
+            {loading ? (
+              <Loader size="lg" color="blue" className="my-4 mx-4" />
+            ) : (
+              <Avatar
+                src={
+                  previewImage ||
+                  dataUser?.data.profilePicture ||
+                  defaultAvatar
+                }
+                alt="Profile Picture"
+                size={80}
+              />
+            )}
+
             <FileButton
               key={fileKey}
               onChange={handleImageUpload}
               accept="image/png,image/jpeg"
             >
-              {(props) => (
-                <Icon
-                  className="absolute z-10 mx-[60px] mt-16 cursor-pointer"
-                  color="#005499"
-                  fontSize="24"
-                  icon="mdi:pencil-circle"
-                  {...props}
-                />
-              )}
+              {(props) =>
+                !loading && (
+                  <Icon
+                    className="absolute z-10 mx-[60px] mt-16 cursor-pointer"
+                    color="#005499"
+                    fontSize="24"
+                    icon="mdi:pencil-circle"
+                    {...props}
+                  />
+                )
+              }
             </FileButton>
           </div>
           <TextInput
