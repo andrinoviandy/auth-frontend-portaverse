@@ -55,13 +55,13 @@ export default function SignUpExternalUser() {
       roleCode: "",
     },
     validate: {
-      email: (value) =>
-        !value
-          ? "Email harus diisi"
-          : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-            ? null
-            : "Email tidak valid",
-      name: (value) => (!value ? "Nama harus diisi" : null),
+      // email: (value) =>
+      //   !value
+      //     ? "Email harus diisi"
+      //     : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+      //       ? null
+      //       : "Email tidak valid",
+      // name: (value) => (!value ? "Nama harus diisi" : null),
       address: (value) => (!value ? "Alamat harus diisi" : null),
       birth: (value) =>
         !value
@@ -269,19 +269,23 @@ export default function SignUpExternalUser() {
             </FileButton>
           </div>
           <TextInput
+            disabled
             withAsterisk
             label="Nama"
             size="md"
-            placeholder="Masukkan nama"
-            error={form?.errors?.name}
+            // readOnly
+            // placeholder="Masukkan nama"
+            // error={form?.errors?.name}
             {...form.getInputProps("name")}
           />
           <TextInput
+            disabled
             withAsterisk
             label="Email"
             size="md"
-            placeholder="Masukkan email"
-            error={form?.errors?.email}
+            // readOnly
+            // placeholder="Masukkan email"
+            // error={form?.errors?.email}
             {...form.getInputProps("email")}
           />
           <DateInput
