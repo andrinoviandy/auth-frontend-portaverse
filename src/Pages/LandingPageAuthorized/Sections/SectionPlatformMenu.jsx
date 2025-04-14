@@ -29,13 +29,14 @@ import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
 import { useGetExternalUserMenu } from "../../SignUp/Hooks/useGetExternalUserMenu";
+import userId from "../../../Utils/Helpers/userId.js";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
   const userExternal = user.is_external_user;
 
-  // const rolesRequired = ["USER"];
-  // const user_id = userId(rolesRequired);
+  const rolesRequired = ["USER"];
+  const user_id = userId(rolesRequired);
 
   const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
@@ -227,7 +228,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["SA"]),
+          hasAccess: hasRole(["SA"]) || user_id == 42789,
           adminOnly: true,
         },
         {
