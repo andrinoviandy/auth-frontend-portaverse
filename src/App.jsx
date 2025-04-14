@@ -26,6 +26,7 @@ import ProgressEvaluationReport from "./Pages/ProgressEvaluationReport/ProgressE
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
+import SignUpExternalUser from "./Pages/SignUp/SignUpExternalUser";
 
 function App() {
   document.title = "Portaverse - Pelindo";
@@ -141,6 +142,8 @@ function App() {
                 element={<NewSetNewPassword />}
               />
               <Route path="/success" element={<NewPassSuccess />} />
+              <Route path="/sign-up-user-external/:invitationCode" element={<SignUpExternalUser />} />
+
             </Route>
           )}
         </Route>
