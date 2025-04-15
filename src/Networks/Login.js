@@ -22,34 +22,32 @@ export default function postLogin(
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
         .then((res) => {
-          if (res.data.data.user.role_code.includes("SBCN")) {
-            window.location = `${
-              import.meta.env.VITE_LMS_URL
-            }/subcon-management/${
-              res.data.data.user?.subcon?.subcon_id
-            }`;
+          if (!res.data.success) {
+            setFetchError(res.data.message || "Something went wrong");
+            setIsLoading(false);
             return;
           }
-          if (res.data.data.user.role_code.includes("VNDR")) {
-            window.location = `${
-              import.meta.env.VITE_LMS_URL
-            }/vendor-management/${
-              res.data.data.user?.vendor?.vendor_id
-            }`;
+
+          const roleCode = res.data.data.user.role_code;
+
+          if (roleCode.includes("SBCN")) {
+            window.location = `${import.meta.env.VITE_LMS_URL}/subcon-management/${res.data.data.user?.subcon?.subcon_id}`;
             return;
           }
-          if (res.data.data.user.role_code.includes("CADH")) {
-            window.location = `${
-              import.meta.env.VITE_CMS_URL
-            }/change-catalyst-team-monitoring-system`;
+
+          if (roleCode.includes("VNDR")) {
+            window.location = `${import.meta.env.VITE_LMS_URL}/vendor-management/${res.data.data.user?.vendor?.vendor_id}`;
             return;
           }
-          if (res.data.data.user.role_code.includes("CADC")) {
-            window.location = `${
-              import.meta.env.VITE_CMS_URL
-            }/change-catalyst-team-monitoring-system`;
+
+          if (
+            roleCode.includes("CADH") ||
+            roleCode.includes("CADC")
+          ) {
+            window.location = `${import.meta.env.VITE_CMS_URL}/change-catalyst-team-monitoring-system`;
             return;
           }
+
           // if (res.data.data.user.is_first_time_login) {
           //   window.location.href = "/referals";
           //   return;
@@ -57,11 +55,16 @@ export default function postLogin(
           window.location.href = "/landing";
         })
         .catch((err) => {
+          const errMessage = err?.response?.data?.message;
+
           if (err.name === "FirebaseError") {
             setFetchError("Email or Password is incorrect");
+          } else if (errMessage) {
+            setFetchError(errMessage);
           } else {
             setFetchError("Something went wrong");
           }
+
           setIsLoading(false);
         });
     })
