@@ -2,7 +2,7 @@
 import { Icon } from "@iconify/react";
 import { Tabs } from "@mantine/core";
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
@@ -820,10 +820,16 @@ export default function SectionPlatformMenu() {
     ? menuItems.map((item) => item.name)
     : [];
 
+  useEffect(() => {
+    if (tabsToShow?.length > 0) {
+      setActiveTab(tabsToShow[0]);
+    }
+  }, [tabsToShow]);
+
   return (
     <section className="flex flex-col gap-10 px-20 py-16">
       {/* Render tabs for external users dynamically */}
-      {userExternal === 1 && tabsToShow.length > 0 ? (
+      {userExternal === 1 && tabsToShow?.length > 0 ? (
         <>
           <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
             <Tabs.List grow>
@@ -835,7 +841,7 @@ export default function SectionPlatformMenu() {
             </Tabs.List>
           </Tabs>
           <div className="grid grid-cols-3 gap-5">
-            {!menus[activeTab].length ? (
+            {!menus[activeTab]?.length ? (
               <p className="text-darkGrey">No menu available yet</p>
             ) : (
               menus[activeTab].map((menu) => (

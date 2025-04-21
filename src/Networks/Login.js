@@ -1,5 +1,7 @@
+import NiceModal from "@ebay/nice-modal-react";
 import axiosSSOClient from "../Configs/AxiosClient/ssoAxiosClient";
 import { login } from "../Utils/Helpers/firebaseAuth";
+import MODAL_IDS from "../Components/Modals/modalIds";
 
 export default function postLogin(
   payload,
@@ -60,7 +62,15 @@ export default function postLogin(
           if (err.name === "FirebaseError") {
             setFetchError("Email or Password is incorrect");
           } else if (errMessage) {
-            setFetchError(errMessage);
+            NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
+              message: "Error Login",
+              subMessage: errMessage,
+              variant: "danger",
+              labelCancel: "Close",
+              withCancel: true,
+              withConfirm: false,
+            });
+            // setFetchError(errMessage);
           } else {
             setFetchError("Something went wrong");
           }
