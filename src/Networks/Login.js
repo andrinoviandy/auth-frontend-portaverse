@@ -79,11 +79,32 @@ export default function postLogin(
         });
     })
     .catch((err) => {
-      if (err.name === "FirebaseError") {
-        setFetchError("Email or Password is incorrect");
-      } else {
-        setFetchError("Something went wrong");
+      const errCode = err?.code;
+      const errMessage = err?.message;
+
+      let displayMessage = "Something went wrong";
+
+      if (
+        errCode === "auth/user-not-found" ||
+        errMessage === "EMAIL_NOT_FOUND"
+      ) {
+        displayMessage =
+          "Email not found. Please check and try again.";
+      } else if (errCode === "auth/wrong-password") {
+        displayMessage = "Incorrect password. Please try again.";
+      } else if (err.name === "FirebaseError") {
+        displayMessage = errMessage || "Authentication failed.";
       }
+
+      NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
+        message: "Error Login",
+        subMessage: displayMessage,
+        variant: "danger",
+        labelCancel: "Close",
+        withCancel: true,
+        withConfirm: false,
+      });
+
       setIsLoading(false);
     });
 }
