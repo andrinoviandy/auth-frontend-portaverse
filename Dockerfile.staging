@@ -1,4 +1,4 @@
-FROM node:22-alpine AS builder
+FROM node:22 AS builder
 
 WORKDIR /app
 COPY package.json .
@@ -40,6 +40,9 @@ ENV VITE_API_ASSESSMENT_SERVICE_URL=https://assessment-qa-portaverse-staging.ilc
 ENV VITE_API_DEVELOPMENT_PLAN_SERVICE_URL=https://development-plan-qa-portaverse-staging.ilcs.co.id
 ENV VITE_API_INNOVATION_SERVICE_URL=https://innovation-qa-portaverse-staging.ilcs.co.id
 ENV VITE_API_KMAP_SERVICE_URL=https://kmap-qa-portaverse-staging.ilcs.co.id
+ENV VITE_API_REPOSITORY_SERVICE_URL=https://repository-qa-portaverse-staging.ilcs.co.id
+ENV VITE_API_EXTERNAL_USER_URL=https://user-external-qa-portaverse-staging.ilcs.co.id
+
 
 RUN yarn build
 

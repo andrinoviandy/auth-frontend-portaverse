@@ -2,7 +2,7 @@
 import { Icon } from "@iconify/react";
 import { Tabs } from "@mantine/core";
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import DevelopmentPlan from "../../../Components/Assets/Svg/development-plan.svg";
 import ExternalIcon from "../../../Components/Assets/Svg/external-user.svg";
@@ -28,11 +28,16 @@ import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
+import { useGetExternalUserMenu } from "../../SignUp/Hooks/useGetExternalUserMenu";
+import userId from "../../../Utils/Helpers/userId.js";
 
 export default function SectionPlatformMenu() {
   const user = getUserCookie();
-  // const rolesRequired = ["USER"];
-  // const user_id = userId(rolesRequired);
+  const userExternal = user.is_external_user;
+
+  const rolesRequired = ["USER"];
+  const user_id = userId(rolesRequired);
+
   const employeeId = user?.employee?.employee_id;
   const [activeTab, setActiveTab] = useState("KMS");
 
@@ -54,10 +59,10 @@ export default function SectionPlatformMenu() {
     );
 
   const userDeepestTierId = useMemo(() => {
-    if ((dataGroup?.group?.tier || 0) >= 3) {
+    if ((dataGroup?.group?.tier || 0) > 3) {
       return dataGroup?.parent.find((g) => g.tier === 3)?.id;
     }
-    if (dataGroup?.group?.tier < 3) {
+    if (dataGroup?.group?.tier <= 3) {
       return dataGroup?.group?.id;
     }
     return undefined;
@@ -86,9 +91,13 @@ export default function SectionPlatformMenu() {
     },
   );
 
+  const { data: externalMenu } = useGetExternalUserMenu({
+    enabled: !!userExternal,
+  });
+
   const menus = useMemo(() => {
-    return {
-      // const baseMenus = {
+    let baseMenus = {
+      // return {
       KMS: [
         {
           label: "Social Media & Ask the Expert",
@@ -219,7 +228,7 @@ export default function SectionPlatformMenu() {
               width={40}
             />
           ),
-          hasAccess: hasRole(["SA"]),
+          hasAccess: hasRole(["SA"]) || user_id == 42789,
           adminOnly: true,
         },
         {
@@ -738,37 +747,48 @@ export default function SectionPlatformMenu() {
       ],
     };
 
-    // if (user_id === 125) {
-    //   baseMenus.TMS = baseMenus.TMS || [];
-    //   baseMenus.TMS.push(
-    //     {
-    //       label: "Master Kamus Indikator Kinerja",
-    //       description: "Pengelolaan Daftar semua Kamus Indikator Kerja",
-    //       route: "/master-dictionary",
-    //       icon: <MasterDictionary />,
-    //       hasAccess: hasRole(["SA"]),
-    //       adminOnly: true,
-    //     },
-    //     {
-    //       label: "Kamus Indikator Kinerja",
-    //       description: "Daftar semua Kamus Indikator Kerja",
-    //       route: "/dictionary",
-    //       icon: <Icon icon="mage:book-text" color={color.primary3} width={40} />,
-    //       hasAccess: true,
-    //     }
-    //   );
-    // }
+    if (userExternal === 1 && externalMenu?.data?.data?.[0]?.menu) {
+      const externalBaseMenus = {};
 
-    // return baseMenus;
-    // }, [hasAccessOM, hasAccessSMS, hasWerks, user.role_code, user_id]);
+      externalMenu.data.data[0].menu.forEach((menuItem) => {
+        externalBaseMenus[menuItem.name] = menuItem.children.map(
+          (child) => ({
+            label: child.name,
+            description: child.description,
+            route: child.route,
+            icon: (
+              <Icon
+                icon={child.icon}
+                color={color.primary3}
+                width={40}
+              />
+            ),
+            hasAccess: true,
+          }),
+        );
+      });
+
+      return externalBaseMenus;
+    }
+
+    // If not external, return default baseMenus
+    return baseMenus;
   }, [
     hasAccessOM,
     hasAccessSMS,
     hasWerks,
     user.role_code,
-    isLoadingGroup,
-    userDeepestTierId,
+    userExternal,
+    externalMenu,
   ]);
+  // }, [
+  //   hasAccessOM,
+  //   hasAccessSMS,
+  //   hasWerks,
+  //   user.role_code,
+  //   isLoadingGroup,
+  //   userDeepestTierId,
+  // ]);
 
   const signatureService = Networks(BASE_PROXY.signature);
   signatureService.query(
@@ -795,38 +815,90 @@ export default function SectionPlatformMenu() {
     },
   );
 
+  const menuItems = externalMenu?.data?.data?.[0]?.menu || [];
+  const tabsToShow = userExternal
+    ? menuItems.map((item) => item.name)
+    : [];
+
+  useEffect(() => {
+    if (tabsToShow?.length > 0) {
+      setActiveTab(tabsToShow[0]);
+    }
+  }, [tabsToShow]);
+
   return (
     <section className="flex flex-col gap-10 px-20 py-16">
-      <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
-        <Tabs.List grow>
-          {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
-            <Tabs.Tab key={tab} value={tab}>
-              {tab}
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-      </Tabs>
-      <div className="grid grid-cols-3 gap-5">
-        {!menus[activeTab].length ? (
-          <p className="text-darkGrey">No menu available yet</p>
-        ) : (
-          menus[activeTab].map((menu) => (
-            <MenuCard
-              key={`${activeTab}-${menu?.label}`}
-              label={menu?.label}
-              description={menu?.description}
-              route={`${
-                menu?.host || import.meta.env[`VITE_${activeTab}_URL`]
-              }${menu.route}`}
-              icon={menu?.icon}
-              // hidden={!menu?.hasAccess}
-              disabled={!menu?.hasAccess}
-              adminOnly={!!menu?.adminOnly}
-              comingSoon={!!menu?.comingSoon}
-            />
-          ))
-        )}
-      </div>
+      {/* Render tabs for external users dynamically */}
+      {userExternal === 1 && tabsToShow?.length > 0 ? (
+        <>
+          <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
+            <Tabs.List grow>
+              {tabsToShow.map((tabName) => (
+                <Tabs.Tab key={tabName} value={tabName}>
+                  {tabName}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+          </Tabs>
+          <div className="grid grid-cols-3 gap-5">
+            {!menus[activeTab]?.length ? (
+              <p className="text-darkGrey">No menu available yet</p>
+            ) : (
+              menus[activeTab].map((menu) => (
+                <MenuCard
+                  key={`${activeTab}-${menu?.label}`}
+                  label={menu?.label}
+                  description={menu?.description}
+                  route={`${
+                    menu?.host ||
+                    import.meta.env[`VITE_${activeTab}_URL`]
+                  }${menu.route}`}
+                  icon={menu?.icon}
+                  // hidden={!menu?.hasAccess}
+                  disabled={!menu?.hasAccess}
+                  adminOnly={!!menu?.adminOnly}
+                  comingSoon={!!menu?.comingSoon}
+                />
+              ))
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Render default tabs if the user is not an external user */}
+          <Tabs value={activeTab} onChange={setActiveTab} radius="lg">
+            <Tabs.List grow>
+              {["KMS", "LMS", "TMS", "IMS", "CMS"].map((tab) => (
+                <Tabs.Tab key={tab} value={tab}>
+                  {tab}
+                </Tabs.Tab>
+              ))}
+            </Tabs.List>
+          </Tabs>
+          <div className="grid grid-cols-3 gap-5">
+            {!menus[activeTab].length ? (
+              <p className="text-darkGrey">No menu available yet</p>
+            ) : (
+              menus[activeTab].map((menu) => (
+                <MenuCard
+                  key={`${activeTab}-${menu?.label}`}
+                  label={menu?.label}
+                  description={menu?.description}
+                  route={`${
+                    menu?.host ||
+                    import.meta.env[`VITE_${activeTab}_URL`]
+                  }${menu.route}`}
+                  icon={menu?.icon}
+                  // hidden={!menu?.hasAccess}
+                  disabled={!menu?.hasAccess}
+                  adminOnly={!!menu?.adminOnly}
+                  comingSoon={!!menu?.comingSoon}
+                />
+              ))
+            )}
+          </div>
+        </>
+      )}
     </section>
   );
 }
