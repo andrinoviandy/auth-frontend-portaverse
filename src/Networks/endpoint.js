@@ -163,6 +163,8 @@ export const EMPLOYEES_ENDPOINT = {
     diciplinary: (employeeId) =>
       `/employee/indiciplinary-history/${employeeId}`,
     award: (employeeId) => `/employee/appreciation/${employeeId}`,
+    getHasFilledCvBumn: (employeeId) =>
+      `/v2/profile/has-filled-cv-bumn?employee_id=${employeeId}`,
   },
   POST: {
     archive: "/employee/archive",

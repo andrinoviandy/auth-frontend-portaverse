@@ -19,6 +19,7 @@ import ProfilePicture from "../../../Components/ProfilePicture";
 import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
+  EMPLOYEES_ENDPOINT,
   IDP_ENDPOINT,
   SMARTPLAN_ENDPOINT,
 } from "../../../Networks/endpoint";
@@ -246,6 +247,69 @@ function BannerCard({
     );
   }
 
+  if (type === "myProfileBumn") {
+    return (
+      <div className="bg-white p-6 rounded-md flex gap-4 items-center border border-lightGrey mx-[80px]">
+        <div className="flex flex-col w-full">
+          <Text className="text-primary3 font-medium text-sm">
+            CV Kementrian BUMN
+          </Text>
+          <Text className="font-semibold text-lg mt-2">
+            Lengkapi Data Profil Anda
+          </Text>
+          <Text className="text-gray-500 mt-2">
+            Mohon untuk melengkapi data tambahan untuk keperluan CV
+            Kementrian BUMN Anda.
+          </Text>
+
+          <div className="flex items-center mt-4 gap-2 w-full">
+            <Button
+              onClick={() =>
+                navigate(
+                  `${process.env.VITE_TMS_URL}/my-profile/personal-data`,
+                )
+              }
+            >
+              Buka My Profile
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-4 mt-6">
+            <Text className="text-darkGrey">
+              <b>{heroPage}</b> dari <b>{totalHeroPage}</b> pengingat
+            </Text>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setHeroPage((prev) => prev - 1)}
+                disabled={heroPage === 1}
+                className="text-xl"
+              >
+                &lsaquo;
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setHeroPage((prev) => prev + 1)}
+                disabled={heroPage === totalHeroPage}
+                className="text-xl"
+              >
+                &rsaquo;
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-[352px]">
+          <img
+            src={imageUrl}
+            alt="Yearly Report"
+            className="h-[190px] rounded-r-md"
+          />
+        </div>
+      </div>
+    );
+  }
+
   if (type === "eventTalent" && !shouldShowWarning) return null;
 
   return (
@@ -368,7 +432,6 @@ function BannerCard({
 
 export default function SectionHero() {
   const [heroPage, setHeroPage] = useState(1);
-  const [totalHeroPage, setTotalHeroPage] = useState(0);
 
   const userSocmed = useSelector((st) => st.socialMediaProfile);
   const user = getUserCookie();
@@ -447,81 +510,141 @@ export default function SectionHero() {
   );
   // * end event talent banner
 
-  const [isYearlyReportTotalPageSet, setIsYearlyReportTotalPageSet] =
-    useState(false);
+  // start banner my profile cv bumn
+
+  const employeeService = Networks(BASE_PROXY.employees);
+  const employeeId = user?.employee?.employee_id;
+  const { data } = employeeService.query(
+    EMPLOYEES_ENDPOINT.GET.getHasFilledCvBumn(employeeId),
+    [EMPLOYEES_ENDPOINT.GET.getHasFilledCvBumn(employeeId)],
+    {
+      enabled: !!employeeId,
+    },
+    {},
+  );
+
+  const unfilledCvBumnKeys = useMemo(() => {
+    if (!data) return [];
+
+    const result = [];
+
+    if (!data.has_filled_bidang_job_non_pelindo)
+      result.push("bidang_job_non_pelindo");
+
+    if (!data.has_filled_bidang_job_pelindo)
+      result.push("bidang_job_pelindo");
+
+    if (!data.has_filled_executive_summary)
+      result.push("executive_summary");
+
+    if (!data.has_filled_project_exposure)
+      result.push("project_exposure");
+
+    if (!data.has_filled_transformasi_inovasi)
+      result.push("transformasi_inovasi");
+
+    if (!data.has_filled_aspirasi_bumn) result.push("aspirasi_bumn");
+
+    return result;
+  }, [data]);
+  // end banner my profile cv bumn
+
+  const [notifs, setNotifs] = useState([]);
+
   useEffect(() => {
-    if (
-      !isYearlyReportTotalPageSet &&
-      bannerData?.hasYearlyReportBanner
-    ) {
-      setTotalHeroPage((prev) => prev + 1);
-      setIsYearlyReportTotalPageSet(true);
+    const notifList = [];
+    if (eventTalentData) {
+      const start = dayjs(eventTalentData?.start_date);
+      const end = dayjs(eventTalentData?.end_date);
+      const now = dayjs();
+
+      const isOngoing =
+        start.unix() < now.unix() && end.unix() > now.unix();
+
+      if (eventTalentData && isOngoing)
+        notifList.push("event_talent");
     }
-  }, [bannerData?.hasYearlyReportBanner, isYearlyReportTotalPageSet]);
 
-  const [isEventTalentTotalPageSet, setIsEventTalentTotalPageSet] =
-    useState(false);
-
-  useEffect(() => {
-    const now = dayjs();
-    const start = dayjs(eventTalentData?.start_date);
-    const end = dayjs(eventTalentData?.end_date);
-
-    const isOngoing =
-      start.unix() < now.unix() && end.unix() > now.unix();
-
-    if (isEventTalentTotalPageSet) return;
-    if (eventTalentData && !isOngoing) {
-      setTotalHeroPage((prev) => prev - 1);
-      setIsEventTalentTotalPageSet(true);
-    } else if (eventTalentData && isOngoing) {
-      setTotalHeroPage((prev) => prev + 1);
-      setIsEventTalentTotalPageSet(true);
+    if (bannerData?.hasYearlyReportBanner) {
+      notifList.push("kpi");
     }
-  }, [eventTalentData, isEventTalentTotalPageSet]);
+
+    if (unfilledCvBumnKeys.length) {
+      notifList.push("my_profile_bumn");
+    }
+    setNotifs(notifList);
+  }, [
+    eventTalentData,
+    bannerData?.hasYearlyReportBanner,
+    unfilledCvBumnKeys.length,
+  ]);
+
+  const totalHeroPage = useMemo(() => notifs.length, [notifs.length]);
 
   return (
     <section className="relative mt-10 pb-10">
       {/* Banner */}
 
-      {heroPage === 1 && eventTalentData && (
-        <BannerCard
-          type="eventTalent"
-          eventTalentData={eventTalentData}
-          positions={positions}
-          setMacaSentStatus={setMacaSentStatus}
-          idpCourseIds={idpCourseIds}
-          heroPage={heroPage}
-          setHeroPage={setHeroPage}
-          totalHeroPage={totalHeroPage}
-          imageUrl=""
-          setTotalHeroPage={setTotalHeroPage}
-          ecaSentStatus={ecaSentStatus?.sent_status}
-          sucaSentStatus={sucaSentStatus?.sent_status}
-          hasSentAllMaca={hasSentAllMaca}
-          employeeNumber={employeeNumber}
-        />
-      )}
+      {notifs.length &&
+        notifs
+          .filter((_, idx) => idx === heroPage - 1)
+          .map((item) => (
+            <>
+              {item === "event_talent" && (
+                <BannerCard
+                  type="eventTalent"
+                  eventTalentData={eventTalentData}
+                  positions={positions}
+                  setMacaSentStatus={setMacaSentStatus}
+                  idpCourseIds={idpCourseIds}
+                  heroPage={heroPage}
+                  setHeroPage={setHeroPage}
+                  totalHeroPage={totalHeroPage}
+                  imageUrl=""
+                  ecaSentStatus={ecaSentStatus?.sent_status}
+                  sucaSentStatus={sucaSentStatus?.sent_status}
+                  hasSentAllMaca={hasSentAllMaca}
+                  employeeNumber={employeeNumber}
+                />
+              )}
 
-      {heroPage === (eventTalentData ? 2 : 1) &&
-        bannerData?.hasYearlyReportBanner && (
-          <BannerCard
-            type="yearlyReport"
-            eventTalentData={eventTalentData}
-            positions={positions}
-            setMacaSentStatus={setMacaSentStatus}
-            idpCourseIds={idpCourseIds}
-            heroPage={heroPage}
-            setHeroPage={setHeroPage}
-            totalHeroPage={totalHeroPage}
-            imageUrl={YearlyReportIllust}
-            setTotalHeroPage={setTotalHeroPage}
-            ecaSentStatus={ecaSentStatus?.sent_status}
-            sucaSentStatus={sucaSentStatus?.sent_status}
-            hasSentAllMaca={hasSentAllMaca}
-            employeeNumber={employeeNumber}
-          />
-        )}
+              {item === "kpi" && (
+                <BannerCard
+                  type="yearlyReport"
+                  eventTalentData={eventTalentData}
+                  positions={positions}
+                  setMacaSentStatus={setMacaSentStatus}
+                  idpCourseIds={idpCourseIds}
+                  heroPage={heroPage}
+                  setHeroPage={setHeroPage}
+                  totalHeroPage={totalHeroPage}
+                  imageUrl={YearlyReportIllust}
+                  ecaSentStatus={ecaSentStatus?.sent_status}
+                  sucaSentStatus={sucaSentStatus?.sent_status}
+                  hasSentAllMaca={hasSentAllMaca}
+                  employeeNumber={employeeNumber}
+                />
+              )}
+
+              {item === "my_profile_bumn" && (
+                <BannerCard
+                  type="myProfileBumn"
+                  eventTalentData={eventTalentData}
+                  positions={positions}
+                  setMacaSentStatus={setMacaSentStatus}
+                  idpCourseIds={idpCourseIds}
+                  heroPage={heroPage}
+                  setHeroPage={setHeroPage}
+                  totalHeroPage={totalHeroPage}
+                  imageUrl=""
+                  ecaSentStatus={ecaSentStatus?.sent_status}
+                  sucaSentStatus={sucaSentStatus?.sent_status}
+                  hasSentAllMaca={hasSentAllMaca}
+                  employeeNumber={employeeNumber}
+                />
+              )}
+            </>
+          ))}
 
       <div className="grid grid-cols-2 gap-8 px-20 py-10">
         <div className="flex flex-col gap-5">
