@@ -11,6 +11,7 @@ import PanelNotification from "./PanelNotification";
 import SMEIcon from "../../../Components/Assets/Icon/SME";
 import SplashArt from "../../../Components/Assets/Pictures/Kapal_Pelindo.gif";
 import YearlyReportIllust from "../../../Components/Assets/Pictures/YearlyReport.png";
+import MyProfileBumnIllust from "../../../Components/Assets/Pictures/MyProfileBumn.png";
 import CommitmentLetterIllust from "../../../Components/Assets/Pictures/Commitment_Letter.png";
 import IDPIllust from "../../../Components/Assets/Pictures/Pengisian_IDP.png";
 import EventTalentIllust from "../../../Components/Assets/Pictures/Pengisian_Event_Talent.png";
@@ -636,7 +637,7 @@ export default function SectionHero() {
                   heroPage={heroPage}
                   setHeroPage={setHeroPage}
                   totalHeroPage={totalHeroPage}
-                  imageUrl=""
+                  imageUrl={MyProfileBumnIllust}
                   ecaSentStatus={ecaSentStatus?.sent_status}
                   sucaSentStatus={sucaSentStatus?.sent_status}
                   hasSentAllMaca={hasSentAllMaca}
