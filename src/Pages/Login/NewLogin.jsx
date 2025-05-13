@@ -121,6 +121,7 @@ export default function NewLogin() {
           className="flex flex-col gap-4 w-full"
         >
           <TextInput
+            id="email"
             radius="md"
             label="Email"
             placeholder="Masukan email"
@@ -140,6 +141,7 @@ export default function NewLogin() {
             <PasswordInput
               radius="md"
               label="Password"
+              id="password"
               placeholder="Masukan password"
               size="md"
               name="password"
@@ -192,7 +194,7 @@ export default function NewLogin() {
             />
           </div>
 
-          <Button loading={isLoading} type="submit">
+          <Button id="login-button" loading={isLoading} type="submit">
             Sign In
           </Button>
         </form>
