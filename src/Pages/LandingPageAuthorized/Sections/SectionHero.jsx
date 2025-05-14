@@ -546,6 +546,14 @@ export default function SectionHero() {
 
     if (!data.has_filled_aspirasi_bumn) result.push("aspirasi_bumn");
 
+    if (!data.has_filled_seminar_internal)
+      result.push("seminar_internal");
+
+    if (!data.has_filled_seminar_external)
+      result.push("seminar_external");
+
+    // if (!data.has_filled_education) result.push("education");
+
     return result;
   }, [data]);
   // end banner my profile cv bumn
