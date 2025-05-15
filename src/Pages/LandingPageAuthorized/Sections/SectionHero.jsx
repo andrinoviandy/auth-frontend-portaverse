@@ -267,7 +267,7 @@ function BannerCard({
             <Button
               onClick={() =>
                 navigate(
-                  `${process.env.VITE_TMS_URL}/my-profile/personal-data`,
+                  `${import.meta.env.VITE_TMS_URL}/my-profile/personal-data`,
                 )
               }
             >
@@ -387,8 +387,8 @@ function BannerCard({
             onClick={() =>
               navigate(
                 isMissingOnlyIdp
-                  ? `${process.env.VITE_TMS_URL}/development-plan/my-plan-development/v2/idp`
-                  : `${process.env.VITE_TMS_URL}/development-plan/event-talent`,
+                  ? `${import.meta.env.VITE_TMS_URL}/development-plan/my-plan-development/v2/idp`
+                  : `${import.meta.env.VITE_TMS_URL}/development-plan/event-talent`,
               )
             }
           >
