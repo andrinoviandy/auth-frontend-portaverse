@@ -266,7 +266,7 @@ function BannerCard({
           <div className="flex items-center mt-4 gap-2 w-full">
             <Button
               onClick={() =>
-                navigate(
+                window.open(
                   `${import.meta.env.VITE_TMS_URL}/my-profile/personal-data`,
                 )
               }
@@ -385,7 +385,7 @@ function BannerCard({
         <div className="flex items-center mt-4 gap-2 w-full">
           <Button
             onClick={() =>
-              navigate(
+              window.open(
                 isMissingOnlyIdp
                   ? `${import.meta.env.VITE_TMS_URL}/development-plan/my-plan-development/v2/idp`
                   : `${import.meta.env.VITE_TMS_URL}/development-plan/event-talent`,
