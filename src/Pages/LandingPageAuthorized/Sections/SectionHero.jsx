@@ -33,44 +33,6 @@ import { MacaPositionSentStatusFetcher } from "../../../Components/EventTalent/M
 import showErrorDialog from "../../../Utils/Helpers/showErrorDialog";
 import { useGetSentStatus } from "../../../Utils/Hooks/use-get-sent-status";
 
-const MissingAspirations = ({
-  ecaSentStatus,
-  sucaSentStatus,
-  hasSentAllMaca,
-  isAgree,
-  isStruktural,
-  idpCourseIds,
-}) => {
-  const ecaNotSent = useMemo(
-    () => ecaSentStatus !== "SENT",
-    [ecaSentStatus],
-  );
-  const sucaNotSent = useMemo(
-    () => sucaSentStatus !== "SENT",
-    [sucaSentStatus],
-  );
-  const macaNotSent = useMemo(
-    () => !hasSentAllMaca,
-    [hasSentAllMaca],
-  );
-  const idpNotSent = useMemo(
-    () => idpCourseIds.length === 0,
-    [idpCourseIds],
-  );
-
-  const missing = [];
-  if (isStruktural && ecaNotSent) missing.push("ECA");
-  if (isStruktural && macaNotSent) missing.push("MACA");
-  if (isAgree && ecaNotSent && !missing.includes("ECA"))
-    missing.push("ECA");
-  if (sucaNotSent) missing.push("SUCA");
-  if (idpNotSent) missing.push("IDP");
-
-  return missing.length > 0 ? (
-    <span>{missing.join(", ")}</span>
-  ) : null;
-};
-
 // * smiley face :D glhf
 function BannerCard({
   eventTalentData,
@@ -86,8 +48,41 @@ function BannerCard({
   sucaSentStatus,
   hasSentAllMaca,
   employeeNumber,
+  setNotifs,
 }) {
-  const navigate = useNavigate();
+  const getMissingAspirations = ({
+    ecaSentStatus,
+    sucaSentStatus,
+    hasSentAllMaca,
+    isAgree,
+    isStruktural,
+    idpCourseIds,
+    isEligible = false,
+  }) => {
+    const ecaNotSent = ecaSentStatus !== "SENT";
+    const sucaNotSent = sucaSentStatus !== "SENT";
+    const macaNotSent = !hasSentAllMaca;
+    const idpNotSent = idpCourseIds.length === 0;
+
+    const missing = [];
+
+    if (
+      isAgree &&
+      isEligible &&
+      ecaNotSent &&
+      !missing.includes("ECA")
+    )
+      missing.push("ECA");
+    if (isStruktural && macaNotSent) missing.push("MACA");
+    if (isStruktural && sucaNotSent) missing.push("SUCA");
+    if (isAgree && isEligible && !ecaNotSent && idpNotSent)
+      missing.push("IDP");
+
+    return missing.length > 0
+      ? missing.join(", ").replace(/, ([^,]*)$/, " dan $1")
+      : null;
+  };
+
   const now = useMemo(() => dayjs(), []);
   const start = useMemo(
     () => dayjs(eventTalentData?.start_date),
@@ -125,8 +120,29 @@ function BannerCard({
     [eventTalentData?.is_agree],
   );
 
+  const isStruktural = useMemo(
+    () => eventTalentData?.employee_position_type === "Struktural",
+    [eventTalentData?.employee_position_type],
+  );
+
+  const eligibilityStatus = useMemo(() => {
+    return eventTalentData?.is_punish ||
+      eventTalentData?.is_job_leave ||
+      !eventTalentData?.is_under_max_age ||
+      eventTalentData?.qualification_content?.event_talent_status ===
+        "NOT_QUALIFIED"
+      ? "NOT_ELIGIBLE"
+      : "ELIGIBLE";
+  }, [
+    eventTalentData?.is_punish,
+    eventTalentData?.is_job_leave,
+    eventTalentData?.is_under_max_age,
+    eventTalentData?.qualification_content?.event_talent_status,
+  ]);
+
   const title = useMemo(() => {
-    if (isNotFilledCommitment) return "Commitment Letter";
+    if (eligibilityStatus === "ELIGIBLE" && isNotFilledCommitment)
+      return "Commitment Letter";
     if (isMissingOnlyIdp) return "Pengisian IDP";
     if (
       ecaSentStatus !== "SENT" ||
@@ -143,16 +159,20 @@ function BannerCard({
     hasSentAllMaca,
     isMissingOnlyIdp,
     idpCourseIds.length,
+    eligibilityStatus,
   ]);
 
   const shouldShowWarning = useMemo(() => {
     return (
       isOngoing &&
-      (typeof eventTalentData?.is_agree !== "number" ||
-        ecaSentStatus !== "SENT" ||
-        sucaSentStatus !== "SENT" ||
-        !hasSentAllMaca ||
-        idpCourseIds.length === 0)
+      ((eligibilityStatus === "ELIGIBLE" &&
+        typeof eventTalentData?.is_agree !== "number") ||
+        (eligibilityStatus === "ELIGIBLE" &&
+          ecaSentStatus !== "SENT") ||
+        (isStruktural && sucaSentStatus !== "SENT") ||
+        (isStruktural && !hasSentAllMaca) ||
+        (eligibilityStatus === "ELIGIBLE" &&
+          idpCourseIds.length === 0))
     );
   }, [
     eventTalentData?.is_agree,
@@ -161,7 +181,25 @@ function BannerCard({
     hasSentAllMaca,
     idpCourseIds.length,
     isOngoing,
+    eligibilityStatus,
+    isStruktural,
   ]);
+
+  useEffect(() => {
+    if (type === "eventTalent" && !shouldShowWarning) {
+      setNotifs((prev) => {
+        const t = [...prev];
+        const filtered = t.filter((e) => e !== "event_talent");
+        return filtered;
+      });
+    } else if (shouldShowWarning) {
+      setNotifs((prev) => {
+        const t = [...prev];
+        const filtered = t.filter((e) => e !== "event_talent");
+        return ["event_talent", ...filtered];
+      });
+    }
+  }, [type, shouldShowWarning, setNotifs]);
 
   const imageUrlComputed = useMemo(() => {
     if (isMissingOnlyIdp) return IDPIllust;
@@ -311,8 +349,6 @@ function BannerCard({
     );
   }
 
-  if (type === "eventTalent" && !shouldShowWarning) return null;
-
   return (
     <div className="bg-white p-6 rounded-md flex gap-4 items-center border border-lightGrey mx-[80px]">
       <div className="flex flex-col w-full">
@@ -348,34 +384,32 @@ function BannerCard({
             />
           ))}
 
-          {typeof eventTalentData?.is_agree !== "number" && (
+          {eligibilityStatus === "ELIGIBLE" &&
+          typeof eventTalentData?.is_agree !== "number" ? (
             <div>
               Selamat! Anda dinyatakan lolos untuk mengikuti kegiatan
               Event Talent. Segera berikan tanggapan Anda melalui
               Commitment Letter.
             </div>
-          )}
-
-          {typeof eventTalentData?.is_agree === "number" && (
+          ) : (
             <div>
               {isMissingOnlyIdp ? (
                 "Setelah Anda menentukan aspirasi karir Anda (ECA), Anda perlu memilih pembelajaran untuk membuat IDP."
               ) : (
                 <>
                   Anda belum mengisi aspirasi karir Anda (
-                  <MissingAspirations
-                    ecaSentStatus={ecaSentStatus}
-                    sucaSentStatus={sucaSentStatus}
-                    hasSentAllMaca={hasSentAllMaca}
-                    isAgree={eventTalentData.is_agree}
-                    isStruktural={
+                  {getMissingAspirations({
+                    ecaSentStatus,
+                    sucaSentStatus,
+                    hasSentAllMaca,
+                    isAgree: eventTalentData.is_agree,
+                    isStruktural:
                       eventTalentData.employee_position_type ===
-                      "Struktural"
-                    }
-                    idpCourseIds={idpCourseIds}
-                  />
-                  ). Hasil dari aspirasi Anda akan berpengaruh
-                  terhadap kegiatan promotion and rotation.
+                      "Struktural",
+                    idpCourseIds,
+                    isEligible: eligibilityStatus === "ELIGIBLE",
+                  })}
+                  ).
                 </>
               )}
             </div>
@@ -590,6 +624,8 @@ export default function SectionHero() {
 
   const totalHeroPage = useMemo(() => notifs.length, [notifs.length]);
 
+  console.log(bannerData?.hasYearlyReportBanner, notifs, heroPage);
+
   return (
     <section className="relative mt-10 pb-10">
       {/* Banner */}
@@ -614,6 +650,7 @@ export default function SectionHero() {
                   sucaSentStatus={sucaSentStatus?.sent_status}
                   hasSentAllMaca={hasSentAllMaca}
                   employeeNumber={employeeNumber}
+                  setNotifs={setNotifs}
                 />
               )}
 
@@ -632,6 +669,7 @@ export default function SectionHero() {
                   sucaSentStatus={sucaSentStatus?.sent_status}
                   hasSentAllMaca={hasSentAllMaca}
                   employeeNumber={employeeNumber}
+                  setNotifs={setNotifs}
                 />
               )}
 
@@ -650,6 +688,7 @@ export default function SectionHero() {
                   sucaSentStatus={sucaSentStatus?.sent_status}
                   hasSentAllMaca={hasSentAllMaca}
                   employeeNumber={employeeNumber}
+                  setNotifs={setNotifs}
                 />
               )}
             </>
