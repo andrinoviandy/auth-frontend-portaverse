@@ -126,7 +126,7 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-          label: "SME Dashboard",
+          label: "SME Workspace",
           description:
             "Modul untuk pengelolaan, monitoring, dan pengembangan narasumber ahli di Pelindo",
           route: "/dashboard-sme",
@@ -172,12 +172,12 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-          label: "Repository",
+          label: "Knowledge Hub",
           description:
             "Wadah yang menampung dan mengelola semua dokumen yang berada di Portaverse",
-          route: "/repository",
+          route: "/knowledgehub",
           icon: (
-            <img src={Repository} alt="repo" className="w-[26px]" />
+            <Icon icon="mdi:graduation-cap-outline" color={color.primary3} width={40} />
           ),
           hasAccess: true,
         },
