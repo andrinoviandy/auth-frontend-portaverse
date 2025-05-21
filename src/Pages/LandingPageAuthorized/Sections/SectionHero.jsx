@@ -78,9 +78,7 @@ function BannerCard({
     if (isAgree && isEligible && !ecaNotSent && idpNotSent)
       missing.push("IDP");
 
-    return missing.length > 0
-      ? missing.join(", ").replace(/, ([^,]*)$/, " dan $1")
-      : null;
+    return missing.length > 0 ? missing : null;
   };
 
   const now = useMemo(() => dayjs(), []);
@@ -101,30 +99,6 @@ function BannerCard({
     eventTalentData?.end_date,
   );
 
-  const isMissingOnlyIdp = useMemo(() => {
-    return (
-      ecaSentStatus === "SENT" &&
-      sucaSentStatus === "SENT" &&
-      hasSentAllMaca &&
-      idpCourseIds.length === 0
-    );
-  }, [
-    ecaSentStatus,
-    sucaSentStatus,
-    hasSentAllMaca,
-    idpCourseIds.length,
-  ]);
-
-  const isNotFilledCommitment = useMemo(
-    () => typeof eventTalentData?.is_agree !== "number",
-    [eventTalentData?.is_agree],
-  );
-
-  const isStruktural = useMemo(
-    () => eventTalentData?.employee_position_type === "Struktural",
-    [eventTalentData?.employee_position_type],
-  );
-
   const eligibilityStatus = useMemo(() => {
     return eventTalentData?.is_punish ||
       eventTalentData?.is_job_leave ||
@@ -140,6 +114,37 @@ function BannerCard({
     eventTalentData?.qualification_content?.event_talent_status,
   ]);
 
+  const isMissingOnlyIdp = useMemo(() => {
+    const missing = getMissingAspirations({
+      ecaSentStatus,
+      sucaSentStatus,
+      hasSentAllMaca,
+      isAgree: eventTalentData?.is_agree,
+      isStruktural:
+        eventTalentData?.employee_position_type === "Struktural",
+      idpCourseIds,
+      isEligible: eligibilityStatus === "ELIGIBLE",
+    });
+    return missing && missing.length === 1 && missing.includes("IDP");
+  }, [
+    ecaSentStatus,
+    sucaSentStatus,
+    hasSentAllMaca,
+    idpCourseIds, // use the whole array, not just length
+    eventTalentData?.is_agree,
+    eventTalentData?.employee_position_type,
+    eligibilityStatus,
+  ]);
+
+  const isNotFilledCommitment = useMemo(
+    () => typeof eventTalentData?.is_agree !== "number",
+    [eventTalentData?.is_agree],
+  );
+
+  const isStruktural = useMemo(
+    () => eventTalentData?.employee_position_type === "Struktural",
+    [eventTalentData?.employee_position_type],
+  );
   const title = useMemo(() => {
     if (eligibilityStatus === "ELIGIBLE" && isNotFilledCommitment)
       return "Commitment Letter";
@@ -163,26 +168,26 @@ function BannerCard({
   ]);
 
   const shouldShowWarning = useMemo(() => {
-    return (
-      isOngoing &&
-      ((eligibilityStatus === "ELIGIBLE" &&
-        typeof eventTalentData?.is_agree !== "number") ||
-        (eligibilityStatus === "ELIGIBLE" &&
-          ecaSentStatus !== "SENT") ||
-        (isStruktural && sucaSentStatus !== "SENT") ||
-        (isStruktural && !hasSentAllMaca) ||
-        (eligibilityStatus === "ELIGIBLE" &&
-          idpCourseIds.length === 0))
-    );
+    const missing = getMissingAspirations({
+      ecaSentStatus,
+      sucaSentStatus,
+      hasSentAllMaca,
+      isAgree: eventTalentData?.is_agree,
+      isStruktural:
+        eventTalentData?.employee_position_type === "Struktural",
+      idpCourseIds,
+      isEligible: eligibilityStatus === "ELIGIBLE",
+    });
+    return isOngoing && !!missing?.length;
   }, [
-    eventTalentData?.is_agree,
+    isOngoing,
     ecaSentStatus,
     sucaSentStatus,
     hasSentAllMaca,
-    idpCourseIds.length,
-    isOngoing,
+    idpCourseIds, // use the whole array, not just length
+    eventTalentData?.is_agree,
+    eventTalentData?.employee_position_type,
     eligibilityStatus,
-    isStruktural,
   ]);
 
   useEffect(() => {
@@ -398,17 +403,26 @@ function BannerCard({
               ) : (
                 <>
                   Anda belum mengisi aspirasi karir Anda (
-                  {getMissingAspirations({
-                    ecaSentStatus,
-                    sucaSentStatus,
-                    hasSentAllMaca,
-                    isAgree: eventTalentData.is_agree,
-                    isStruktural:
-                      eventTalentData.employee_position_type ===
-                      "Struktural",
-                    idpCourseIds,
-                    isEligible: eligibilityStatus === "ELIGIBLE",
-                  })}
+                  {(function () {
+                    const missing = getMissingAspirations({
+                      ecaSentStatus,
+                      sucaSentStatus,
+                      hasSentAllMaca,
+                      isAgree: eventTalentData?.is_agree,
+                      isStruktural:
+                        eventTalentData?.employee_position_type ===
+                        "Struktural",
+                      idpCourseIds,
+                      isEligible: eligibilityStatus === "ELIGIBLE",
+                    });
+
+                    if (missing) {
+                      return missing
+                        .join(", ")
+                        .replace(/, ([^,]*)$/, " dan $1");
+                    }
+                    return null;
+                  })()}
                   ).
                 </>
               )}
@@ -623,8 +637,6 @@ export default function SectionHero() {
   ]);
 
   const totalHeroPage = useMemo(() => notifs.length, [notifs.length]);
-
-  console.log(bannerData?.hasYearlyReportBanner, notifs, heroPage);
 
   return (
     <section className="relative mt-10 pb-10">
