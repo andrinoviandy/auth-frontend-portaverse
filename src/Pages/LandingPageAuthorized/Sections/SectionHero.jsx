@@ -178,7 +178,12 @@ function BannerCard({
       idpCourseIds,
       isEligible: eligibilityStatus === "ELIGIBLE",
     });
-    return isOngoing && !!missing?.length;
+    return (
+      isOngoing &&
+      ((eligibilityStatus === "ELIGIBLE" &&
+        typeof eventTalentData?.is_agree !== "number") ||
+        !!missing?.length)
+    );
   }, [
     isOngoing,
     ecaSentStatus,
@@ -435,7 +440,7 @@ function BannerCard({
             onClick={() =>
               window.open(
                 isMissingOnlyIdp
-                  ? `${import.meta.env.VITE_TMS_URL}/development-plan/my-plan-development/v2/idp`
+                  ? `${import.meta.env.VITE_TMS_URL}/development-plan/my-plan-development/v2/idp?tab=form`
                   : `${import.meta.env.VITE_TMS_URL}/development-plan/event-talent`,
               )
             }
@@ -637,6 +642,7 @@ export default function SectionHero() {
   ]);
 
   const totalHeroPage = useMemo(() => notifs.length, [notifs.length]);
+  console.log(notifs);
 
   return (
     <section className="relative mt-10 pb-10">
