@@ -188,18 +188,18 @@ function BannerCard({
     return (
       <div className="bg-white p-6 rounded-md flex gap-4 items-center border border-lightGrey mx-[80px]">
         <div className="flex flex-col w-full">
-          <Text className="text-primary3 font-medium text-sm">
+          <Text className="text-sm font-medium text-primary3">
             Evaluasi Tahunan
           </Text>
-          <Text className="font-semibold text-lg mt-2">
+          <Text className="mt-2 text-lg font-semibold">
             Ingin tahu hasil akhir laporan evaluasi tahunan anda?
           </Text>
-          <Text className="text-gray-500 mt-2">
+          <Text className="mt-2 text-gray-500">
             Klik tombol di bawah untuk melihat laporan evaluasi
             tahunan Anda.
           </Text>
 
-          <div className="flex items-center mt-4 gap-2 w-full">
+          <div className="flex items-center w-full gap-2 mt-4">
             <Link to="/progress-eval-report">
               <Button
                 rightIcon={
@@ -251,18 +251,18 @@ function BannerCard({
     return (
       <div className="bg-white p-6 rounded-md flex gap-4 items-center border border-lightGrey mx-[80px]">
         <div className="flex flex-col w-full">
-          <Text className="text-primary3 font-medium text-sm">
+          <Text className="text-sm font-medium text-primary3">
             CV Kementrian BUMN
           </Text>
-          <Text className="font-semibold text-lg mt-2">
+          <Text className="mt-2 text-lg font-semibold">
             Lengkapi Data Profil Anda
           </Text>
-          <Text className="text-gray-500 mt-2">
+          <Text className="mt-2 text-gray-500">
             Mohon untuk melengkapi data tambahan untuk keperluan CV
             Kementrian BUMN Anda.
           </Text>
 
-          <div className="flex items-center mt-4 gap-2 w-full">
+          <div className="flex items-center w-full gap-2 mt-4">
             <Button
               onClick={() =>
                 navigate(
@@ -316,11 +316,11 @@ function BannerCard({
     <div className="bg-white p-6 rounded-md flex gap-4 items-center border border-lightGrey mx-[80px]">
       <div className="flex flex-col w-full">
         <div className="flex items-center gap-2 ">
-          <Text className="text-primary3 font-medium text-sm">
+          <Text className="text-sm font-medium text-primary3">
             TMS - Event Talent
           </Text>
           {isOngoing && (
-            <div className="text-primary3 text-sm flex items-center gap-1">
+            <div className="flex items-center gap-1 text-sm text-primary3">
               {" "}
               |{" "}
               <Icon
@@ -331,7 +331,7 @@ function BannerCard({
             </div>
           )}
         </div>
-        <Text className="font-semibold text-xl mt-2">{title}</Text>
+        <Text className="mt-2 text-xl font-semibold">{title}</Text>
         <Text className="mt-2">
           {positions?.map((pos) => (
             <MacaPositionSentStatusFetcher
@@ -381,7 +381,7 @@ function BannerCard({
           )}
         </Text>
 
-        <div className="flex items-center mt-4 gap-2 w-full">
+        <div className="flex items-center w-full gap-2 mt-4">
           <Button
             onClick={() =>
               navigate(
@@ -423,7 +423,7 @@ function BannerCard({
         <img
           src={imageUrlComputed}
           alt="Event Talent"
-          className="rounded-md w-full"
+          className="w-full rounded-md"
         />
       </div>
     </div>
@@ -582,7 +582,7 @@ export default function SectionHero() {
   const totalHeroPage = useMemo(() => notifs.length, [notifs.length]);
 
   return (
-    <section className="relative mt-10 pb-10">
+    <section className="relative pb-10 mt-10">
       {/* Banner */}
 
       {notifs.length &&
@@ -646,6 +646,19 @@ export default function SectionHero() {
             </>
           ))}
 
+      {/* Remove when learning hour is fixed */}
+      <div className="flex items-center gap-2 p-2 mx-20 rounded-lg bg-accent1">
+        <Icon
+          icon="ic:baseline-new-releases"
+          width="24"
+          height="24"
+          style={{ color: "#016DB2" }}
+        />
+        <p className="text-sm font-semibold text-text1">
+          Mohon maaf atas ketidaknyamanannya. Fitur Learning Hour
+          sedang dalam tahap perbaikan.
+        </p>
+      </div>
       <div className="grid grid-cols-2 gap-8 px-20 py-10">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
@@ -665,17 +678,17 @@ export default function SectionHero() {
           <img
             src={SplashArt}
             alt="splash-art"
-            className="my-auto w-3/4"
+            className="w-3/4 my-auto"
           />
-          {/* <div className="grid grid-cols-5 items-start gap-4" /> */}
+          {/* <div className="grid items-start grid-cols-5 gap-4" /> */}
         </div>
         <div className="flex flex-col gap-5">
-          <div className="flex items-start gap-8 rounded-md border p-6">
+          <div className="flex items-start gap-8 p-6 border rounded-md">
             <ProfilePicture
               imageUrl={userSocmed?.profilePicture || avatar}
               alt="avatar"
               size={96}
-              className="shrink-0 rounded-full border"
+              className="border rounded-full shrink-0"
               name={name}
               badgeIcon={hasRole(["SME"]) ? <SMEIcon /> : null}
             />
@@ -694,7 +707,7 @@ export default function SectionHero() {
             </div>
           </div>
 
-          <div className="rounded-md border">
+          <div className="border rounded-md">
             <Tabs
               value={activeTab}
               onChange={setActiveTab}
