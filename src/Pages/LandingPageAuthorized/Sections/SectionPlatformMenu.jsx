@@ -39,7 +39,6 @@ export default function SectionPlatformMenu() {
   const user_id = userId(rolesRequired);
 
   const employeeId = user?.employee?.employee_id;
-  const [activeTab, setActiveTab] = useState("KMS");
 
   const [hasAccessOM, setHasAccessOM] = useState(false);
   const [hasAccessSMS, setHasAccessSMS] = useState(false);
@@ -177,7 +176,11 @@ export default function SectionPlatformMenu() {
             "Wadah yang menampung dan mengelola semua dokumen yang berada di Portaverse",
           route: "/knowledgehub",
           icon: (
-            <Icon icon="mdi:graduation-cap-outline" color={color.primary3} width={40} />
+            <Icon
+              icon="mdi:graduation-cap-outline"
+              color={color.primary3}
+              width={40}
+            />
           ),
           hasAccess: true,
         },
@@ -820,11 +823,7 @@ export default function SectionPlatformMenu() {
     ? menuItems.map((item) => item.name)
     : [];
 
-  useEffect(() => {
-    if (tabsToShow?.length > 0) {
-      setActiveTab(tabsToShow[0]);
-    }
-  }, [tabsToShow]);
+  const [activeTab, setActiveTab] = useState(tabsToShow[0] || "KMS");
 
   return (
     <section className="flex flex-col gap-10 px-20 py-16">
