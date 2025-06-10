@@ -605,7 +605,20 @@ export default function SectionHero() {
     if (!data.has_filled_seminar_external)
       result.push("seminar_external");
 
-    // if (!data.has_filled_education) result.push("education");
+    if (!data.has_filled_education) result.push("education");
+
+    if (!data.has_filled_personal_atribut)
+      result.push("personal_atribut");
+
+    if (!data.has_filled_keanggotaan_organisasi)
+      result.push("keanggotaan_organisasi");
+
+    if (!data.has_filled_data_anak) result.push("data_anak");
+
+    if (!data.has_filled_data_pasangan) result.push("data_pasangan");
+
+    if (!data.has_filled_nilai_kesehatan)
+      result.push("nilai_kesehatan");
 
     return result;
   }, [data]);
