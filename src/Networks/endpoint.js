@@ -31,6 +31,7 @@ export const KMAP_ENDPOINT = {
     kmapGroup: (id) => `/kmap-group/${id}`,
     kmapOrgOrGroupDetailByID: (id) =>
       `/kmap-group/v2/get-group/${id}`,
+    approvalNotification: "/sme/v3/sme-approval-notification",
   },
   POST: {
     kmapGroup: "/kmap-group",

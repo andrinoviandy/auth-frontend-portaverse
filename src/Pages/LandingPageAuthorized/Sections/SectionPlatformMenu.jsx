@@ -57,6 +57,21 @@ export default function SectionPlatformMenu() {
       ["get-group", userGroupId],
     );
 
+  const { data: unreadApprovalNotifications } = kmapService.query(
+    KMAP_ENDPOINT.GET.approvalNotification,
+    ["unreadApprovalNotifications"],
+    {
+      select: (res) => {
+        const typedRes = res;
+
+        const isNeedApproval = typedRes.is_need_approval;
+        const waitingHead = typedRes.detail?.waiting_head || 0;
+        const waitingSME = typedRes.detail?.waiting_sme || 0;
+        return isNeedApproval ? waitingHead + waitingSME : 0;
+      },
+    },
+  );
+
   const userDeepestTierId = useMemo(() => {
     if ((dataGroup?.group?.tier || 0) > 3) {
       return dataGroup?.parent.find((g) => g.tier === 3)?.id;
@@ -125,7 +140,14 @@ export default function SectionPlatformMenu() {
           hasAccess: true,
         },
         {
-          label: "SME Workspace",
+          label: (
+            <p>
+              SME Workspace{" "}
+              {unreadApprovalNotifications > 0 && (
+                <span className="ml-1 inline-block w-1.5 h-1.5 bg-red-500 rounded-full align-middle"></span>
+              )}
+            </p>
+          ),
           description:
             "Modul untuk pengelolaan, monitoring, dan pengembangan narasumber ahli di Pelindo",
           route: "/dashboard-sme",
