@@ -39,6 +39,7 @@ export default function SectionPlatformMenu() {
   const user_id = userId(rolesRequired);
 
   const employeeId = user?.employee?.employee_id;
+  const userKmapGroup = user?.employee?.kmap_group_id;
 
   const [hasAccessOM, setHasAccessOM] = useState(false);
   const [hasAccessSMS, setHasAccessSMS] = useState(false);
@@ -132,7 +133,7 @@ export default function SectionPlatformMenu() {
           description:
             "Peta pengetahuan dan aktivitas perusahaan yang diselaraskan dengan tujuan perusahaan",
           route: userDeepestTierId
-            ? `/kmap/group/${userDeepestTierId}`
+            ? `/kmap/group/${userKmapGroup || userDeepestTierId}`
             : "/kmap/group",
           icon: (
             <img src={KMAPOutline} alt="kmap" className="w-[40px]" />
