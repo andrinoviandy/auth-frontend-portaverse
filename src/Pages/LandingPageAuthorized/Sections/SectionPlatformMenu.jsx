@@ -117,7 +117,7 @@ export default function SectionPlatformMenu() {
         {
           label: "Social Media & Ask the Expert",
           description:
-            "Media untuk bersosialisasi, berkolaborasi, berbagi knowledge, dan berkomunikasi langsung dengan narasumber ahli",
+            "Media untuk bersosialisasi dan berbagi pengetahuan sesama pengguna dan narasumber ahli",
           route: "/home",
           icon: (
             <Icon
