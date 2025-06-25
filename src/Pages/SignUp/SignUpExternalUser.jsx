@@ -183,13 +183,17 @@ export default function SignUpExternalUser() {
 
     const formData = {
       ...form.values,
-      fileId: Number(form.values.fileId),
+      fileId: form.values.fileId ? Number(form.values.fileId) : "",
     };
 
     const handleError = (error) => {
       const messages = error?.response?.data?.message || [];
+      const messagesFirebase = error?.response?.data?.message;
+
       if (Array.isArray(messages)) {
         setFetchError(messages.map((err) => err.message));
+      } else if (error?.response.data.code == 400) {
+        setFetchError([messagesFirebase]);
       } else {
         setFetchError(["Something went wrong!"]);
       }
