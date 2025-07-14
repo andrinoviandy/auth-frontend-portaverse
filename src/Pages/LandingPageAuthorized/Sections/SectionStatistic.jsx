@@ -60,9 +60,6 @@ export default function SectionStatistic() {
     }
   );
 
-  console.log(portaversePoints)
-
-
   const { data: remainingDay, isLoading: isLoadingTime } =
     smartplanService.query(
       SMARTPLAN_ENDPOINT.GET.remainingTime,
