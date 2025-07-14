@@ -7,6 +7,7 @@ import {
   BASE_PROXY,
   COURSE_ENDPOINT,
   SMARTPLAN_ENDPOINT,
+  GAMIFICATION_ENDPOINT
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
@@ -19,6 +20,8 @@ export default function SectionStatistic() {
   const { employee_id: employeeId } = getUserCookie().employee;
 
   const smartplanService = Networks(BASE_PROXY.smartplan);
+  const gamificationService = Networks(BASE_PROXY.gamification);
+
   const { data: kpiScore, isLoading: isLoadingKPI } =
     smartplanService.query(
       SMARTPLAN_ENDPOINT.GET.kpiScore,
@@ -31,6 +34,31 @@ export default function SectionStatistic() {
         }),
       },
     );
+
+  const { data: portaversePoints, isLoading: isLoadingPortaversePoints } =
+  gamificationService.query(
+    GAMIFICATION_ENDPOINT.GET.karmaV2,
+    [
+      "employeePortaversePoints",
+      employeeId
+    ],
+    {
+      select: (res) => {
+        return res?.summary?.total_points
+      }
+    },
+    {
+      params: {
+        page: 1,
+        size: 1,
+        employee_id: employeeId,
+        category: "portaverse",
+        year: dayjs().year(),
+        start_date: dayjs().startOf("year").toISOString(),
+        end_date: dayjs().endOf("year").toISOString()
+      },
+    }
+  );
 
   const { data: remainingDay, isLoading: isLoadingTime } =
     smartplanService.query(
@@ -87,6 +115,13 @@ export default function SectionStatistic() {
             value={kpiScore?.score || "-"}
             loading={isLoadingKPI}
             tooltip="Total Skor KPI Anda saat ini. (80% KPI + 20% Assessment)"
+          />
+
+          <StatCard
+            label={`Portaverse Point`}
+            value={portaversePoints || "-"}
+            loading={isLoadingPortaversePoints}
+            tooltip="Total Portaverse Point Anda"
           />
 
           <StatCard
