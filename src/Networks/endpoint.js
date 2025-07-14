@@ -300,6 +300,7 @@ export const DASHBOARD_ENDPOINT = {
 export const GAMIFICATION_ENDPOINT = {
   GET: {
     leaderboard: "/karma-vw",
+    karmaV2: "/karma/v2"
   },
 };
 

@@ -71,6 +71,14 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) =>
             path.replace(/^\/api\/smartplan\/v1/, ""),
         },
+        "/api/gamification/v1": {
+          target: process.env.VITE_API_GAMIFICATION_SERVICE_URL,
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+          rewrite: (path) =>
+            path.replace(/^\/api\/gamification\/v1/, ""),
+        },
         "/api/course/v1": {
           target: process.env.VITE_API_COURSE_SERVICE_URL,
           changeOrigin: true,
