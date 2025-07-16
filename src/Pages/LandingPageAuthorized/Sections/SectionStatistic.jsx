@@ -7,7 +7,7 @@ import {
   BASE_PROXY,
   COURSE_ENDPOINT,
   SMARTPLAN_ENDPOINT,
-  GAMIFICATION_ENDPOINT
+  GAMIFICATION_ENDPOINT,
 } from "../../../Networks/endpoint";
 import { Networks } from "../../../Networks/factory";
 import { color } from "../../../Utils/Constants";
@@ -35,17 +35,16 @@ export default function SectionStatistic() {
       },
     );
 
-  const { data: portaversePoints, isLoading: isLoadingPortaversePoints } =
-  gamificationService.query(
+  const {
+    data: portaversePoints,
+    isLoading: isLoadingPortaversePoints,
+  } = gamificationService.query(
     GAMIFICATION_ENDPOINT.GET.karmaV2,
-    [
-      "employeePortaversePoints",
-      employeeId
-    ],
+    ["employeePortaversePoints", employeeId],
     {
       select: (res) => {
-        return res?.summary?.total_points
-      }
+        return res?.summary?.total_points;
+      },
     },
     {
       params: {
@@ -55,10 +54,54 @@ export default function SectionStatistic() {
         category: "portaverse",
         year: dayjs().year(),
         start_date: dayjs().startOf("year").toISOString(),
-        end_date: dayjs().endOf("year").toISOString()
+        end_date: dayjs().endOf("year").toISOString(),
       },
-    }
+    },
   );
+
+  const { data: KMPoints, isLoading: isLoadingKMPoints } =
+    gamificationService.query(
+      GAMIFICATION_ENDPOINT.GET.karmaV2,
+      ["employeeKMPoints", employeeId],
+      {
+        select: (res) => {
+          return res?.summary?.total_points;
+        },
+      },
+      {
+        params: {
+          page: 1,
+          size: 1,
+          employee_id: employeeId,
+          category: "km",
+          year: dayjs().year(),
+          start_date: dayjs().startOf("year").toISOString(),
+          end_date: dayjs().endOf("year").toISOString(),
+        },
+      },
+    );
+
+  const { data: learningPoints, isLoading: isLoadingLearningPoints } =
+    gamificationService.query(
+      GAMIFICATION_ENDPOINT.GET.karmaV2,
+      ["learningPoints", employeeId],
+      {
+        select: (res) => {
+          return res?.summary?.total_points;
+        },
+      },
+      {
+        params: {
+          page: 1,
+          size: 1,
+          employee_id: employeeId,
+          category: "learning",
+          year: dayjs().year(),
+          start_date: dayjs().startOf("year").toISOString(),
+          end_date: dayjs().endOf("year").toISOString(),
+        },
+      },
+    );
 
   const { data: remainingDay, isLoading: isLoadingTime } =
     smartplanService.query(
@@ -109,7 +152,7 @@ export default function SectionStatistic() {
             Lihat dan pelajari data-data statistik terpenting Anda
           </p>
         </div>
-        <div className="grid grid-cols-4 justify-center items-start gap-4 text-text1">
+        <div className="flex flex-wrap justify-center items-start gap-4 text-text1">
           <StatCard
             label={`Nilai Kinerja Individu ${kpiScore?.year || ""}`}
             value={kpiScore?.score || "-"}
@@ -119,7 +162,29 @@ export default function SectionStatistic() {
 
           <StatCard
             label={`Portaverse Point`}
-            value={portaversePoints || "-"}
+            value={portaversePoints ? `${portaversePoints} pts` : "-"}
+            children={
+              <div className="flex justify-between w-full font-semibold text-center text-sm">
+                <p>
+                  KM Points:{" "}
+                  {isLoadingKMPoints ? (
+                    "-"
+                  ) : (
+                    <span className="text-primary3">{KMPoints ? `${KMPoints} pts` : "-"}</span>
+                  )}
+                </p>
+                <p>
+                  Learning Points:{" "}
+                  {isLoadingLearningPoints ? (
+                    "-"
+                  ) : (
+                    <span className="text-primary3">
+                      {learningPoints ? `${learningPoints} pts` : "-"}
+                    </span>
+                  )}
+                </p>
+              </div>
+            }
             loading={isLoadingPortaversePoints}
             tooltip="Total Portaverse Point Anda"
           />
@@ -143,8 +208,9 @@ export default function SectionStatistic() {
           />
 
           <StatCard
-            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${remainingDay?.formatted_period || ""
-              }`}
+            label={`Batas Waktu ${scheduleTypeTranslated} KPI Triwulan ${
+              remainingDay?.formatted_period || ""
+            }`}
             value={
               remainingDay?.remaining
                 ? `${remainingDay?.remaining} (${remainingDay?.date})`
@@ -159,9 +225,9 @@ export default function SectionStatistic() {
   );
 }
 
-function StatCard({ label, value, tooltip, loading }) {
+function StatCard({ label, value, children, tooltip, loading }) {
   return (
-    <div className="flex flex-col gap-1 items-center justify-center max-h-[126px] h-full w-full p-3 rounded-lg border bg-white">
+    <div className="flex flex-col flex-1 gap-1 items-center justify-center max-h-[126px] min-w-[300px] max-w-[400px] h-[200px] p-3 rounded-lg border bg-white">
       <div className="flex gap-2">
         <p className="font-semibold text-center">{label}</p>
         <div className="mt-0.5">
@@ -180,6 +246,7 @@ function StatCard({ label, value, tooltip, loading }) {
           {value}
         </p>
       )}
+      {children}
     </div>
   );
 }
