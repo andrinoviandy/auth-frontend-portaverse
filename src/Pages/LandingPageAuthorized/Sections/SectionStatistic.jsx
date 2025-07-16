@@ -162,7 +162,7 @@ export default function SectionStatistic() {
 
           <StatCard
             label={`Portaverse Point`}
-            value={`${portaversePoints} pts` || "-"}
+            value={portaversePoints ? `${portaversePoints} pts` : "-"}
             children={
               <div className="flex justify-between w-full font-semibold text-center text-sm">
                 <p>
@@ -170,7 +170,7 @@ export default function SectionStatistic() {
                   {isLoadingKMPoints ? (
                     "-"
                   ) : (
-                    <span className="text-primary3">{KMPoints} pts</span>
+                    <span className="text-primary3">{KMPoints ? `${KMPoints} pts` : "-"}</span>
                   )}
                 </p>
                 <p>
@@ -179,7 +179,7 @@ export default function SectionStatistic() {
                     "-"
                   ) : (
                     <span className="text-primary3">
-                      {learningPoints} pts
+                      {learningPoints ? `${learningPoints} pts` : "-"}
                     </span>
                   )}
                 </p>
