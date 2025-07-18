@@ -40,6 +40,7 @@ ENV VITE_API_ASSESSMENT_SERVICE_URL=https://assessment-service-portaverse.pelind
 ENV VITE_API_DEVELOPMENT_PLAN_SERVICE_URL=https://developmentplan-service-portaverse.pelindo.co.id
 ENV VITE_API_INNOVATION_SERVICE_URL=https://innovation-service-portaverse.pelindo.co.id
 ENV VITE_API_KMAP_SERVICE_URL=https://kmap-service-portaverse.pelindo.co.id
+ENV VITE_API_GAMIFICATION_SERVICE_URL=https://gamification-portaverse.pelindo.co.id
 
 # ENV VITE_API_EMPLOYEES_SERVICE_URL=https://employee.portaverse.co.id
 # ENV VITE_API_AUTH_SERVICE_URL=https://user-auth.portaverse.co.id
