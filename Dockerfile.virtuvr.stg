@@ -38,6 +38,7 @@ ENV VITE_API_DAILY_QUIZ_SERVICE_URL=https://daily-quiz-qa-portaverse.ilcs.co.id
 ENV VITE_API_ASSESSMENT_SERVICE_URL=https://assessment-qa-portaverse.ilcs.co.id
 ENV VITE_API_DEVELOPMENT_PLAN_SERVICE_URL=https://development-plan-qa-portaverse.ilcs.co.id
 ENV VITE_API_INNOVATION_SERVICE_URL=https://innovation-qa-portaverse.ilcs.co.id
+ENV VITE_API_GAMIFICATION_SERVICE_URL=https://gamification-qa-portaverse.pelindo.co.id
 
 RUN yarn build
 
