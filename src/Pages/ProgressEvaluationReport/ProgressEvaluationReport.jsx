@@ -37,7 +37,7 @@ export default function ProgressEvaluationReport() {
             placeholder="Pilih Tahun"
             value={year}
             onChange={setYear}
-            maxYear={currYear}
+            maxYear={+currYear + 1}
           />
         </div>
         <Tabs value={activeTab} onChange={setActiveTab} radius="lg">

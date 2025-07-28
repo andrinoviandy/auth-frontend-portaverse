@@ -21,9 +21,7 @@ export default function PanelBehavior({
       enabled: activeTab === "behavior",
     },
     {
-      params: {
-        year: year ? parseFloat(year) + 1 : null
-      },
+      params: { year: +year },
     },
   );
 
