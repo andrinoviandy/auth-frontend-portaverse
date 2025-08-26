@@ -6,7 +6,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { memo, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LoadCanvasTemplate,
   loadCaptchaEnginge,
@@ -41,6 +41,8 @@ export default function NewLogin() {
   const [errorPassword, setErrorPassword] = useState("");
   const [errorCaptcha, setErrorCaptcha] = useState("");
   const [wrongCredsAttempt, setWrongCredsAttempt] = useState(0);
+  const navigate = useNavigate();
+
   const { mutate: generateOtp, isLoading: loadingOTP } =
     useGenerateOTPPost();
 
@@ -117,13 +119,13 @@ export default function NewLogin() {
                   "otp_countdown",
                   expiry.toString(),
                 );
-                
+
                 if (res.data.isEmailOtpRequired === 1) {
                   // window.location.href = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
-                  window.location.href = res.data.link;
+                  navigate(res.data.link);
                 } else if (res.data.isEmailOtpRequired === 0) {
                   localStorage.setItem("otp_verified", "true");
-                  window.location.href = "/landing";
+                  navigate("/landing");
                   localStorage.removeItem("otp_countdown");
                 } else {
                   setFetchError("OTP link not found in response");
@@ -154,6 +156,10 @@ export default function NewLogin() {
       loadCaptchaEnginge(6);
     }
   }, [wrongCredsAttempt]);
+
+  useEffect(() => {
+    localStorage.removeItem("otp_verified");
+  }, []);
 
   return (
     <div className="flex flex-col gap-16 w-full">
