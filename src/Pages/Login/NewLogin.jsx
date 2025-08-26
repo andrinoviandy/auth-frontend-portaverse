@@ -117,7 +117,7 @@ export default function NewLogin() {
                   "otp_countdown",
                   expiry.toString(),
                 );
-
+                
                 if (res.data.isEmailOtpRequired === 1) {
                   // window.location.href = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
                   window.location.href = res.data.link;
