@@ -118,9 +118,10 @@ export default function ProfileDropdown() {
           <button
             type="button"
             className="rounded-b-xl hover:bg-bg2"
-            onClick={() =>
-              logout({ endpoint: AUTH_ENDPOINT.POST.logout })
-            }
+            onClick={() => {
+              logout({ endpoint: AUTH_ENDPOINT.POST.logout });
+              localStorage.removeItem("otp_verified");
+            }}
           >
             <div className="flex items-center gap-2 text-red-800">
               <Exit />

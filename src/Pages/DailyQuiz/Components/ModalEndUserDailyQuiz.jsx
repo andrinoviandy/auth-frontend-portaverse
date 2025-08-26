@@ -4,7 +4,12 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { Icon } from "@iconify/react";
 import { Button, Image, Text } from "@mantine/core";
 import dayjs from "dayjs";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import QuizBackground from "../../../Components/Assets/Pictures/QuizBackground.png";
 import QuizQuestion from "../../../Components/Assets/Pictures/QuizQuestion.png";
@@ -67,6 +72,16 @@ const ModalEndUserDailyQuiz = NiceModal.create(() => {
   const user = getUserCookie();
   const employeeNumber = user.employee.employee_number;
   const dispatch = useDispatch();
+
+  const [isEmailOtpRequired] = useState(
+    localStorage.getItem("isEmailOtpRequired"),
+  );
+
+  useEffect(() => {
+    if (isEmailOtpRequired === "1") {
+      closeNiceModal(MODAL_IDS.DAILY_QUIZ.END_USER_DO_QUIZ);
+    }
+  }, [isEmailOtpRequired]);
 
   const { mutate: postMutate } = quizService.mutation("post");
 

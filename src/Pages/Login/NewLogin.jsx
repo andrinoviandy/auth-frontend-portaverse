@@ -17,6 +17,7 @@ import EyeOutline from "../../Components/Assets/Icon/EyeOutline";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.png";
 import postLogin from "../../Networks/Login";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
+import { useGenerateOTPPost } from "../VerifyOTP/hooks/useGenerateOTPPost";
 
 const form = {
   email: "",
@@ -40,6 +41,8 @@ export default function NewLogin() {
   const [errorPassword, setErrorPassword] = useState("");
   const [errorCaptcha, setErrorCaptcha] = useState("");
   const [wrongCredsAttempt, setWrongCredsAttempt] = useState(0);
+  const { mutate: generateOtp, isLoading: loadingOTP } =
+    useGenerateOTPPost();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -92,7 +95,57 @@ export default function NewLogin() {
         ? validEmailPassword && !errCaptcha
         : validEmailPassword
     ) {
-      postLogin(payload, setIsLoading, handleFetchError);
+      postLogin(
+        payload,
+        setIsLoading,
+        handleFetchError,
+        (targetUID) => {
+          generateOtp(
+            {
+              uid: targetUID,
+            },
+            {
+              onSuccess: (res) => {
+                localStorage.setItem(
+                  "isEmailOtpRequired",
+                  res.data.isEmailOtpRequired,
+                );
+                localStorage.setItem("uidOTP", res.data.uuid);
+
+                const expiry = new Date(res.data.expiredAt).getTime();
+                localStorage.setItem(
+                  "otp_countdown",
+                  expiry.toString(),
+                );
+
+                if (res.data.isEmailOtpRequired === 1) {
+                  // window.location.href = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
+                  window.location.href = res.data.link;
+                } else if (res.data.isEmailOtpRequired === 0) {
+                  localStorage.setItem("otp_verified", "true");
+                  window.location.href = "/landing";
+                  localStorage.removeItem("otp_countdown");
+                } else {
+                  setFetchError("OTP link not found in response");
+                }
+              },
+              onError: () => {
+                document.cookie.split(";").forEach((c) => {
+                  document.cookie = c
+                    .replace(/^ +/, "")
+                    .replace(
+                      /=.*/,
+                      `=;expires=${new Date(0).toUTCString()};path=/`,
+                    );
+                });
+                setFetchError(
+                  "Failed to generate OTP. Please try again.",
+                );
+              },
+            },
+          );
+        },
+      );
     }
   };
 
@@ -121,7 +174,6 @@ export default function NewLogin() {
           className="flex flex-col gap-4 w-full"
         >
           <TextInput
-            id="email"
             radius="md"
             label="Email"
             placeholder="Masukan email"
@@ -141,7 +193,6 @@ export default function NewLogin() {
             <PasswordInput
               radius="md"
               label="Password"
-              id="password"
               placeholder="Masukan password"
               size="md"
               name="password"
@@ -194,7 +245,7 @@ export default function NewLogin() {
             />
           </div>
 
-          <Button id="login-button" loading={isLoading} type="submit">
+          <Button loading={isLoading || loadingOTP} type="submit">
             Sign In
           </Button>
         </form>
