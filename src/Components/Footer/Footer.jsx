@@ -4,6 +4,7 @@ import { Wave1, Wave2 } from "../Assets/Icon/Wave";
 export default function Footer() {
   const { pathname } = useLocation();
   const url = pathname.split("/")[1];
+  const PageOTP = pathname.includes("/verify-otp");
 
   if (url === "login") {
     return (
@@ -29,9 +30,11 @@ export default function Footer() {
 
   return (
     <footer className="flex justify-center">
-      <h5 className="pb-7 text-darkGray">
-        Powered by KMPlus Consulting 2023
-      </h5>
+      {!PageOTP && (
+        <h5 className="pb-7 text-darkGray">
+          Powered by KMPlus Consulting 2023
+        </h5>
+      )}
     </footer>
   );
 }

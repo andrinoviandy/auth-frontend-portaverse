@@ -27,6 +27,17 @@ import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 import SignUpExternalUser from "./Pages/SignUp/SignUpExternalUser";
+import VerifyOTP from "./Pages/VerifyOTP";
+
+function ProtectedVerifyOTP() {
+  const isBlocked = localStorage.getItem("otp_blocked") === "true";
+  return isBlocked ? <Error404 /> : <VerifyOTP />;
+}
+
+function ProtectedLanding() {
+  const isVerified = localStorage.getItem("otp_verified") === "true";
+  return isVerified ? <NewLandingPageAuthorized /> : <VerifyOTP />;
+}
 
 function App() {
   document.title = "Portaverse - Pelindo";
@@ -79,7 +90,8 @@ function App() {
           <Route element={<DailyQuizRoute />}>
             <Route
               path="/landing"
-              element={<NewLandingPageAuthorized />}
+              element={<ProtectedLanding />}
+              // element={<NewLandingPageAuthorized />}
             />
             <Route
               path="/notifications"
@@ -142,8 +154,10 @@ function App() {
                 element={<NewSetNewPassword />}
               />
               <Route path="/success" element={<NewPassSuccess />} />
-              <Route path="/sign-up-user-external/:invitationCode" element={<SignUpExternalUser />} />
-
+              <Route
+                path="/sign-up-user-external/:invitationCode"
+                element={<SignUpExternalUser />}
+              />
             </Route>
           )}
         </Route>
@@ -151,6 +165,10 @@ function App() {
         {/* Public */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/verify-otp"
+            element={<ProtectedVerifyOTP />}
+          />
         </Route>
 
         <Route path="*" element={<Error404 />} />
