@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, PinInput } from "@mantine/core";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.png";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import baseURLExternal from "../../Utils/Helpers/baseURLExternalUser";
 import axios from "axios";
@@ -9,6 +9,8 @@ import { useGenerateOTPPost } from "./hooks/useGenerateOTPPost";
 import { useVerifyOTPPost } from "./hooks/useVerifyOTPPost";
 import NiceModal from "@ebay/nice-modal-react";
 import MODAL_IDS from "../../Components/Modals/modalIds";
+import { Networks } from "../../Networks/factory";
+import { AUTH_ENDPOINT, BASE_PROXY } from "../../Networks/endpoint";
 
 export default function VerifyOTP() {
   const { targetUID } = useParams();
@@ -22,8 +24,15 @@ export default function VerifyOTP() {
   const [error, setError] = useState("");
   const user = getUserCookie();
   const newExpiry = Date.now() + 3 * 60 * 1000;
+  const navigate = useNavigate();
+  const auth = Networks(BASE_PROXY.auth);
   const { mutate: generateOtp } = useGenerateOTPPost();
   const { mutate: verifyOtp } = useVerifyOTPPost();
+  const { mutate: logout } = auth.mutation("post", {
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
 
   useEffect(() => {
     const storedExpiry = localStorage.getItem("otp_countdown");
@@ -70,7 +79,7 @@ export default function VerifyOTP() {
           setSuccess(true);
           setError("");
           setTimeout(() => {
-            window.location.href = "/landing";
+            navigate("/landing");
           }, 1000);
         },
         onError: () => {
@@ -82,25 +91,22 @@ export default function VerifyOTP() {
           setTimeout(() => {
             pinRef.current?.focus();
           }, 0);
-
+          document.cookie.split(";").forEach((c) => {
+            document.cookie = c
+              .replace(/^ +/, "")
+              .replace(
+                /=.*/,
+                `=;expires=${new Date(0).toUTCString()};path=/`,
+              );
+          });
+          localStorage.removeItem("otp_verified");
+          localStorage.removeItem("uidOTP");
+          localStorage.removeItem("isEmailOtpRequired");
+          localStorage.removeItem("otp_countdown");
+          localStorage.setItem("otp_blocked", "true");
           if (remaining <= 0) {
             setError("Anda telah melebihi batas percobaan.");
-            document.cookie.split(";").forEach((c) => {
-              document.cookie = c
-                .replace(/^ +/, "")
-                .replace(
-                  /=.*/,
-                  `=;expires=${new Date(0).toUTCString()};path=/`,
-                );
-            });
-            localStorage.removeItem("otp_verified");
-            localStorage.removeItem("uidOTP");
-            localStorage.removeItem("isEmailOtpRequired");
-            localStorage.removeItem("otp_countdown");
-            localStorage.setItem("otp_blocked", "true");
-            setTimeout(() => {
-              window.location.href = "/login";
-            }, 2000);
+            logout({ endpoint: AUTH_ENDPOINT.POST.logout });
           }
         },
       },
@@ -141,20 +147,19 @@ export default function VerifyOTP() {
             });
           } else if (res.data.isEmailOtpRequired === 0) {
             localStorage.setItem("otp_verified", "true");
-            window.location.href = "/landing";
+            navigate("/landing");
           } else {
             setError("OTP Link Tidak Ditemukan");
           }
         },
         onError: () => {
-          setError("Gagal mengirim ulang OTP, coba lagi.");
+          setError("Gagal mengirim ulang OTP, silahkan Login kembali.");
         },
       },
     );
   };
 
   const backToLogin = () => {
-    window.location.href = "/login";
     document.cookie.split(";").forEach((c) => {
       document.cookie = c
         .replace(/^ +/, "")
@@ -164,8 +169,10 @@ export default function VerifyOTP() {
         );
     });
     localStorage.removeItem("otp_verified");
+    localStorage.removeItem("uidOTP");
     localStorage.removeItem("isEmailOtpRequired");
     localStorage.removeItem("otp_countdown");
+    logout({ endpoint: AUTH_ENDPOINT.POST.logout });
   };
 
   return (
