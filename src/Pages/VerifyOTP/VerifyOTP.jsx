@@ -1,10 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { PinInput } from "@mantine/core";
+import { Button, PinInput } from "@mantine/core";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.png";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
+import baseURLExternal from "../../Utils/Helpers/baseURLExternalUser";
+import axios from "axios";
+import { useGenerateOTPPost } from "./hooks/useGenerateOTPPost";
+import { useVerifyOTPPost } from "./hooks/useVerifyOTPPost";
+import NiceModal from "@ebay/nice-modal-react";
+import MODAL_IDS from "../../Components/Modals/modalIds";
 
 export default function VerifyOTP() {
+  const { targetUID } = useParams();
+  const [otpData, setOtpData] = useState(null);
   const pinRef = useRef(null);
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
@@ -13,15 +21,14 @@ export default function VerifyOTP() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const user = getUserCookie();
+  const newExpiry = Date.now() + 3 * 60 * 1000;
+  const { mutate: generateOtp } = useGenerateOTPPost();
+  const { mutate: verifyOtp } = useVerifyOTPPost();
 
   useEffect(() => {
-    const savedExpiry = localStorage.getItem("otp_countdown");
-    if (savedExpiry) {
-      setExpiryTime(parseInt(savedExpiry, 10));
-    } else {
-      const newExpiry = Date.now() + 3 * 60 * 1000;
-      localStorage.setItem("otp_countdown", newExpiry.toString());
-      setExpiryTime(newExpiry);
+    const storedExpiry = localStorage.getItem("otp_countdown");
+    if (storedExpiry) {
+      setExpiryTime(Number(storedExpiry));
     }
   }, []);
 
@@ -34,6 +41,7 @@ export default function VerifyOTP() {
         Math.floor((expiryTime - Date.now()) / 1000),
       );
       setTimeLeft(remaining);
+
       if (remaining === 0) {
         localStorage.removeItem("otp_countdown");
       }
@@ -45,60 +53,119 @@ export default function VerifyOTP() {
   }, [expiryTime]);
 
   const formatTime = (seconds) => {
-    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
-    return `${m}:${s}`;
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `0${minutes}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Fake OTP validation (replace with real API check)
-  const correctOTP = "123456";
-
   const handleComplete = (otp) => {
-    if (otp === correctOTP) {
-      localStorage.removeItem("otp_countdown");
-      localStorage.setItem("otp_verified", "true");
-      setSuccess(true); // ✅ mark as success
-      setError(""); // ✅ clear old error if any
+    verifyOtp(
+      { uuid: localStorage.getItem("uidOTP"), code: otp },
+      {
+        onSuccess: (res) => {
+          localStorage.removeItem("otp_countdown");
+          localStorage.removeItem("isEmailOtpRequired");
+          localStorage.setItem("otp_verified", "true");
+          localStorage.removeItem("uidOTP");
+          setSuccess(true);
+          setError("");
+          setTimeout(() => {
+            window.location.href = "/landing";
+          }, 1000);
+        },
+        onError: () => {
+          const remaining = attemptsLeft - 1;
+          setAttemptsLeft(remaining);
+          setError(`Kode salah. Sisa percobaan: ${remaining}`);
+          setValue("");
+          setSuccess(false);
+          setTimeout(() => {
+            pinRef.current?.focus();
+          }, 0);
 
-      setTimeout(() => {
-        window.location.href = "/landing";
-      }, 1000);
-    } else {
-      const remaining = attemptsLeft - 1;
-      setAttemptsLeft(remaining);
-      setError(`Kode salah. Sisa percobaan: ${remaining}`);
-      setValue("");
-      setSuccess(false); // ❌ reset success state
-      setTimeout(() => {
-        pinRef.current?.focus();
-      }, 0);
-
-      if (remaining <= 0) {
-        setError("Anda telah melebihi batas percobaan.");
-        document.cookie.split(";").forEach((c) => {
-          document.cookie = c
-            .replace(/^ +/, "")
-            .replace(
-              /=.*/,
-              `=;expires=${new Date(0).toUTCString()};path=/`,
-            );
-        });
-
-        localStorage.removeItem("otp_verified");
-        localStorage.setItem("otp_blocked", "true");
-
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
-      }
-    }
+          if (remaining <= 0) {
+            setError("Anda telah melebihi batas percobaan.");
+            document.cookie.split(";").forEach((c) => {
+              document.cookie = c
+                .replace(/^ +/, "")
+                .replace(
+                  /=.*/,
+                  `=;expires=${new Date(0).toUTCString()};path=/`,
+                );
+            });
+            localStorage.removeItem("otp_verified");
+            localStorage.removeItem("uidOTP");
+            localStorage.removeItem("isEmailOtpRequired");
+            localStorage.removeItem("otp_countdown");
+            localStorage.setItem("otp_blocked", "true");
+            setTimeout(() => {
+              window.location.href = "/login";
+            }, 2000);
+          }
+        },
+      },
+    );
   };
 
   const handleResend = () => {
     if (attemptsLeft <= 0) return;
-    const newExpiry = Date.now() + 3 * 60 * 1000;
-    localStorage.setItem("otp_countdown", newExpiry.toString());
-    setExpiryTime(newExpiry);
+
+    generateOtp(
+      { uid: user?.uid },
+      {
+        onSuccess: (res) => {
+          localStorage.setItem(
+            "isEmailOtpRequired",
+            res.data.isEmailOtpRequired,
+          );
+          !localStorage.getItem("uidOTP")
+            ? localStorage.setItem("uidOTP", res.data.uuid)
+            : null;
+          const expiry = new Date(res.data.expiredAt).getTime();
+          setExpiryTime(expiry);
+          localStorage.setItem("otp_countdown", expiry.toString());
+          setError("");
+
+          if (res.data.isEmailOtpRequired === 1) {
+            window.history.replaceState(
+              null,
+              "",
+              `${res.data.link}`,
+              // `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`,
+            );
+            NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
+              message: "Silahkan cek email kembali untuk melihat OTP",
+              variant: "safe",
+              labelCancel: "Tutup",
+              withConfirm: false,
+            });
+          } else if (res.data.isEmailOtpRequired === 0) {
+            localStorage.setItem("otp_verified", "true");
+            window.location.href = "/landing";
+          } else {
+            setError("OTP Link Tidak Ditemukan");
+          }
+        },
+        onError: () => {
+          setError("Gagal mengirim ulang OTP, coba lagi.");
+        },
+      },
+    );
+  };
+
+  const backToLogin = () => {
+    window.location.href = "/login";
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(
+          /=.*/,
+          `=;expires=${new Date(0).toUTCString()};path=/`,
+        );
+    });
+    localStorage.removeItem("otp_verified");
+    localStorage.removeItem("isEmailOtpRequired");
+    localStorage.removeItem("otp_countdown");
   };
 
   return (
@@ -186,13 +253,13 @@ export default function VerifyOTP() {
 
         {/* Back Button */}
         <div className="flex justify-center">
-          <Link
-            to="/login"
+          <Button
+            onClick={backToLogin}
             className="rounded-md font-semibold bg-gray-700 px-4 py-2 text-white hover:bg-primary3"
             type="button"
           >
             Kembali ke Login
-          </Link>
+          </Button>
         </div>
       </div>
     </div>

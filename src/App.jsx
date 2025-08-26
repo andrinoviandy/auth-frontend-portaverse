@@ -34,9 +34,21 @@ function ProtectedVerifyOTP() {
   return isBlocked ? <Error404 /> : <VerifyOTP />;
 }
 
+// function ProtectedLanding() {
+//   const isVerified = localStorage.getItem("otp_verified") === "true";
+//   return isVerified ? <NewLandingPageAuthorized /> : <VerifyOTP />;
+// }
+
 function ProtectedLanding() {
   const isVerified = localStorage.getItem("otp_verified") === "true";
-  return isVerified ? <NewLandingPageAuthorized /> : <VerifyOTP />;
+  const isEmailOtpRequired =
+    localStorage.getItem("isEmailOtpRequired") === "1";
+
+  if (isEmailOtpRequired) {
+    return isVerified ? <NewLandingPageAuthorized /> : <VerifyOTP />;
+  }
+
+  return <NewLandingPageAuthorized />;
 }
 
 function App() {
@@ -166,7 +178,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<LandingPage />} />
           <Route
-            path="/verify-otp"
+            path="/email-otp/:targetUID"
             element={<ProtectedVerifyOTP />}
           />
         </Route>

@@ -4,7 +4,7 @@ import { Wave1, Wave2 } from "../Assets/Icon/Wave";
 export default function Footer() {
   const { pathname } = useLocation();
   const url = pathname.split("/")[1];
-  const PageOTP = pathname.includes("/verify-otp");
+  const PageOTP = pathname.includes("/email-otp");
 
   if (url === "login") {
     return (

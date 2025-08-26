@@ -5,6 +5,7 @@ export default function postLogin(
   payload,
   setIsLoading,
   setFetchError,
+  onSuccess,
 ) {
   setIsLoading(true);
   setFetchError("");
@@ -16,6 +17,7 @@ export default function postLogin(
         isRemember: payload.isRemember,
         targetUID: payload.targetUID,
       };
+      const userInfoUid = user.reloadUserInfo.localId;
 
       axiosSSOClient
         .post("/auth/after-login", data, {
@@ -52,12 +54,7 @@ export default function postLogin(
             }/change-catalyst-team-monitoring-system`;
             return;
           }
-          // if (res.data.data.user.is_first_time_login) {
-          //   window.location.href = "/referals";
-          //   return;
-          // }
-          window.location.href = "/verify-otp";
-          // window.location.href = "/landing";
+          if (onSuccess) onSuccess(userInfoUid);
         })
         .catch((err) => {
           if (err.name === "FirebaseError") {
