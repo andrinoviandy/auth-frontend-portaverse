@@ -54,7 +54,7 @@ export default function postLogin(
             }/change-catalyst-team-monitoring-system`;
             return;
           }
-          if (onSuccess) onSuccess(userInfoUid);
+          if (onSuccess) onSuccess(res.data.data.user.uid);
         })
         .catch((err) => {
           if (err.name === "FirebaseError") {

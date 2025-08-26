@@ -34,11 +34,6 @@ function ProtectedVerifyOTP() {
   return isBlocked ? <Error404 /> : <VerifyOTP />;
 }
 
-// function ProtectedLanding() {
-//   const isVerified = localStorage.getItem("otp_verified") === "true";
-//   return isVerified ? <NewLandingPageAuthorized /> : <VerifyOTP />;
-// }
-
 function ProtectedLanding() {
   const isVerified = localStorage.getItem("otp_verified") === "true";
   const isEmailOtpRequired =
