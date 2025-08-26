@@ -23,6 +23,7 @@ export default function postLogin(
         })
         .then((res) => {
           localStorage.removeItem("otp_blocked");
+          localStorage.setItem("uidUser", res.data.data.user.uid);
 
           if (res.data.data.user.role_code.includes("SBCN")) {
             window.location = `${

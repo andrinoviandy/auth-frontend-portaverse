@@ -26,7 +26,8 @@ export default function VerifyOTP() {
   const newExpiry = Date.now() + 3 * 60 * 1000;
   const navigate = useNavigate();
   const auth = Networks(BASE_PROXY.auth);
-  const { mutate: generateOtp } = useGenerateOTPPost();
+  const { mutate: generateOtp, isLoading: loadingGenerate } =
+    useGenerateOTPPost();
   const { mutate: verifyOtp } = useVerifyOTPPost();
   const { mutate: logout } = auth.mutation("post", {
     onSuccess: () => {
@@ -76,6 +77,7 @@ export default function VerifyOTP() {
           localStorage.removeItem("isEmailOtpRequired");
           localStorage.setItem("otp_verified", "true");
           localStorage.removeItem("uidOTP");
+          localStorage.removeItem("uidUser");
 
           setSuccess(true);
           setError("");
@@ -97,6 +99,7 @@ export default function VerifyOTP() {
 
           localStorage.removeItem("otp_verified");
           localStorage.removeItem("uidOTP");
+          localStorage.removeItem("uidUser");
           localStorage.removeItem("isEmailOtpRequired");
           localStorage.removeItem("otp_countdown");
 
@@ -114,28 +117,24 @@ export default function VerifyOTP() {
     if (attemptsLeft <= 0) return;
 
     generateOtp(
-      { uid: user?.uid },
+      { uid: localStorage.getItem("uidUser") },
       {
         onSuccess: (res) => {
+          console.log(res);
+
           localStorage.setItem(
             "isEmailOtpRequired",
             res.data.isEmailOtpRequired,
           );
-          !localStorage.getItem("uidOTP")
-            ? localStorage.setItem("uidOTP", res.data.uuid)
-            : null;
+          localStorage.setItem("uidOTP", res.data.uuid);
           const expiry = new Date(res.data.expiredAt).getTime();
           setExpiryTime(expiry);
           localStorage.setItem("otp_countdown", expiry.toString());
           setError("");
 
           if (res.data.isEmailOtpRequired === 1) {
-            window.history.replaceState(
-              null,
-              "",
-              `${res.data.link}`,
-              // `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`,
-            );
+            // window.history.replaceState = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
+            window.history.replaceState = `${res.data.link}`;
             NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
               message: "Silahkan cek email kembali untuk melihat OTP",
               variant: "safe",
@@ -150,9 +149,7 @@ export default function VerifyOTP() {
           }
         },
         onError: () => {
-          setError(
-            "Gagal mengirim ulang OTP, silahkan Login kembali.",
-          );
+          setError("Gagal mengirim ulang OTP, silahkan coba lagi");
         },
       },
     );
@@ -169,6 +166,7 @@ export default function VerifyOTP() {
     });
     localStorage.removeItem("otp_verified");
     localStorage.removeItem("uidOTP");
+    localStorage.removeItem("uidUser");
     localStorage.removeItem("isEmailOtpRequired");
     localStorage.removeItem("otp_countdown");
     logout({ endpoint: AUTH_ENDPOINT.POST.logout });
