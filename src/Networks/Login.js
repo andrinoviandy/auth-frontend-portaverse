@@ -17,8 +17,6 @@ export default function postLogin(
         isRemember: payload.isRemember,
         targetUID: payload.targetUID,
       };
-      const userInfoUid = user.reloadUserInfo.localId;
-
       axiosSSOClient
         .post("/auth/after-login", data, {
           headers: { Authorization: `Bearer ${user.accessToken}` },
