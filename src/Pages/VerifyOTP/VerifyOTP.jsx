@@ -76,11 +76,13 @@ export default function VerifyOTP() {
           localStorage.removeItem("isEmailOtpRequired");
           localStorage.setItem("otp_verified", "true");
           localStorage.removeItem("uidOTP");
+
           setSuccess(true);
           setError("");
+
           setTimeout(() => {
-            navigate("/landing");
-          }, 1000);
+            window.location.href = "/landing";
+          }, 1500);
         },
         onError: () => {
           const remaining = attemptsLeft - 1;
@@ -88,24 +90,19 @@ export default function VerifyOTP() {
           setError(`Kode salah. Sisa percobaan: ${remaining}`);
           setValue("");
           setSuccess(false);
+
           setTimeout(() => {
             pinRef.current?.focus();
           }, 0);
-          document.cookie.split(";").forEach((c) => {
-            document.cookie = c
-              .replace(/^ +/, "")
-              .replace(
-                /=.*/,
-                `=;expires=${new Date(0).toUTCString()};path=/`,
-              );
-          });
+
           localStorage.removeItem("otp_verified");
           localStorage.removeItem("uidOTP");
           localStorage.removeItem("isEmailOtpRequired");
           localStorage.removeItem("otp_countdown");
-          localStorage.setItem("otp_blocked", "true");
+
           if (remaining <= 0) {
             setError("Anda telah melebihi batas percobaan.");
+            localStorage.setItem("otp_blocked", "true");
             logout({ endpoint: AUTH_ENDPOINT.POST.logout });
           }
         },
@@ -153,7 +150,9 @@ export default function VerifyOTP() {
           }
         },
         onError: () => {
-          setError("Gagal mengirim ulang OTP, silahkan Login kembali.");
+          setError(
+            "Gagal mengirim ulang OTP, silahkan Login kembali.",
+          );
         },
       },
     );
