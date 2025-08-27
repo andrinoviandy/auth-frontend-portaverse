@@ -74,14 +74,17 @@ const ModalEndUserDailyQuiz = NiceModal.create(() => {
   const dispatch = useDispatch();
 
   const [isEmailOtpRequired] = useState(
-    localStorage.getItem("isEmailOtpRequired"),
+    localStorage.getItem("isEmailOtpRequired") === "1",
+  );
+  const [isBlocked] = useState(
+    localStorage.getItem("otp_blocked") === "true",
   );
 
   useEffect(() => {
-    if (isEmailOtpRequired === "1") {
+    if (isEmailOtpRequired || isBlocked) {
       closeNiceModal(MODAL_IDS.DAILY_QUIZ.END_USER_DO_QUIZ);
     }
-  }, [isEmailOtpRequired]);
+  }, [isEmailOtpRequired, isBlocked]);
 
   const { mutate: postMutate } = quizService.mutation("post");
 

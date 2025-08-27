@@ -6,7 +6,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { memo, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LoadCanvasTemplate,
   loadCaptchaEnginge,
@@ -18,6 +18,9 @@ import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.pn
 import postLogin from "../../Networks/Login";
 import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import { useGenerateOTPPost } from "../VerifyOTP/hooks/useGenerateOTPPost";
+import axiosSSOClient from "../../Configs/AxiosClient/ssoAxiosClient";
+import otpLogin from "../../Networks/LoginOTP";
+import VerifyOTP from "../VerifyOTP";
 
 const form = {
   email: "",
@@ -33,9 +36,11 @@ export const onToggleVisibility = memo(({ reveal, size }) =>
 const MAX_REATTEMPT = 3;
 
 export default function NewLogin() {
+  const navigate = useNavigate();
   const [payload, setPayload] = useState(form);
   const [captcha, setCaptcha] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [uidUser, setUidUser] = useState("");
   const [fetchError, setFetchError] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
@@ -96,36 +101,39 @@ export default function NewLogin() {
         ? validEmailPassword && !errCaptcha
         : validEmailPassword
     ) {
-      postLogin(
+      otpLogin(
         payload,
         setIsLoading,
+        setUidUser,
         handleFetchError,
         (targetUID) => {
           generateOtp(
-            {
-              uid: targetUID,
-            },
+            { uid: targetUID },
             {
               onSuccess: (res) => {
                 localStorage.setItem(
                   "isEmailOtpRequired",
                   res.data.isEmailOtpRequired,
                 );
-                localStorage.setItem("uidOTP", res.data.uuid);
-
                 const expiry = new Date(res.data.expiredAt).getTime();
                 localStorage.setItem(
                   "otp_countdown",
                   expiry.toString(),
                 );
-
                 if (res.data.isEmailOtpRequired === 1) {
-                  // window.location.href = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
-                  window.location.href = res.data.link;
+                  // window.location.href = res.data.link;
+                  localStorage.removeItem("uidOTP");
+                  navigate(`/email-otp/${res.data.uuid}`, {
+                    state: {
+                      uidUser: targetUID,
+                      uidOTP: res.data.uuid,
+                      payload: payload,
+                    },
+                  });
                 } else if (res.data.isEmailOtpRequired === 0) {
                   localStorage.setItem("otp_verified", "true");
-                  window.location.href = "/landing";
-                  localStorage.removeItem("otp_countdown");
+                  localStorage.removeItem("isEmailOtpRequired");
+                  postLogin(payload, setIsLoading, handleFetchError);
                 } else {
                   setFetchError("OTP link not found in response");
                 }
@@ -158,6 +166,8 @@ export default function NewLogin() {
 
   useEffect(() => {
     localStorage.removeItem("otp_verified");
+    localStorage.removeItem("isEmailOtpRequired");
+    localStorage.removeItem("otp_countdown");
   }, []);
 
   return (
