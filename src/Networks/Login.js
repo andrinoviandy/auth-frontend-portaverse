@@ -3,12 +3,11 @@ import { login } from "../Utils/Helpers/firebaseAuth";
 
 export default function postLogin(
   payload,
-  setIsLoading,
-  setFetchError,
-  onSuccess,
+  // setIsLoading,
+  // setFetchError,
 ) {
-  setIsLoading(true);
-  setFetchError("");
+  // setIsLoading(true);
+  // setFetchError("");
 
   login(payload.email.toLowerCase().trim(), payload.password)
     .then((userCredential) => {
@@ -17,14 +16,12 @@ export default function postLogin(
         isRemember: payload.isRemember,
         targetUID: payload.targetUID,
       };
+
       axiosSSOClient
         .post("/auth/after-login", data, {
           headers: { Authorization: `Bearer ${user.accessToken}` },
         })
         .then((res) => {
-          localStorage.removeItem("otp_blocked");
-          localStorage.setItem("uidUser", res.data.data.user.uid);
-
           if (res.data.data.user.role_code.includes("SBCN")) {
             window.location = `${
               import.meta.env.VITE_LMS_URL
@@ -53,23 +50,27 @@ export default function postLogin(
             }/change-catalyst-team-monitoring-system`;
             return;
           }
-          if (onSuccess) onSuccess(res.data.data.user.uid);
+          // if (res.data.data.user.is_first_time_login) {
+          //   window.location.href = "/referals";
+          //   return;
+          // }
+          window.location.href = "/landing";
         })
-        .catch((err) => {
-          if (err.name === "FirebaseError") {
-            setFetchError("Email or Password is incorrect");
-          } else {
-            setFetchError("Something went wrong");
-          }
-          setIsLoading(false);
-        });
+        // .catch((err) => {
+        //   if (err.name === "FirebaseError") {
+        //     // setFetchError("Email or Password is incorrect");
+        //   } else {
+        //     // setFetchError("Something went wrong");
+        //   }
+        //   // setIsLoading(false);
+        // });
     })
-    .catch((err) => {
-      if (err.name === "FirebaseError") {
-        setFetchError("Email or Password is incorrect");
-      } else {
-        setFetchError("Something went wrong");
-      }
-      setIsLoading(false);
-    });
+    // .catch((err) => {
+    //   if (err.name === "FirebaseError") {
+    //     setFetchError("Email or Password is incorrect");
+    //   } else {
+    //     setFetchError("Something went wrong");
+    //   }
+    //   // setIsLoading(false);
+    // });
 }

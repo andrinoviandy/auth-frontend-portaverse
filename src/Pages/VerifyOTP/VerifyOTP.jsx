@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, PinInput } from "@mantine/core";
 import PortaverseLogo from "../../Components/Assets/Pictures/PortaverseLogoV2.png";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import getUserCookie from "../../Utils/Helpers/getUserCookie";
 import baseURLExternal from "../../Utils/Helpers/baseURLExternalUser";
 import axios from "axios";
@@ -11,9 +16,14 @@ import NiceModal from "@ebay/nice-modal-react";
 import MODAL_IDS from "../../Components/Modals/modalIds";
 import { Networks } from "../../Networks/factory";
 import { AUTH_ENDPOINT, BASE_PROXY } from "../../Networks/endpoint";
+import axiosSSOClient from "../../Configs/AxiosClient/ssoAxiosClient";
+import postLogin from "../../Networks/Login";
 
 export default function VerifyOTP() {
   const { targetUID } = useParams();
+  const { state } = useLocation();
+  const { uidUser, payload } = state || {};
+  const [uidOTP, setUidOTP] = useState(state?.uidOTP || null);
   const [otpData, setOtpData] = useState(null);
   const pinRef = useRef(null);
   const [value, setValue] = useState("");
@@ -70,43 +80,63 @@ export default function VerifyOTP() {
 
   const handleComplete = (otp) => {
     verifyOtp(
-      { uuid: localStorage.getItem("uidOTP"), code: otp },
+      { uuid: uidOTP, code: otp },
       {
         onSuccess: (res) => {
           localStorage.removeItem("otp_countdown");
           localStorage.removeItem("isEmailOtpRequired");
           localStorage.setItem("otp_verified", "true");
           localStorage.removeItem("uidOTP");
-          localStorage.removeItem("uidUser");
 
           setSuccess(true);
           setError("");
-
           setTimeout(() => {
-            window.location.href = "/landing";
-          }, 1500);
+            postLogin(payload);
+          }, 2500);
         },
-        onError: () => {
-          const remaining = attemptsLeft - 1;
+        onError: (res) => {
+          const remaining = res.response.data.data.remainingAttempts;
           setAttemptsLeft(remaining);
-          setError(`Kode salah. Sisa percobaan: ${remaining}`);
+          setError(
+            <>
+              {res.response.data.message} <br />
+              {remaining > 0 && "Sisa percobaan:"}
+              {res.response.data.data.remainingAttempts}
+            </>,
+          );
+
           setValue("");
           setSuccess(false);
 
           setTimeout(() => {
             pinRef.current?.focus();
           }, 0);
-
-          localStorage.removeItem("otp_verified");
-          localStorage.removeItem("uidOTP");
-          localStorage.removeItem("uidUser");
-          localStorage.removeItem("isEmailOtpRequired");
-          localStorage.removeItem("otp_countdown");
-
-          if (remaining <= 0) {
-            setError("Anda telah melebihi batas percobaan.");
+          if (
+            (remaining < 1 && !success) ||
+            res.response.data.message[0].message
+          ) {
+            setError(res.response.data.message);
             localStorage.setItem("otp_blocked", "true");
-            logout({ endpoint: AUTH_ENDPOINT.POST.logout });
+            localStorage.removeItem("otp_countdown");
+            setTimeout(() => {
+              // window.location.href = "/login";
+              logout({ endpoint: AUTH_ENDPOINT.POST.logout });
+            }, 2500);
+          } else if (
+            remaining === undefined &&
+            res.response.data.message ===
+              "OTP telah kedaluwarsa. Silakan kirim ulang."
+          ) {
+            setError(res.response.data.message);
+          } else if (
+            remaining === undefined &&
+            res.response.data.message ===
+              "OTP tidak ditemukan. Silakan login ulang."
+          ) {
+            localStorage.removeItem("otp_countdown");
+            localStorage.removeItem("otp_verified");
+            localStorage.removeItem("isEmailOtpRequired");
+            setError(res.response.data.message);
           }
         },
       },
@@ -114,38 +144,38 @@ export default function VerifyOTP() {
   };
 
   const handleResend = () => {
-    if (attemptsLeft <= 0) return;
+    if (attemptsLeft < 1) return;
 
     generateOtp(
-      { uid: localStorage.getItem("uidUser") },
+      { uid: uidUser },
       {
         onSuccess: (res) => {
-          console.log(res);
+          setUidOTP(res.data.uuid);
 
-          localStorage.setItem(
-            "isEmailOtpRequired",
-            res.data.isEmailOtpRequired,
-          );
-          localStorage.setItem("uidOTP", res.data.uuid);
           const expiry = new Date(res.data.expiredAt).getTime();
           setExpiryTime(expiry);
           localStorage.setItem("otp_countdown", expiry.toString());
+
           setError("");
 
           if (res.data.isEmailOtpRequired === 1) {
-            // window.history.replaceState = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
             window.history.replaceState = `${res.data.link}`;
+
+            // window.history.replaceState(
+            //   null,
+            //   "",
+            //   `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`,
+            // );
+            // window.history.replaceState = `${import.meta.env.VITE_SSO_URL}/email-otp/${res.data.uuid}`;
+
             NiceModal.show(MODAL_IDS.GENERAL.CONFIRMATION, {
               message: "Silahkan cek email kembali untuk melihat OTP",
               variant: "safe",
               labelCancel: "Tutup",
               withConfirm: false,
             });
-          } else if (res.data.isEmailOtpRequired === 0) {
-            localStorage.setItem("otp_verified", "true");
-            navigate("/landing");
           } else {
-            setError("OTP Link Tidak Ditemukan");
+            setError("OTP link not found in response");
           }
         },
         onError: () => {
@@ -165,8 +195,6 @@ export default function VerifyOTP() {
         );
     });
     localStorage.removeItem("otp_verified");
-    localStorage.removeItem("uidOTP");
-    localStorage.removeItem("uidUser");
     localStorage.removeItem("isEmailOtpRequired");
     localStorage.removeItem("otp_countdown");
     logout({ endpoint: AUTH_ENDPOINT.POST.logout });
@@ -205,10 +233,15 @@ export default function VerifyOTP() {
             onChange={setValue}
             onComplete={handleComplete}
             size="xl"
-            disabled={attemptsLeft <= 0}
+            disabled={
+              (attemptsLeft <= 0 && !success) ||
+              error?.props?.children[0] ==
+                "Percobaan OTP melebihi batas. Silakan login ulang." ||
+              error == "OTP tidak ditemukan. Silakan login ulang."
+            }
             classNames={{
               input: `rounded-md border-gray-300 text-xl font-bold ${
-                attemptsLeft <= 0
+                attemptsLeft <= 0 && !success
                   ? "bg-gray-200 cursor-not-allowed"
                   : ""
               }`,
@@ -216,42 +249,50 @@ export default function VerifyOTP() {
           />
         </div>
 
-        {/* Timer */}
-        <p className="text-center text-sm text-gray-600 mb-2">
-          Waktu tersisa:{" "}
-          <span className="text-red-500 font-medium">
-            {" "}
-            {formatTime(timeLeft)}
-          </span>
-        </p>
-
-        {/* Resend */}
-        <p className="text-center text-sm text-gray-600 mb-4">
-          Tidak menerima kode?{" "}
-          <button
-            onClick={handleResend}
-            disabled={timeLeft > 0 || attemptsLeft <= 0}
-            className={`font-medium ${
-              timeLeft > 0 || attemptsLeft <= 0
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-primary3 hover:underline"
-            }`}
-          >
-            Kirim ulang kode
-          </button>
-        </p>
-
         {/* Error Message */}
         {error && (
-          <p className="text-center text-sm font-medium text-red-600 mb-4">
+          <p className="text-center text-base font-bold text-red-600 mb-8">
             {error}
           </p>
         )}
 
         {/* Success Message */}
         {success && (
-          <p className="text-center text-sm font-medium text-success3 mb-4">
+          <p className="text-center text-base font-bold text-success3 mb-4">
             Verifikasi Kode Berhasil!
+          </p>
+        )}
+
+        {/* Timer */}
+        {error == "OTP tidak ditemukan. Silakan login ulang." ||
+        error?.props?.children[0] ==
+          "Percobaan OTP melebihi batas. Silakan login ulang." ? null : (
+          <p className="text-center text-sm text-gray-600 mb-2">
+            Waktu tersisa:{" "}
+            <span className="text-red-500 font-medium">
+              {" "}
+              {formatTime(timeLeft)}
+            </span>
+          </p>
+        )}
+
+        {/* Resend */}
+        {error == "OTP tidak ditemukan. Silakan login ulang." ||
+        error?.props?.children[0] ==
+          "Percobaan OTP melebihi batas. Silakan login ulang." ? null : (
+          <p className="text-center text-sm text-gray-600 mb-4">
+            Tidak menerima kode?{" "}
+            <button
+              onClick={handleResend}
+              disabled={timeLeft > 0 || attemptsLeft < 1}
+              className={`font-medium ${
+                timeLeft > 0 || attemptsLeft < 1
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-primary3 hover:underline"
+              }`}
+            >
+              Kirim ulang kode
+            </button>
           </p>
         )}
 
