@@ -219,7 +219,7 @@ export default function VerifyOTP() {
         <p className="text-center text-gray-600 text-base">
           Masukkan 6 digit kode yang dikirimkan ke Email{" "}
           <span className="font-bold text-gray-600">
-            {user?.email}
+            {payload?.email}
           </span>
         </p>
 
