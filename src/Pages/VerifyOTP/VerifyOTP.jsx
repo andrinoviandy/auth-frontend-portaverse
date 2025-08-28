@@ -202,7 +202,7 @@ export default function VerifyOTP() {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-modal">
+      <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-modal scale-90 ">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <img
