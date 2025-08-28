@@ -132,6 +132,7 @@ export default function NewLogin() {
                   });
                 } else if (res.data.isEmailOtpRequired === 0) {
                   localStorage.setItem("otp_verified", "true");
+                  localStorage.removeItem("otp_countdown");
                   localStorage.removeItem("isEmailOtpRequired");
                   postLogin(payload, setIsLoading, handleFetchError);
                 } else {
