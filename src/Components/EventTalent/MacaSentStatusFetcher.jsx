@@ -2,7 +2,8 @@ import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
 } from "../../Networks/endpoint";
-import { Networks } from "../../Networks/factory";
+// ! TEMP USE ET TIME TRAVEL DEVELOPMENT PLAN, ROLLBACK LATER
+import { Networks } from "../../Networks/et-time-travel-factory";
 
 /* eslint-disable import/prefer-default-export */
 export function MacaPositionSentStatusFetcher({
