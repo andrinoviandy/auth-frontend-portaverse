@@ -546,7 +546,7 @@ export default function SectionPlatformMenu() {
           label: "Development Plan",
           description:
             "Daftar perencanaan pengembangan talenta dalam suatu perusahaan",
-          route: "/development-plan/my-plan-development",
+          route: "/development-plan-tt/my-plan-development",
           icon: (
             <img
               src={DevelopmentPlan}
@@ -821,7 +821,7 @@ export default function SectionPlatformMenu() {
     SIGNATURE_ENDPOINT.GET.checkSMSAuthorization,
     [SIGNATURE_ENDPOINT.GET.checkSMSAuthorization],
     {
-      onError: () => {},
+      onError: () => { },
       onSuccess: (res) => {
         const hasAccepted = !!res?.pass;
         setHasAccessSMS(hasAccepted);
@@ -871,10 +871,9 @@ export default function SectionPlatformMenu() {
                   key={`${activeTab}-${menu?.label}`}
                   label={menu?.label}
                   description={menu?.description}
-                  route={`${
-                    menu?.host ||
+                  route={`${menu?.host ||
                     import.meta.env[`VITE_${activeTab}_URL`]
-                  }${menu.route}`}
+                    }${menu.route}`}
                   icon={menu?.icon}
                   // hidden={!menu?.hasAccess}
                   disabled={!menu?.hasAccess}
@@ -906,10 +905,9 @@ export default function SectionPlatformMenu() {
                   key={`${activeTab}-${menu?.label}`}
                   label={menu?.label}
                   description={menu?.description}
-                  route={`${
-                    menu?.host ||
+                  route={`${menu?.host ||
                     import.meta.env[`VITE_${activeTab}_URL`]
-                  }${menu.route}`}
+                    }${menu.route}`}
                   icon={menu?.icon}
                   // hidden={!menu?.hasAccess}
                   disabled={!menu?.hasAccess}
@@ -963,9 +961,9 @@ function MenuCard({
         style={
           disabled || comingSoon
             ? {
-                filter:
-                  "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
-              }
+              filter:
+                "grayscale(1) sepia(2%) saturate(1297%) hue-rotate(177deg) brightness(100%) contrast(89%)",
+            }
             : {}
         }
       >

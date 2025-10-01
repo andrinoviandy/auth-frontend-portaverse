@@ -24,14 +24,18 @@ import {
   IDP_ENDPOINT,
   SMARTPLAN_ENDPOINT,
 } from "../../../Networks/endpoint";
+// ! TEMP USE ET TIME TRAVEL DEVELOPMENT PLAN, ROLLBACK LATER
+import { Networks as NetworksETTimeTravel } from "../../../Networks/et-time-travel-factory";
 import { Networks } from "../../../Networks/factory";
+
 import getUserCookie from "../../../Utils/Helpers/getUserCookie";
 import hasRole from "../../../Utils/Helpers/hasRole";
 import uppercaseFirstLetterEveryWord from "../../../Utils/Helpers/uppercaseFirstLetterEveryWord";
 import useCountdown from "../../../Utils/Hooks/useCountDown";
 import { MacaPositionSentStatusFetcher } from "../../../Components/EventTalent/MacaSentStatusFetcher";
 import showErrorDialog from "../../../Utils/Helpers/showErrorDialog";
-import { useGetSentStatus } from "../../../Utils/Hooks/use-get-sent-status";
+// ! TEMP USE ET TIME TRAVEL DEVELOPMENT PLAN, ROLLBACK LATER
+import { useGetSentStatus } from "../../../Utils/Hooks/use-get-sent-status-tt";
 
 // * smiley face :D glhf
 function BannerCard({
@@ -59,10 +63,16 @@ function BannerCard({
     idpCourseIds,
     isEligible = false,
   }) => {
-    const ecaNotSent = ecaSentStatus !== "SENT";
+    // ! Disabling ECA reminder for time travel
+    // const ecaNotSent = ecaSentStatus !== "SENT";
+    const ecaNotSent = false;
+
     const sucaNotSent = sucaSentStatus !== "SENT";
     const macaNotSent = !hasSentAllMaca;
-    const idpNotSent = idpCourseIds.length === 0;
+
+    // ! Disabling IDP reminder for time travel
+    // const idpNotSent = idpCourseIds.length === 0;
+    const idpNotSent = false;
 
     const missing = [];
 
@@ -104,7 +114,7 @@ function BannerCard({
       eventTalentData?.is_job_leave ||
       !eventTalentData?.is_under_max_age ||
       eventTalentData?.qualification_content?.event_talent_status ===
-        "NOT_QUALIFIED"
+      "NOT_QUALIFIED"
       ? "NOT_ELIGIBLE"
       : "ELIGIBLE";
   }, [
@@ -395,7 +405,7 @@ function BannerCard({
           ))}
 
           {eligibilityStatus === "ELIGIBLE" &&
-          typeof eventTalentData?.is_agree !== "number" ? (
+            typeof eventTalentData?.is_agree !== "number" ? (
             <div>
               Selamat! Anda dinyatakan lolos untuk mengikuti kegiatan
               Event Talent. Segera berikan tanggapan Anda melalui
@@ -440,8 +450,8 @@ function BannerCard({
             onClick={() =>
               window.open(
                 isMissingOnlyIdp
-                  ? `${import.meta.env.VITE_TMS_URL}/development-plan/my-plan-development/v2/idp?tab=form`
-                  : `${import.meta.env.VITE_TMS_URL}/development-plan/event-talent`,
+                  ? `${import.meta.env.VITE_TMS_URL}/development-plan-tt/my-plan-development/v2/idp?tab=form`
+                  : `${import.meta.env.VITE_TMS_URL}/development-plan-tt/event-talent`,
               )
             }
           >
@@ -515,7 +525,7 @@ export default function SectionHero() {
 
   // * Start event talent banner
   const employeeNumber = getUserCookie()?.employee?.employee_number;
-  const developmentPlanService = Networks(BASE_PROXY.developmentPlan);
+  const developmentPlanService = NetworksETTimeTravel(BASE_PROXY.developmentPlan);
   const { data: eventTalentData } = developmentPlanService.query(
     DEVELOPMENT_PLAN_ENDPOINT.GET.getRequiredEventTalentV2(
       employeeNumber,

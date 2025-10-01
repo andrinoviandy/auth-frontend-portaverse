@@ -7,7 +7,8 @@ import {
   BASE_PROXY,
   DEVELOPMENT_PLAN_ENDPOINT,
 } from "../../../Networks/endpoint";
-import { Networks } from "../../../Networks/factory";
+// ! TEMP USE ET TIME TRAVEL DEVELOPMENT PLAN, ROLLBACK LATER
+import { Networks } from "../../../Networks/et-time-travel-factory";
 import { MANTINE_PAGINATION_STYLES } from "../../../Utils/Constants";
 
 function PanelIDP({ activeTab, employeeNumber, year }) {
