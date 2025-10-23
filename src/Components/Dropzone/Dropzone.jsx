@@ -9,18 +9,17 @@ import {
   SimpleGrid,
   Text,
 } from "@mantine/core";
-import clsx from "clsx"
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 
-import { VALIDATION_REGEX } from "../../Utils/Constants";
+import UploadIconNew from "../Assets/Icon/UploadIconNew";
+import FileTypeIcon from "../FileTypeIcon/FileTypeIcon";
 import bytesToSize from "../../Utils/Helpers/byteToSize";
 import getThumbnailForVideo from "../../Utils/Helpers/getThumbnailVideo";
 import mimeTypeToReadable from "../../Utils/Helpers/mimeTypeToReadable";
 import openInNewTab from "../../Utils/Helpers/openInNewTab";
-import UploadIconNew from "../Assets/Icon/UploadIconNew";
-import FileTypeIcon from "../FileTypeIcon/FileTypeIcon";
+import clsx from "clsx";
 
 const fileNotSupported =
   "File type not supported, supported types:" +
@@ -47,7 +46,7 @@ function UploadZone({
         style={{ minHeight: 220, pointerEvents: "none" }}
       >
         {file !== null ? (
-          <div className="flex items-center flex-col gap-2">
+          <div className="flex flex-col items-center gap-2">
             <FileTypeIcon type={fileType} />
             {file !== null && <span>{file[0].name}</span>}
           </div>
@@ -55,9 +54,9 @@ function UploadZone({
           <>
             <Dropzone.Accept>{idleStateElement}</Dropzone.Accept>
             <Dropzone.Reject>
-              <div className="grid justify-items-center gap-2">
+              <div className="grid gap-2 justify-items-center">
                 <Icon icon="tabler:x" color="#e73030" width={45} />
-                <p className="text-red-500 text-center">
+                <p className="text-center text-red-500">
                   {unsupportedMessage}
                 </p>
               </div>
@@ -82,7 +81,6 @@ function CustomMantineDropzone({
   onRejectValue = [],
   typeComponent = "single", // "single" || "multiple" || "videoType"
   maximumUploads,
-  thumbnail,
 }) {
   const [notificationStatement, setNotificationStatement] = useState({
     heading: "",
@@ -130,7 +128,7 @@ function CustomMantineDropzone({
       {notificationStatement.isOpen && (
         <Notification
           title={notificationStatement.heading}
-          className="my-4 p-4"
+          className="p-4 my-4"
           icon={<Icon icon="bi:x" width={30} />}
           color="red"
           onClose={() => setNotificationStatement({ isOpen: false })}
@@ -141,6 +139,7 @@ function CustomMantineDropzone({
       <Dropzone
         multiple={maximumUploads > 1}
         onDrop={async (files) => {
+          console.log("Files dropped:", files);
           if (files?.length + file?.length > maximumUploads) {
             return;
           }
@@ -233,7 +232,6 @@ function CustomMantineDropzone({
                         fileVideo={file}
                         setFileVideo={setFile}
                         disabled={disabled}
-                        thumbnail={thumbnail}
                       />
                     );
 
@@ -254,10 +252,21 @@ function CustomMantineDropzone({
   );
 }
 
-function SingleDocumentZone({ disabled, file, setFile }) {
+export function SingleDocumentZone({
+  disabled,
+  file,
+  setFile,
+  onClick = () => null,
+}) {
   return (
-    <div className="flex justify-between items-center w-full px-3 py-2 border border-grey rounded-md">
-      <div className="flex gap-2 items-center">
+    <div
+      onClick={onClick}
+      className={clsx(
+        "flex items-center justify-between w-full px-3 py-2 border rounded-md border-grey",
+        onClick ? "cursor-pointer" : "",
+      )}
+    >
+      <div className="flex items-center gap-2">
         <Icon
           icon="ic:baseline-insert-drive-file"
           className="text-darkGrey"
@@ -340,12 +349,12 @@ function MultipleDocumentZone({
             />
           </ActionIcon>
         )}
-        <Card.Section className="py-2 px-4 overflow-x-hidden">
+        <Card.Section className="px-4 py-2 overflow-x-hidden">
           {["jpg", "jpeg", "png"].includes(fileType) ? (
             <img
               alt={newFile?.name}
               src={imageUrl}
-              className="w-[300px] max-h-[210px] object-cover"
+              className="w-[300px] object-cover"
             />
           ) : (
             <FileTypeIcon type={fileType} />
@@ -361,13 +370,9 @@ function MultipleDocumentZone({
     );
   });
 
-  const cols = 4;
-  const filledCols = files.length % cols;
-  const dropzoneColSpan = cols - filledCols;
-
   return (
     <SimpleGrid
-      cols={cols}
+      cols={4}
       breakpoints={[{ maxWidth: "sm", cols: 1 }]}
       mt={previews?.length > 0 ? "xl" : 0}
     >
@@ -387,11 +392,6 @@ function MultipleDocumentZone({
           maxFiles={maximumUploads}
           maxSize={maxSize || 10 * 1024 ** 2}
           accept={mimeTypes}
-          styles={{
-            root: {
-              gridColumn: `span ${dropzoneColSpan} / span ${dropzoneColSpan}`,
-            },
-          }}
           classNames={{
             inner: "pointer-events-auto",
           }}
@@ -410,25 +410,15 @@ function MultipleDocumentZone({
   );
 }
 
-function VideoComponentZone({
-  fileVideo,
-  setFileVideo,
-  disabled,
-  thumbnail,
-}) {
-  const [videoThumb, setvideoThumb] = useState(thumbnail);
+function VideoComponentZone({ fileVideo, setFileVideo, disabled }) {
+  const [videoThumb, setvideoThumb] = useState(null);
 
-  const generateThumbnail = useCallback(
-    async (files) => {
-      if (thumbnail) return;
-      const [file] = files;
-      const isUrl = VALIDATION_REGEX.url.test(file?.url);
-      const fileUrl = isUrl ? file?.url : URL.createObjectURL(file);
-      const thumbUrl = await getThumbnailForVideo(fileUrl);
-      setvideoThumb(thumbUrl);
-    },
-    [thumbnail],
-  );
+  const generateThumbnail = useCallback(async (files) => {
+    const [file] = files;
+    const fileUrl = URL.createObjectURL(file);
+    const thumbUrl = await getThumbnailForVideo(fileUrl);
+    setvideoThumb(thumbUrl);
+  }, []);
 
   useEffect(() => {
     if (fileVideo?.length !== 0) generateThumbnail(fileVideo);
@@ -453,7 +443,7 @@ function VideoComponentZone({
           height="40"
         />
       </ActionIcon>
-      <Card.Section className="py-2 px-4">
+      <Card.Section className="px-4 py-2">
         <img
           src={videoThumb}
           className="aspect-video h-[200px] object-contain"
@@ -472,17 +462,13 @@ function VideoComponentZone({
 
 function DescriptionDropzone({ description, orDescription }) {
   return (
-    <div className="flex justify-center flex-col items-center w-full">
+    <div className="flex flex-col items-center justify-center w-full">
       <UploadIconNew />
-      <Text
-        size="xl"
-        inline
-        className="font-semibold mt-4 text-center"
-      >
+      <Text size="xl" inline className="mt-4 font-semibold">
         {description || (
           <>
-            Letakkan file di sini atau{" "}
-            <span className="text-primary3">Cari File</span>
+            Letakkan dokumen di sini atau{" "}
+            <span className="text-primary3">Cari Dokumen</span>
           </>
         )}
       </Text>
@@ -490,7 +476,7 @@ function DescriptionDropzone({ description, orDescription }) {
         size="sm"
         color="dimmed"
         inline
-        className="m-2 font-light text-darkGrey text-center"
+        className="m-2 font-light text-center text-darkGrey"
       >
         {orDescription}
       </Text>
@@ -523,13 +509,13 @@ UploadZone.defaultProps = {
     MIME_TYPES.gif,
   ],
   idleStateElement: (
-    <div className="flex items-center flex-col gap-2">
+    <div className="flex flex-col items-center gap-2">
       <Icon
-        className="text-primary3 mx-auto"
+        className="mx-auto text-primary3"
         icon="tabler:file"
         width="90"
       />
-      <span className="text-darkGrey text-lg font-medium">
+      <span className="text-lg font-medium text-darkGrey">
         Drop your file here or
         <span className="text-primary3"> browse</span>
       </span>

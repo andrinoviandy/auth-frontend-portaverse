@@ -264,6 +264,22 @@ export default function NewLogin() {
           <Button loading={isLoading || loadingOTP} type="submit">
             Sign In
           </Button>
+
+          <div>
+            {/* Divider with "Atau" text */}
+            <div className="mb-6 mt-2 flex items-center gap-4">
+              <div className="h-px flex-1 bg-gray-300" />
+              <span className="text-sm text-gray-600">Atau</span>
+              <div className="h-px flex-1 bg-gray-300" />
+            </div>
+
+            {/* Aktivasi Akun Button */}
+            <Link to="/activate-account">
+              <Button type="Button" variant="outline" fullWidth>
+                Aktivasi Akun Portaverse Baru
+              </Button>
+            </Link>
+          </div>
         </form>
 
         <a
