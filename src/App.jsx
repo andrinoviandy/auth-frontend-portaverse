@@ -28,6 +28,7 @@ import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
 import SignUpExternalUser from "./Pages/SignUp/SignUpExternalUser";
 import VerifyOTP from "./Pages/VerifyOTP";
+import UserRegistration from "./Pages/UserRegistration";
 
 function ProtectedVerifyOTP() {
   const isBlocked = localStorage.getItem("otp_blocked") === "true";
@@ -176,6 +177,10 @@ function App() {
             element={<ProtectedVerifyOTP />}
           />
         </Route>
+        <Route
+          path="/activate-account"
+          element={<UserRegistration />}
+        />
 
         <Route path="*" element={<Error404 />} />
       </Routes>
