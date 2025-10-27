@@ -20,8 +20,8 @@ axiosSSOClient.interceptors.request.use(
   },
 );
 
-// timeout
-axiosSSOClient.defaults.timeout = 30000;
+// timeout (increased to 5 minutes for user registration check)
+axiosSSOClient.defaults.timeout = 5 * 60 * 1000;
 
 // redirect when cookies expired
 axiosSSOClient.interceptors.response.use(
