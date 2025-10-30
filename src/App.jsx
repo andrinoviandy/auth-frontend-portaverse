@@ -20,15 +20,16 @@ import LandingPage from "./Pages/LandingPage";
 import NewLandingPageAuthorized from "./Pages/LandingPageAuthorized/NewLandingPageAuthorized";
 import NewLogin from "./Pages/Login";
 import NewLoginMobile from "./Pages/Login/NewLoginMobile";
+import MobileSSOBridge from "./Pages/MobileSSOBridge";
 import NewPassSuccess from "./Pages/NewPassSuccess";
 import Notifications from "./Pages/Notifications/Notifications";
 import ProgressEvaluationReport from "./Pages/ProgressEvaluationReport/ProgressEvaluationReport";
 import Referal from "./Pages/Referal/Referal";
 import NewSetNewPassword from "./Pages/SetNewPassword/NewSetNewPassword";
-import userAuthorization from "./Utils/Helpers/userAuthorization";
 import SignUpExternalUser from "./Pages/SignUp/SignUpExternalUser";
-import VerifyOTP from "./Pages/VerifyOTP";
 import UserRegistration from "./Pages/UserRegistration";
+import VerifyOTP from "./Pages/VerifyOTP";
+import userAuthorization from "./Utils/Helpers/userAuthorization";
 
 function ProtectedVerifyOTP() {
   const isBlocked = localStorage.getItem("otp_blocked") === "true";
@@ -180,6 +181,12 @@ function App() {
         <Route
           path="/activate-account"
           element={<UserRegistration />}
+        />
+
+        {/* Mobile SSO Bridge - Public route without layout */}
+        <Route
+          path="/sso/mobile-bridge"
+          element={<MobileSSOBridge />}
         />
 
         <Route path="*" element={<Error404 />} />
