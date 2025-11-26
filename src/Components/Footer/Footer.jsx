@@ -17,24 +17,26 @@ export default function Footer() {
     );
   }
 
-  if (url === "") {
+  // if (url === "") {
+  //   return (
+  //     <footer className="relative flex justify-center">
+  //       <Wave1 />
+  //       <h5 className="absolute bottom-0 pb-7 text-darkGray">
+  //         Powered by KMPlus Consulting 2023
+  //       </h5>
+  //     </footer>
+  //   );
+  // }
+
+  if (url !== "") {
     return (
-      <footer className="relative flex justify-center">
-        <Wave1 />
-        <h5 className="absolute bottom-0 pb-7 text-darkGray">
-          Powered by KMPlus Consulting 2023
-        </h5>
+      <footer className="flex justify-center">
+        {!PageOTP && (
+          <h5 className="pb-7 text-darkGray">
+            Powered by KMPlus Consulting 2023
+          </h5>
+        )}
       </footer>
     );
   }
-
-  return (
-    <footer className="flex justify-center">
-      {!PageOTP && (
-        <h5 className="pb-7 text-darkGray">
-          Powered by KMPlus Consulting 2023
-        </h5>
-      )}
-    </footer>
-  );
 }

@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
       federation({
         name: "sso",
         remotes: {
-          navbarApp: process.env.VITE_NAVBAR_URL!,
+          navbarApp: "http://localhost:5002/assets/remoteEntry.js",
         },
         shared: ["react", "react-dom", "zustand"],
       }),

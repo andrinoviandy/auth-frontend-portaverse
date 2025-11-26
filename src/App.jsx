@@ -1,6 +1,6 @@
 import { ModalDef } from "@ebay/nice-modal-react";
 import { isAndroid, isIOS } from "react-device-detect";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 
 import Error404 from "./Components/Errors/404";
 import ErrorHandling from "./Components/Errors/ErrorHandling";
@@ -30,6 +30,10 @@ import SignUpExternalUser from "./Pages/SignUp/SignUpExternalUser";
 import UserRegistration from "./Pages/UserRegistration";
 import VerifyOTP from "./Pages/VerifyOTP";
 import userAuthorization from "./Utils/Helpers/userAuthorization";
+import LandingPageSso from "./Pages/LandingPage/LandingPageSso";
+import LoginKeycloak from "./Pages/Login/LoginKeycloak";
+import Cookies from "js-cookie"
+import { useEffect } from "react";
 
 function ProtectedVerifyOTP() {
   const isBlocked = localStorage.getItem("otp_blocked") === "true";
@@ -37,6 +41,44 @@ function ProtectedVerifyOTP() {
 }
 
 function ProtectedLanding() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Cookies.get("refreshTokenSso") || Cookies.get("idTokenSso")) {
+      const checkSession = async () => {
+        const refreshToken = Cookies.get("refreshTokenSso");
+        if (!refreshToken) return;
+
+        const tokenUrl = `${import.meta.env.VITE_KEYCLOAK_ISSUER}/protocol/openid-connect/token`;
+        const params = new URLSearchParams();
+
+        params.append("grant_type", "refresh_token");
+        params.append("refresh_token", refreshToken);
+        params.append("client_id", import.meta.env.VITE_KEYCLOAK_CLIENT_ID);
+
+        const response = await fetch(tokenUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params.toString(),
+        });
+
+        if (!response.ok) {
+          Cookies.remove("accessTokenSso");
+          Cookies.remove("idTokenSso");
+          Cookies.remove("refreshToken");
+          Cookies.remove("refreshTokenSso");
+          Cookies.remove("smartkmsystemAuthClient");
+          Cookies.remove("smartkmsystemAuth");
+          Cookies.remove("session_id");
+          Cookies.remove("user");
+
+          navigate("/", { replace: true });
+        }
+      };
+      checkSession();
+    }
+  }, []);
+
   const isBlocked = localStorage.getItem("otp_blocked") === "true";
   const isEmailOtpRequired =
     localStorage.getItem("isEmailOtpRequired") === "1";
@@ -48,6 +90,7 @@ function ProtectedLanding() {
 }
 
 function App() {
+
   document.title = "Portaverse - Pelindo";
 
   const { isAuthorized } = userAuthorization();
@@ -91,7 +134,8 @@ function App() {
           element={
             <PrivateRoutes
               isAuthorized={!isAuthorized}
-              redirect="/login"
+              // redirect="/login"
+              redirect="/"
             />
           }
         >
@@ -99,7 +143,7 @@ function App() {
             <Route
               path="/landing"
               element={<ProtectedLanding />}
-              // element={<NewLandingPageAuthorized />}
+            // element={<NewLandingPageAuthorized />}
             />
             <Route
               path="/notifications"
@@ -172,7 +216,8 @@ function App() {
 
         {/* Public */}
         <Route element={<MainLayout />}>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPageSso />} />
+          <Route path="/loginKeycloak" element={<LoginKeycloak />} />
           <Route
             path="/email-otp/:targetUID"
             element={<ProtectedVerifyOTP />}
