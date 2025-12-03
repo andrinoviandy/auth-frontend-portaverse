@@ -44,9 +44,9 @@ function ProtectedLanding() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (Cookies.get("refreshTokenSso") || Cookies.get("idTokenSso")) {
+    if (localStorage.getItem("refreshTokenSso") || localStorage.getItem("idTokenSso")) {
       const checkSession = async () => {
-        const refreshToken = Cookies.get("refreshTokenSso");
+        const refreshToken = localStorage.getItem("refreshTokenSso");
         if (!refreshToken) return;
 
         const tokenUrl = `${import.meta.env.VITE_KEYCLOAK_ISSUER}/protocol/openid-connect/token`;
@@ -63,13 +63,13 @@ function ProtectedLanding() {
         });
 
         if (!response.ok) {
-          Cookies.remove("accessTokenSso");
-          Cookies.remove("idTokenSso");
+          localStorage.removeItem("accessTokenSso");
+          localStorage.removeItem("idTokenSso");
           Cookies.remove("refreshToken");
-          Cookies.remove("refreshTokenSso");
+          localStorage.removeItem("refreshTokenSso");
           Cookies.remove("smartkmsystemAuthClient");
           Cookies.remove("smartkmsystemAuth");
-          Cookies.remove("session_id");
+          localStorage.removeItem("session_id");
           Cookies.remove("user");
 
           navigate("/", { replace: true });

@@ -9,10 +9,10 @@ export default async function postLoginSsoV2(payload, setIsLoading, setMessage) 
     const { idToken, targetUID } = res.data.data;
 
     if (res?.data?.success === true) {
-      Cookies.set("accessTokenSso", payload?.access_token)
-      Cookies.set("refreshTokenSso", payload?.refresh_token)
-      Cookies.set("idTokenSso", payload?.id_token)
-      Cookies.set("session_id", payload?.refresh_token)
+      localStorage.setItem("accessTokenSso", payload?.access_token)
+      localStorage.setItem("refreshTokenSso", payload?.refresh_token)
+      localStorage.setItem("idTokenSso", payload?.id_token)
+      localStorage.setItem("session_id", payload?.refresh_token)
       if (payload.isRemember) {
         localStorage.setItem("access_token", payload?.access_token);
       } else {
