@@ -21,7 +21,7 @@ body, html {
   min-height: 100vh;     /* tinggi full layar */
   margin: 0;
   padding: 0;
-  position: relative;     /* penting untuk posisi logo */
+  /* position: relative; */
   background-image: url(/images/background-home.png);
   background-size: 200px 200px;
   background-repeat: repeat;
