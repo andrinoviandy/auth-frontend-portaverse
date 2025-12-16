@@ -1,12 +1,16 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Footer from "../Footer";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 
 export default function MainLayout() {
   const navigate = useNavigate();
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     if (localStorage.getItem("refreshTokenSso") || localStorage.getItem("idTokenSso")) {
       const checkSession = async () => {
         const refreshToken = localStorage.getItem("refreshTokenSso");

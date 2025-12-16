@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Checkbox, PasswordInput, TextInput } from "@mantine/core";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import EyeOffOutline from "../../Components/Assets/Icon/EyeOffOutline";
 import EyeOutline from "../../Components/Assets/Icon/EyeOutline";
@@ -14,6 +14,7 @@ import Illustration from "../../Components/Assets/Pictures/illustration-below.pn
 import "../../Components/CssCustom/LoginKeycloak.css";
 
 function LoginKeycloak() {
+  const hasRun = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Sedang Proses");
   const ISSUER = import.meta.env.VITE_KEYCLOAK_ISSUER;
@@ -21,6 +22,9 @@ function LoginKeycloak() {
   const REDIRECT_URI = `${window.location.origin}/loginKeycloak`;
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const postKeycloak = async () => {
       setIsLoading(true)
       const pkceCode = localStorage.getItem("pkce_code_verifier");
@@ -46,7 +50,7 @@ function LoginKeycloak() {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: params.toString(),
           });
-
+          
           const data = await response.json();
           
           if (!response.ok) {

@@ -33,7 +33,7 @@ import userAuthorization from "./Utils/Helpers/userAuthorization";
 import LandingPageSso from "./Pages/LandingPage/LandingPageSso";
 import LoginKeycloak from "./Pages/Login/LoginKeycloak";
 import Cookies from "js-cookie"
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 function ProtectedVerifyOTP() {
   const isBlocked = localStorage.getItem("otp_blocked") === "true";
@@ -42,8 +42,11 @@ function ProtectedVerifyOTP() {
 
 function ProtectedLanding() {
   const navigate = useNavigate();
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
     if (localStorage.getItem("refreshTokenSso") || localStorage.getItem("idTokenSso")) {
       const checkSession = async () => {
         const refreshToken = localStorage.getItem("refreshTokenSso");
