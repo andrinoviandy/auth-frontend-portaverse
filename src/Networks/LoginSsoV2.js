@@ -1,6 +1,19 @@
 import axiosSSOClient from "../Configs/AxiosClient/ssoAxiosClient";
 import Cookies from 'js-cookie';
+import showErrorDialog from "../Utils/Helpers/showErrorDialog";
 
+const logoutKeycloak = async (idToken) => {
+  const tokenUrl = `${import.meta.env.VITE_KEYCLOAK_ISSUER}/protocol/openid-connect/logout`;
+  const params = new URLSearchParams();
+  params.append("id_token_hint", idToken); // ID Token hint yang didapatkan
+  params.append("post_logout_redirect_uri", encodeURIComponent(window.location.origin + "/"));
+
+  await fetch(tokenUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString(),
+  });
+}
 export default async function postLoginSsoV2(payload, setIsLoading, setMessage) {
   try {
     setMessage("Generate Token")
@@ -62,7 +75,17 @@ export default async function postLoginSsoV2(payload, setIsLoading, setMessage) 
 
   } catch (err) {
     console.error("Login error:", err);
+    // Agar Mudah Dimengerti User, Kalau User Tidak Memiliki Role Portaverse di Portalsi
+    const payError = {
+      response: { data: { message: "User Tidak Memiliki Akses Aplikasi Portaverse !" } },
+      code: "User Not Found",
+      message: ""
+    }
     setMessage("User Tidak Ada Akses");
+    const idToken = payload?.id_token;
+    showErrorDialog(payError)
+    await logoutKeycloak(idToken)
+
   } finally {
     setIsLoading(false);
   }
