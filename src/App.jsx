@@ -54,10 +54,26 @@ function ProtectedLanding() {
     const idToken = localStorage.getItem("idTokenSso");
     if (!refreshToken && !idToken) {
       console.log('masuk sini nggak 1');
-      
+
       localStorage.clear();
       sessionStorage.clear();
       Cookies.clear();
+      Cookies.remove("refreshToken", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
+      Cookies.remove("smartkmsystemAuth", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
+      Cookies.remove("smartkmsystemAuthClient", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
+      Cookies.remove("user", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
       navigate("/", { replace: true });
       return
     };
@@ -76,7 +92,7 @@ function ProtectedLanding() {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: params.toString(),
         });
-        
+
         if (!response.ok) {
           localStorage.removeItem("accessTokenSso");
           localStorage.removeItem("idTokenSso");

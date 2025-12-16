@@ -17,10 +17,26 @@ export default function MainLayout() {
     const refreshToken = localStorage.getItem("refreshTokenSso");
     const idToken = localStorage.getItem("idTokenSso");
     if (!refreshToken && !idToken) {
-      console.log('masuk sini nggak 1');
+      console.log('masuk sini nggak 2');
       localStorage.clear();
       sessionStorage.clear();
       Cookies.clear();
+      Cookies.remove("refreshToken", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
+      Cookies.remove("smartkmsystemAuth", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
+      Cookies.remove("smartkmsystemAuthClient", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
+      Cookies.remove("user", {
+        path: "/",
+        domain: ".ilcs.co.id"
+      });
       navigate("/", { replace: true });
       return
     };
