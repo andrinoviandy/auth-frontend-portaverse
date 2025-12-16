@@ -17,6 +17,7 @@ export default function MainLayout() {
     const refreshToken = localStorage.getItem("refreshTokenSso");
     const idToken = localStorage.getItem("idTokenSso");
     if (!refreshToken && !idToken) {
+      console.log('masuk sini nggak 1');
       localStorage.clear();
       sessionStorage.clear();
       Cookies.clear();
@@ -24,7 +25,7 @@ export default function MainLayout() {
       return
     };
 
-    if (refreshToken || idToken) {
+    if (refreshToken && idToken) {
       const checkSession = async () => {
         const tokenUrl = `${import.meta.env.VITE_KEYCLOAK_ISSUER}/protocol/openid-connect/token`;
         const params = new URLSearchParams();
