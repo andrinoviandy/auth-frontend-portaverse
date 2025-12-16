@@ -57,7 +57,6 @@ function ProtectedLanding() {
 
       localStorage.clear();
       sessionStorage.clear();
-      Cookies.clear();
       Cookies.remove("refreshToken", {
         path: "/",
         domain: ".ilcs.co.id"

@@ -20,7 +20,6 @@ export default function MainLayout() {
       console.log('masuk sini nggak 2');
       localStorage.clear();
       sessionStorage.clear();
-      Cookies.clear();
       Cookies.remove("refreshToken", {
         path: "/",
         domain: ".ilcs.co.id"
