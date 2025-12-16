@@ -8,6 +8,9 @@ export default function MainLayout() {
   const hasRun = useRef(false);
 
   useEffect(() => {
+    console.log(localStorage?.getItem("refreshTokenSso"), 'token_m_refresh');
+    console.log(localStorage?.getItem("idTokenSso"), 'token_m_idtoken');
+
     if (hasRun.current) return;
     hasRun.current = true;
 

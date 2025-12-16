@@ -45,6 +45,8 @@ function ProtectedLanding() {
   const hasRun = useRef(false);
 
   useEffect(() => {
+    console.log(localStorage?.getItem("refreshTokenSso"), 'token_a_refresh');
+    console.log(localStorage?.getItem("idTokenSso"), 'token_a_idtoken');
     if (hasRun.current) return;
     hasRun.current = true;
     if (localStorage.getItem("refreshTokenSso") || localStorage.getItem("idTokenSso")) {
