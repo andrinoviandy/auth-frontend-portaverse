@@ -67,6 +67,8 @@ function ProtectedLanding() {
           body: params.toString(),
         });
 
+        console.log('responsee', response);
+        
         if (!response.ok) {
           localStorage.removeItem("accessTokenSso");
           localStorage.removeItem("idTokenSso");
