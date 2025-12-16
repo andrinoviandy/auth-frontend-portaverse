@@ -49,11 +49,19 @@ function ProtectedLanding() {
     console.log(localStorage?.getItem("idTokenSso"), 'token_a_idtoken');
     if (hasRun.current) return;
     hasRun.current = true;
-    if (localStorage.getItem("refreshTokenSso") || localStorage.getItem("idTokenSso")) {
-      const checkSession = async () => {
-        const refreshToken = localStorage.getItem("refreshTokenSso");
-        if (!refreshToken) return;
 
+    const refreshToken = localStorage.getItem("refreshTokenSso");
+    const idToken = localStorage.getItem("idTokenSso");
+    if (!refreshToken && !idToken) {
+      localStorage.clear();
+      sessionStorage.clear();
+      Cookies.clear();
+      navigate("/", { replace: true });
+      return
+    };
+
+    if (refreshToken || idToken) {
+      const checkSession = async () => {
         const tokenUrl = `${import.meta.env.VITE_KEYCLOAK_ISSUER}/protocol/openid-connect/token`;
         const params = new URLSearchParams();
 
@@ -66,8 +74,6 @@ function ProtectedLanding() {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: params.toString(),
         });
-
-        console.log('responsee', response);
         
         if (!response.ok) {
           localStorage.removeItem("accessTokenSso");
