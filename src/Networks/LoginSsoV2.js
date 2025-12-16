@@ -6,6 +6,8 @@ export default async function postLoginSsoV2(payload, setIsLoading, setMessage) 
     setMessage("Generate Token")
     const res = await axiosSSOClient.post("/auth/after-login-sso", payload);
 
+    console.log('ress', res);
+    
     const { idToken, targetUID } = res.data.data;
 
     if (res?.data?.success === true) {
