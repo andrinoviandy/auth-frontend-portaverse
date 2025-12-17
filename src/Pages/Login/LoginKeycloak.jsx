@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { memo, useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import EyeOffOutline from "../../Components/Assets/Icon/EyeOffOutline";
 import EyeOutline from "../../Components/Assets/Icon/EyeOutline";
 import LoadingButton from "../../Components/Assets/Icon/LoadingButton";
@@ -12,8 +12,10 @@ import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import PelindoLogo from "../../Components/Assets/Pictures/PelindoLogo.png";
 import Illustration from "../../Components/Assets/Pictures/illustration-below.png";
 import "../../Components/CssCustom/LoginKeycloak.css";
+import { generateCodeChallenge, generateCodeVerifier } from "../LandingPage/sso/pkce";
 
 function LoginKeycloak() {
+  const location = useLocation();
   const hasRun = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("Sedang Proses");
@@ -21,13 +23,30 @@ function LoginKeycloak() {
   const CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID; // pastikan sama seperti di Keycloak
   const REDIRECT_URI = `${window.location.origin}/loginKeycloak`;
 
+  const getQueryParam = (param) => {
+    const urlParams = new URLSearchParams(location.search);
+    return urlParams.get(param);
+  };
+
   useEffect(() => {
     if (hasRun.current) return;
     hasRun.current = true;
 
     const postKeycloak = async () => {
       setIsLoading(true)
-      const pkceCode = localStorage.getItem("pkce_code_verifier");
+      const loginMy = getQueryParam('loginMy');
+      let pkceCode;
+      if (loginMy === 'true' || loginMy === true) {
+        console.log("loginMy : true");
+        
+        const code_verifier = generateCodeVerifier();
+        const code_challenge = await generateCodeChallenge(code_verifier);
+        pkceCode = code_verifier;
+        localStorage.setItem("pkce_code_verifier", code_verifier);
+      } else {
+        pkceCode = localStorage.getItem("pkce_code_verifier");
+      }
+
       if (!pkceCode) {
         window.location.href = `${window.location.origin}/landing`;
         return
@@ -50,9 +69,9 @@ function LoginKeycloak() {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: params.toString(),
           });
-          
+
           const data = await response.json();
-          
+
           if (!response.ok) {
             console.error("Keycloak token request failed");
           } else {
