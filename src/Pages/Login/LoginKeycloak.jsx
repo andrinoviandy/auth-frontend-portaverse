@@ -12,7 +12,7 @@ import useValidateInput from "../../Utils/Hooks/useValidateInput";
 import PelindoLogo from "../../Components/Assets/Pictures/PelindoLogo.png";
 import Illustration from "../../Components/Assets/Pictures/illustration-below.png";
 import "../../Components/CssCustom/LoginKeycloak.css";
-import { generateCodeChallenge, generateCodeVerifier } from "../LandingPage/sso/pkce";
+import { generateCodeChallenge, generateCodeVerifier, generateNonce } from "../LandingPage/sso/pkce";
 
 function LoginKeycloak() {
   const location = useLocation();
@@ -35,52 +35,66 @@ function LoginKeycloak() {
     const postKeycloak = async () => {
       setIsLoading(true)
       const loginMy = getQueryParam('loginMy');
-      let pkceCode;
       if (loginMy === 'true' || loginMy === true) {
         console.log("loginMy : true");
-        
+
         const code_verifier = generateCodeVerifier();
         const code_challenge = await generateCodeChallenge(code_verifier);
-        pkceCode = code_verifier;
+        const pkceCode = code_verifier;
+        console.log('pkce', pkceCode);
+        
         localStorage.setItem("pkce_code_verifier", code_verifier);
+        const nonce = generateNonce();
+        const redirectUri = encodeURIComponent(`${window.location.origin}/login/oauth2`);
+        const authUrl =
+          `${import.meta.env.VITE_KEYCLOAK_ISSUER}/protocol/openid-connect/auth` +
+          `?response_type=code` +
+          `&client_id=${import.meta.env.VITE_KEYCLOAK_CLIENT_ID}` +
+          `&scope=${import.meta.env.VITE_KEYCLOAK_SCOPES}` +
+          `&redirect_uri=${import.meta.env.VITE_KEYCLOAK_REDIRECT_URI_LOGIN}` +
+          `&nonce=${nonce}` +
+          `&state=${nonce}` +
+          `&portal_si_app_id=${import.meta.env.VITE_KEYCLOAK_PORTAL_SI_APP_ID}` +
+          `&code_challenge=${code_challenge}` +
+          `&code_challenge_method=S256`;
+        window.location.assign(authUrl);
       } else {
-        pkceCode = localStorage.getItem("pkce_code_verifier");
-      }
+        const pkceCode = localStorage.getItem("pkce_code_verifier");
+        if (!pkceCode) {
+          window.location.href = `${window.location.origin}/landing`;
+          return
+        } else {
+          const url = new URL(window.location.href);
+          const code = url.searchParams.get("code");
+          if (!code) return;
 
-      if (!pkceCode) {
-        window.location.href = `${window.location.origin}/landing`;
-        return
-      } else {
-        const url = new URL(window.location.href);
-        const code = url.searchParams.get("code");
-        if (!code) return;
+          const tokenUrl = `${ISSUER}/protocol/openid-connect/token`;
+          const params = new URLSearchParams();
+          params.append("grant_type", "authorization_code");
+          params.append("client_id", CLIENT_ID);
+          params.append("code", code);
+          params.append("code_verifier", localStorage.getItem("pkce_code_verifier"));
+          params.append("redirect_uri", REDIRECT_URI);
 
-        const tokenUrl = `${ISSUER}/protocol/openid-connect/token`;
-        const params = new URLSearchParams();
-        params.append("grant_type", "authorization_code");
-        params.append("client_id", CLIENT_ID);
-        params.append("code", code);
-        params.append("code_verifier", localStorage.getItem("pkce_code_verifier"));
-        params.append("redirect_uri", REDIRECT_URI);
+          try {
+            const response = await fetch(tokenUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: params.toString(),
+            });
 
-        try {
-          const response = await fetch(tokenUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: params.toString(),
-          });
+            const data = await response.json();
 
-          const data = await response.json();
-
-          if (!response.ok) {
-            console.error("Keycloak token request failed");
-          } else {
-            // await postLoginSso(data, setIsLoading, setFetchError);
-            await postLoginSsoV2(data, setIsLoading, setMessage);
-            localStorage.removeItem("pkce_code_verifier");
+            if (!response.ok) {
+              console.error("Keycloak token request failed");
+            } else {
+              // await postLoginSso(data, setIsLoading, setFetchError);
+              await postLoginSsoV2(data, setIsLoading, setMessage);
+              localStorage.removeItem("pkce_code_verifier");
+            }
+          } catch (error) {
+            console.error("Network error:", error);
           }
-        } catch (error) {
-          console.error("Network error:", error);
         }
       }
     };
